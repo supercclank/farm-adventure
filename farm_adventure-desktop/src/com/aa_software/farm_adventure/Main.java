@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure;
 
+import com.aa_software.farm_adventure.model.game_object.FarmAdventure;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -11,6 +12,6 @@ public class Main {
 		cfg.width = 480;
 		cfg.height = 320;
 		
-		new LwjglApplication(new MyGdxGame(), cfg);
+		new LwjglApplication(new FarmAdventure(), cfg);
 	}
 }

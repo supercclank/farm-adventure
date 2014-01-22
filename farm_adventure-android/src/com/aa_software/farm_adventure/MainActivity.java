@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure;
 
 import android.os.Bundle;
 
+import com.aa_software.farm_adventure.model.game_object.FarmAdventure;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
@@ -13,6 +14,6 @@ public class MainActivity extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
         
-        initialize(new MyGdxGame(), cfg);
+        initialize(new FarmAdventure(), cfg);
     }
 }
