@@ -3,7 +3,6 @@ package com.aa_software.farm_adventure.model.farm;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.equipment.BackhoeEquipment;
 import com.aa_software.farm_adventure.model.item.spell.RainCallSpell;
-import com.aa_software.farm_adventure.model.season.AbstractSeason;
 import com.aa_software.farm_adventure.model.season.SpringSeason;
 import com.aa_software.farm_adventure.model.season.SummerSeason;
 
@@ -11,11 +10,11 @@ public class RainforestFarm extends AbstractFarm {
 	public RainforestFarm() {
 		super();
 		int everyOther = 1;
-		for(AbstractSeason season : seasons) {
+		for (int i = 0; i < seasons.length; i++) {
 			if(everyOther%2 == 1) {
-				season = new SummerSeason();
+				seasons[i] = new SummerSeason();
 			} else {
-				season = new SpringSeason();
+				seasons[i] = new SpringSeason();
 			}
 			everyOther++;
 		}

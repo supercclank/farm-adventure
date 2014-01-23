@@ -32,22 +32,22 @@ public class Inventory {
 	 * Test method.
 	 */
 	public void randomizeInventory() {
-		for(AbstractItem item : items) {
+		for (int i = 0; i < items.length; i++) {
 			Random random = new Random();
 			int randNum = random.nextInt(2);
 			if(randNum == 0) {
 				randNum = random.nextInt(3);
 				if (randNum == 0) {
-					item = new CarrotCrop();
+					items[i] = new CarrotCrop();
 				} else if (randNum == 1) {
-					item = new BeetCrop();
+					items[i] = new BeetCrop();
 				} else {
-					item = new BananaCrop();
+					items[i] = new BananaCrop();
 				}
 			} else if (randNum == 1) {
-				item = new BackhoeEquipment();
+				items[i] = new BackhoeEquipment();
 			} else {
-				item = new IllusionistSpell();
+				items[i] = new IllusionistSpell();
 			}
 		}
 	}

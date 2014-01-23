@@ -3,11 +3,6 @@ package com.aa_software.farm_adventure.model;
 import com.badlogic.gdx.ApplicationListener;
 
 public class FarmAdventure implements ApplicationListener {
-	private Field field;
-	private Inventory inventory;
-	private Market market;
-	private StatusBar statusBar;
-	private ToolBar toolBar;
 	
 	@Override
 	public void create() {		
