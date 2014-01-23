@@ -1,6 +1,6 @@
 package com.aa_software.farm_adventure;
 
-import com.aa_software.farm_adventure.model.game_object.FarmAdventure;
+import com.aa_software.farm_adventure.model.FarmAdventure;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
