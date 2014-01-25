@@ -1,8 +1,8 @@
 package com.aa_software.farm_adventure.model.farm;
 
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
-import com.aa_software.farm_adventure.model.item.equipment.MuleEquipment;
 import com.aa_software.farm_adventure.model.item.spell.TimeFreezeSpell;
+import com.aa_software.farm_adventure.model.item.tool.MuleTool;
 import com.aa_software.farm_adventure.model.season.FallSeason;
 import com.aa_software.farm_adventure.model.season.WinterSeason;
 
@@ -21,7 +21,7 @@ public class SnowFarm extends AbstractFarm {
 		}
 		//TODO change these to make sense.
 		cropMap.put(new BeetCrop(), 5);
-		equipmentMap.put(new MuleEquipment(), 1);
+		equipmentMap.put(new MuleTool(), 1);
 		spellMap.put(new TimeFreezeSpell(), 1);
 	}
 	

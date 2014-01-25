@@ -2,7 +2,7 @@ package com.aa_software.farm_adventure.model.campaign;
 
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 
-public abstract class AbstractCampaign {
+public abstract class AbstractCampaign{
 	public static final int DEFAULT_NUMBER_OF_FARMS = 4;
 	protected AbstractFarm[] farms;
 	protected int progress;

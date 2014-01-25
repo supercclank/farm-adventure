@@ -1,12 +1,13 @@
 package com.aa_software.farm_adventure.model.plot;
 
+import com.aa_software.farm_adventure.model.ISelectable;
 import com.aa_software.farm_adventure.model.Irrigation;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 
-public abstract class AbstractPlot {
+public abstract class AbstractPlot implements ISelectable {
 	
-	private AbstractCrop plant;
-	private Irrigation irrigation;
+	protected AbstractCrop plant;
+	protected Irrigation irrigation;
 	
 	public AbstractPlot() {
 		plant = null;

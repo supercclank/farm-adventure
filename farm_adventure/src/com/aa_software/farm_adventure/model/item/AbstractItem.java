@@ -1,6 +1,9 @@
 package com.aa_software.farm_adventure.model.item;
 
-public abstract class AbstractItem {
+import com.aa_software.farm_adventure.model.ISelectable;
+import com.aa_software.farm_adventure.model.plot.AbstractPlot;
+
+public abstract class AbstractItem implements ISelectable {
 
 	protected int cost;
 	protected int value;
@@ -19,6 +22,14 @@ public abstract class AbstractItem {
 	
 	public void setValue(int value) {
 		this.value = value;
+	}
+	
+	public void update(AbstractItem item) {
+		
+	}
+	
+	public void update(AbstractPlot plot) {
+		
 	}
 	
 }

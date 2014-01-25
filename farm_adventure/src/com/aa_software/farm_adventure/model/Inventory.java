@@ -6,8 +6,8 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.equipment.BackhoeEquipment;
 import com.aa_software.farm_adventure.model.item.spell.IllusionistSpell;
+import com.aa_software.farm_adventure.model.item.tool.BackhoeTool;
 /*
  * Inventory: the items that the farm has on hand.
  */
@@ -45,7 +45,7 @@ public class Inventory {
 					items[i] = new BananaCrop();
 				}
 			} else if (randNum == 1) {
-				items[i] = new BackhoeEquipment();
+				items[i] = new BackhoeTool();
 			} else {
 				items[i] = new IllusionistSpell();
 			}
