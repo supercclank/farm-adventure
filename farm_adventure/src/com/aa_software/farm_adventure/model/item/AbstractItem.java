@@ -1,7 +1,7 @@
 package com.aa_software.farm_adventure.model.item;
 
 import com.aa_software.farm_adventure.model.ISelectable;
-import com.aa_software.farm_adventure.model.plot.AbstractPlot;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractItem implements ISelectable {
 
@@ -28,7 +28,7 @@ public abstract class AbstractItem implements ISelectable {
 		
 	}
 	
-	public void update(AbstractPlot plot) {
+	public void update(Plot plot) {
 		
 	}
 	

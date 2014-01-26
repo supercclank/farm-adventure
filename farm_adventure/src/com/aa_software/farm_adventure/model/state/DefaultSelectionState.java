@@ -4,7 +4,7 @@ import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.plot.AbstractPlot;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public class DefaultSelectionState extends AbstractSelectionState  {
 	public DefaultSelectionState() {}
@@ -12,7 +12,7 @@ public class DefaultSelectionState extends AbstractSelectionState  {
 	public DefaultSelectionState update() {
 		return new DefaultSelectionState();
 	}
-	public DefaultSelectionState update(AbstractPlot plot) {
+	public DefaultSelectionState update(Plot plot) {
 		return new DefaultSelectionState();
 	}
 	public SpellSelectionState update(AbstractSpell spell) {

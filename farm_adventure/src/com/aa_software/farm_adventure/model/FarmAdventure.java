@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.plot.AbstractPlot;
+import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.model.state.ISelectionState;
 import com.badlogic.gdx.ApplicationListener;
@@ -46,8 +46,8 @@ public class FarmAdventure implements ApplicationListener {
 	@Override
 	public void render() {		
 		/* on-click change selection */
-		if(selection instanceof AbstractPlot) {
-			state = state.update((AbstractPlot)selection);
+		if(selection instanceof Plot) {
+			state = state.update((Plot)selection);
 		} else if(selection instanceof AbstractItem) {
 			if(selection instanceof AbstractSpell) {
 				state = state.update((AbstractSpell)selection);

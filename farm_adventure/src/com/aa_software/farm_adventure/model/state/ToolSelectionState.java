@@ -4,14 +4,14 @@ import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.plot.AbstractPlot;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public class ToolSelectionState extends AbstractSelectionState  {
 	
 	public ToolSelectionState(AbstractTool selection) {
 		this.selection = selection;
 	}
-	public ToolSelectionState update(AbstractPlot plot) {
+	public ToolSelectionState update(Plot plot) {
 		return new ToolSelectionState((AbstractTool)selection);
 	}
 	public SpellSelectionState update(AbstractSpell spell) {

@@ -2,7 +2,7 @@ package com.aa_software.farm_adventure.model.item.crop;
 
 
 public class CarrotCrop extends AbstractCrop {
-	public static final String TEXTURE_NAME = "carrot";
+	public static final String TEXTURE_NAME = "banana_crop";
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
 	public static final int DEFAULT_COST = 20;

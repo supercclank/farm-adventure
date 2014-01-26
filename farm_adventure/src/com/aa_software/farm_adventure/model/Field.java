@@ -2,15 +2,14 @@ package com.aa_software.farm_adventure.model;
 
 import java.util.Random;
 
-import com.aa_software.farm_adventure.model.plot.AbstractPlot;
-import com.aa_software.farm_adventure.model.plot.GrassPlot;
-import com.aa_software.farm_adventure.model.plot.UnplowedPlot;
+import com.aa_software.farm_adventure.model.plot.Plot;
+import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Field {
 	
 	private final int COLUMNS = 8;
 	private final int ROWS = 8;
-	private AbstractPlot[][] plots2D;
+	private Plot[][] plots2D;
 	
 	public Field() {
 		initializePlots(COLUMNS, ROWS);
@@ -21,10 +20,10 @@ public class Field {
 	}
 	
 	public void initializePlots(int columns, int rows) {
-		plots2D = new AbstractPlot[columns][rows];
-		for(AbstractPlot[] plots : plots2D) {  
+		plots2D = new Plot[columns][rows];
+		for(Plot[] plots : plots2D) {  
 			for (int i = 0; i < plots.length; i++) {
-				plots[i] = new GrassPlot();
+				plots[i] = new Plot(PlotType.GRASS);
 			}
 		}
 	}
@@ -36,22 +35,22 @@ public class Field {
 		if(plots2D == null) {
 			initializePlots(COLUMNS, ROWS);
 		}
-		for(AbstractPlot[] plots : plots2D) {  
+		for(Plot[] plots : plots2D) {  
 			for (int i = 0; i < plots.length; i++) {
 				Random random = new Random();
 				int randNum = random.nextInt(3);
 				if(randNum == 0) {
-					plots[i] = new GrassPlot();
+					plots[i] = new Plot(PlotType.GRASS);
 				} else if (randNum == 1) {
-					plots[i] = new UnplowedPlot();
+					plots[i] = new Plot(PlotType.UNPLOWED);
 				} else {
 					randNum = random.nextInt(3);
 					if(randNum == 0) {
-						plots[i] = new UnplowedPlot(Irrigation.TOP);
+						plots[i] = new Plot(PlotType.UNPLOWED, Irrigation.TOP);
 					} else if (randNum == 1) {
-						plots[i] = new UnplowedPlot(Irrigation.BOTTOM_LEFT);
+						plots[i] = new Plot(PlotType.UNPLOWED, Irrigation.BOTTOM_LEFT);
 					} else {
-						plots[i] = new UnplowedPlot(Irrigation.LEFT_RIGHT);
+						plots[i] = new Plot(PlotType.UNPLOWED, Irrigation.LEFT_RIGHT);
 					}
 					
 				}
