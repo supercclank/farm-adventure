@@ -28,7 +28,7 @@ public class FarmAdventure implements ApplicationListener {
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
-		map = new TmxMapLoader().load("tileMap128.tmx");
+		map = new TmxMapLoader().load("tile_maps/tileMap128.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 640, 1024);
