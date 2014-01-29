@@ -1,5 +1,6 @@
-package com.aa_software.farm_adventure.model.state;
+package com.aa_software.farm_adventure.presenter.state;
 
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
@@ -25,6 +26,10 @@ public class SpellSelectionState extends AbstractSelectionState {
 	}
 	public SpellSelectionState update(AbstractWorker worker) {
 		selection.update(worker);
+		return new SpellSelectionState((AbstractSpell)selection);
+	}
+	public SpellSelectionState update(AbstractCrop crop) {
+		selection.update(crop);
 		return new SpellSelectionState((AbstractSpell)selection);
 	}
 }

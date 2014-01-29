@@ -1,5 +1,6 @@
-package com.aa_software.farm_adventure.model.state;
+package com.aa_software.farm_adventure.presenter.state;
 
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
@@ -25,6 +26,9 @@ public class DefaultSelectionState extends AbstractSelectionState  {
 		return new ToolSelectionState(tool);
 	}
 	public DefaultSelectionState update(AbstractWorker worker) {
+		return new DefaultSelectionState();
+	}
+	public DefaultSelectionState update(AbstractCrop crop) {
 		return new DefaultSelectionState();
 	}
 }

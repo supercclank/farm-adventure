@@ -1,5 +1,6 @@
-package com.aa_software.farm_adventure.model.state;
+package com.aa_software.farm_adventure.presenter.state;
 
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
@@ -12,4 +13,5 @@ public interface ISelectionState {
 	ISelectionState update(AbstractUpgrade upgrade);
 	ISelectionState update(AbstractTool tool);
 	ISelectionState update(AbstractWorker worker);
+	ISelectionState update(AbstractCrop crop);
 }

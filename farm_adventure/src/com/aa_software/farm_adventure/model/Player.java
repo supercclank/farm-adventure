@@ -1,18 +1,26 @@
 package com.aa_software.farm_adventure.model;
 
 import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
+import com.aa_software.farm_adventure.model.campaign.TutorialCampaign;
 
 public class Player {
-	private Score score;
+	private static Player instance;
+	private int bankroll;
 	private AbstractCampaign campaign;
 	private Preferences preferences;
 	
-	public Score getScore() {
-		return score;
+	protected Player() {}
+	
+	public static Player getInstance() {
+		if(instance == null) {
+			instance = new Player();
+			instance.setCampaign(new TutorialCampaign());
+			instance.setPreferences(new Preferences());
+		}
+		return instance;
 	}
-	public void setScore(Score score) {
-		this.score = score;
-	}
+	
+	
 	public AbstractCampaign getCampaign() {
 		return campaign;
 	}
@@ -24,5 +32,11 @@ public class Player {
 	}
 	public void setPreferences(Preferences preferences) {
 		this.preferences = preferences;
+	}
+	public int getBankroll() {
+		return bankroll;
+	}
+	public void setBankroll(int bankroll) {
+		this.bankroll = bankroll;
 	}
 }
