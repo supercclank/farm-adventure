@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model.plot;
 
 import com.aa_software.farm_adventure.model.ISelectable;
-import com.aa_software.farm_adventure.model.Irrigation;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 
 public class Plot implements ISelectable {

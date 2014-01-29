@@ -5,6 +5,7 @@ import java.util.Map;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.season.Season;
 /*
  * A farm holds the state of the game in progress. The seasons and the 
@@ -18,9 +19,10 @@ public abstract class AbstractFarm {
 	
 	protected Season[] seasons;
 	/* each farm starts with a certain amount of seeds, workers, equipment */
-	protected Map<AbstractCrop, Integer> cropMap;
-	protected Map<AbstractTool, Integer> toolMap;
-	protected Map<AbstractSpell, Integer> spellMap;
+	protected Map<AbstractWorker, Integer> startingWorkerCount;
+	protected Map<AbstractCrop, Integer> startingCropCount;
+	protected Map<AbstractTool, Integer> startingToolCount;
+	protected Map<AbstractSpell, Integer> startingSpellCount;
 	
 	public AbstractFarm() {
 		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];

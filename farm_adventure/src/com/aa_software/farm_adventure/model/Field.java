@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure.model;
 
 import java.util.Random;
 
+import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
 

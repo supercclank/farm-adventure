@@ -1,13 +1,17 @@
-package com.aa_software.farm_adventure.model;
+package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
+import java.util.Map;
+
+import com.aa_software.farm_adventure.model.ISelectable;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.state.DefaultSelectionState;
-import com.aa_software.farm_adventure.model.state.ISelectionState;
+import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
+import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -17,7 +21,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class FarmAdventure implements ApplicationListener {
+public class AbstractFarmScreen implements ApplicationListener {
 	private ISelectable selection;
 	private ISelectionState state;
 	
@@ -57,6 +61,8 @@ public class FarmAdventure implements ApplicationListener {
 				state = state.update((AbstractWorker)selection);
 			} else if (selection instanceof AbstractUpgrade) {
 				state = state.update((AbstractUpgrade)selection);
+			} else if(selection instanceof AbstractCrop) {
+				state = state.update((AbstractCrop)selection);
 			}
 		}
 		
@@ -82,6 +88,10 @@ public class FarmAdventure implements ApplicationListener {
 
 	@Override
 	public void resume() {
+		
+	}
+	
+	public void updateState(int x, int y, String property) {
 		
 	}
 }

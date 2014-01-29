@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.model.state;
+package com.aa_software.farm_adventure.presenter.state;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
