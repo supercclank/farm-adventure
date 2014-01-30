@@ -1,6 +1,6 @@
 package com.aa_software.farm_adventure;
 
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
+import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -11,6 +11,6 @@ public class Main {
 		cfg.width = 640;
 		cfg.height = 1024;
 		
-		new LwjglApplication(new AbstractFarmScreen(), cfg);
+		new LwjglApplication(new FarmAdventure(), cfg);
 	}
 }

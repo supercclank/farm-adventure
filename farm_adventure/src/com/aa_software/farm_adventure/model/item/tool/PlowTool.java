@@ -6,7 +6,8 @@ import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class PlowTool extends AbstractItem {
 	//TODO: arbitrary values
-	public static String TEXTURE_NAME = "plow_tool";
+	public static String TEXTURE_KEY = "ground";
+	public static String TEXTURE_VALUE = "grass";
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;
 
