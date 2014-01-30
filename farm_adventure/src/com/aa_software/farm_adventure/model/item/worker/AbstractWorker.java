@@ -16,6 +16,10 @@ public abstract class AbstractWorker extends AbstractItem {
 	private int level;
 	private int wage;
 	private int workRate;
+	private int plowRate;
+	private int irrigateRate;
+	private int plantRate;
+	private int harvestRate;
 	
 	public AbstractWorker() {
 		this.level = DEFAULT_LEVEL;
@@ -110,6 +114,34 @@ public abstract class AbstractWorker extends AbstractItem {
 			}
 		}
 		return workRate;
+	}
+	
+	private void adjustPlowRate(double percent) {
+		if (plowRate == 0) {
+			plowRate = DEFAULT_WORK_RATE;
+		}
+		plowRate += plowRate * percent;
+	}
+	
+	private void adjustIrrigateRate(double percent) {
+		if (irrigateRate == 0) {
+			irrigateRate = DEFAULT_WORK_RATE;
+		}
+		irrigateRate += irrigateRate * percent;
+	}
+	
+	private void adjustPlantRate(double percent) {
+		if (plantRate == 0) {
+			plantRate = DEFAULT_WORK_RATE;
+		}
+		plantRate += plantRate * percent;
+	}
+	
+	private void adjustHarvestRate(double percent) {
+		if (harvestRate == 0) {
+			harvestRate = DEFAULT_WORK_RATE;
+		}
+		harvestRate += harvestRate * percent;
 	}
 
 	public int getWorkRate() {
