@@ -10,16 +10,12 @@ public abstract class AbstractWorker extends AbstractItem {
 	public static final int LEVEL_UP_EXPERIENCE_THRESH = 25;
 	public static final int MAX_LEVEL = 2;
 	public static final float LEVEL_WAGE_MOD = .5f;
-	public static final float LEVEL_WORK_RATE_MOD = .5f;
+	public static final float LEVEL_WORK_RATE_MOD = .7f;
 
 	private int experience;
 	private int level;
 	private int wage;
 	private int workRate;
-	private int plowRate;
-	private int irrigateRate;
-	private int plantRate;
-	private int harvestRate;
 	
 	public AbstractWorker() {
 		this.level = DEFAULT_LEVEL;
@@ -114,34 +110,6 @@ public abstract class AbstractWorker extends AbstractItem {
 			}
 		}
 		return workRate;
-	}
-	
-	private void adjustPlowRate(double percent) {
-		if (plowRate == 0) {
-			plowRate = DEFAULT_WORK_RATE;
-		}
-		plowRate += plowRate * percent;
-	}
-	
-	private void adjustIrrigateRate(double percent) {
-		if (irrigateRate == 0) {
-			irrigateRate = DEFAULT_WORK_RATE;
-		}
-		irrigateRate += irrigateRate * percent;
-	}
-	
-	private void adjustPlantRate(double percent) {
-		if (plantRate == 0) {
-			plantRate = DEFAULT_WORK_RATE;
-		}
-		plantRate += plantRate * percent;
-	}
-	
-	private void adjustHarvestRate(double percent) {
-		if (harvestRate == 0) {
-			harvestRate = DEFAULT_WORK_RATE;
-		}
-		harvestRate += harvestRate * percent;
 	}
 
 	public int getWorkRate() {

@@ -108,6 +108,7 @@ public class AbstractFarmScreen implements Screen {
 	}
 	
 	public void checkTouch(){
+		//TODO: remove magic numbers
 		if(Gdx.input.isTouched()) {
 			float xTouch = Gdx.input.getX();
 			float yTouch = Gdx.input.getY();
@@ -118,7 +119,7 @@ public class AbstractFarmScreen implements Screen {
 			int xCell = 0;
 			int yCell = 0;
 			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get("ground");
-			for(int x = 0; x < ground.getWidth();x++){
+			for(int x = 0; x < ground.getWidth(); x++){
 				if(xStart <= xTouch && xTouch <= xEnd){
 					xCell = x;
 				}

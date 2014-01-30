@@ -5,28 +5,20 @@ import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 
 public class Plot implements ISelectable {
 	public static final String IRRIGATION_TEXTURE_NAME = "_IRRIGATED";
-	private AbstractCrop plant;
+	private AbstractCrop crop;
 	private Irrigation irrigation;
 	private PlotType plotType;
 	
 	public Plot(PlotType plotType) {
-		this.plant = null;
+		this.crop = null;
 		this.irrigation = null;
 		this.plotType = plotType;
 	}
 	
 	public Plot(PlotType plotType, Irrigation irrigation) {
-		this.plant = null;
+		this.crop = null;
 		this.irrigation = irrigation;
 		this.plotType = plotType;
-	}
-	
-	public AbstractCrop getPlant() {
-		return plant;
-	}
-	
-	public void setPlant(AbstractCrop plant) {
-		this.plant = plant;
 	}
 	
 	public Irrigation getIrrigation() {
@@ -50,6 +42,14 @@ public class Plot implements ISelectable {
 			return plotType.toString() + IRRIGATION_TEXTURE_NAME;
 		}
 		return plotType.toString();
+	}
+
+	public AbstractCrop getCrop() {
+		return crop;
+	}
+
+	public void setCrop(AbstractCrop crop) {
+		this.crop = crop;
 	}
 	
 }
