@@ -9,12 +9,12 @@
   </tile>
   <tile id="1">
    <properties>
-    <property name="ground" value="plowedUnwatered"/>
+    <property name="ground" value="unplowed"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="ground" value="plowedWatered"/>
+    <property name="ground" value="plowed"/>
    </properties>
   </tile>
   <tile id="3">
@@ -194,7 +194,7 @@
  </layer>
  <layer name="toolBar" width="5" height="8">
   <data encoding="base64">
-   FAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAFAAAABgAAAAcAAAAIAAAACQAAAA==
+   FAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAHAAAABgAAAAgAAAAFAAAACQAAAA==
   </data>
  </layer>
  <layer name="statusBar" width="5" height="8">
