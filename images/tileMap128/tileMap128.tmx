@@ -24,7 +24,7 @@
   </tile>
   <tile id="4">
    <properties>
-    <property name="toolBar" value="harvest"/>
+    <property name="toolBar" value="scythe"/>
    </properties>
   </tile>
   <tile id="5">
@@ -34,12 +34,12 @@
   </tile>
   <tile id="6">
    <properties>
-    <property name="toolBar" value="shovel"/>
+    <property name="toolBar" value="handPlowTool"/>
    </properties>
   </tile>
   <tile id="7">
    <properties>
-    <property name="toolBar" value="seed"/>
+    <property name="toolBar" value="trowelTool"/>
    </properties>
   </tile>
   <tile id="8">
@@ -189,7 +189,7 @@
    <property name="plants" value=""/>
   </properties>
   <data encoding="base64">
-   FAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAAA==
+   AgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAUAAAAFAAAAAIAAAACAAAAAgAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAAA==
   </data>
  </layer>
  <layer name="toolBar" width="5" height="8">
