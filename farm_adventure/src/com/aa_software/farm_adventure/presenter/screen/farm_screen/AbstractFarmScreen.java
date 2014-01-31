@@ -2,6 +2,8 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.Iterator;
 
+import com.aa_software.farm_adventure.model.farm.AbstractFarm;
+import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
@@ -24,8 +26,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class AbstractFarmScreen implements Screen {
-	private ISelectable selection;
-	private ISelectionState state;
+	public static final String GROUND_LAYER_NAME = "ground";
+	public static final String TOOLBAR_LAYER_NAME = "toolbar";
+	
+	protected ISelectable selection;
+	protected ISelectionState state;
+	protected AbstractFarm farm;
 	
 	protected OrthographicCamera camera;
 	protected OrthogonalTiledMapRenderer renderer;
@@ -33,24 +39,6 @@ public class AbstractFarmScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		/* on-click change selection */
-		if(selection instanceof Plot) {
-			state = state.update((Plot)selection);
-		} else if(selection instanceof AbstractItem) {
-			if(selection instanceof AbstractSpell) {
-				state = state.update((AbstractSpell)selection);
-			} else if (selection instanceof AbstractTool) {
-				state = state.update((AbstractTool)selection);
-			} else if (selection instanceof AbstractWorker) {
-				state = state.update((AbstractWorker)selection);
-			} else if (selection instanceof AbstractUpgrade) {
-				state = state.update((AbstractUpgrade)selection);
-			} else if(selection instanceof AbstractCrop) {
-				state = state.update((AbstractCrop)selection);
-			}
-		}
-		
 		/* Draw the base map to the screen */
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -70,7 +58,6 @@ public class AbstractFarmScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		map = new TmxMapLoader().load("tile_maps/tileMap128.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
@@ -78,6 +65,8 @@ public class AbstractFarmScreen implements Screen {
 		
 		this.selection = null;
 		this.state = new DefaultSelectionState();
+		
+		farm = new TutorialFarm();
 	}
 
 	
@@ -104,7 +93,28 @@ public class AbstractFarmScreen implements Screen {
 	}
 	
 	public void updateState(int x, int y, String property) {
+		if(property.equals(GROUND_LAYER_NAME)) {
+			selection = farm.getPlot(x, y);
+		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
+			selection = farm.getTool(x, y);
+		}
 		
+		/* on-click change selection */
+		if(selection instanceof Plot) {
+			state = state.update((Plot)selection);
+		} else if(selection instanceof AbstractItem) {
+			if(selection instanceof AbstractSpell) {
+				state = state.update((AbstractSpell)selection);
+			} else if (selection instanceof AbstractTool) {
+				state = state.update((AbstractTool)selection);
+			} else if (selection instanceof AbstractWorker) {
+				state = state.update((AbstractWorker)selection);
+			} else if (selection instanceof AbstractUpgrade) {
+				state = state.update((AbstractUpgrade)selection);
+			} else if(selection instanceof AbstractCrop) {
+				state = state.update((AbstractCrop)selection);
+			}
+		}
 	}
 	
 	public void checkTouch(){

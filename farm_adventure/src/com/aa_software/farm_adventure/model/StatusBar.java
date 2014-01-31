@@ -1,6 +1,8 @@
 package com.aa_software.farm_adventure.model;
 
 public class StatusBar {
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 1;
 	private int score;
 	private int time;
 	/* not sure if I like this class. May want to move its functions elsewhere

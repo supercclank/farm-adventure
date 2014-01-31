@@ -16,13 +16,13 @@ public class SpellSelectionState extends AbstractSelectionState {
 		return new SpellSelectionState((AbstractSpell)selection);
 	}
 	public SpellSelectionState update(AbstractSpell spell) {
-		return new SpellSelectionState((AbstractSpell)spell);
+		return new SpellSelectionState(spell);
 	}
 	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
-		return new UpgradeSelectionState((AbstractUpgrade)upgrade);
+		return new UpgradeSelectionState(upgrade);
 	}
 	public ToolSelectionState update(AbstractTool tool) {
-		return new ToolSelectionState((AbstractTool)tool);
+		return new ToolSelectionState(tool);
 	}
 	public SpellSelectionState update(AbstractWorker worker) {
 		selection.update(worker);

@@ -8,8 +8,8 @@ import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class Field {
 	
-	private final int COLUMNS = 8;
-	private final int ROWS = 8;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 6;
 	private Plot[][] plots2D;
 	
 	public Field() {
@@ -57,6 +57,14 @@ public class Field {
 				}
 			}
 		}
+	}
+	
+	public Plot getPlot(int x, int y) {
+		return plots2D[x][y];
+	}
+	
+	public void setPlot(int x, int y, Plot plot) {
+		plots2D[x][y] = plot;
 	}
 	
 }
