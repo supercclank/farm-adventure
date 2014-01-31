@@ -119,38 +119,20 @@ public class AbstractFarmScreen implements Screen {
 			}
 		}
 		
-		if(property.equals(GROUND_LAYER_NAME)) {
-			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get("ground");
-			Cell cell = ground.getCell(x, y);
-			String tileName = cell.getTile().getProperties().get("ground", String.class);
-			//TODO remove
-			System.out.println("in the handler:");
-			System.out.println(tileName);
-			System.out.println(selection.getTextureName());
-			if(!tileName.equalsIgnoreCase(selection.getTextureName())) {
-				Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();
-				while(tiles.hasNext()) {
-					TiledMapTile tile = tiles.next();
-					if(tile.getProperties().containsKey("ground") && tile.getProperties().get("toolBar", String.class).equals(selection.getTextureName())){
-						cell.setTile(tile);
-					}
-				}
-			}
-		} else if(property.equals(TOOLBAR_LAYER_NAME)) {	
-			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get("toolBar");
-			Cell cell = ground.getCell(x, y);
-			String tileName = cell.getTile().getProperties().get("toolBar", String.class);
-			//TODO remove
-			System.out.println("in the handler:");
-			System.out.println(tileName);
-			System.out.println(selection.getTextureName());
-			if(!tileName.equalsIgnoreCase(selection.getTextureName())) {
-				Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();
-				while(tiles.hasNext()) {
-					TiledMapTile tile = tiles.next();
-					if(tile.getProperties().containsKey("toolBar") && tile.getProperties().get("toolBar", String.class).equals(selection.getTextureName())) {
-						cell.setTile(tile);
-					}
+
+		TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(property);
+		Cell cell = ground.getCell(x, y);
+		String tileName = cell.getTile().getProperties().get(property, String.class);
+		//TODO remove
+		System.out.println("in the handler:");
+		System.out.println(tileName);
+		System.out.println(selection.getTextureName());
+		if(!tileName.equals(selection.getTextureName())) {
+			Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();
+			while(tiles.hasNext()) {
+				TiledMapTile tile = tiles.next();
+				if(tile.getProperties().containsKey(property) && tile.getProperties().get(property, String.class).equals(selection.getTextureName())) {
+					cell.setTile(tile);
 				}
 			}
 		}
