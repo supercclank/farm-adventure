@@ -14,10 +14,11 @@ public class TutorialFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SPRING);
 		}
-		
+		/*
 		startingCropCount.put(new BeetCrop(), 5);
 		startingToolCount.put(new BackhoeTool(), 1);
 		startingSpellCount.put(new MolesSpell(), 1);
 		startingWorkerCount.put(new DefaultWorker(), 1);
+		*/
 	}
 }

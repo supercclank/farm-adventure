@@ -23,9 +23,9 @@ public class ToolBar {
 		//TODO: hardcoded...also, column 5 should be Market/Inventory
 		tools2D = new AbstractTool[columns][rows];
 		tools2D[0][0] = new HandPlowTool();
-		tools2D[0][1] = new ShovelTool();
-		tools2D[0][2] = new TrowelTool();
-		tools2D[0][3] = new ScytheTool();
+		tools2D[1][0] = new ShovelTool();
+		tools2D[2][0] = new TrowelTool();
+		tools2D[3][0] = new ScytheTool();
 	}
 	
 	public AbstractTool getTool(int x, int y) {
