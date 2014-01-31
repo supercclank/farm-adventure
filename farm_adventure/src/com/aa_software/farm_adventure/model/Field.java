@@ -35,7 +35,11 @@ public class Field {
 		}
 		for(Plot[] plots : plots2D) {  
 			for (int i = 0; i < plots.length; i++) {
-				plots[i] = new Plot(PlotType.WATER);
+				if((i % 2) == 0) {
+					plots[i] = new Plot(PlotType.UNPLOWED);
+				} else {
+					plots[i] = new Plot(PlotType.PLOWED);
+				}
 			}
 		}
 	}

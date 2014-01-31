@@ -30,8 +30,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class AbstractFarmScreen implements Screen {
 	public static final String GROUND_LAYER_NAME = "ground";
-	public static final String TOOLBAR_LAYER_NAME = "toolbar";
+	public static final String TOOLBAR_LAYER_NAME = "toolBar";
 	public static final String SELECTED_LAYER_NAME = "selected";
+	public static final String TRANSPARENT_TILE_NAME = "transparent";
 	
 	protected ISelectable selection;
 	protected ISelectionState state;
@@ -86,6 +87,7 @@ public class AbstractFarmScreen implements Screen {
 		}
 		
 		TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(GROUND_LAYER_NAME);
+
 		for(int y = 0; y < Field.ROWS; y++) {
 			for(int x = 0; x < ground.getWidth(); x++) {
 				Cell gCell = ground.getCell(x, y);
@@ -118,9 +120,9 @@ public class AbstractFarmScreen implements Screen {
 	
 	public void updateState ( int x, int y, String property ) {
 		if(property.equals ( GROUND_LAYER_NAME ) ) {
-			selection = farm.getPlot ( x, y );
-			
+	
 			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(property);
+			selection = farm.getPlot ( x, y - (ground.getHeight() - Field.ROWS));
 			Cell cell = ground.getCell(x, y);
 			String tileName = cell.getTile().getProperties().get(property, String.class);
 			//TODO remove
@@ -138,10 +140,10 @@ public class AbstractFarmScreen implements Screen {
 			}
 			
 		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
-			selection = farm.getTool(x, y);
 			
-			TiledMapTile tile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
 			TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(SELECTED_LAYER_NAME);
+			selection = farm.getTool(x, (selected.getHeight() - Field.ROWS) + y );
+			TiledMapTile tile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
 			for( int i = 0; i < selected.getWidth(); i++) {
 				if(selected.getCell(i, 0).getTile().getProperties().get(SELECTED_LAYER_NAME, String.class).equals(SELECTED_LAYER_NAME)
 						&& (!(selected.getCell(i,0).equals(selected.getCell(x,y))))){
@@ -218,11 +220,15 @@ public class AbstractFarmScreen implements Screen {
 				yEnd += TILE_SIZE;
 			}
 			Cell gCell = ground.getCell(xCell, yCell);
+			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(TOOLBAR_LAYER_NAME);
+			Cell tCell = toolBar.getCell(xCell, yCell);
 
-			if(gCell.getTile().getProperties().containsKey(GROUND_LAYER_NAME)) {
+			if(gCell.getTile().getProperties().containsKey(GROUND_LAYER_NAME) &&
+					(!gCell.getTile().getProperties().get(GROUND_LAYER_NAME, String.class).equals(tileMap.get(TRANSPARENT_TILE_NAME)))) {
 				updateState(xCell,yCell,GROUND_LAYER_NAME);
 			}
-			else if(gCell.getTile().getProperties().containsKey(TOOLBAR_LAYER_NAME)){
+			else if(tCell.getTile().getProperties().containsKey(TOOLBAR_LAYER_NAME)&&
+					(!tCell.getTile().getProperties().get(TOOLBAR_LAYER_NAME, String.class).equals(tileMap.get(TRANSPARENT_TILE_NAME)))){
 				updateState(xCell,yCell,TOOLBAR_LAYER_NAME);
 			}
 		}
