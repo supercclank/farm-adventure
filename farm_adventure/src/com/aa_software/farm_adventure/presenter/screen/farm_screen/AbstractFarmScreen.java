@@ -14,6 +14,7 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
+import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
@@ -29,6 +30,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class AbstractFarmScreen implements Screen {
+	protected final FarmAdventure game;
+	
 	public static final String GROUND_LAYER_NAME = "ground";
 	public static final String TOOLBAR_LAYER_NAME = "toolBar";
 	public static final String SELECTED_LAYER_NAME = "selected";
@@ -46,6 +49,10 @@ public class AbstractFarmScreen implements Screen {
 	
 	private static final int TILE_SIZE = 128; 
 
+	public AbstractFarmScreen(FarmAdventure game) {
+		this.game = game;
+	}
+	
 	@Override
 	public void render(float delta) {
 		/* Draw the base map to the screen */
