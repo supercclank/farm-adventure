@@ -2,12 +2,12 @@ package com.aa_software.farm_adventure.model;
 
 import java.util.Random;
 
-import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
-import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
-import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.spell.IllusionistSpell;
-import com.aa_software.farm_adventure.model.item.tool.BackhoeTool;
+import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
+import com.aa_software.farm_adventure.model.selectable.item.crop.BananaCrop;
+import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
+import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
+import com.aa_software.farm_adventure.model.selectable.item.spell.IllusionistSpell;
+import com.aa_software.farm_adventure.model.selectable.item.tool.irrigate.BackhoeTool;
 /*
  * Inventory: the items that the farm has on hand.
  */

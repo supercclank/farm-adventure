@@ -1,13 +1,11 @@
 package com.aa_software.farm_adventure.model.farm;
 
-import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
-import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
-import com.aa_software.farm_adventure.model.item.spell.MolesSpell;
-import com.aa_software.farm_adventure.model.item.spell.RainCallSpell;
-import com.aa_software.farm_adventure.model.item.tool.BackhoeTool;
-import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
+import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
+import com.aa_software.farm_adventure.model.selectable.item.spell.MolesSpell;
+import com.aa_software.farm_adventure.model.selectable.item.tool.irrigate.BackhoeTool;
+import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
 
 public class RainforestFarm extends AbstractFarm {
 	public RainforestFarm() {
