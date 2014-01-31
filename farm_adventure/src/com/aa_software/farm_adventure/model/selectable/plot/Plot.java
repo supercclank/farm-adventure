@@ -41,7 +41,7 @@ public class Plot implements ISelectable {
 		if(irrigation != null) {
 			return plotType.toString().toLowerCase() + IRRIGATION_TEXTURE_NAME;
 		}
-		return plotType.toString();
+		return plotType.toString().toLowerCase();
 	}
 
 	public AbstractCrop getCrop() {
