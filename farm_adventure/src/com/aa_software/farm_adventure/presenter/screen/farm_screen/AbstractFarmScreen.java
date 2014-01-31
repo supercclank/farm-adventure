@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.Iterator;
 
+import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
@@ -49,6 +50,7 @@ public class AbstractFarmScreen implements Screen {
 		
 		renderer.setView(camera);
 		renderer.render();
+		
 	}
 	
 	@Override
@@ -97,6 +99,7 @@ public class AbstractFarmScreen implements Screen {
 			selection = farm.getPlot(x, y);
 		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
 			selection = farm.getTool(x, y);
+
 		}
 		
 		/* on-click change selection */
@@ -113,6 +116,42 @@ public class AbstractFarmScreen implements Screen {
 				state = state.update((AbstractUpgrade)selection);
 			} else if(selection instanceof AbstractCrop) {
 				state = state.update((AbstractCrop)selection);
+			}
+		}
+		
+		if(property.equals(GROUND_LAYER_NAME)) {
+			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get("ground");
+			Cell cell = ground.getCell(x, y);
+			String tileName = cell.getTile().getProperties().get("ground", String.class);
+			//TODO remove
+			System.out.println("in the handler:");
+			System.out.println(tileName);
+			System.out.println(selection.getTextureName());
+			if(!tileName.equalsIgnoreCase(selection.getTextureName())) {
+				Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();
+				while(tiles.hasNext()) {
+					TiledMapTile tile = tiles.next();
+					if(tile.getProperties().containsKey("ground") && tile.getProperties().get("toolBar", String.class).equals(selection.getTextureName())){
+						cell.setTile(tile);
+					}
+				}
+			}
+		} else if(property.equals(TOOLBAR_LAYER_NAME)) {	
+			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get("toolBar");
+			Cell cell = ground.getCell(x, y);
+			String tileName = cell.getTile().getProperties().get("toolBar", String.class);
+			//TODO remove
+			System.out.println("in the handler:");
+			System.out.println(tileName);
+			System.out.println(selection.getTextureName());
+			if(!tileName.equalsIgnoreCase(selection.getTextureName())) {
+				Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();
+				while(tiles.hasNext()) {
+					TiledMapTile tile = tiles.next();
+					if(tile.getProperties().containsKey("toolBar") && tile.getProperties().get("toolBar", String.class).equals(selection.getTextureName())) {
+						cell.setTile(tile);
+					}
+				}
 			}
 		}
 	}
@@ -144,7 +183,7 @@ public class AbstractFarmScreen implements Screen {
 				yEnd += 128;
 			}
 			Cell gCell = ground.getCell(xCell, yCell);
-			if(gCell.getTile().getProperties().containsKey("ground")){
+			if(gCell.getTile().getProperties().containsKey("ground")) {
 				TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get("selected");
 				Cell sCell = selected.getCell(xCell, yCell);
 				Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("tileSet128").iterator();

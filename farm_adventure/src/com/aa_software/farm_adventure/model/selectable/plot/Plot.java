@@ -4,7 +4,7 @@ import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 
 public class Plot implements ISelectable {
-	public static final String IRRIGATION_TEXTURE_NAME = "_IRRIGATED";
+	public static final String IRRIGATION_TEXTURE_NAME = "Irrigated";
 	private AbstractCrop crop;
 	private Irrigation irrigation;
 	private PlotType plotType;
@@ -39,7 +39,7 @@ public class Plot implements ISelectable {
 
 	public String getTextureName() {
 		if(irrigation != null) {
-			return plotType.toString() + IRRIGATION_TEXTURE_NAME;
+			return plotType.toString().toLowerCase() + IRRIGATION_TEXTURE_NAME;
 		}
 		return plotType.toString();
 	}

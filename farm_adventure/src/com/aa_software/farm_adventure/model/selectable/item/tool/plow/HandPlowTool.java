@@ -6,8 +6,6 @@ import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class HandPlowTool extends AbstractTool {
 	//TODO: arbitrary values
-	public static String TEXTURE_KEY = "ground";
-	public static String TEXTURE_VALUE = "grass";
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;
 	/* measured in seconds */
@@ -23,6 +21,13 @@ public class HandPlowTool extends AbstractTool {
 		if(plot.getPlotType().equals(PlotType.UNPLOWED)) {
 			plot.setPlotType(PlotType.PLOWED);
 		}
+	}
+	
+	public String getTextureName() {
+		//TODO remove
+		//System.out.println(getClass().getSimpleName());
+		//return this.getClass().getSimpleName();
+		return "handPlowTool";
 	}
 	
 }

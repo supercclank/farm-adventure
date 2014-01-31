@@ -119,4 +119,9 @@ public abstract class AbstractWorker extends AbstractItem {
 	public void setWorkRate(int workRate) {
 		this.workRate = workRate;
 	}
+	
+	public String getTextureName() {
+		return "arbitrary";
+		//TODO: change
+	}
 }

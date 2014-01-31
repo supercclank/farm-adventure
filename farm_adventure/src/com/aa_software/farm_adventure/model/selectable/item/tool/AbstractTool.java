@@ -14,4 +14,10 @@ public class AbstractTool extends AbstractItem {
 		this.workTime = workTime;
 	}
 	
+	public String getTextureName() {
+		//TODO remove
+		System.out.println(getClass().getSimpleName());
+		return this.getClass().getSimpleName();
+	}
+	
 }

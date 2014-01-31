@@ -42,5 +42,9 @@ public abstract class AbstractFarm {
 	public AbstractTool getTool(int x, int y) {
 		return toolBar.getTool(x, y);
 	}
+	
+	public Field getField() {
+		return field;
+	}
 
 }
