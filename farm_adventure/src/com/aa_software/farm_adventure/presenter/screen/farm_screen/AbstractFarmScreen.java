@@ -86,10 +86,10 @@ public class AbstractFarmScreen implements Screen {
 		}
 		
 		TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(GROUND_LAYER_NAME);
-		for(int y = 0; y < Field.ROWS; y++){
-			for(int x = 0; x < ground.getWidth(); x++){
-				Cell gCell = ground.getCell(x,(ground.getHeight()- y));
-				TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getPlot(x,y).getTextureName()));
+		for(int y = 0; y < Field.ROWS; y++) {
+			for(int x = 0; x < ground.getWidth(); x++) {
+				Cell gCell = ground.getCell(x, y);
+				TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getPlot(x, Field.ROWS - 1 - y).getTextureName()));
 				gCell.setTile(tile);
 			}
 		}

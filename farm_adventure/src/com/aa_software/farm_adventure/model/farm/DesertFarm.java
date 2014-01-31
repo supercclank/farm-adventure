@@ -14,11 +14,6 @@ public class DesertFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SUMMER);
 		}
-		//TODO change these to make sense.
-		startingCropCount.put(new BeetCrop(), 5);
-		startingToolCount.put(new BackhoeTool(), 1);
-		startingSpellCount.put(new MolesSpell(), 1);
-		startingWorkerCount.put(new DefaultWorker(), 1);
 	}
 	
 }

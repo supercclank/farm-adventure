@@ -20,11 +20,6 @@ public class SnowFarm extends AbstractFarm {
 			}
 			everyOther++;
 		}
-		//TODO change these to make sense.
-		startingCropCount.put(new BeetCrop(), 5);
-		startingToolCount.put(new BackhoeTool(), 1);
-		startingSpellCount.put(new MolesSpell(), 1);
-		startingWorkerCount.put(new DefaultWorker(), 1);
 	}
 	
 }
