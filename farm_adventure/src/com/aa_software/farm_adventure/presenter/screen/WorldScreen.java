@@ -28,7 +28,7 @@ public class WorldScreen extends AbstractScreen {
         table.row();
 
         // register the button "Goto farm"
-        TextButton farmScreenButton = new TextButton( "Goto farm", super.getSkin());
+        TextButton farmScreenButton = new TextButton("Goto farm", super.getSkin());
         
         //This line of code will take the user to the farm on click or touch
         farmScreenButton.addListener( new InputListener() {

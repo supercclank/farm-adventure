@@ -36,7 +36,10 @@ public abstract class AbstractScreen implements Screen {
 	}
 	
 	public void show() { 
+		FarmAdventure.log("Showing screen: " + getName());
 		
+		//Responsible for all touch and click events
+		Gdx.input.setInputProcessor(stage);
 	}
 	
 	public void dispose() {
@@ -45,7 +48,7 @@ public abstract class AbstractScreen implements Screen {
 	
 	public void render(float delta) {
 		// (1) process the game logic
-
+		
         // update the actors
         stage.act(delta);
 
@@ -97,4 +100,11 @@ public abstract class AbstractScreen implements Screen {
 	protected void addActor(Actor actor) {
 		stage.addActor(actor);
 	}
+	
+	/* Utility functions */
+	
+	protected String getName()
+    {
+        return getClass().getSimpleName();
+    }
 }
