@@ -49,7 +49,7 @@ public class Plot implements ISelectable {
 	}
 
 	public boolean setCrop(AbstractCrop crop) {
-		if(plotType == PlotType.PLOWED) {
+		if(plotType == PlotType.PLOWEDWATERED) {
 			this.crop = crop;
 			return true;
 		} 

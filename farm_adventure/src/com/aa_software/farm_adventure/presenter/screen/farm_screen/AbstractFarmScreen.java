@@ -11,6 +11,8 @@ import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
+import com.aa_software.farm_adventure.model.selectable.item.tool.plow.MuleTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
@@ -28,6 +30,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 public class AbstractFarmScreen implements Screen {
 	protected final FarmAdventure game;
@@ -35,7 +38,10 @@ public class AbstractFarmScreen implements Screen {
 	public static final String GROUND_LAYER_NAME = "ground";
 	public static final String TOOLBAR_LAYER_NAME = "toolBar";
 	public static final String SELECTED_LAYER_NAME = "selected";
-	public static final String TRANSPARENT_TILE_NAME = "transparent";
+	public static final String G_TRANSPARENT_TILE_NAME = "gtransparent";
+	public static final String T_TRANSPARENT_TILE_NAME = "ttransparent";
+	public static final String SEL_TRANSPARENT_TILE_NAME = "seltransparent";
+
 	
 	protected ISelectable selection;
 	protected ISelectionState state;
@@ -85,20 +91,30 @@ public class AbstractFarmScreen implements Screen {
 		this.state = new DefaultSelectionState();
 		
 		farm = new TutorialFarm();
-		farm.getField().randomizeField();
+		farm.getField();
 		tileMap = new HashMap<String, Integer>();
 		Iterator<TiledMapTile> tiles = tileSet.iterator();
 		while(tiles.hasNext()) {
 			TiledMapTile tile = tiles.next();
 			tileMap.put(tile.getProperties().get(GROUND_LAYER_NAME, String.class), tile.getId());
 		}
+		tiles = tileSet.iterator();
+		while(tiles.hasNext()) {
+			TiledMapTile tile = tiles.next();
+			tileMap.put(tile.getProperties().get(TOOLBAR_LAYER_NAME, String.class), tile.getId());
+		}
+		tiles = tileSet.iterator();
+		while(tiles.hasNext()) {
+			TiledMapTile tile = tiles.next();
+			tileMap.put(tile.getProperties().get(SELECTED_LAYER_NAME, String.class), tile.getId());
+		}
 		
 		TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(GROUND_LAYER_NAME);
 
 		for(int y = 0; y < Field.ROWS; y++) {
 			for(int x = 0; x < ground.getWidth(); x++) {
-				Cell gCell = ground.getCell(x, y);
-				TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getPlot(x, Field.ROWS - 1 - y).getTextureName()));
+				Cell gCell = ground.getCell(x, ground.getHeight() - 1 - y);
+				TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y).getTextureName()));
 				gCell.setTile(tile);
 			}
 		}
@@ -127,68 +143,59 @@ public class AbstractFarmScreen implements Screen {
 	
 	public void updateState ( int x, int y, String property ) {
 		if(property.equals ( GROUND_LAYER_NAME ) ) {
-	
+			System.out.println("X: " + x + " Y: " + y + " ");
 			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(property);
-			selection = farm.getPlot ( x, y - (ground.getHeight() - Field.ROWS));
+			selection = farm.getPlot ( x, y - (ground.getHeight() - Field.ROWS) );
 			Cell cell = ground.getCell(x, y);
 			String tileName = cell.getTile().getProperties().get(property, String.class);
+			
 			//TODO remove
-			System.out.println("in the handler:");
+			System.out.println("in the handler:ground ");
 			System.out.println(tileName);
 			System.out.println(selection.getTextureName());
+			state = state.update((Plot)selection);
 			if(!tileName.equals(selection.getTextureName())) {
-				Iterator<TiledMapTile> tiles = tileSet.iterator();
-				while(tiles.hasNext()) {
-					TiledMapTile tile = tiles.next();
-					if(tile.getProperties().containsKey(property) && tile.getProperties().get(property, String.class).equals(selection.getTextureName())) {
-						cell.setTile(tile);
-					}
-				}
+				cell.setTile(tileSet.getTile(tileMap.get(selection.getTextureName())));		
 			}
 			
 		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
 			
 			TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(SELECTED_LAYER_NAME);
-			selection = farm.getTool(x, (selected.getHeight() - Field.ROWS) + y );
-			TiledMapTile tile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
+			selection = farm.getTool(x, y );
+			TiledMapTile selectTile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
+			TiledMapTile selectTranTile = tileSet.getTile(tileMap.get(SEL_TRANSPARENT_TILE_NAME));
 			for( int i = 0; i < selected.getWidth(); i++) {
 				if(selected.getCell(i, 0).getTile().getProperties().get(SELECTED_LAYER_NAME, String.class).equals(SELECTED_LAYER_NAME)
 						&& (!(selected.getCell(i,0).equals(selected.getCell(x,y))))){
-					selected.getCell(i,0).setTile(tile);
+					selected.getCell(i,0).setTile(selectTranTile);
 				}
 			}
 			if (!(selected.getCell(x, y).getTile().getProperties().get(SELECTED_LAYER_NAME, String.class).equals(SELECTED_LAYER_NAME))){
-				tile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
-				selected.getCell(x, y).setTile(tile);
+				selected.getCell(x, y).setTile(selectTile);
 			}
 			
 			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(property);
 			Cell cell = toolBar.getCell(x, y);
 			String tileName = cell.getTile().getProperties().get(property, String.class);
 			//TODO remove
-			System.out.println("in the handler:");
+			System.out.println("in the handler: tools");
 			System.out.println(tileName);
 			System.out.println(selection.getTextureName());
-			if(!tileName.equals(selection.getTextureName())) {
-				Iterator<TiledMapTile> tiles = tileSet.iterator();
-				while(tiles.hasNext()) {
-					tile = tiles.next();
-					if(tile.getProperties().containsKey(property) && tile.getProperties().get(property, String.class).equals(selection.getTextureName())) {
-						cell.setTile(tile);
-					}
-				}
-			}
 			
 		}
 		
 		/* on-click change selection */
+		/*
 		if(selection instanceof Plot) {
 			state = state.update((Plot)selection);
+			System.out.println("Plot selection State");
 		} else if(selection instanceof AbstractItem) {
+		*/
 			if(selection instanceof AbstractSpell) {
 				state = state.update((AbstractSpell)selection);
 			} else if (selection instanceof AbstractTool) {
 				state = state.update((AbstractTool)selection);
+				System.out.println("Tool Selection State");
 			} else if (selection instanceof AbstractWorker) {
 				state = state.update((AbstractWorker)selection);
 			} else if (selection instanceof AbstractUpgrade) {
@@ -196,15 +203,18 @@ public class AbstractFarmScreen implements Screen {
 			} else if(selection instanceof AbstractCrop) {
 				state = state.update((AbstractCrop)selection);
 			}
-		}
+		//}
 		
 	}
 	
 	public void checkTouch(){
 		//TODO: remove magic numbers
-		if(Gdx.input.isTouched()) {
-			float xTouch = Gdx.input.getX();
-			float yTouch = Gdx.input.getY();
+		if(Gdx.input.justTouched()) {
+			Vector3 touchPos = new Vector3();
+		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		    camera.unproject(touchPos);
+			float xTouch = touchPos.x;
+			float yTouch = touchPos.y;
 			int xStart = 0;
 			int xEnd = TILE_SIZE;
 			int yStart = 0;
@@ -221,21 +231,23 @@ public class AbstractFarmScreen implements Screen {
 			}
 			for(int y = 0; y < ground.getHeight(); y++){
 				if(yStart <= yTouch && yTouch <= yEnd){
-					yCell = (ground.getHeight() -1) - y;
+					yCell = y;
 				}
 				yStart = yEnd;
 				yEnd += TILE_SIZE;
 			}
-			Cell gCell = ground.getCell(xCell, yCell);
+			Cell gCell = ground.getCell(xCell, yCell); 
+			System.out.println("Ground Cell: " + gCell.getTile().getProperties().get(GROUND_LAYER_NAME, String.class));
+			System.out.println("Is it a ground cell: " + !(gCell.getTile().getProperties().get(GROUND_LAYER_NAME, String.class).equals(tileSet.getTile(tileMap.get(G_TRANSPARENT_TILE_NAME)).getProperties().get(GROUND_LAYER_NAME, String.class))));
 			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(TOOLBAR_LAYER_NAME);
 			Cell tCell = toolBar.getCell(xCell, yCell);
+			System.out.println("ToolBar Cell: " + tCell.getTile().getProperties().get(TOOLBAR_LAYER_NAME, String.class));
+			System.out.println("Is it a toolbar cell: " + !(tCell.getTile().getProperties().get(TOOLBAR_LAYER_NAME, String.class).equals(tileSet.getTile(tileMap.get(T_TRANSPARENT_TILE_NAME)).getProperties().get(TOOLBAR_LAYER_NAME, String.class))));
 
-			if(gCell.getTile().getProperties().containsKey(GROUND_LAYER_NAME) &&
-					(!gCell.getTile().getProperties().get(GROUND_LAYER_NAME, String.class).equals(tileMap.get(TRANSPARENT_TILE_NAME)))) {
+			if(!(gCell.getTile().getProperties().get(GROUND_LAYER_NAME, String.class).equals(tileSet.getTile(tileMap.get(G_TRANSPARENT_TILE_NAME)).getProperties().get(GROUND_LAYER_NAME, String.class)))) {
 				updateState(xCell,yCell,GROUND_LAYER_NAME);
 			}
-			else if(tCell.getTile().getProperties().containsKey(TOOLBAR_LAYER_NAME)&&
-					(!tCell.getTile().getProperties().get(TOOLBAR_LAYER_NAME, String.class).equals(tileMap.get(TRANSPARENT_TILE_NAME)))){
+			else if(!(tCell.getTile().getProperties().get(TOOLBAR_LAYER_NAME, String.class).equals(tileSet.getTile(tileMap.get(T_TRANSPARENT_TILE_NAME)).getProperties().get(TOOLBAR_LAYER_NAME, String.class)))){
 				updateState(xCell,yCell,TOOLBAR_LAYER_NAME);
 			}
 		}

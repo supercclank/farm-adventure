@@ -19,8 +19,8 @@ public class WorldScreen extends AbstractScreen {
         // Create table
         Table table = new Table(super.getSkin());
         table.setFillParent(true);
-        if(FarmAdventure.DEV_MODE)
-        	table.debug();
+        //if(FarmAdventure.DEV_MODE)
+        //	table.debug();
         super.addActor(table);
         
         //Add label to table

@@ -21,7 +21,7 @@ public class Field {
 		plots2D = new Plot[columns][rows];
 		for(Plot[] plots : plots2D) {  
 			for (int i = 0; i < plots.length; i++) {
-				plots[i] = new Plot(PlotType.UNPLOWED);
+				plots[i] = new Plot(PlotType.GRASS);
 			}
 		}
 	}
@@ -36,9 +36,9 @@ public class Field {
 		for(Plot[] plots : plots2D) {  
 			for (int i = 0; i < plots.length; i++) {
 				if((i % 2) == 0) {
-					plots[i] = new Plot(PlotType.UNPLOWED);
+					plots[i] = new Plot(PlotType.GRASS);
 				} else {
-					plots[i] = new Plot(PlotType.PLOWED);
+					plots[i] = new Plot(PlotType.PLOWEDUNWATERED);
 				}
 			}
 		}

@@ -18,8 +18,11 @@ public class HandPlowTool extends AbstractTool {
 	}
 	
 	public void update(Plot plot) {
-		if(plot.getPlotType().equals(PlotType.UNPLOWED)) {
-			plot.setPlotType(PlotType.PLOWED);
+		if(plot.getPlotType().equals(PlotType.GRASS)) {
+			plot.setPlotType(PlotType.PLOWEDUNWATERED);
+		}
+		else if(plot.getPlotType().equals(PlotType.PLOWEDUNWATERED)){
+			plot.setPlotType(PlotType.PLOWEDWATERED);
 		}
 	}
 	

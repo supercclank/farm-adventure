@@ -9,12 +9,12 @@
   </tile>
   <tile id="1">
    <properties>
-    <property name="ground" value="unplowed"/>
+    <property name="ground" value="plowedunwatered"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="ground" value="plowed"/>
+    <property name="ground" value="plowedwatered"/>
    </properties>
   </tile>
   <tile id="3">
@@ -164,32 +164,32 @@
   </tile>
   <tile id="50">
    <properties>
-    <property name="ground" value="transparent"/>
+    <property name="ground" value="gtransparent"/>
    </properties>
   </tile>
   <tile id="51">
    <properties>
-    <property name="water" value="transparent"/>
+    <property name="water" value="wtransparent"/>
    </properties>
   </tile>
   <tile id="52">
    <properties>
-    <property name="plants" value="transparent"/>
+    <property name="plants" value="ptransparent"/>
    </properties>
   </tile>
   <tile id="53">
    <properties>
-    <property name="toolBar" value="transparent"/>
+    <property name="toolBar" value="ttransparent"/>
    </properties>
   </tile>
   <tile id="54">
    <properties>
-    <property name="statusBar" value="transparent"/>
+    <property name="statusBar" value="stransparent"/>
    </properties>
   </tile>
   <tile id="55">
    <properties>
-    <property name="selected" value="transparent"/>
+    <property name="selected" value="seltransparent"/>
    </properties>
   </tile>
  </tileset>

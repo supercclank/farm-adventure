@@ -13,6 +13,7 @@ public class ToolSelectionState extends AbstractSelectionState  {
 		this.selection = selection;
 	}
 	public ToolSelectionState update(Plot plot) {
+		selection.update(plot);
 		return new ToolSelectionState((AbstractTool)selection);
 	}
 	public SpellSelectionState update(AbstractSpell spell) {
