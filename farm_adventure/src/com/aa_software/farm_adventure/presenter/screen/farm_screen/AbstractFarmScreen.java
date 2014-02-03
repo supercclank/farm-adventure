@@ -7,12 +7,9 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
-import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plow.MuleTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
@@ -141,27 +138,37 @@ public class AbstractFarmScreen implements Screen {
 		renderer.dispose();
 	}
 	
-	public void updateState ( int x, int y, String property ) {
-		if(property.equals ( GROUND_LAYER_NAME ) ) {
-			System.out.println("X: " + x + " Y: " + y + " ");
+	public void updateState (int x, int y, String property) {
+		if(property.equals(GROUND_LAYER_NAME)) {
 			TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(property);
-			selection = farm.getPlot ( x, y - (ground.getHeight() - Field.ROWS) );
+			selection = farm.getPlot (x, y - (ground.getHeight() - Field.ROWS));
 			Cell cell = ground.getCell(x, y);
 			String tileName = cell.getTile().getProperties().get(property, String.class);
-			
-			//TODO remove
-			System.out.println("in the handler:ground ");
-			System.out.println(tileName);
-			System.out.println(selection.getTextureName());
 			state = state.update((Plot)selection);
 			if(!tileName.equals(selection.getTextureName())) {
 				cell.setTile(tileSet.getTile(tileMap.get(selection.getTextureName())));		
 			}
-			
 		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
-			
+			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(property);
+			selection = farm.getTool(x, y);
+			Cell cell = toolBar.getCell(x, y);
+			String tileName = cell.getTile().getProperties().get(property, String.class);
+			if(selection instanceof AbstractSpell) {
+				state = state.update((AbstractSpell)selection);
+			} else if (selection instanceof AbstractTool) {
+				state = state.update((AbstractTool)selection);
+			} else if (selection instanceof AbstractWorker) {
+				state = state.update((AbstractWorker)selection);
+			} else if (selection instanceof AbstractUpgrade) {
+				state = state.update((AbstractUpgrade)selection);
+			} else if(selection instanceof AbstractCrop) {
+				state = state.update((AbstractCrop)selection);
+			}
+			if(!tileName.equals(selection.getTextureName())) {
+				cell.setTile(tileSet.getTile(tileMap.get(selection.getTextureName())));		
+			}
+			/* selection */
 			TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(SELECTED_LAYER_NAME);
-			selection = farm.getTool(x, y );
 			TiledMapTile selectTile = tileSet.getTile(tileMap.get(SELECTED_LAYER_NAME));
 			TiledMapTile selectTranTile = tileSet.getTile(tileMap.get(SEL_TRANSPARENT_TILE_NAME));
 			for( int i = 0; i < selected.getWidth(); i++) {
@@ -173,38 +180,7 @@ public class AbstractFarmScreen implements Screen {
 			if (!(selected.getCell(x, y).getTile().getProperties().get(SELECTED_LAYER_NAME, String.class).equals(SELECTED_LAYER_NAME))){
 				selected.getCell(x, y).setTile(selectTile);
 			}
-			
-			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(property);
-			Cell cell = toolBar.getCell(x, y);
-			String tileName = cell.getTile().getProperties().get(property, String.class);
-			//TODO remove
-			System.out.println("in the handler: tools");
-			System.out.println(tileName);
-			System.out.println(selection.getTextureName());
-			
 		}
-		
-		/* on-click change selection */
-		/*
-		if(selection instanceof Plot) {
-			state = state.update((Plot)selection);
-			System.out.println("Plot selection State");
-		} else if(selection instanceof AbstractItem) {
-		*/
-			if(selection instanceof AbstractSpell) {
-				state = state.update((AbstractSpell)selection);
-			} else if (selection instanceof AbstractTool) {
-				state = state.update((AbstractTool)selection);
-				System.out.println("Tool Selection State");
-			} else if (selection instanceof AbstractWorker) {
-				state = state.update((AbstractWorker)selection);
-			} else if (selection instanceof AbstractUpgrade) {
-				state = state.update((AbstractUpgrade)selection);
-			} else if(selection instanceof AbstractCrop) {
-				state = state.update((AbstractCrop)selection);
-			}
-		//}
-		
 	}
 	
 	public void checkTouch(){

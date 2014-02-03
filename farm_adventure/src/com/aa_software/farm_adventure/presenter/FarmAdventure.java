@@ -1,5 +1,5 @@
 package com.aa_software.farm_adventure.presenter;
-import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
+import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -25,7 +25,8 @@ public class FarmAdventure extends Game {
 		
 		log("Creating game");
         fpsLogger = new FPSLogger();
-        setScreen(new MainMenuScreen(this));
+        //setScreen(new MainMenuScreen(this));
+        super.setScreen(new AbstractFarmScreen(this));
 	}
 	
 	public void dispose() {

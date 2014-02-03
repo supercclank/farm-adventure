@@ -18,8 +18,7 @@ public class MainMenuScreen extends AbstractScreen {
         // Create table
         Table table = new Table(super.getSkin());
         table.setFillParent(true);
-        //if(FarmAdventure.DEV_MODE)
-        //	table.debug();
+ 
         super.addActor(table);
         
         //Add label to table
@@ -34,7 +33,7 @@ public class MainMenuScreen extends AbstractScreen {
         	 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
         		 game.setScreen(new WorldScreen(game));
         		 return true;
-         }
+        	 }
         });
         table.add(startGameButton).size(300, 60).uniform().spaceBottom(10);
         table.row();
