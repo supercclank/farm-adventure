@@ -18,16 +18,21 @@ import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class AbstractFarmScreen implements Screen {
 	protected final FarmAdventure game;
@@ -50,6 +55,8 @@ public class AbstractFarmScreen implements Screen {
 	protected TiledMapTileSet tileSet;
 	protected HashMap<String, Integer> tileMap; 
 	
+	protected Stage stage;
+	
 	private static final int TILE_SIZE = 128; 
 
 	public AbstractFarmScreen(FarmAdventure game) {
@@ -68,7 +75,7 @@ public class AbstractFarmScreen implements Screen {
 		
 		renderer.setView(camera);
 		renderer.render();
-		
+		stage.draw();
 	}
 	
 	@Override
@@ -115,6 +122,20 @@ public class AbstractFarmScreen implements Screen {
 				gCell.setTile(tile);
 			}
 		}
+		
+		stage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true);
+		BitmapFont fontType = new BitmapFont();
+		fontType.scale(.4f);
+		LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
+		Label bankBalance = new Label("Bank Balance: $200", style1);
+		Label timeRemaining = new Label("Time Remaining: 2:52", style1);
+		Label workers = new Label("Workers: 4", style1);
+		bankBalance.setPosition(10, 180);
+		timeRemaining.setPosition(220, 180);
+		workers.setPosition(500, 180);
+		stage.addActor(bankBalance);
+		stage.addActor(timeRemaining);
+		stage.addActor(workers);
 	}
 	@Override
 	public void hide() {
