@@ -13,6 +13,7 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
+import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
@@ -40,9 +41,13 @@ public class AbstractFarmScreen implements Screen {
 	public static final String GROUND_LAYER_NAME = "ground";
 	public static final String TOOLBAR_LAYER_NAME = "toolBar";
 	public static final String SELECTED_LAYER_NAME = "selected";
+	public static final String PLANTS_LAYER_NAME = "plants";
+	public static final String WATER_LAYER_NAME = "water";
 	public static final String G_TRANSPARENT_TILE_NAME = "gtransparent";
 	public static final String T_TRANSPARENT_TILE_NAME = "ttransparent";
 	public static final String SEL_TRANSPARENT_TILE_NAME = "seltransparent";
+	public static final String W_TRANSPARENT_TILE_NAME = "wtransparent";
+	public static final String P_TRANSPARENT_TILE_NAME = "ptransparent";
 
 	
 	protected ISelectable selection;
@@ -113,6 +118,18 @@ public class AbstractFarmScreen implements Screen {
 			tileMap.put(tile.getProperties().get(SELECTED_LAYER_NAME, String.class), tile.getId());
 		}
 		
+		tiles = tileSet.iterator();
+		while(tiles.hasNext()) {
+			TiledMapTile tile = tiles.next();
+			tileMap.put(tile.getProperties().get(WATER_LAYER_NAME, String.class), tile.getId());
+		}
+
+		tiles = tileSet.iterator();
+		while(tiles.hasNext()) {
+			TiledMapTile tile = tiles.next();
+			tileMap.put(tile.getProperties().get(PLANTS_LAYER_NAME, String.class), tile.getId());
+		}
+		
 		TiledMapTileLayer ground = (TiledMapTileLayer)map.getLayers().get(GROUND_LAYER_NAME);
 
 		for(int y = 0; y < Field.ROWS; y++) {
@@ -168,6 +185,48 @@ public class AbstractFarmScreen implements Screen {
 			state = state.update((Plot)selection);
 			if(!tileName.equals(selection.getTextureName())) {
 				cell.setTile(tileSet.getTile(tileMap.get(selection.getTextureName())));		
+				if (selection.getTextureName().equals(PlotType.PLOWEDWATERED.toString().toLowerCase())) {
+					TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(WATER_LAYER_NAME);
+					TiledMapTile selectTile = tileSet.getTile(tileMap.get(((Plot)selection).getIrrigation().toString()));
+					TiledMapTile selectTranTile = tileSet.getTile(tileMap.get(W_TRANSPARENT_TILE_NAME));
+					// This adds transparent water texture to all the water layer, except for the one that was selected
+					for( int i = 0; i < selected.getWidth(); i++) {
+						if(selected.getCell(i, 0).getTile().getProperties().get(WATER_LAYER_NAME, String.class).equals(WATER_LAYER_NAME)
+								&& (!(selected.getCell(i,0).equals(selected.getCell(x,y))))){
+							selected.getCell(i,0).setTile(selectTranTile);
+						}
+					}
+					// This adds a water texture to the selected cell
+					if (!(selected.getCell(x, y).getTile().getProperties().get(WATER_LAYER_NAME, String.class).equals(WATER_LAYER_NAME))){
+						selected.getCell(x, y).setTile(selectTile);
+					}
+				}		
+			}
+			/* plant */
+			if (((Plot)selection).getCrop() != null) {			
+				TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(PLANTS_LAYER_NAME);
+				TiledMapTile selectTile = tileSet.getTile(tileMap.get(((Plot)selection).getCrop().getTextureName()));
+				TiledMapTile selectTranTile = tileSet.getTile(tileMap.get(P_TRANSPARENT_TILE_NAME));
+				// This adds transparent plants texture to all the plant layer, except for the one that was selected
+				for( int i = 0; i < selected.getWidth(); i++) {
+					if(selected.getCell(i, 0).getTile().getProperties().get(PLANTS_LAYER_NAME, String.class).equals(PLANTS_LAYER_NAME)
+							&& (!(selected.getCell(i,0).equals(selected.getCell(x,y))))){
+						selected.getCell(i,0).setTile(selectTranTile);
+					}
+				}
+				// This adds a carrot (as of right now) texture to the selected cell
+				if (!(selected.getCell(x, y).getTile().getProperties().get(PLANTS_LAYER_NAME, String.class).equals(PLANTS_LAYER_NAME))){
+					selected.getCell(x, y).setTile(selectTile);
+				}	
+			}		
+			/* Harvest */
+			if (((Plot)selection).getTextureName().equals(PlotType.GRASS.toString().toLowerCase()) && ((Plot)selection).getIrrigation() != null){
+				TiledMapTileLayer selected = (TiledMapTileLayer)map.getLayers().get(PLANTS_LAYER_NAME);
+				TiledMapTile selectTranTile = tileSet.getTile(tileMap.get(P_TRANSPARENT_TILE_NAME));
+				// This adds a transparent plant texture to the selected cell (it erases the crop texture)
+				if (!(selected.getCell(x, y).getTile().getProperties().get(PLANTS_LAYER_NAME, String.class).equals(PLANTS_LAYER_NAME))){
+					selected.getCell(x, y).setTile(selectTranTile);
+				}				
 			}
 		} else if(property.equals(TOOLBAR_LAYER_NAME)) {
 			TiledMapTileLayer toolBar = (TiledMapTileLayer)map.getLayers().get(property);

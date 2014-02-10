@@ -5,6 +5,7 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class HandPlowTool extends AbstractTool {
+	public static final String TEXTURE_NAME = "handPlowTool";
 	//TODO: arbitrary values
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;
@@ -21,16 +22,13 @@ public class HandPlowTool extends AbstractTool {
 		if(plot.getPlotType().equals(PlotType.GRASS)) {
 			plot.setPlotType(PlotType.PLOWEDUNWATERED);
 		}
-		else if(plot.getPlotType().equals(PlotType.PLOWEDUNWATERED)){
-			plot.setPlotType(PlotType.PLOWEDWATERED);
-		}
 	}
 	
 	public String getTextureName() {
 		//TODO remove
 		//System.out.println(getClass().getSimpleName());
 		//return this.getClass().getSimpleName();
-		return "handPlowTool";
+		return TEXTURE_NAME;
 	}
 	
 }
