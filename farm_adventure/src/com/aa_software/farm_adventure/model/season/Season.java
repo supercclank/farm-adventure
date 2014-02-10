@@ -5,20 +5,20 @@ public class Season {
 	public static final int DEFAULT_CYCLE_TIME = 120;
 	private int cycleTime;
 	private SeasonType seasonType;
-	
+
 	public Season(SeasonType seasonType) {
 		this.cycleTime = DEFAULT_CYCLE_TIME;
 		this.seasonType = seasonType;
 	}
-	
+
 	public Season(int cycleTime) {
 		this.cycleTime = cycleTime;
 	}
-	
+
 	public int getCycleTime() {
 		return cycleTime;
 	}
-	
+
 	public void setCycleTime(int cycleTime) {
 		this.cycleTime = cycleTime;
 	}
@@ -30,5 +30,5 @@ public class Season {
 	public void setSeasonType(SeasonType seasonType) {
 		this.seasonType = seasonType;
 	}
-	
+
 }

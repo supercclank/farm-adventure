@@ -13,7 +13,7 @@ public class SnowFarm extends AbstractFarm {
 		super();
 		int everyOther = 1;
 		for (int i = 0; i < seasons.length; i++) {
-			if(everyOther%2 == 1) {
+			if (everyOther % 2 == 1) {
 				seasons[i] = new Season(SeasonType.FALL);
 			} else {
 				seasons[i] = new Season(SeasonType.WINTER);
@@ -21,5 +21,5 @@ public class SnowFarm extends AbstractFarm {
 			everyOther++;
 		}
 	}
-	
+
 }

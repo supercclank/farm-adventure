@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model.selectable.item.tool.irrigate;
 
-
 public class BackhoeTool extends ShovelTool {
 	public static final String TEXTURE_NAME = "backhoe_tool";
 	public static int DEFAULT_COST = 30;

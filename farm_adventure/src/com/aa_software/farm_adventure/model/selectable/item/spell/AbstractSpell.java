@@ -4,17 +4,17 @@ import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 
 public abstract class AbstractSpell extends AbstractItem {
 	protected float spellLength;
-	
+
 	public float getSpellLength() {
 		return spellLength;
 	}
-	
+
 	public void setSpellLength(float spellLength) {
 		this.spellLength = spellLength;
 	}
-	
+
 	public String getTextureName() {
 		return "arbitrary";
-		//TODO: change
+		// TODO: change
 	}
 }

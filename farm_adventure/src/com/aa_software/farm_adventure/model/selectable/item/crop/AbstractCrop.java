@@ -13,7 +13,7 @@ public abstract class AbstractCrop extends AbstractItem {
 	public void setGrowthTime(int growthTime) {
 		this.growthTime = growthTime;
 	}
-	
+
 	public int getOutput() {
 		return output;
 	}
@@ -21,9 +21,9 @@ public abstract class AbstractCrop extends AbstractItem {
 	public void setOutput(int output) {
 		this.output = output;
 	}
-	
+
 	public String getTextureName() {
 		return "arbitrary";
-		//TODO: change
+		// TODO: change
 	}
 }

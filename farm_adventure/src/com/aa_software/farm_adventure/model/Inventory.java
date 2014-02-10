@@ -8,14 +8,16 @@ import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.IllusionistSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.irrigate.BackhoeTool;
+
 /*
  * Inventory: the items that the farm has on hand.
  */
 public class Inventory {
 	private AbstractItem[] items;
-	
-	public Inventory() {}
-	
+
+	public Inventory() {
+	}
+
 	public Inventory(AbstractItem[] items) {
 		this.items = items;
 	}
@@ -27,7 +29,7 @@ public class Inventory {
 	public void setItems(AbstractItem[] items) {
 		this.items = items;
 	}
-	
+
 	/*
 	 * Test method.
 	 */
@@ -35,7 +37,7 @@ public class Inventory {
 		for (int i = 0; i < items.length; i++) {
 			Random random = new Random();
 			int randNum = random.nextInt(2);
-			if(randNum == 0) {
+			if (randNum == 0) {
 				randNum = random.nextInt(3);
 				if (randNum == 0) {
 					items[i] = new CarrotCrop();

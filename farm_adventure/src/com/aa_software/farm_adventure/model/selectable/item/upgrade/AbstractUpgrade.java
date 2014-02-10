@@ -8,6 +8,6 @@ import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 public abstract class AbstractUpgrade extends AbstractItem {
 	public String getTextureName() {
 		return "arbitrary";
-		//TODO: change
+		// TODO: change
 	}
 }

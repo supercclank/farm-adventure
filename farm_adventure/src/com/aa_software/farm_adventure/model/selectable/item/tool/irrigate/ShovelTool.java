@@ -17,16 +17,16 @@ public class ShovelTool extends AbstractTool {
 		value = DEFAULT_VALUE;
 		workTime = DEFAULT_WORK_TIME;
 	}
-	
+
 	public void update(Plot plot) {
-		//Irrigation oldIrrigation = plot.getIrrigation();
-		//TODO: ARBITRARY. Add code for telling where to irrigate...
-		if(plot.getPlotType().equals(PlotType.PLOWEDUNWATERED)) {
+		// Irrigation oldIrrigation = plot.getIrrigation();
+		// TODO: ARBITRARY. Add code for telling where to irrigate...
+		if (plot.getPlotType().equals(PlotType.PLOWEDUNWATERED)) {
 			plot.setPlotType(PlotType.PLOWEDWATERED);
 			plot.setIrrigation(Irrigation.northSouthEastWest);
 		}
 	}
-	
+
 	public String getTextureName() {
 		return TEXTURE_NAME;
 	}

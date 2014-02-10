@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model.selectable.item.tool.plow;
 
-
 public class MuleTool extends HandPlowTool {
 	public static final String TEXTURE_NAME = "mule_tool";
 	public static int DEFAULT_COST = 30;

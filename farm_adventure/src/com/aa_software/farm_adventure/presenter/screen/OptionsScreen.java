@@ -10,7 +10,7 @@ public class OptionsScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-		
+
 	}
 
 }

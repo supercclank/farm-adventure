@@ -12,7 +12,7 @@ public class RainforestFarm extends AbstractFarm {
 		super();
 		int everyOther = 1;
 		for (int i = 0; i < seasons.length; i++) {
-			if(everyOther%2 == 1) {
+			if (everyOther % 2 == 1) {
 				seasons[i] = new Season(SeasonType.SUMMER);
 			} else {
 				seasons[i] = new Season(SeasonType.SPRING);

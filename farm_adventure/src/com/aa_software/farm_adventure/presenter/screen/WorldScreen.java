@@ -16,29 +16,31 @@ public class WorldScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 
-        // Create table
-        Table table = new Table(super.getSkin());
-        table.setFillParent(true);
-        //if(FarmAdventure.DEV_MODE)
-        //	table.debug();
-        super.addActor(table);
-        
-        //Add label to table
-        table.add("Welcome to the WorldScreen!").spaceBottom(50);
-        table.row();
+		// Create table
+		Table table = new Table(super.getSkin());
+		table.setFillParent(true);
+		// if(FarmAdventure.DEV_MODE)
+		// table.debug();
+		super.addActor(table);
 
-        // register the button "Goto farm"
-        TextButton farmScreenButton = new TextButton("Goto farm", super.getSkin());
-        
-        //This line of code will take the user to the farm on click or touch
-        farmScreenButton.addListener( new InputListener() {
-        	 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-        		 game.setScreen(new TutorialFarmScreen(game));
-        		 return true;
-         }
-        });
-        table.add(farmScreenButton).size(300, 60).uniform().spaceBottom(10);
-        table.row();
+		// Add label to table
+		table.add("Welcome to the WorldScreen!").spaceBottom(50);
+		table.row();
+
+		// register the button "Goto farm"
+		TextButton farmScreenButton = new TextButton("Goto farm",
+				super.getSkin());
+
+		// This line of code will take the user to the farm on click or touch
+		farmScreenButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				game.setScreen(new TutorialFarmScreen(game));
+				return true;
+			}
+		});
+		table.add(farmScreenButton).size(300, 60).uniform().spaceBottom(10);
+		table.row();
 	}
 
 }

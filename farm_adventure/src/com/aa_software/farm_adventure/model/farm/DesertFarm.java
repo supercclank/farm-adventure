@@ -15,5 +15,5 @@ public class DesertFarm extends AbstractFarm {
 			seasons[i] = new Season(SeasonType.SUMMER);
 		}
 	}
-	
+
 }
