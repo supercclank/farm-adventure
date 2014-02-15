@@ -21,19 +21,19 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.android.ide.eclipse.adt.ApkBuilder</name>
+			<name>de.mvmsoft.checkclipse.CheckclipseBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>de.mvmsoft.checkclipse.CheckclipseBuilder</name>
+			<name>com.android.ide.eclipse.adt.ApkBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>de.mvmsoft.checkclipse.CheckclipseNature</nature>
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
+		<nature>de.mvmsoft.checkclipse.CheckclipseNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
