@@ -23,7 +23,7 @@ public class FarmAdventure extends Game {
 		Texture.setEnforcePotImages(false);
 		// here is where we need to render the start screen
 		// setScreen(new TutorialFarmScreen());
-
+		
 		log("Creating game");
 		fpsLogger = new FPSLogger();
 		// setScreen(new MainMenuScreen(this));

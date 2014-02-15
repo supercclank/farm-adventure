@@ -1,9 +1,14 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
+import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
@@ -15,6 +20,8 @@ import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorke
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
+import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
+import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
@@ -35,9 +42,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-public class AbstractFarmScreen implements Screen {
-	protected final FarmAdventure game;
-
+public class AbstractFarmScreen extends AbstractScreen {
+	
+	/* 8 minutes in milliseconds is 480000. To test dispose, set to 3-5000. */
+	public static final long MAXIMUM_GAME_TIME = 480000;
+	public static final String TILE_MAP_NAME = "tile_maps/tileMap128.tmx";
+	public static final String TILE_SET_NAME = "tileSet128";
+	public static final int TILE_LAYER_COUNT = 5;
 	public static final String GROUND_LAYER_NAME = "ground";
 	public static final String TOOLBAR_LAYER_NAME = "toolBar";
 	public static final String SELECTED_LAYER_NAME = "selected";
@@ -48,7 +59,10 @@ public class AbstractFarmScreen implements Screen {
 	public static final String SEL_TRANSPARENT_TILE_NAME = "seltransparent";
 	public static final String W_TRANSPARENT_TILE_NAME = "wtransparent";
 	public static final String P_TRANSPARENT_TILE_NAME = "ptransparent";
-
+	public static final Player player = Player.getInstance();
+	
+	protected final FarmAdventure game;
+	protected Timer timer;
 	protected ISelectable selection;
 	protected ISelectionState state;
 	protected AbstractFarm farm;
@@ -58,28 +72,37 @@ public class AbstractFarmScreen implements Screen {
 	protected TiledMap map;
 	protected TiledMapTileSet tileSet;
 	protected HashMap<String, Integer> tileMap;
+	protected TimerTask task;
 
 	protected Stage stage;
+	protected boolean gameOver = false;
 
 	private static final int TILE_SIZE = 128;
 
 	public AbstractFarmScreen(FarmAdventure game) {
+		super(game);
 		this.game = game;
 	}
 
 	@Override
 	public void render(float delta) {
-		/* Draw the base map to the screen */
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		checkTouch();
-
-		camera.update();
-
-		renderer.setView(camera);
-		renderer.render();
-		stage.draw();
+		if(gameOver)
+			dispose();
+		else {
+			/* Draw the base map to the screen */
+			Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+	
+			checkTouch();
+	
+			camera.update();
+	
+			renderer.setView(camera);
+			renderer.render();
+			
+			updateStage();
+			stage.draw();
+		}
 	}
 
 	@Override
@@ -89,55 +112,42 @@ public class AbstractFarmScreen implements Screen {
 
 	@Override
 	public void show() {
-		map = new TmxMapLoader().load("tile_maps/tileMap128.tmx");
-		tileSet = map.getTileSets().getTileSet("tileSet128");
+		timer = new Timer();
+		task = 
+				new java.util.TimerTask() {
+					@Override
+					public void run() {
+						gameOver = true;
+					}
+		};
+		
+		timer.schedule(task, MAXIMUM_GAME_TIME);
+		
+		map = new TmxMapLoader().load(TILE_MAP_NAME);
+		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 640, 1024);
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
-
 		farm = new TutorialFarm();
-		farm.getField();
+		
+		Iterator<TiledMapTile> tiles;
 		tileMap = new HashMap<String, Integer>();
-		Iterator<TiledMapTile> tiles = tileSet.iterator();
-		while (tiles.hasNext()) {
-			TiledMapTile tile = tiles.next();
-			tileMap.put(
-					tile.getProperties().get(GROUND_LAYER_NAME, String.class),
-					tile.getId());
+		String[] layers = { GROUND_LAYER_NAME, TOOLBAR_LAYER_NAME, SELECTED_LAYER_NAME,
+				WATER_LAYER_NAME, PLANTS_LAYER_NAME };
+		
+		for(int i = 0; i < layers.length; i++) {
+			tiles = tileSet.iterator();
+			while (tiles.hasNext()) {
+				TiledMapTile tile = tiles.next();
+				tileMap.put(
+						tile.getProperties().get(layers[i], String.class),
+						tile.getId());
+			}
 		}
-		tiles = tileSet.iterator();
-		while (tiles.hasNext()) {
-			TiledMapTile tile = tiles.next();
-			tileMap.put(
-					tile.getProperties().get(TOOLBAR_LAYER_NAME, String.class),
-					tile.getId());
-		}
-		tiles = tileSet.iterator();
-		while (tiles.hasNext()) {
-			TiledMapTile tile = tiles.next();
-			tileMap.put(
-					tile.getProperties().get(SELECTED_LAYER_NAME, String.class),
-					tile.getId());
-		}
-
-		tiles = tileSet.iterator();
-		while (tiles.hasNext()) {
-			TiledMapTile tile = tiles.next();
-			tileMap.put(tile.getProperties()
-					.get(WATER_LAYER_NAME, String.class), tile.getId());
-		}
-
-		tiles = tileSet.iterator();
-		while (tiles.hasNext()) {
-			TiledMapTile tile = tiles.next();
-			tileMap.put(
-					tile.getProperties().get(PLANTS_LAYER_NAME, String.class),
-					tile.getId());
-		}
-
+		
 		TiledMapTileLayer ground = (TiledMapTileLayer) map.getLayers().get(
 				GROUND_LAYER_NAME);
 
@@ -149,21 +159,6 @@ public class AbstractFarmScreen implements Screen {
 				gCell.setTile(tile);
 			}
 		}
-
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
-				true);
-		BitmapFont fontType = new BitmapFont();
-		fontType.scale(.4f);
-		LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
-		Label bankBalance = new Label("Bank Balance: $200", style1);
-		Label timeRemaining = new Label("Time Remaining: 2:52", style1);
-		Label workers = new Label("Workers: 4", style1);
-		bankBalance.setPosition(10, 180);
-		timeRemaining.setPosition(220, 180);
-		workers.setPosition(500, 180);
-		stage.addActor(bankBalance);
-		stage.addActor(timeRemaining);
-		stage.addActor(workers);
 	}
 
 	@Override
@@ -183,8 +178,13 @@ public class AbstractFarmScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		//TODO: score evaluation for player bank roll ++++++
+		player.setBankroll(player.getBankroll() + 100);
 		map.dispose();
 		renderer.dispose();
+		//renderer = null;
+		//map = null;
+		game.setScreen(new MainMenuScreen(game));
 	}
 
 	public void updateState(int x, int y, String property) {
@@ -385,5 +385,29 @@ public class AbstractFarmScreen implements Screen {
 				updateState(xCell, yCell, TOOLBAR_LAYER_NAME);
 			}
 		}
+	}
+	
+	public void updateStage() {
+		
+		if(stage==null)
+			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+				true);
+		else
+			stage.clear();
+		BitmapFont fontType = new BitmapFont();
+		fontType.scale(.4f);
+		LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
+		Label bankBalance = new Label("Bank Balance: $" + player.getBankroll(), style1);
+		long curTime = task.scheduledExecutionTime() - System.currentTimeMillis();
+		String time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(curTime),
+				TimeUnit.MILLISECONDS.toSeconds(curTime) - TimeUnit.MILLISECONDS.toMinutes(curTime)*60);
+		Label timeRemaining = new Label("Time Remaining: " + time, style1);
+		Label workers = new Label("Workers: " + player.getInventory().getWorkerCount(), style1);
+		bankBalance.setPosition(10, 180);
+		timeRemaining.setPosition(220, 180);
+		workers.setPosition(500, 180);
+		stage.addActor(bankBalance);
+		stage.addActor(timeRemaining);
+		stage.addActor(workers);
 	}
 }
