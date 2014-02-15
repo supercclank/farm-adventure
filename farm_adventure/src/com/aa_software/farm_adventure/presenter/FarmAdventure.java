@@ -16,16 +16,16 @@ public class FarmAdventure extends Game {
 	public static final boolean DEV_MODE = true;
 
 	// a libgdx helper class that logs the current FPS each second
-	private static FPSLogger fpsLogger;
+	private static FPSLogger FpsLogger;
 
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
 		// here is where we need to render the start screen
 		// setScreen(new TutorialFarmScreen());
-
+		
 		log("Creating game");
-		fpsLogger = new FPSLogger();
+		FpsLogger = new FPSLogger();
 		// setScreen(new MainMenuScreen(this));
 		super.setScreen(new AbstractFarmScreen(this));
 	}
@@ -83,6 +83,6 @@ public class FarmAdventure extends Game {
 	 */
 	public static void logFPS() {
 		if (DEV_MODE)
-			fpsLogger.log();
+			FpsLogger.log();
 	}
 }

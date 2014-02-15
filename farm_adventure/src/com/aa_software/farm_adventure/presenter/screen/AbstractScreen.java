@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,10 +16,8 @@ public abstract class AbstractScreen implements Screen {
 	protected final FarmAdventure game;
 	protected final Stage stage;
 
-	private OrthographicCamera camera;
-	private OrthogonalTiledMapRenderer renderer;
-	private TiledMap map;
-	private String imageName;
+	protected OrthographicCamera camera;
+	protected OrthogonalTiledMapRenderer renderer;
 	private Skin skin;
 
 	public static final int WIDTH = 800, HEIGHT = 480;
@@ -28,7 +25,8 @@ public abstract class AbstractScreen implements Screen {
 	public AbstractScreen(FarmAdventure game) {
 		// TODO: initiate cameras and maps
 		this.game = game;
-		this.stage = new Stage(WIDTH, HEIGHT, true);
+		this.stage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
 	}
 
 	public void hide() {

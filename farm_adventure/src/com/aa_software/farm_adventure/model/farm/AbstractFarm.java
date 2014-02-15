@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.farm;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.aa_software.farm_adventure.model.Field;
@@ -16,10 +17,10 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
  * plants, equipment, and spells available.
  */
 public abstract class AbstractFarm {
-	protected final int DEFAULT_NUMBER_OF_SEASONS = 4;
+	public static final int DEFAULT_NUMBER_OF_SEASONS = 4;
 	/* the next two are arbitrary for now */
-	protected final int DEFAULT_NUMBER_OF_WORKERS = 5;
-	protected final int DEFAULT_STARTING_BANKROLL = 25;
+	public static  final int DEFAULT_NUMBER_OF_WORKERS = 5;
+	public static  final int DEFAULT_STARTING_BANKROLL = 25;
 
 	protected Field field;
 	protected ToolBar toolBar;
@@ -31,6 +32,10 @@ public abstract class AbstractFarm {
 	protected Map<AbstractSpell, Integer> startingSpellCount;
 
 	public AbstractFarm() {
+		startingWorkerCount = new HashMap<AbstractWorker, Integer>();
+		startingCropCount = new HashMap<AbstractCrop, Integer>();
+		startingToolCount = new HashMap<AbstractTool, Integer>();
+		startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
 		field = new Field();
 		toolBar = new ToolBar();
@@ -47,5 +52,5 @@ public abstract class AbstractFarm {
 	public Field getField() {
 		return field;
 	}
-
+	
 }

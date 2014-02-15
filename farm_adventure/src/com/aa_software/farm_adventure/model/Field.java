@@ -17,7 +17,7 @@ public class Field {
 		initializePlots(columns, rows);
 	}
 
-	public void initializePlots(int columns, int rows) {
+	public final void initializePlots(int columns, int rows) {
 		plots2D = new Plot[columns][rows];
 		for (Plot[] plots : plots2D) {
 			for (int i = 0; i < plots.length; i++) {

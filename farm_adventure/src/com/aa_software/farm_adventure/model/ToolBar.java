@@ -19,7 +19,7 @@ public class ToolBar {
 		initializeTools(columns, rows);
 	}
 
-	public void initializeTools(int columns, int rows) {
+	public final void initializeTools(int columns, int rows) {
 		// TODO: hardcoded...also, column 5 should be Market/Inventory
 		tools2D = new AbstractTool[columns][rows];
 		tools2D[0][0] = new HandPlowTool();

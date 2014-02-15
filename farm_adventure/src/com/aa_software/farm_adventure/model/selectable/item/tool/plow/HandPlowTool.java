@@ -7,8 +7,8 @@ import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 public class HandPlowTool extends AbstractTool {
 	public static final String TEXTURE_NAME = "handPlowTool";
 	// TODO: arbitrary values
-	public static int DEFAULT_COST = 10;
-	public static int DEFAULT_VALUE = 5;
+	public static final int DEFAULT_COST = 10;
+	public static final int DEFAULT_VALUE = 5;
 	/* measured in seconds */
 	public static final int DEFAULT_WORK_TIME = 5;
 
