@@ -7,24 +7,24 @@ public class Player {
 	
 	public static int STARTING_BANKROLL = 100;
 	
-	private static Player instance;
+	private static Player Instance;
 	private int bankroll;
 	private AbstractCampaign campaign;
 	private Preferences preferences;
 	private Inventory inventory;
 
-	protected Player() {
-		bankroll = STARTING_BANKROLL;
-		inventory = new Inventory();
-		setCampaign(new TutorialCampaign());
-		setPreferences(new Preferences());
+	private Player() {
+		this.bankroll = STARTING_BANKROLL;
+		this.inventory = new Inventory();
+		this.campaign = new TutorialCampaign();
+		this.preferences = new Preferences();
 	}
 
 	public static Player getInstance() {
-		if (instance == null) {
-			instance = new Player();
+		if (Instance == null) {
+			Instance = new Player();
 		}
-		return instance;
+		return Instance;
 	}
 
 	public AbstractCampaign getCampaign() {

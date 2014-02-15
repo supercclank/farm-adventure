@@ -48,12 +48,10 @@ public class Plot implements ISelectable {
 		return crop;
 	}
 
-	public boolean setCrop(AbstractCrop crop) {
+	public void setCrop(AbstractCrop crop) {
 		if (plotType == PlotType.PLOWEDWATERED) {
 			this.crop = crop;
-			return true;
 		}
-		return false;
 	}
 
 }

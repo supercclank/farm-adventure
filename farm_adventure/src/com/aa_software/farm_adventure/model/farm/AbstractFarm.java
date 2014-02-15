@@ -17,10 +17,10 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
  * plants, equipment, and spells available.
  */
 public abstract class AbstractFarm {
-	protected final int DEFAULT_NUMBER_OF_SEASONS = 4;
+	public static final int DEFAULT_NUMBER_OF_SEASONS = 4;
 	/* the next two are arbitrary for now */
-	protected final int DEFAULT_NUMBER_OF_WORKERS = 5;
-	protected final int DEFAULT_STARTING_BANKROLL = 25;
+	public static  final int DEFAULT_NUMBER_OF_WORKERS = 5;
+	public static  final int DEFAULT_STARTING_BANKROLL = 25;
 
 	protected Field field;
 	protected ToolBar toolBar;
