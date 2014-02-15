@@ -91,6 +91,13 @@ public class AbstractFarmScreen extends AbstractScreen {
 		gameOver = false;
 	}
 
+	/**
+	 * Uses the libgdx library to get the x, y location of a users touch if there
+	 * was one. This value is used to check if the user clicked over the plots or 
+	 * over the toolbar. If the user clicks the status bar, there is no change. If it
+	 * is a plot, the x , y , and ground string are returned. If the tool bar was 
+	 * clicked, the x, y, and toobar string is returned.
+	 */
 	public void checkTouch() {
 		if (Gdx.input.justTouched()) {
 			Vector3 touchPos = new Vector3();
@@ -299,6 +306,15 @@ public class AbstractFarmScreen extends AbstractScreen {
 		stage.addActor(workers);
 	}
 
+	/**
+	 * Takes in an x, and y, value that represents user input, as well as the type of 
+	 * cell that was clicked. The options for this is ground or tool bar. If the user clicked
+	 * on the tool bar, that tool is selected and the state updates. If a plot is clicked, the tool
+	 * bar that was previously selected will affect the status of the plot and the state will update.
+	 * @param x
+	 * @param y
+	 * @param property
+	 */
 	public void updateState(int x, int y, String property) {
 		if (property.equals(layers.get("GROUND_LAYER_NAME"))) {
 			TiledMapTileLayer ground = (TiledMapTileLayer) map.getLayers().get(
@@ -428,5 +444,5 @@ public class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 	}
-
+	
 }
