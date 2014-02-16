@@ -10,6 +10,7 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
+import com.aa_software.farm_adventure.model.farm.DesertFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
@@ -200,7 +201,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
-		farm = new SnowFarm();
+		farm = new DesertFarm();
 
 		/* Push all of the tiles for each layer into the tile map */
 		Iterator<TiledMapTile> tileIterator;

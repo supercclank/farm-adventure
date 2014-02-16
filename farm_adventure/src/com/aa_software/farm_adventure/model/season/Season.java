@@ -21,10 +21,10 @@ public class Season {
 	 * become covered in leaves (resetting the plot, aside from the irrigation).
 	 * These values are the percent chances of those events.
 	 */
-	public static final float SUMMER_WATER_LEVEL_MOD = .9f;
-	public static final float FALL_LEAF_COVER_MOD = .9f;
+	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
+	public static final float FALL_LEAF_COVER_MOD = .2f;
 
-	public static final int CYCLE_TIME_MINUTES = 1;
+	public static final int CYCLE_TIME_MINUTES = 2;
 
 	private float cycleTime;
 	private SeasonType seasonType;
