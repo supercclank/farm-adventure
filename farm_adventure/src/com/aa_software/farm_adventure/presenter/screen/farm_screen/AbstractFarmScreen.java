@@ -212,6 +212,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Syncs each cell's ground tile with the field.
+	 * 
+	 */
 	public void syncGroundTiles() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
 				"ground");
@@ -229,6 +233,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Syncs each cell's plant tile with the field.
+	 * 
+	 */
 	public void syncPlantTiles() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
 				"plant");
@@ -274,6 +282,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Syncs each cell's tool tile with the tool bar.
+	 * 
+	 */
 	public void syncToolTiles() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
 				"tool");
@@ -297,6 +309,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Syncs each cell's water tile with the field.
+	 * 
+	 */
 	public void syncWaterTiles() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
 				"water");
