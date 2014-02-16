@@ -11,7 +11,6 @@ import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.DesertFarm;
-import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
@@ -106,6 +105,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * This method disposes of our left over libGDX elements, updates the
+	 * player's score, and returns the player to the main menu.
+	 */
 	@Override
 	public void dispose() {
 		// TODO: score evaluation for player bankroll
@@ -125,6 +128,13 @@ public class AbstractFarmScreen extends AbstractScreen {
 
 	}
 
+	/**
+	 * This method acts as our "game loop". Checks for touches (so that they can
+	 * be handled), syncs each layer's tiles with their respective model pieces,
+	 * and finally updates and draws the stage for the status bar. However, if
+	 * the game is over, this method will call for a disposal of the screen.
+	 * 
+	 */
 	@Override
 	public void render(float delta) {
 		if (gameOver) {
@@ -243,8 +253,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 		for (int y = 0; y < Field.ROWS; y++) {
 			for (int x = 0; x < Field.COLUMNS; x++) {
 				/* Get the cell we wish to update */
-				Cell cell = layer.getCell(x, y
-						+ (layer.getHeight() - Field.ROWS));
+				Cell cell = layer.getCell(x, y + FIELD_STARTING_Y);
 				/* By default, make the tile transparent */
 				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
 				/*
@@ -318,8 +327,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 				"water");
 		for (int y = 0; y < Field.ROWS; y++) {
 			for (int x = 0; x < Field.COLUMNS; x++) {
-				Cell cell = layer.getCell(x, y
-						+ (layer.getHeight() - Field.ROWS));
+				Cell cell = layer.getCell(x, y + FIELD_STARTING_Y);
 				/* By default, make the tile transparent */
 				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
 				if (farm.getPlot(x, y).getIrrigation() != null) {

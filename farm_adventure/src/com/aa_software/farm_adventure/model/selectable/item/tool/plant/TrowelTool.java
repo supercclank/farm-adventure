@@ -33,9 +33,8 @@ public class TrowelTool extends AbstractTool {
 		}
 	}
 
-	public void update(Plot plot, AbstractCrop crop) {
+	public void update(AbstractCrop crop) {
 		// TODO: we'll have to decide if we're making a distinction between
 		// produce and seeds. If so, change crop to seed.
-		plot.setCrop(crop);
 	}
 }
