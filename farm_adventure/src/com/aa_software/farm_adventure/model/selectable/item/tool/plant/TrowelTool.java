@@ -18,6 +18,12 @@ public class TrowelTool extends AbstractTool {
 		workTime = DEFAULT_WORK_TIME;
 	}
 
+	@Override
+	public String getTextureName() {
+		return TEXTURE_NAME;
+	}
+
+	@Override
 	public void update(Plot plot) {
 		// TODO: inventory pops up and you choose the plant to use.
 		// AbstractCrop crop = the selected crop.
@@ -31,9 +37,5 @@ public class TrowelTool extends AbstractTool {
 		// TODO: we'll have to decide if we're making a distinction between
 		// produce and seeds. If so, change crop to seed.
 		plot.setCrop(crop);
-	}
-
-	public String getTextureName() {
-		return TEXTURE_NAME;
 	}
 }

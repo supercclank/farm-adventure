@@ -17,6 +17,10 @@ public class Field {
 		initializePlots(columns, rows);
 	}
 
+	public Plot getPlot(int x, int y) {
+		return plots2D[x][y];
+	}
+
 	public final void initializePlots(int columns, int rows) {
 		plots2D = new Plot[columns][rows];
 		for (Plot[] plots : plots2D) {
@@ -42,10 +46,6 @@ public class Field {
 				}
 			}
 		}
-	}
-
-	public Plot getPlot(int x, int y) {
-		return plots2D[x][y];
 	}
 
 	public void setPlot(int x, int y, Plot plot) {

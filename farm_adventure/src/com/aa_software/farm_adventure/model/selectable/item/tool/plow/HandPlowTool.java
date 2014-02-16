@@ -18,20 +18,23 @@ public class HandPlowTool extends AbstractTool {
 		workTime = DEFAULT_WORK_TIME;
 	}
 
-	public void update(Plot plot) {
-		if (plot.getPlotType().equals(PlotType.GRASS)) {
-			if (plot.getIrrigation() == null)
-				plot.setPlotType(PlotType.PLOWEDUNWATERED);
-			else
-				plot.setPlotType(PlotType.PLOWEDWATERED);
-		}
-	}
-
+	@Override
 	public String getTextureName() {
 		// TODO remove
 		// System.out.println(getClass().getSimpleName());
 		// return this.getClass().getSimpleName();
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(Plot plot) {
+		if (plot.getPlotType().equals(PlotType.GRASS)) {
+			if (plot.getIrrigation() == null) {
+				plot.setPlotType(PlotType.PLOWEDUNWATERED);
+			} else {
+				plot.setPlotType(PlotType.PLOWEDWATERED);
+			}
+		}
 	}
 
 }

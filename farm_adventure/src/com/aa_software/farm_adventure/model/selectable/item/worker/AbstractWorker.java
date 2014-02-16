@@ -38,18 +38,6 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.workRate = calculateWorkRate();
 	}
 
-	public int getLevel() {
-		return level;
-	}
-
-	public final int calculateExperience() {
-		int experience = DEFAULT_EXPERIENCE;
-		if (this.level != DEFAULT_LEVEL) {
-			experience = calculateLevelUpThresh();
-		}
-		return experience;
-	}
-
 	public final void addExperience() {
 		if (level != MAX_LEVEL) {
 			this.experience++;
@@ -64,11 +52,12 @@ public abstract class AbstractWorker extends AbstractItem {
 		}
 	}
 
-	private final void checkForLevelUp() {
-		int threshExperience = calculateLevelUpThresh();
-		if (experience >= threshExperience) {
-			level++;
+	public final int calculateExperience() {
+		int experience = DEFAULT_EXPERIENCE;
+		if (this.level != DEFAULT_LEVEL) {
+			experience = calculateLevelUpThresh();
 		}
+		return experience;
 	}
 
 	private final int calculateLevelUpThresh() {
@@ -80,15 +69,6 @@ public abstract class AbstractWorker extends AbstractItem {
 			}
 		}
 		return threshExperience;
-	}
-
-	public int getWage() {
-		wage = calculateWage();
-		return wage;
-	}
-
-	public void setWage(int wage) {
-		this.wage = wage;
 	}
 
 	private final int calculateWage() {
@@ -112,16 +92,37 @@ public abstract class AbstractWorker extends AbstractItem {
 		return workRate;
 	}
 
+	private final void checkForLevelUp() {
+		int threshExperience = calculateLevelUpThresh();
+		if (experience >= threshExperience) {
+			level++;
+		}
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	@Override
+	public String getTextureName() {
+		return "arbitrary";
+		// TODO: change
+	}
+
+	public int getWage() {
+		wage = calculateWage();
+		return wage;
+	}
+
 	public int getWorkRate() {
 		return workRate;
 	}
 
-	public void setWorkRate(int workRate) {
-		this.workRate = workRate;
+	public void setWage(int wage) {
+		this.wage = wage;
 	}
 
-	public String getTextureName() {
-		return "arbitrary";
-		// TODO: change
+	public void setWorkRate(int workRate) {
+		this.workRate = workRate;
 	}
 }

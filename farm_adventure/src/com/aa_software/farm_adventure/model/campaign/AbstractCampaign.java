@@ -12,10 +12,6 @@ public abstract class AbstractCampaign {
 		this.progress = 0;
 	}
 
-	public int getProgress() {
-		return progress;
-	}
-
 	public void completeFarm() {
 		/* comp0, prog1; comp1,prog2; comp2,prog3; comp3,prog */
 		if (farms != null && progress + 1 < farms.length) {
@@ -25,5 +21,9 @@ public abstract class AbstractCampaign {
 
 	public AbstractFarm[] getFarms() {
 		return farms;
+	}
+
+	public int getProgress() {
+		return progress;
 	}
 }

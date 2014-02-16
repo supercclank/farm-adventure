@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model;
 
-
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
@@ -13,14 +12,10 @@ public class Inventory {
 	private AbstractWorker[] workers;
 
 	public Inventory() {
-		//TODO: REPLACE THIS!
+		// TODO: REPLACE THIS!
 		workers = new AbstractWorker[4];
-		for(int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)
 			workers[i] = new DefaultWorker();
-	}
-	
-	public int getWorkerCount() {
-		return workers.length;
 	}
 
 	public Inventory(AbstractItem[] items) {
@@ -29,6 +24,10 @@ public class Inventory {
 
 	public AbstractItem[] getItems() {
 		return items;
+	}
+
+	public int getWorkerCount() {
+		return workers.length;
 	}
 
 	public void setItems(AbstractItem[] items) {

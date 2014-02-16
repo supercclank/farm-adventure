@@ -12,6 +12,7 @@ public class MainMenuScreen extends AbstractScreen {
 		super(game);
 	}
 
+	@Override
 	public void show() {
 		super.show();
 
@@ -32,6 +33,7 @@ public class MainMenuScreen extends AbstractScreen {
 		// This line of code will take the user to the world screen on click or
 		// touch
 		startGameButton.addListener(new InputListener() {
+			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				game.setScreen(new WorldScreen(game));

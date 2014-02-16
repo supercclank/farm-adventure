@@ -20,22 +20,19 @@ public class Plot implements ISelectable {
 		this.plotType = plotType;
 	}
 
-	public Irrigation getIrrigation() {
-		return irrigation;
+	public AbstractCrop getCrop() {
+		return crop;
 	}
 
-	public void setIrrigation(Irrigation irrigation) {
-		this.irrigation = irrigation;
+	public Irrigation getIrrigation() {
+		return irrigation;
 	}
 
 	public PlotType getPlotType() {
 		return plotType;
 	}
 
-	public void setPlotType(PlotType plotType) {
-		this.plotType = plotType;
-	}
-
+	@Override
 	public String getTextureName() {
 		/*
 		 * if(irrigation != null) { return plotType.toString().toLowerCase() +
@@ -44,14 +41,18 @@ public class Plot implements ISelectable {
 		return plotType.toString().toLowerCase();
 	}
 
-	public AbstractCrop getCrop() {
-		return crop;
-	}
-
 	public void setCrop(AbstractCrop crop) {
 		if (plotType == PlotType.PLOWEDWATERED) {
 			this.crop = crop;
 		}
+	}
+
+	public void setIrrigation(Irrigation irrigation) {
+		this.irrigation = irrigation;
+	}
+
+	public void setPlotType(PlotType plotType) {
+		this.plotType = plotType;
 	}
 
 }

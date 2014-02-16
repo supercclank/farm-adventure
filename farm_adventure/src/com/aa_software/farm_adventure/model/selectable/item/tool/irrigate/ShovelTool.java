@@ -18,6 +18,12 @@ public class ShovelTool extends AbstractTool {
 		workTime = DEFAULT_WORK_TIME;
 	}
 
+	@Override
+	public String getTextureName() {
+		return TEXTURE_NAME;
+	}
+
+	@Override
 	public void update(Plot plot) {
 		// Irrigation oldIrrigation = plot.getIrrigation();
 		// TODO: ARBITRARY. Add code for telling where to irrigate...
@@ -25,9 +31,5 @@ public class ShovelTool extends AbstractTool {
 			plot.setPlotType(PlotType.PLOWEDWATERED);
 			plot.setIrrigation(Irrigation.northSouthEastWest);
 		}
-	}
-
-	public String getTextureName() {
-		return TEXTURE_NAME;
 	}
 }

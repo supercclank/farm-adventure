@@ -18,6 +18,12 @@ public class ScytheTool extends AbstractTool {
 		workTime = DEFAULT_WORK_TIME;
 	}
 
+	@Override
+	public String getTextureName() {
+		return TEXTURE_NAME;
+	}
+
+	@Override
 	public void update(Plot plot) {
 		AbstractCrop crop = plot.getCrop();
 		if (crop != null) {
@@ -25,9 +31,5 @@ public class ScytheTool extends AbstractTool {
 			plot.setCrop(null);
 			plot.setPlotType(PlotType.GRASS);
 		}
-	}
-
-	public String getTextureName() {
-		return TEXTURE_NAME;
 	}
 }

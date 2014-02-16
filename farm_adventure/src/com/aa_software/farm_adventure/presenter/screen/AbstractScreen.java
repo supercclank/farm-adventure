@@ -29,21 +29,51 @@ public abstract class AbstractScreen implements Screen {
 				Gdx.graphics.getHeight(), true);
 	}
 
-	public void hide() {
-
+	/**
+	 * Adds actors to the stage.
+	 * 
+	 * Note: If this isn't called on your screen, then nothing will be drawn to
+	 * screen.
+	 * 
+	 * @param actor
+	 *            The component that is intended to be drawn
+	 */
+	protected void addActor(Actor actor) {
+		stage.addActor(actor);
 	}
 
-	public void show() {
-		FarmAdventure.log("Showing screen: " + getName());
-
-		// Responsible for all touch and click events
-		Gdx.input.setInputProcessor(stage);
-	}
-
+	@Override
 	public void dispose() {
 
 	}
 
+	protected String getName() {
+		return getClass().getSimpleName();
+	}
+
+	/**
+	 * 
+	 * @return the custom skin created for this game
+	 */
+	protected Skin getSkin() {
+		if (skin == null) {
+			FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");
+			skin = new Skin(skinFile);
+		}
+		return skin;
+	}
+
+	@Override
+	public void hide() {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
 	public void render(float delta) {
 		// (1) process the game logic
 
@@ -62,48 +92,25 @@ public abstract class AbstractScreen implements Screen {
 		Table.drawDebug(stage);
 	}
 
+	/* Getters/Setters for resources */
+
+	@Override
 	public void resize(int width, int height) {
 
 	}
 
-	public void pause() {
-
-	}
-
+	@Override
 	public void resume() {
 
 	}
 
-	/* Getters/Setters for resources */
-
-	/**
-	 * 
-	 * @return the custom skin created for this game
-	 */
-	protected Skin getSkin() {
-		if (skin == null) {
-			FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");
-			skin = new Skin(skinFile);
-		}
-		return skin;
-	}
-
-	/**
-	 * Adds actors to the stage.
-	 * 
-	 * Note: If this isn't called on your screen, then nothing will be drawn to
-	 * screen.
-	 * 
-	 * @param actor
-	 *            The component that is intended to be drawn
-	 */
-	protected void addActor(Actor actor) {
-		stage.addActor(actor);
-	}
-
 	/* Utility functions */
 
-	protected String getName() {
-		return getClass().getSimpleName();
+	@Override
+	public void show() {
+		FarmAdventure.log("Showing screen: " + getName());
+
+		// Responsible for all touch and click events
+		Gdx.input.setInputProcessor(stage);
 	}
 }

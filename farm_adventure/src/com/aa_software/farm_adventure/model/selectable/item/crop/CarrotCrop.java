@@ -37,6 +37,7 @@ public class CarrotCrop extends AbstractCrop {
 		}
 	}
 
+	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
 	}

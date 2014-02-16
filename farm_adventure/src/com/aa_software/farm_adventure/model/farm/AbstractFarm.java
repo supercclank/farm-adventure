@@ -2,6 +2,9 @@ package com.aa_software.farm_adventure.model.farm;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.ToolBar;
@@ -19,12 +22,15 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 public abstract class AbstractFarm {
 	public static final int DEFAULT_NUMBER_OF_SEASONS = 4;
 	/* the next two are arbitrary for now */
-	public static  final int DEFAULT_NUMBER_OF_WORKERS = 5;
-	public static  final int DEFAULT_STARTING_BANKROLL = 25;
+	public static final int DEFAULT_NUMBER_OF_WORKERS = 5;
+	public static final int DEFAULT_STARTING_BANKROLL = 25;
 
 	protected Field field;
 	protected ToolBar toolBar;
 	protected Season[] seasons;
+	protected int currentSeason;
+	protected final Timer timer;
+	protected TimerTask seasonTimer;
 	/* each farm starts with a certain amount of seeds, workers, equipment */
 	protected Map<AbstractWorker, Integer> startingWorkerCount;
 	protected Map<AbstractCrop, Integer> startingCropCount;
@@ -37,8 +43,18 @@ public abstract class AbstractFarm {
 		startingToolCount = new HashMap<AbstractTool, Integer>();
 		startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
+		currentSeason = 0;
 		field = new Field();
 		toolBar = new ToolBar();
+		timer = new Timer();
+	}
+
+	public Season getCurrentSeason() {
+		return seasons[currentSeason];
+	}
+
+	public Field getField() {
+		return field;
 	}
 
 	public Plot getPlot(int x, int y) {
@@ -49,8 +65,18 @@ public abstract class AbstractFarm {
 		return toolBar.getTool(x, y);
 	}
 
-	public Field getField() {
-		return field;
+	public final void setupSeasonTimer() {
+		seasonTimer = new java.util.TimerTask() {
+			@Override
+			public void run() {
+				currentSeason++;
+				currentSeason %= seasons.length;
+				seasonTimer.cancel();
+				setupSeasonTimer();
+			}
+		};
+		timer.schedule(seasonTimer, TimeUnit.MINUTES
+				.toMillis(seasons[currentSeason].getCycleTime()));
 	}
-	
+
 }

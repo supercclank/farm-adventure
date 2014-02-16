@@ -12,31 +12,36 @@ public class UpgradeSelectionState extends AbstractSelectionState {
 		this.selection = selection;
 	}
 
-	public UpgradeSelectionState update(Plot plot) {
+	@Override
+	public UpgradeSelectionState update(AbstractCrop crop) {
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 
+	@Override
 	public UpgradeSelectionState update(AbstractSpell spell) {
 		selection.update(spell);
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 
-	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
-		return new UpgradeSelectionState((AbstractUpgrade) upgrade);
-	}
-
+	@Override
 	public UpgradeSelectionState update(AbstractTool tool) {
 		selection.update(tool);
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 
+	@Override
+	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
+		return new UpgradeSelectionState(upgrade);
+	}
+
+	@Override
 	public UpgradeSelectionState update(AbstractWorker worker) {
 		selection.update(worker);
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 
 	@Override
-	public UpgradeSelectionState update(AbstractCrop crop) {
+	public UpgradeSelectionState update(Plot plot) {
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 }

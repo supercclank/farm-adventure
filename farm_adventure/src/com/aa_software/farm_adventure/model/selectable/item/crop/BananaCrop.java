@@ -15,25 +15,6 @@ public class BananaCrop extends AbstractCrop {
 	}
 
 	public BananaCrop(int growthTime, int output, int cost, int value) {
-		if (growthTime != 0) {
-			this.growthTime = growthTime;
-		} else {
-			this.growthTime = DEFAULT_GROWTH_TIME;
-		}
-		if (output != 0) {
-			this.output = output;
-		} else {
-			this.output = DEFAULT_OUTPUT;
-		}
-		if (cost != 0) {
-			this.cost = cost;
-		} else {
-			this.cost = DEFAULT_COST;
-		}
-		if (value != 0) {
-			this.value = value;
-		} else {
-			this.value = DEFAULT_VALUE;
-		}
+		super();
 	}
 }

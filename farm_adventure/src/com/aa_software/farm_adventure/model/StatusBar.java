@@ -15,12 +15,12 @@ public class StatusBar {
 		return score;
 	}
 
-	public void setScore(int score) {
-		this.score = score;
-	}
-
 	public int getTime() {
 		return time;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public void setTime(int time) {

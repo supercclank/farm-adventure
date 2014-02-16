@@ -12,12 +12,12 @@ public abstract class AbstractItem implements ISelectable {
 		return cost;
 	}
 
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
-
 	public int getValue() {
 		return value;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 	public void setValue(int value) {
