@@ -24,42 +24,42 @@
   </tile>
   <tile id="4">
    <properties>
-    <property name="toolBar" value="scythe"/>
+    <property name="tool" value="scytheTool"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="toolBar" value="hoe"/>
+    <property name="tool" value="shovelTool"/>
    </properties>
   </tile>
   <tile id="6">
    <properties>
-    <property name="toolBar" value="handPlowTool"/>
+    <property name="tool" value="handPlowTool"/>
    </properties>
   </tile>
   <tile id="7">
    <properties>
-    <property name="toolBar" value="trowelTool"/>
+    <property name="tool" value="trowelTool"/>
    </properties>
   </tile>
   <tile id="8">
    <properties>
-    <property name="toolBar" value="market"/>
+    <property name="tool" value="market"/>
    </properties>
   </tile>
   <tile id="9">
    <properties>
-    <property name="selected" value="selected"/>
+    <property name="select" value="select"/>
    </properties>
   </tile>
   <tile id="10">
    <properties>
-    <property name="plants" value="plantedSeeds"/>
+    <property name="plant" value="plantedSeeds"/>
    </properties>
   </tile>
   <tile id="11">
    <properties>
-    <property name="plants" value="carrots"/>
+    <property name="plant" value="carrots"/>
    </properties>
   </tile>
   <tile id="12">
@@ -164,32 +164,7 @@
   </tile>
   <tile id="50">
    <properties>
-    <property name="ground" value="gtransparent"/>
-   </properties>
-  </tile>
-  <tile id="51">
-   <properties>
-    <property name="water" value="wtransparent"/>
-   </properties>
-  </tile>
-  <tile id="52">
-   <properties>
-    <property name="plants" value="ptransparent"/>
-   </properties>
-  </tile>
-  <tile id="53">
-   <properties>
-    <property name="toolBar" value="ttransparent"/>
-   </properties>
-  </tile>
-  <tile id="54">
-   <properties>
-    <property name="statusBar" value="stransparent"/>
-   </properties>
-  </tile>
-  <tile id="55">
-   <properties>
-    <property name="selected" value="seltransparent"/>
+    <property name="ground" value="transparent"/>
    </properties>
   </tile>
  </tileset>
@@ -209,15 +184,15 @@
    NAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAADQAAAA0AAAANAAAAA==
   </data>
  </layer>
- <layer name="plants" width="5" height="8">
+ <layer name="plant" width="5" height="8">
   <properties>
-   <property name="plants" value=""/>
+   <property name="plant" value=""/>
   </properties>
   <data encoding="base64">
    NQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAADUAAAA1AAAANQAAAA==
   </data>
  </layer>
- <layer name="toolBar" width="5" height="8">
+ <layer name="tool" width="5" height="8">
   <data encoding="base64">
    NgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAA2AAAANgAAADYAAAAHAAAABgAAAAgAAAAFAAAACQAAAA==
   </data>
@@ -227,7 +202,7 @@
    NwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAALgAAAC8AAAAwAAAAMQAAADIAAAA3AAAANwAAADcAAAA3AAAANwAAAA==
   </data>
  </layer>
- <layer name="selected" width="5" height="8">
+ <layer name="select" width="5" height="8">
   <data encoding="base64">
    OAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAAA==
   </data>

@@ -13,11 +13,12 @@ import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker
 public class TutorialFarm extends AbstractFarm {
 
 	public TutorialFarm() {
-
 		super();
+		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SPRING);
 		}
+		seasons[currentSeason].update(field);
 		setupSeasonTimer();
 		startingCropCount.put(new CarrotCrop(), 5);
 		startingToolCount.put(new BackhoeTool(), 1);
@@ -26,6 +27,5 @@ public class TutorialFarm extends AbstractFarm {
 		startingToolCount.put(new ScytheTool(), 1);
 		startingSpellCount.put(new MolesSpell(), 1);
 		startingWorkerCount.put(new DefaultWorker(), DEFAULT_NUMBER_OF_WORKERS);
-
 	}
 }

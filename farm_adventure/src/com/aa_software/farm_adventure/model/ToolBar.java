@@ -10,6 +10,8 @@ public class ToolBar {
 	public static final int COLUMNS = 5;
 	public static final int ROWS = 1;
 	private AbstractTool[][] tools2D;
+	private Market market;
+	private Inventory inventory;
 
 	public ToolBar() {
 		initializeTools(COLUMNS, ROWS);

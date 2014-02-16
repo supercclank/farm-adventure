@@ -42,8 +42,6 @@ public abstract class AbstractFarm {
 		startingCropCount = new HashMap<AbstractCrop, Integer>();
 		startingToolCount = new HashMap<AbstractTool, Integer>();
 		startingSpellCount = new HashMap<AbstractSpell, Integer>();
-		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
-		currentSeason = 0;
 		field = new Field();
 		toolBar = new ToolBar();
 		timer = new Timer();
@@ -65,18 +63,24 @@ public abstract class AbstractFarm {
 		return toolBar.getTool(x, y);
 	}
 
+	/**
+	 * Sets up a task that will increment the season (up to its maximum) after
+	 * the season's cycle time has passed. Tasks spawned this way cancel
+	 * themselves after one run and start anew (with the new season's values).
+	 */
 	public final void setupSeasonTimer() {
 		seasonTimer = new java.util.TimerTask() {
 			@Override
 			public void run() {
 				currentSeason++;
 				currentSeason %= seasons.length;
+				seasons[currentSeason].update(field);
 				seasonTimer.cancel();
 				setupSeasonTimer();
 			}
 		};
 		timer.schedule(seasonTimer, TimeUnit.MINUTES
-				.toMillis(seasons[currentSeason].getCycleTime()));
+				.toMillis((long) seasons[currentSeason].getCycleTime()));
 	}
 
 }

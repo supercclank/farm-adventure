@@ -30,24 +30,6 @@ public class Field {
 		}
 	}
 
-	/*
-	 * This is just a method for testing purposes.
-	 */
-	public void randomizeField() {
-		if (plots2D == null) {
-			initializePlots(COLUMNS, ROWS);
-		}
-		for (Plot[] plots : plots2D) {
-			for (int i = 0; i < plots.length; i++) {
-				if ((i % 2) == 0) {
-					plots[i] = new Plot(PlotType.GRASS);
-				} else {
-					plots[i] = new Plot(PlotType.PLOWEDUNWATERED);
-				}
-			}
-		}
-	}
-
 	public void setPlot(int x, int y, Plot plot) {
 		plots2D[x][y] = plot;
 	}

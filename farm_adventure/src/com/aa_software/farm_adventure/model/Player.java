@@ -1,19 +1,20 @@
 package com.aa_software.farm_adventure.model;
 
 import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
-import com.aa_software.farm_adventure.model.campaign.TutorialCampaign;
 
 public class Player {
 
 	public static final int STARTING_BANKROLL = 100;
 
 	private static Player Instance;
+
 	public static Player getInstance() {
 		if (Instance == null) {
 			Instance = new Player();
 		}
 		return Instance;
 	}
+
 	private int bankroll;
 	private AbstractCampaign campaign;
 	private Preferences preferences;
@@ -23,7 +24,7 @@ public class Player {
 	private Player() {
 		this.bankroll = STARTING_BANKROLL;
 		this.inventory = new Inventory();
-		this.campaign = new TutorialCampaign();
+		// this.campaign = new TutorialCampaign();
 		this.preferences = new Preferences();
 	}
 

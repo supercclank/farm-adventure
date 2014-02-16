@@ -2,15 +2,15 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
+import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
+import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
@@ -18,7 +18,6 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
-import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
@@ -39,7 +38,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.google.common.collect.ImmutableMap;
 
 public class AbstractFarmScreen extends AbstractScreen {
 
@@ -55,13 +53,12 @@ public class AbstractFarmScreen extends AbstractScreen {
 	private static final int TILE_SIZE = 128;
 
 	/* Layer */
-	Map<String, String> layers = ImmutableMap.of("GROUND_LAYER_NAME", "ground",
-			"TOOLBAR_LAYER_NAME", "toolBar", "SELECTED_LAYER_NAME", "selected",
-			"PLANTS_LAYER_NAME", "plants", "WATER_LAYER_NAME", "water");
-	Map<String, String> transparents = ImmutableMap.of("GROUND_T_TILE_NAME",
-			"gtransparent", "TOOLBAR_T_TILE_NAME", "ttransparent",
-			"SELECTED_T_TILE_NAME", "seltransparent", "WATER_T_TILE_NAME",
-			"wtransparent", "PLANTS_T_TILE_NAME", "ptransparent");
+	/*
+	 * For each layer, please provide a method of syncing the model with the
+	 * presenter
+	 */
+	private final String[] allLayers = { "ground", "water", "plant", "select",
+			"tool" };
 
 	/* Stage */
 	public static final float FONT_SCALE = (float) (Gdx.graphics.getHeight() * .0001);
@@ -104,9 +101,9 @@ public class AbstractFarmScreen extends AbstractScreen {
 			int xCell = (int) (touchPos.x / TILE_SIZE);
 			int yCell = (int) (touchPos.y / TILE_SIZE);
 			if (yCell > 1) {
-				updateState(xCell, yCell, layers.get("GROUND_LAYER_NAME"));
+				updateState(xCell, yCell, "ground");
 			} else if (yCell == 0) {
-				updateState(xCell, yCell, layers.get("TOOLBAR_LAYER_NAME"));
+				updateState(xCell, yCell, "tool");
 			}
 		}
 	}
@@ -140,9 +137,11 @@ public class AbstractFarmScreen extends AbstractScreen {
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 			checkTouch();
-
+			syncWaterTiles();
+			syncPlantTiles();
+			syncGroundTiles();
+			syncToolTiles();
 			camera.update();
-
 			renderer.setView(camera);
 			renderer.render();
 
@@ -169,13 +168,12 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 * For time remaining (milliseconds): gameTimer.scheduledExecutionTime() -
 	 * System.currentTimeMillis()
 	 * 
-	 * For unit conversion: `
+	 * For unit conversion:
 	 * 
 	 * @see TimeUnit
 	 * 
 	 */
 	public void setupGameTimer() {
-
 		Timer timer = new Timer();
 		gameTimer = new java.util.TimerTask() {
 			@Override
@@ -185,162 +183,161 @@ public class AbstractFarmScreen extends AbstractScreen {
 			}
 		};
 		timer.schedule(gameTimer, TimeUnit.MINUTES.toMillis(GAME_TIME_MINUTES));
-
 	}
 
 	@Override
 	public void show() {
 		setupGameTimer();
+
+		// TODO: We should try to handle screen sizes more appropriately than
+		// stretching.
 		map = new TmxMapLoader().load(TILE_MAP_NAME);
 		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight());
-		// TODO: We should try to handle screen sizes more appropriately than
-		// stretching.
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
-		farm = new TutorialFarm();
+		farm = new SnowFarm();
 
-		Iterator<String> layerIterator = layers.values().iterator();
-		String[] layers = new String[this.layers.size()];
-
-		for (int i = 0; layerIterator.hasNext(); i++) {
-			layers[i] = layerIterator.next();
-		}
-
+		/* Push all of the tiles for each layer into the tile map */
 		Iterator<TiledMapTile> tileIterator;
 		tileMap = new HashMap<String, Integer>();
-
-		for (int i = 0; i < layers.length; i++) {
-			for (tileIterator = tileSet.iterator(); tileIterator.hasNext(); ) {
+		for (int i = 0; i < allLayers.length; i++) {
+			for (tileIterator = tileSet.iterator(); tileIterator.hasNext();) {
 				TiledMapTile tile = tileIterator.next();
-				tileMap.put(tile.getProperties().get(layers[i], String.class),
-						tile.getId());
+				tileMap.put(tile.getProperties()
+						.get(allLayers[i], String.class), tile.getId());
 			}
 		}
+	}
 
-		TiledMapTileLayer ground = (TiledMapTileLayer) map.getLayers().get(
-				this.layers.get("GROUND_LAYER_NAME"));
-
+	public void syncGroundTiles() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"ground");
 		for (int y = 0; y < Field.ROWS; y++) {
-			for (int x = 0; x < ground.getWidth(); x++) {
-				Cell gCell = ground.getCell(x, ground.getHeight() - 1 - y);
-				TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getPlot(x,
-						y).getTextureName()));
-				gCell.setTile(tile);
+			for (int x = 0; x < Field.COLUMNS; x++) {
+				/* Get the cell we wish to update */
+				Cell cell = layer.getCell(x, y
+						+ (layer.getHeight() - Field.ROWS));
+				/* By default, make the tile transparent */
+				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
+				/* Get the ground texture for our cell to use */
+				tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
+						.getTextureName()));
+				cell.setTile(tile);
+			}
+		}
+	}
+
+	public void syncPlantTiles() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"plant");
+		for (int y = 0; y < Field.ROWS; y++) {
+			for (int x = 0; x < Field.COLUMNS; x++) {
+				/* Get the cell we wish to update */
+				Cell cell = layer.getCell(x, y
+						+ (layer.getHeight() - Field.ROWS));
+				/* By default, make the tile transparent */
+				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
+				/*
+				 * If there is a plant on the plot, get its texture for our cell
+				 * to use
+				 */
+				if (farm.getPlot(x, y).getCrop() != null) {
+					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
+							.getCrop().getTextureName()));
+				}
+				cell.setTile(tile);
 			}
 		}
 	}
 
 	/**
-	 * Takes in an x, and y, value that represents user input, as well as the
-	 * type of cell that was clicked. The options for this is ground or tool
-	 * bar. If the user clicked on the tool bar, that tool is selected and the
-	 * state updates. If a plot is clicked, the tool bar that was previously
-	 * selected will affect the status of the plot and the state will update.
+	 * Syncs the player's tool bar selection. Gives the selected position the
+	 * "select" tile and gives everything else a transparent tile.
+	 * 
+	 * @param x
+	 *            the x-coordinate of the cell that the player clicked.
+	 */
+	public void syncSelectTiles(int x) {
+		TiledMapTileLayer selected = (TiledMapTileLayer) map.getLayers().get(
+				"select");
+		TiledMapTile tile;
+
+		for (int i = 0; i < selected.getWidth(); i++) {
+			if (x == i) {
+				tile = tileSet.getTile(tileMap.get("select"));
+			} else {
+				tile = tileSet.getTile(tileMap.get("transparent"));
+			}
+			selected.getCell(i, 0).setTile(tile);
+		}
+	}
+
+	public void syncToolTiles() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"tool");
+		for (int y = 0; y < ToolBar.ROWS; y++) {
+			for (int x = 0; x < ToolBar.COLUMNS; x++) {
+				/* Get the cell we wish to update */
+				Cell cell = layer.getCell(x, y);
+				/* By default, make the tile transparent */
+				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
+				/* Get the ground texture for our cell to use */
+				if (x != ToolBar.COLUMNS - 1) {
+					tile = tileSet.getTile(tileMap.get(farm.getTool(x, y)
+							.getTextureName()));
+				} else { // TODO: we're hard coding the market texture here
+							// because there is no tool to .getTextureName()
+							// from.
+					tile = tileSet.getTile(tileMap.get("market"));
+				}
+				cell.setTile(tile);
+			}
+		}
+	}
+
+	public void syncWaterTiles() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"water");
+		for (int y = 0; y < Field.ROWS; y++) {
+			for (int x = 0; x < Field.COLUMNS; x++) {
+				Cell cell = layer.getCell(x, y
+						+ (layer.getHeight() - Field.ROWS));
+				/* By default, make the tile transparent */
+				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
+				if (farm.getPlot(x, y).getIrrigation() != null) {
+					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
+							.getIrrigation().toString()));
+				}
+				cell.setTile(tile);
+			}
+		}
+	}
+
+	/**
+	 * Takes in an x, and y value (cell-based) that represents user input, as
+	 * well as the type of cell that was clicked. The options for this is ground
+	 * or tool bar. If the user clicked on the tool bar, that tool is selected
+	 * and the state updates. If a plot is clicked, the tool bar that was
+	 * previously selected will affect the status of the plot and the state will
+	 * update.
 	 * 
 	 * @param x
 	 * @param y
 	 * @param property
 	 */
 	public void updateState(int x, int y, String property) {
-		if (property.equals(layers.get("GROUND_LAYER_NAME"))) {
-			TiledMapTileLayer ground = (TiledMapTileLayer) map.getLayers().get(
-					property);
-			selection = farm.getPlot(x, y - (ground.getHeight() - Field.ROWS));
-			Cell cell = ground.getCell(x, y);
-			String tileName = cell.getTile().getProperties()
-					.get(property, String.class);
+		if (property.equals("ground")) {
+			TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+					"ground");
+			selection = farm.getPlot(x, y + (Field.ROWS - layer.getHeight()));
 			state = state.update((Plot) selection);
-
-			if (!tileName.equals(selection.getTextureName())) {
-				cell.setTile(tileSet.getTile(tileMap.get(selection
-						.getTextureName())));
-				if (selection.getTextureName().equals(
-						PlotType.PLOWEDWATERED.toString().toLowerCase())) {
-					TiledMapTileLayer selected = (TiledMapTileLayer) map
-							.getLayers().get(layers.get("WATER_LAYER_NAME"));
-					TiledMapTile selectTile = tileSet
-							.getTile(tileMap.get(((Plot) selection)
-									.getIrrigation().toString()));
-					TiledMapTile selectTranTile = tileSet.getTile(tileMap
-							.get(transparents.get("SELECTED_T_TILE_NAME")));
-					// This adds transparent water texture to all the water
-					// layer, except for the one that was selected
-					for (int i = 0; i < selected.getWidth(); i++) {
-						if (selected
-								.getCell(i, 0)
-								.getTile()
-								.getProperties()
-								.get(layers.get("WATER_LAYER_NAME"),
-										String.class)
-								.equals(layers.get("WATER_LAYER_NAME"))
-								&& (!(selected.getCell(i, 0).equals(selected
-										.getCell(x, y))))) {
-							selected.getCell(i, 0).setTile(selectTranTile);
-						}
-					}
-					// This adds a water texture to the selected cell
-					if (!(selected.getCell(x, y).getTile().getProperties()
-							.get(layers.get("WATER_LAYER_NAME"), String.class)
-							.equals(layers.get("WATER_LAYER_NAME")))) {
-						selected.getCell(x, y).setTile(selectTile);
-					}
-				}
-			}
-			/* plant */
-			if (((Plot) selection).getCrop() != null) {
-				TiledMapTileLayer selected = (TiledMapTileLayer) map
-						.getLayers().get(layers.get("PLANTS_LAYER_NAME"));
-				TiledMapTile selectTile = tileSet.getTile(tileMap
-						.get(((Plot) selection).getCrop().getTextureName()));
-				TiledMapTile selectTranTile = tileSet.getTile(tileMap
-						.get(transparents.get("PLANTS_T_TILE_NAME")));
-				// This adds transparent plants texture to all the plant layer,
-				// except for the one that was selected
-				for (int i = 0; i < selected.getWidth(); i++) {
-					if (selected.getCell(i, 0).getTile().getProperties()
-							.get(layers.get("PLANTS_LAYER_NAME"), String.class)
-							.equals(layers.get("PLANTS_LAYER_NAME"))
-							&& (!(selected.getCell(i, 0).equals(selected
-									.getCell(x, y))))) {
-						selected.getCell(i, 0).setTile(selectTranTile);
-					}
-				}
-				// This adds a carrot (as of right now) texture to the selected
-				// cell
-				if (!(selected.getCell(x, y).getTile().getProperties()
-						.get(layers.get("PLANTS_LAYER_NAME"), String.class)
-						.equals(layers.get("PLANTS_LAYER_NAME")))) {
-					selected.getCell(x, y).setTile(selectTile);
-				}
-			}
-			/* Harvest */
-			if (((Plot) selection).getTextureName().equals(
-					PlotType.GRASS.toString().toLowerCase())
-					&& ((Plot) selection).getIrrigation() != null) {
-				TiledMapTileLayer selected = (TiledMapTileLayer) map
-						.getLayers().get(layers.get("PLANTS_LAYER_NAME"));
-				TiledMapTile selectTranTile = tileSet.getTile(tileMap
-						.get(transparents.get("PLANTS_T_TILE_NAME")));
-				// This adds a transparent plant texture to the selected cell
-				// (it erases the crop texture)
-				if (!(selected.getCell(x, y).getTile().getProperties()
-						.get(layers.get("PLANTS_LAYER_NAME"), String.class)
-						.equals(layers.get("PLANTS_LAYER_NAME")))) {
-					selected.getCell(x, y).setTile(selectTranTile);
-				}
-			}
-		} else if (property.equals(layers.get("TOOLBAR_LAYER_NAME"))) {
-			TiledMapTileLayer toolBar = (TiledMapTileLayer) map.getLayers()
-					.get(property);
+		} else if (property.equals("tool")) {
 			selection = farm.getTool(x, y);
-			Cell cell = toolBar.getCell(x, y);
-			String tileName = cell.getTile().getProperties()
-					.get(property, String.class);
 			if (selection instanceof AbstractSpell) {
 				state = state.update((AbstractSpell) selection);
 			} else if (selection instanceof AbstractTool) {
@@ -352,37 +349,13 @@ public class AbstractFarmScreen extends AbstractScreen {
 			} else if (selection instanceof AbstractCrop) {
 				state = state.update((AbstractCrop) selection);
 			}
-			if (!tileName.equals(selection.getTextureName())) {
-				cell.setTile(tileSet.getTile(tileMap.get(selection
-						.getTextureName())));
-			}
-			/* selection */
-			TiledMapTileLayer selected = (TiledMapTileLayer) map.getLayers()
-					.get(layers.get("SELECTED_LAYER_NAME"));
-			TiledMapTile selectTile = tileSet.getTile(tileMap.get(layers
-					.get("SELECTED_LAYER_NAME")));
-			TiledMapTile selectTranTile = tileSet.getTile(tileMap
-					.get(transparents.get("SELECTED_T_TILE_NAME")));
-			for (int i = 0; i < selected.getWidth(); i++) {
-				if (selected.getCell(i, 0).getTile().getProperties()
-						.get(layers.get("SELECTED_LAYER_NAME"), String.class)
-						.equals(layers.get("SELECTED_LAYER_NAME"))
-						&& (!(selected.getCell(i, 0).equals(selected.getCell(x,
-								y))))) {
-					selected.getCell(i, 0).setTile(selectTranTile);
-				}
-			}
-			if (!(selected.getCell(x, y).getTile().getProperties()
-					.get(layers.get("SELECTED_LAYER_NAME"), String.class)
-					.equals(layers.get("SELECTED_LAYER_NAME")))) {
-				selected.getCell(x, y).setTile(selectTile);
-			}
+			syncSelectTiles(x);
 		}
 	}
 
 	/**
-	 * Creates or clears the Status Bar stage. Then, writes the player's
-	 * bankroll, worker count, and time remaining in the current game.
+	 * Clears the Status Bar stage. Then, writes the player's bankroll, worker
+	 * count, and time remaining in the current game.
 	 */
 	public void updateStatusBar() {
 

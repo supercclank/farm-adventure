@@ -7,15 +7,16 @@ public class SnowFarm extends AbstractFarm {
 
 	public SnowFarm() {
 		super();
-		int everyOther = 1;
+		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
 		for (int i = 0; i < seasons.length; i++) {
-			if (everyOther % 2 == 1) {
+			if (i % 2 == 0) {
 				seasons[i] = new Season(SeasonType.FALL);
 			} else {
 				seasons[i] = new Season(SeasonType.WINTER);
 			}
-			everyOther++;
 		}
+		seasons[currentSeason].update(field);
+		setupSeasonTimer();
 	}
 
 }

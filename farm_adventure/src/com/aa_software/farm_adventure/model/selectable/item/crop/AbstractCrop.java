@@ -3,13 +3,14 @@ package com.aa_software.farm_adventure.model.selectable.item.crop;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 
 public abstract class AbstractCrop extends AbstractItem {
-	protected int growthTime;
+	public static final float DEFAULT_GROWTH_TIME = 5;
+	protected float growthTime;
 	protected int output;
 
 	public AbstractCrop() {
 	}
-	
-	public int getGrowthTime() {
+
+	public float getGrowthTime() {
 		return growthTime;
 	}
 
@@ -23,7 +24,7 @@ public abstract class AbstractCrop extends AbstractItem {
 		// TODO: change
 	}
 
-	public void setGrowthTime(int growthTime) {
+	public void setGrowthTime(float growthTime) {
 		this.growthTime = growthTime;
 	}
 

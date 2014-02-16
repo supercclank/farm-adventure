@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class ScytheTool extends AbstractTool {
-	public static final String TEXTURE_NAME = "scythe";
+	public static final String TEXTURE_NAME = "scytheTool";
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;
 	/* measured in seconds */

@@ -6,14 +6,15 @@ import com.aa_software.farm_adventure.model.season.SeasonType;
 public class RainforestFarm extends AbstractFarm {
 	public RainforestFarm() {
 		super();
-		int everyOther = 1;
+		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
 		for (int i = 0; i < seasons.length; i++) {
-			if (everyOther % 2 == 1) {
+			if (i % 2 == 0) {
 				seasons[i] = new Season(SeasonType.SUMMER);
 			} else {
 				seasons[i] = new Season(SeasonType.SPRING);
 			}
-			everyOther++;
 		}
+		seasons[currentSeason].update(field);
+		setupSeasonTimer();
 	}
 }

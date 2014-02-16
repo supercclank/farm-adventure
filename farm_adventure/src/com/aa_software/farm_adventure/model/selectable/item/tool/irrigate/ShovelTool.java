@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class ShovelTool extends AbstractTool {
-	public static final String TEXTURE_NAME = "hoe";
+	public static final String TEXTURE_NAME = "shovelTool";
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;
 	/* measured in seconds */
