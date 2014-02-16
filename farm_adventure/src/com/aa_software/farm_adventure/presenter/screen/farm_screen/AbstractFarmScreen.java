@@ -60,6 +60,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 */
 	private final String[] allLayers = { "ground", "water", "plant", "select",
 			"tool" };
+	private final int FIELD_STARTING_Y = 2;
 
 	/* Stage */
 	public static final float FONT_SCALE = (float) (Gdx.graphics.getHeight() * .0001);
@@ -101,11 +102,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			camera.unproject(touchPos);
 			int xCell = (int) (touchPos.x / TILE_SIZE);
 			int yCell = (int) (touchPos.y / TILE_SIZE);
-			if (yCell > 1) {
-				updateState(xCell, yCell, "ground");
-			} else if (yCell == 0) {
-				updateState(xCell, yCell, "tool");
-			}
+			updateState(xCell, yCell);
 		}
 	}
 
@@ -220,9 +217,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 				"ground");
 		for (int y = 0; y < Field.ROWS; y++) {
 			for (int x = 0; x < Field.COLUMNS; x++) {
-				/* Get the cell we wish to update */
-				Cell cell = layer.getCell(x, y
-						+ (layer.getHeight() - Field.ROWS));
+				/* Get the cell we wish to update, converting field Y to cell Y */
+				Cell cell = layer.getCell(x, y + FIELD_STARTING_Y);
 				/* By default, make the tile transparent */
 				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
 				/* Get the ground texture for our cell to use */
@@ -331,13 +327,11 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 * @param y
 	 * @param property
 	 */
-	public void updateState(int x, int y, String property) {
-		if (property.equals("ground")) {
-			TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
-					"ground");
-			selection = farm.getPlot(x, y + (Field.ROWS - layer.getHeight()));
+	public void updateState(int x, int y) {
+		if (y >= FIELD_STARTING_Y) {
+			selection = farm.getPlot(x, y - FIELD_STARTING_Y);
 			state = state.update((Plot) selection);
-		} else if (property.equals("tool")) {
+		} else if (y == 0) {
 			selection = farm.getTool(x, y);
 			if (selection instanceof AbstractSpell) {
 				state = state.update((AbstractSpell) selection);
