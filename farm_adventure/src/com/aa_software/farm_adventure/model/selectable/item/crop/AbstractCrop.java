@@ -17,17 +17,6 @@ public abstract class AbstractCrop extends AbstractItem {
 	public int getOutput() {
 		return output;
 	}
-
-	@Override
-	public String getTextureName() {
-		return "arbitrary";
-		// TODO: change
-	}
-	
-	public String getSeedName() {
-		return "arbitrary";
-		// TODO: change
-	}
 	
 	public void setGrowthTime(float growthTime) {
 		this.growthTime = growthTime;
@@ -37,9 +26,11 @@ public abstract class AbstractCrop extends AbstractItem {
 		this.output = output;
 	}
 	
-	// TODO: remove.. for testing
-	public AbstractCrop getSeed(){
-		AbstractCrop crop = null;
-		return crop;
+	public String getSeedName() {
+		return "seed";
+	}
+	
+	public String getTextureName() {
+		return "texture";
 	}
 }

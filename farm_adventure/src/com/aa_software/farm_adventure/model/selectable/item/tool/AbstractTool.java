@@ -6,7 +6,6 @@ public class AbstractTool extends AbstractItem {
 
 	protected float workTime;
 
-	@Override
 	public String getTextureName() {
 		// TODO remove
 		System.out.println(getClass().getSimpleName());

@@ -1,9 +1,8 @@
 package com.aa_software.farm_adventure.model.selectable.item;
 
-import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
-public abstract class AbstractItem implements ISelectable {
+public abstract class AbstractItem {
 
 	protected int cost;
 	protected int value;

@@ -103,7 +103,6 @@ public abstract class AbstractWorker extends AbstractItem {
 		return level;
 	}
 
-	@Override
 	public String getTextureName() {
 		return "arbitrary";
 		// TODO: change

@@ -9,7 +9,6 @@ public abstract class AbstractSpell extends AbstractItem {
 		return spellLength;
 	}
 
-	@Override
 	public String getTextureName() {
 		return "arbitrary";
 		// TODO: change

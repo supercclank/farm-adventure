@@ -24,7 +24,6 @@ public class BananaCrop extends AbstractCrop {
 		return TEXTURE_NAME;
 	}
 	
-	@Override
 	public String getSeedName() {
 		return SEED_NAME;
 	}

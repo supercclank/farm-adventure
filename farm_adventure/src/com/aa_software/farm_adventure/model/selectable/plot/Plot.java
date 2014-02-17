@@ -1,9 +1,8 @@
 package com.aa_software.farm_adventure.model.selectable.plot;
 
-import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 
-public class Plot implements ISelectable {
+public class Plot {
 	private AbstractCrop crop;
 	private Irrigation irrigation;
 	private PlotType plotType;
@@ -35,7 +34,6 @@ public class Plot implements ISelectable {
 		return plotType;
 	}
 
-	@Override
 	public String getTextureName() {
 		/*
 		 * if(irrigation != null) { return plotType.toString().toLowerCase() +

@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class AbstractScreen implements Screen {
 	protected final FarmAdventure game;
-	protected final Stage stage;
+	protected final Stage statusBarStage;
 
 	protected OrthographicCamera camera;
 	protected OrthogonalTiledMapRenderer renderer;
@@ -25,7 +25,7 @@ public abstract class AbstractScreen implements Screen {
 	public AbstractScreen(FarmAdventure game) {
 		// TODO: initiate cameras and maps
 		this.game = game;
-		this.stage = new Stage(Gdx.graphics.getWidth(),
+		this.statusBarStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 	}
 
@@ -39,7 +39,7 @@ public abstract class AbstractScreen implements Screen {
 	 *            The component that is intended to be drawn
 	 */
 	protected void addActor(Actor actor) {
-		stage.addActor(actor);
+		statusBarStage.addActor(actor);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public abstract class AbstractScreen implements Screen {
 		// (1) process the game logic
 
 		// update the actors
-		stage.act(delta);
+		statusBarStage.act(delta);
 
 		// (2) draw the result
 		// the following code clears the screen with the given RGB color (black)
@@ -86,10 +86,10 @@ public abstract class AbstractScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// draw the actors
-		stage.draw();
+		statusBarStage.draw();
 
 		// draw the table debug lines, will do nothing if not in debug mode
-		Table.drawDebug(stage);
+		Table.drawDebug(statusBarStage);
 	}
 
 	/* Getters/Setters for resources */
@@ -111,6 +111,6 @@ public abstract class AbstractScreen implements Screen {
 		FarmAdventure.log("Showing screen: " + getName());
 
 		// Responsible for all touch and click events
-		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(statusBarStage);
 	}
 }

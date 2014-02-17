@@ -11,7 +11,6 @@ import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.DesertFarm;
-import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.BananaCrop;
@@ -23,7 +22,6 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
@@ -92,7 +90,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13);
 
-	protected ISelectable selection;
+	protected AbstractItem selection;
 	protected ISelectionState state;
 	protected AbstractFarm farm;
 
@@ -127,7 +125,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			camera.unproject(touchPos);
 			int xCell = (int) (touchPos.x / TILE_SIZE);
 			int yCell = (int) (touchPos.y / TILE_SIZE);
-			updateState(xCell, yCell,null);
+			updateState(xCell, yCell);
 		}
 	}
 
@@ -182,7 +180,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			renderer.render();
 
 			updateStatusBar();
-			stage.draw();
+			statusBarStage.draw();
 			plantMenuStage.draw();
 		}
 	}
@@ -226,7 +224,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 	public void show() {
 		setupGameTimer();
 		
-
 		// TODO: We should try to handle screen sizes more appropriately than
 		// stretching.
 		map = new TmxMapLoader().load(TILE_MAP_NAME);
@@ -292,7 +289,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 				 * to use
 				 */
 				if (farm.getPlot(x, y).getCrop() != null) {
-					System.out.println("CROP: " + farm.getPlot(x, y).getCrop().getTextureName());
 					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
 							.getCrop().getTextureName()));
 				}
@@ -386,13 +382,12 @@ public class AbstractFarmScreen extends AbstractScreen {
 	}
 	
 	/**
-	 * Syncs the tool bar cell in the toolbar to match the current seed
+	 * Syncs the tool bar cell in the tool bar to match the current seed
 	 */
 	public void syncSeedTile() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
 				"seed");
 		Cell cell = layer.getCell(PLANT_TOOL_X, PLANT_TOOL_Y);
-		//System.out.println("This is the seed: " + ((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).getSeed().getSeedName());
 		TiledMapTile tile = tileSet.getTile(tileMap.get(((AbstractPlantTool) farm.getTool(
 				PLANT_TOOL_X, PLANT_TOOL_Y)).getSeed().getSeedName()));
 		cell.setTile(tile);
@@ -410,10 +405,9 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 * @param y
 	 * @param property
 	 */
-	public void updateState(int x, int y, AbstractItem property) {
+	public void updateState(int x, int y) {
 		if (y >= FIELD_STARTING_Y) {
-			selection = farm.getPlot(x, y - FIELD_STARTING_Y);
-			state = state.update((Plot) selection);
+			state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 		} else if (y == 0) {
 			if(selection != null && selection.equals(farm.getTool(x,y))){
 				if(selection instanceof AbstractPlantTool){
@@ -430,7 +424,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 					state = state.update((AbstractWorker) selection);
 				} else if (selection instanceof AbstractUpgrade) {
 					state = state.update((AbstractUpgrade) selection);
-				} else if (property instanceof AbstractCrop) {
+				} else if (selection instanceof AbstractCrop) {
 					state = state.update((AbstractCrop) selection);
 				}
 				syncSelectTiles(x);
@@ -445,7 +439,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 	public void updateStatusBar() {
 
 		/* Stage setup */
-		stage.clear();
+		statusBarStage.clear();
 
 		/* Font setup */
 		BitmapFont fontType = new BitmapFont();
@@ -473,15 +467,16 @@ public class AbstractFarmScreen extends AbstractScreen {
 		workers.setPosition(WORKER_LABEL_X, WORKER_LABEL_Y);
 
 		/* Stage setup */
-		stage.addActor(bankBalance);
-		stage.addActor(timeRemaining);
-		stage.addActor(workers);
+		statusBarStage.addActor(bankBalance);
+		statusBarStage.addActor(timeRemaining);
+		statusBarStage.addActor(workers);
 	}
 	
 	/**
 	 * Sets up the window to choose a seed to plant
 	 */
 	public void setupSeedWindow(){
+		
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
 		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
@@ -520,9 +515,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				plantWindow.setVisible(false);
-				//farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y).update(new CarrotCrop());
-				//selection = null;
-				updateState(PLANT_TOOL_X, PLANT_TOOL_Y,new CarrotCrop());
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new CarrotCrop());
 				return true;
 			}
 		});
@@ -531,9 +524,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				plantWindow.setVisible(false);
-				//farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y).update(new BeetCrop());
-				//selection = null;
-				updateState(PLANT_TOOL_X, PLANT_TOOL_Y, new BeetCrop());
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BeetCrop());
 				return true;
 			}
 		});
@@ -542,9 +533,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				plantWindow.setVisible(false);
-				//farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y).update(new RiceCrop());
-				//selection = null;
-				updateState(PLANT_TOOL_X, PLANT_TOOL_Y, new RiceCrop());
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new RiceCrop());
 				return true;
 			}
 		});
@@ -553,9 +542,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				plantWindow.setVisible(false);
-				//farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y).update(new BananaCrop());
-				selection = null;
-				updateState(PLANT_TOOL_X, PLANT_TOOL_Y, new BananaCrop());
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BananaCrop());
 				return true;
 			}
 		});
