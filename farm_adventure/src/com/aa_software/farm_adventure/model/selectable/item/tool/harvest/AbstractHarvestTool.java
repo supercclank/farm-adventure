@@ -13,7 +13,7 @@ public class AbstractHarvestTool extends AbstractTool {
 		if (crop != null) {
 			// TODO: how to add the crop to inventory?
 			plot.setCrop(null);
-			plot.setPlotType(PlotType.GRASS);
+			plot.setPlotType(PlotType.UNPLOWEDWATERED);
 		}
 	}
 	

@@ -13,6 +13,10 @@ public class AbstractPlowTool extends AbstractTool{
 			} else {
 				plot.setPlotType(PlotType.PLOWEDWATERED);
 			}
+		}else if (plot.getPlotType().equals(PlotType.UNPLOWEDUNWATERED)){
+			plot.setPlotType(PlotType.PLOWEDUNWATERED);
+		}else if (plot.getPlotType().equals(PlotType.UNPLOWEDWATERED)){
+			plot.setPlotType(PlotType.PLOWEDWATERED);
 		}
 	}
 	
