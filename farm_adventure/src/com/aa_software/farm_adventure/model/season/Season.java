@@ -76,6 +76,9 @@ public class Season {
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
 				field.getPlot(x, y).setUsable(true);
+				if(field.getPlot(x, y).getPlotType().equals(PlotType.LEAVES)){
+					field.getPlot(x, y).setPlotType(PlotType.GRASS);
+				}
 			}
 		}
 
@@ -107,9 +110,9 @@ public class Season {
 					roll = random.nextInt(10);
 					if (roll < 10 * FALL_LEAF_COVER_MOD) {
 						Plot plot = field.getPlot(x, y);
+						plot.setPlotType(PlotType.LEAVES);
 						plot.setCrop(null);
 						plot.setUsable(false);
-						plot.setPlotType(PlotType.GRASS);
 					}
 				}
 			}
