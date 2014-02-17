@@ -12,6 +12,7 @@ import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
@@ -62,7 +63,7 @@ public abstract class AbstractFarm {
 	public AbstractTool getTool(int x, int y) {
 		return toolBar.getTool(x, y);
 	}
-
+	
 	/**
 	 * Sets up a task that will increment the season (up to its maximum) after
 	 * the season's cycle time has passed. Tasks spawned this way cancel

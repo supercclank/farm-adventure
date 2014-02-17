@@ -15,6 +15,7 @@ public class ToolSelectionState extends AbstractSelectionState {
 
 	@Override
 	public ToolSelectionState update(AbstractCrop crop) {
+		selection.update(crop);
 		return new ToolSelectionState((AbstractTool) selection);
 	}
 

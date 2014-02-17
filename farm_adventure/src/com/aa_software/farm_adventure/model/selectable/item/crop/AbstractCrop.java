@@ -23,12 +23,23 @@ public abstract class AbstractCrop extends AbstractItem {
 		return "arbitrary";
 		// TODO: change
 	}
-
+	
+	public String getSeedName() {
+		return "arbitrary";
+		// TODO: change
+	}
+	
 	public void setGrowthTime(float growthTime) {
 		this.growthTime = growthTime;
 	}
 
 	public void setOutput(int output) {
 		this.output = output;
+	}
+	
+	// TODO: remove.. for testing
+	public AbstractCrop getSeed(){
+		AbstractCrop crop = null;
+		return crop;
 	}
 }
