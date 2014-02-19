@@ -8,15 +8,15 @@ import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorke
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
 public interface ISelectionState {
-	ISelectionState update(Plot plot);
+	ISelectionState update(AbstractCrop crop);
 
 	ISelectionState update(AbstractSpell spell);
 
-	ISelectionState update(AbstractUpgrade upgrade);
-
 	ISelectionState update(AbstractTool tool);
+
+	ISelectionState update(AbstractUpgrade upgrade);
 
 	ISelectionState update(AbstractWorker worker);
 
-	ISelectionState update(AbstractCrop crop);
+	ISelectionState update(Plot plot);
 }

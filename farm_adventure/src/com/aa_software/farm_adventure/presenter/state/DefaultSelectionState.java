@@ -15,27 +15,33 @@ public class DefaultSelectionState extends AbstractSelectionState {
 		return new DefaultSelectionState();
 	}
 
-	public DefaultSelectionState update(Plot plot) {
+	@Override
+	public DefaultSelectionState update(AbstractCrop crop) {
 		return new DefaultSelectionState();
 	}
 
+	@Override
 	public SpellSelectionState update(AbstractSpell spell) {
 		return new SpellSelectionState(spell);
 	}
 
-	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
-		return new UpgradeSelectionState(upgrade);
-	}
-
+	@Override
 	public ToolSelectionState update(AbstractTool tool) {
 		return new ToolSelectionState(tool);
 	}
 
+	@Override
+	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
+		return new UpgradeSelectionState(upgrade);
+	}
+
+	@Override
 	public DefaultSelectionState update(AbstractWorker worker) {
 		return new DefaultSelectionState();
 	}
 
-	public DefaultSelectionState update(AbstractCrop crop) {
+	@Override
+	public DefaultSelectionState update(Plot plot) {
 		return new DefaultSelectionState();
 	}
 }

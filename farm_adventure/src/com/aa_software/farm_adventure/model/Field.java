@@ -17,35 +17,17 @@ public class Field {
 		initializePlots(columns, rows);
 	}
 
-	public void initializePlots(int columns, int rows) {
+	public Plot getPlot(int x, int y) {
+		return plots2D[x][y];
+	}
+
+	public final void initializePlots(int columns, int rows) {
 		plots2D = new Plot[columns][rows];
 		for (Plot[] plots : plots2D) {
 			for (int i = 0; i < plots.length; i++) {
 				plots[i] = new Plot(PlotType.GRASS);
 			}
 		}
-	}
-
-	/*
-	 * This is just a method for testing purposes.
-	 */
-	public void randomizeField() {
-		if (plots2D == null) {
-			initializePlots(COLUMNS, ROWS);
-		}
-		for (Plot[] plots : plots2D) {
-			for (int i = 0; i < plots.length; i++) {
-				if ((i % 2) == 0) {
-					plots[i] = new Plot(PlotType.GRASS);
-				} else {
-					plots[i] = new Plot(PlotType.PLOWEDUNWATERED);
-				}
-			}
-		}
-	}
-
-	public Plot getPlot(int x, int y) {
-		return plots2D[x][y];
 	}
 
 	public void setPlot(int x, int y, Plot plot) {

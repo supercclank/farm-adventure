@@ -12,30 +12,36 @@ public class SpellSelectionState extends AbstractSelectionState {
 		this.selection = selection;
 	}
 
-	public SpellSelectionState update(Plot plot) {
-		selection.update(plot);
+	@Override
+	public SpellSelectionState update(AbstractCrop crop) {
+		selection.update(crop);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
 
+	@Override
 	public SpellSelectionState update(AbstractSpell spell) {
 		return new SpellSelectionState(spell);
 	}
 
-	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
-		return new UpgradeSelectionState(upgrade);
-	}
-
+	@Override
 	public ToolSelectionState update(AbstractTool tool) {
 		return new ToolSelectionState(tool);
 	}
 
+	@Override
+	public UpgradeSelectionState update(AbstractUpgrade upgrade) {
+		return new UpgradeSelectionState(upgrade);
+	}
+
+	@Override
 	public SpellSelectionState update(AbstractWorker worker) {
 		selection.update(worker);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
 
-	public SpellSelectionState update(AbstractCrop crop) {
-		selection.update(crop);
+	@Override
+	public SpellSelectionState update(Plot plot) {
+		selection.update(plot);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
 }

@@ -9,12 +9,12 @@ public abstract class AbstractSpell extends AbstractItem {
 		return spellLength;
 	}
 
-	public void setSpellLength(float spellLength) {
-		this.spellLength = spellLength;
-	}
-
 	public String getTextureName() {
 		return "arbitrary";
 		// TODO: change
+	}
+
+	public void setSpellLength(float spellLength) {
+		this.spellLength = spellLength;
 	}
 }

@@ -6,18 +6,18 @@ public class AbstractTool extends AbstractItem {
 
 	protected float workTime;
 
+	public String getTextureName() {
+		// TODO remove
+		System.out.println(getClass().getSimpleName());
+		return this.getClass().getSimpleName();
+	}
+
 	public float getWorkTime() {
 		return workTime;
 	}
 
 	public void setWorkTime(float workTime) {
 		this.workTime = workTime;
-	}
-
-	public String getTextureName() {
-		// TODO remove
-		System.out.println(getClass().getSimpleName());
-		return this.getClass().getSimpleName();
 	}
 
 }

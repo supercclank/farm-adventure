@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry including="tile_maps/tileMap128.tmx|tile_maps/tileSet128.png" kind="src" path="assets"/>
+	<classpathentry including="skin/|textures/|tilemap/" kind="src" path="assets"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/farm_adventure"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/gdx-backend-lwjgl.jar" sourcepath="libs/gdx-backend-lwjgl-sources.jar"/>

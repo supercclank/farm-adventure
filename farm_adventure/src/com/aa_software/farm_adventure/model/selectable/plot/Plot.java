@@ -1,39 +1,37 @@
 package com.aa_software.farm_adventure.model.selectable.plot;
 
-import com.aa_software.farm_adventure.model.selectable.ISelectable;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 
-public class Plot implements ISelectable {
+public class Plot {
 	private AbstractCrop crop;
 	private Irrigation irrigation;
 	private PlotType plotType;
+	private boolean isUsable;
 
 	public Plot(PlotType plotType) {
 		this.crop = null;
 		this.irrigation = null;
 		this.plotType = plotType;
+		this.isUsable = true;
 	}
 
 	public Plot(PlotType plotType, Irrigation irrigation) {
 		this.crop = null;
 		this.irrigation = irrigation;
 		this.plotType = plotType;
+		this.isUsable = true;
+	}
+
+	public AbstractCrop getCrop() {
+		return crop;
 	}
 
 	public Irrigation getIrrigation() {
 		return irrigation;
 	}
 
-	public void setIrrigation(Irrigation irrigation) {
-		this.irrigation = irrigation;
-	}
-
 	public PlotType getPlotType() {
 		return plotType;
-	}
-
-	public void setPlotType(PlotType plotType) {
-		this.plotType = plotType;
 	}
 
 	public String getTextureName() {
@@ -44,16 +42,28 @@ public class Plot implements ISelectable {
 		return plotType.toString().toLowerCase();
 	}
 
-	public AbstractCrop getCrop() {
-		return crop;
+	public boolean isUsable() {
+		return isUsable;
 	}
 
-	public boolean setCrop(AbstractCrop crop) {
-		if (plotType == PlotType.PLOWEDWATERED) {
+	public void setCrop(AbstractCrop crop) {
+		if (plotType == PlotType.PLOWEDWATERED && isUsable) {
 			this.crop = crop;
-			return true;
 		}
-		return false;
+	}
+
+	public void setIrrigation(Irrigation irrigation) {
+		this.irrigation = irrigation;
+	}
+
+	public void setPlotType(PlotType plotType) {
+		if (isUsable) {
+			this.plotType = plotType;
+		}
+	}
+
+	public void setUsable(boolean isUsable) {
+		this.isUsable = isUsable;
 	}
 
 }

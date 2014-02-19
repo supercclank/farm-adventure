@@ -38,11 +38,21 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.workRate = calculateWorkRate();
 	}
 
-	public int getLevel() {
-		return level;
+	public final void addExperience() {
+		if (level != MAX_LEVEL) {
+			this.experience++;
+			checkForLevelUp();
+		}
 	}
 
-	public int calculateExperience() {
+	public final void addExperience(int experience) {
+		if (level != MAX_LEVEL) {
+			this.experience += experience;
+			checkForLevelUp();
+		}
+	}
+
+	public final int calculateExperience() {
 		int experience = DEFAULT_EXPERIENCE;
 		if (this.level != DEFAULT_LEVEL) {
 			experience = calculateLevelUpThresh();
@@ -50,28 +60,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		return experience;
 	}
 
-	public void addExperience() {
-		if (level != MAX_LEVEL) {
-			this.experience++;
-			checkForLevelUp();
-		}
-	}
-
-	public void addExperience(int experience) {
-		if (level != MAX_LEVEL) {
-			this.experience += experience;
-			checkForLevelUp();
-		}
-	}
-
-	private void checkForLevelUp() {
-		int threshExperience = calculateLevelUpThresh();
-		if (experience >= threshExperience) {
-			level++;
-		}
-	}
-
-	private int calculateLevelUpThresh() {
+	private final int calculateLevelUpThresh() {
 		/* level 0 = exp thresh; level 1 = exp thresh + 2*exp thresh; etc... */
 		int threshExperience = LEVEL_UP_EXPERIENCE_THRESH;
 		if (level > DEFAULT_LEVEL) {
@@ -82,16 +71,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		return threshExperience;
 	}
 
-	public int getWage() {
-		wage = calculateWage();
-		return wage;
-	}
-
-	public void setWage(int wage) {
-		this.wage = wage;
-	}
-
-	private int calculateWage() {
+	private final int calculateWage() {
 		int wage = DEFAULT_WAGE;
 		/* level 0 = 200; level 1 = 200 + 100; level 2 = 200 + 100 + 150 */
 		if (level > DEFAULT_LEVEL) {
@@ -102,7 +82,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		return wage;
 	}
 
-	private int calculateWorkRate() {
+	private final int calculateWorkRate() {
 		int workRate = DEFAULT_WORK_RATE;
 		if (level > DEFAULT_LEVEL) {
 			for (int i = 1; i < level + 1; i++) {
@@ -112,16 +92,36 @@ public abstract class AbstractWorker extends AbstractItem {
 		return workRate;
 	}
 
-	public int getWorkRate() {
-		return workRate;
+	private final void checkForLevelUp() {
+		int threshExperience = calculateLevelUpThresh();
+		if (experience >= threshExperience) {
+			level++;
+		}
 	}
 
-	public void setWorkRate(int workRate) {
-		this.workRate = workRate;
+	public int getLevel() {
+		return level;
 	}
 
 	public String getTextureName() {
 		return "arbitrary";
 		// TODO: change
+	}
+
+	public int getWage() {
+		wage = calculateWage();
+		return wage;
+	}
+
+	public int getWorkRate() {
+		return workRate;
+	}
+
+	public void setWage(int wage) {
+		this.wage = wage;
+	}
+
+	public void setWorkRate(int workRate) {
+		this.workRate = workRate;
 	}
 }

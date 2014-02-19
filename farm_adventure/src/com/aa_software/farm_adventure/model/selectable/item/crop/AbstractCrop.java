@@ -3,27 +3,34 @@ package com.aa_software.farm_adventure.model.selectable.item.crop;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 
 public abstract class AbstractCrop extends AbstractItem {
-	protected int growthTime;
+	public static final float DEFAULT_GROWTH_TIME = 5;
+	protected float growthTime;
 	protected int output;
 
-	public int getGrowthTime() {
-		return growthTime;
+	public AbstractCrop() {
 	}
 
-	public void setGrowthTime(int growthTime) {
-		this.growthTime = growthTime;
+	public float getGrowthTime() {
+		return growthTime;
 	}
 
 	public int getOutput() {
 		return output;
 	}
+	
+	public void setGrowthTime(float growthTime) {
+		this.growthTime = growthTime;
+	}
 
 	public void setOutput(int output) {
 		this.output = output;
 	}
-
+	
+	public String getSeedName() {
+		return "seed";
+	}
+	
 	public String getTextureName() {
-		return "arbitrary";
-		// TODO: change
+		return "texture";
 	}
 }

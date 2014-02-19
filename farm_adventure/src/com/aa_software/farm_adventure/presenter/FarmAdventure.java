@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.GLTexture;
 
 public class FarmAdventure extends Game {
 
@@ -17,56 +17,7 @@ public class FarmAdventure extends Game {
 	public static final boolean DEV_MODE = true;
 
 	// a libgdx helper class that logs the current FPS each second
-	private static FPSLogger fpsLogger;
-
-	@Override
-	public void create() {
-		Texture.setEnforcePotImages(false);
-		// here is where we need to render the start screen
-		// setScreen(new TutorialFarmScreen());
-
-		log("Creating game");
-		fpsLogger = new FPSLogger();
-		// setScreen(new MainMenuScreen(this));
-		MainMenuScreen mms = new MainMenuScreen(this);
-		super.setScreen(mms);
-	}
-
-	public void dispose() {
-		super.dispose();
-
-		log("Disposing Game");
-	}
-
-	public void render() {
-		super.render();
-
-		logFPS();
-	}
-
-	public void resize(int width, int height) {
-		super.resize(width, height);
-
-		log("Resizing game to: " + width + " x " + height);
-	}
-
-	public void pause() {
-		super.pause();
-
-		log("Pausing Game");
-	}
-
-	public void resume() {
-		super.resume();
-
-		log("Resuming Game");
-	}
-
-	public void setScreen(Screen screen) {
-		super.setScreen(screen);
-
-		log("Setting screen: " + screen.getClass().getSimpleName());
-	}
+	private static FPSLogger FpsLogger;
 
 	/**
 	 * Whenever the game is in developer mode everything is logged in console or
@@ -85,6 +36,61 @@ public class FarmAdventure extends Game {
 	 */
 	public static void logFPS() {
 		if (DEV_MODE)
-			fpsLogger.log();
+			FpsLogger.log();
+	}
+
+	@Override
+	public void create() {
+		GLTexture.setEnforcePotImages(false);
+		// here is where we need to render the start screen
+		// setScreen(new TutorialFarmScreen());
+
+		log("Creating game");
+		FpsLogger = new FPSLogger();
+		// setScreen(new MainMenuScreen(this));
+		MainMenuScreen mms = new MainMenuScreen(this);
+		super.setScreen(mms);
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		log("Disposing Game");
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+
+		log("Pausing Game");
+	}
+
+	@Override
+	public void render() {
+		super.render();
+
+		logFPS();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+
+		log("Resizing game to: " + width + " x " + height);
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+
+		log("Resuming Game");
+	}
+
+	@Override
+	public void setScreen(Screen screen) {
+		super.setScreen(screen);
+
+		log("Setting screen: " + screen.getClass().getSimpleName());
 	}
 }
