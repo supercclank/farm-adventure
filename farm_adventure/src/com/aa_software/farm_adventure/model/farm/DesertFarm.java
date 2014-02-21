@@ -11,6 +11,7 @@ public class DesertFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SUMMER);
 		}
+		field.createDesertField();
 		seasons[currentSeason].update(field);
 		setupSeasonTimer();
 	}

@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.farm;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
+import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.MolesSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.ScytheTool;
@@ -20,6 +21,7 @@ public class TutorialFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SPRING);
 		}
+		field.createTutorialField();
 		//field.setPlot(field.COLUMNS-1, field.ROWS-1, new Plot(PlotType.WATER));
 		//field.setPlot(field.COLUMNS-2, field.ROWS-1, new Plot(PlotType.WATER));
 		//field.setPlot(field.COLUMNS-1, field.ROWS-2, new Plot(PlotType.WATER));

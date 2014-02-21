@@ -51,6 +51,10 @@ public abstract class AbstractFarm {
 	public Season getCurrentSeason() {
 		return seasons[currentSeason];
 	}
+	
+	public Season[] getSeasons() {
+		return seasons;
+	}
 
 	public Field getField() {
 		return field;

@@ -22,14 +22,70 @@ public class Field {
 	}
 
 	public final void initializePlots(int columns, int rows) {
-		plots2D = new Plot[columns][rows];
+		/*plots2D = new Plot[columns][rows];
 		for (Plot[] plots : plots2D) {
 			for (int i = 0; i < plots.length; i++) {
 				plots[i] = new Plot(PlotType.GRASS);
 			}
-		}
+		}*/
 	}
 
+	public void createTutorialField() {
+		plots2D = new Plot[COLUMNS][ROWS];
+		for (int i = 0; i < plots2D.length; i++) {
+			for (int j = 0; j < plots2D[i].length; j++) {
+				if (i == 2) {
+					plots2D[i][j] = new Plot(PlotType.WATER);
+				}
+				else {
+					plots2D[i][j] = new Plot(PlotType.GRASS);
+				}
+			}
+		}
+	}
+	
+	public void createRainforestField() {
+		plots2D = new Plot[COLUMNS][ROWS];
+		for (int i = 0; i < plots2D.length; i++) {
+			for (int j = 0; j < plots2D[i].length; j++) {
+				if (((i + j) % 3) == 0) {
+					plots2D[i][j] = new Plot(PlotType.WATER);
+				}
+				else {
+					plots2D[i][j] = new Plot(PlotType.GRASS);
+				}
+			}
+		}
+	}
+	
+	public void createDesertField() {
+		plots2D = new Plot[COLUMNS][ROWS];
+		for (int i = 0; i < plots2D.length; i++) {
+			for (int j = 0; j < plots2D[i].length; j++) {
+				if (i == COLUMNS - 1 && j == 0) {
+					plots2D[i][j] = new Plot(PlotType.WATER);
+				}
+				else {
+					plots2D[i][j] = new Plot(PlotType.GRASS);
+				}
+			}
+		}
+	}
+	
+	public void createSnowField() {
+		plots2D = new Plot[COLUMNS][ROWS];
+		for (int i = 0; i < plots2D.length; i++) {
+			for (int j = 0; j < plots2D[i].length; j++) {
+				if (j == 2 && (i == 1 || i ==2 || i ==3)) {
+					plots2D[i][j] = new Plot(PlotType.WATER);
+				}
+				else {
+					plots2D[i][j] = new Plot(PlotType.GRASS);
+				}
+			}
+		}
+	}
+	
 	public void setPlot(int x, int y, Plot plot) {
 		plots2D[x][y] = plot;
 	}
