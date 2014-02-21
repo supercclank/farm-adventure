@@ -18,13 +18,13 @@ public class BananaCrop extends AbstractCrop {
 	public BananaCrop(int growthTime, int output, int cost, int value) {
 		super();
 	}
-	
+
+	public String getSeedName() {
+		return SEED_NAME;
+	}
+
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
-	}
-	
-	public String getSeedName() {
-		return SEED_NAME;
 	}
 }

@@ -35,10 +35,6 @@ public class Plot {
 	}
 
 	public String getTextureName() {
-		/*
-		 * if(irrigation != null) { return plotType.toString().toLowerCase() +
-		 * IRRIGATION_TEXTURE_NAME; }
-		 */
 		return plotType.toString().toLowerCase();
 	}
 
@@ -47,13 +43,15 @@ public class Plot {
 	}
 
 	public void setCrop(AbstractCrop crop) {
-		if (plotType == PlotType.PLOWEDWATERED && isUsable) {
+		if (plotType == PlotType.PLOWEDWATERED) {
 			this.crop = crop;
 		}
 	}
 
 	public void setIrrigation(Irrigation irrigation) {
-		this.irrigation = irrigation;
+		if (isUsable) {
+			this.irrigation = irrigation;
+		}
 	}
 
 	public void setPlotType(PlotType plotType) {

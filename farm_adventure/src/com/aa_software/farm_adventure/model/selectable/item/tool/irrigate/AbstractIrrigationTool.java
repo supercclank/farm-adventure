@@ -7,6 +7,10 @@ import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class AbstractIrrigationTool extends AbstractTool {
 
+	public String getTextureName() {
+		return "arbitrary";
+	}
+
 	@Override
 	public void update(Plot plot) {
 		// Irrigation oldIrrigation = plot.getIrrigation();
@@ -15,9 +19,5 @@ public class AbstractIrrigationTool extends AbstractTool {
 			plot.setPlotType(PlotType.PLOWEDWATERED);
 			plot.setIrrigation(Irrigation.TOP_LEFT_RIGHT_BOTTOM);
 		}
-	}
-	
-	public String getTextureName() {
-		return "arbitrary";
 	}
 }

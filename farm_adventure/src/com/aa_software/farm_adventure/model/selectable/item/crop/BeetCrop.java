@@ -37,13 +37,13 @@ public class BeetCrop extends AbstractCrop {
 			this.value = DEFAULT_VALUE;
 		}
 	}
-	
+
+	public String getSeedName() {
+		return SEED_NAME;
+	}
+
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
-	}
-	
-	public String getSeedName() {
-		return SEED_NAME;
 	}
 }

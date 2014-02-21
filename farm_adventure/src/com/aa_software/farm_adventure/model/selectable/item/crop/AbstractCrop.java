@@ -17,20 +17,20 @@ public abstract class AbstractCrop extends AbstractItem {
 	public int getOutput() {
 		return output;
 	}
-	
+
+	public String getSeedName() {
+		return "seed";
+	}
+
+	public String getTextureName() {
+		return "texture";
+	}
+
 	public void setGrowthTime(float growthTime) {
 		this.growthTime = growthTime;
 	}
 
 	public void setOutput(int output) {
 		this.output = output;
-	}
-	
-	public String getSeedName() {
-		return "seed";
-	}
-	
-	public String getTextureName() {
-		return "texture";
 	}
 }

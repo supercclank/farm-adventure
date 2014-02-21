@@ -24,7 +24,7 @@ public class Season {
 	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
 	public static final float FALL_LEAF_COVER_MOD = .2f;
 
-	public static final int CYCLE_TIME_MINUTES = 2;
+	public static final int CYCLE_TIME_MINUTES = 1;
 
 	private float cycleTime;
 	private SeasonType seasonType;
@@ -64,19 +64,20 @@ public class Season {
 		this.seasonType = seasonType;
 	}
 
-	/** 
+	/**
 	 * Updates the seasonal growth rate modifier depending on the season type.
-	 * In addition, this method will apply seasonal effects, if they exist, to 
+	 * In addition, this method will apply seasonal effects, if they exist, to
 	 * the given field.
 	 * 
-	 * @param field		the field to be updated by seasonal effects.
+	 * @param field
+	 *            the field to be updated by seasonal effects.
 	 */
 	public void update(Field field) {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
 				field.getPlot(x, y).setUsable(true);
-				if(field.getPlot(x, y).getPlotType().equals(PlotType.LEAVES)){
+				if (field.getPlot(x, y).getPlotType().equals(PlotType.LEAVES)) {
 					field.getPlot(x, y).setPlotType(PlotType.GRASS);
 				}
 			}

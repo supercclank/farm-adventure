@@ -6,7 +6,11 @@ import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 
 public class AbstractHarvestTool extends AbstractTool {
-	
+
+	public String getTextureName() {
+		return "arbitrary";
+	}
+
 	@Override
 	public void update(Plot plot) {
 		AbstractCrop crop = plot.getCrop();
@@ -15,9 +19,5 @@ public class AbstractHarvestTool extends AbstractTool {
 			plot.setCrop(null);
 			plot.setPlotType(PlotType.UNPLOWEDWATERED);
 		}
-	}
-	
-	public String getTextureName() {
-		return "arbitrary";
 	}
 }
