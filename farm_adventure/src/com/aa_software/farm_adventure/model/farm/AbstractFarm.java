@@ -12,7 +12,6 @@ import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
@@ -30,8 +29,8 @@ public abstract class AbstractFarm {
 	protected ToolBar toolBar;
 	protected Season[] seasons;
 	protected int currentSeason;
-	protected final Timer timer;
-	protected TimerTask seasonTimer;
+	protected Timer timer;
+	protected TimerTask timerTask;
 	/* each farm starts with a certain amount of seeds, workers, equipment */
 	protected Map<AbstractWorker, Integer> startingWorkerCount;
 	protected Map<AbstractCrop, Integer> startingCropCount;
@@ -67,25 +66,35 @@ public abstract class AbstractFarm {
 	public AbstractTool getTool(int x, int y) {
 		return toolBar.getTool(x, y);
 	}
-	
+
 	/**
 	 * Sets up a task that will increment the season (up to its maximum) after
 	 * the season's cycle time has passed. Tasks spawned this way cancel
 	 * themselves after one run and start anew (with the new season's values).
 	 */
 	public final void setupSeasonTimer() {
-		seasonTimer = new java.util.TimerTask() {
+		if(timer != null) {
+			timer.cancel();
+		}
+		timer = new Timer();
+		if(timerTask != null) {
+			timerTask.cancel();
+		}
+		timerTask = new java.util.TimerTask() {
 			@Override
 			public void run() {
 				currentSeason++;
 				currentSeason %= seasons.length;
 				seasons[currentSeason].update(field);
-				seasonTimer.cancel();
 				setupSeasonTimer();
 			}
 		};
-		timer.schedule(seasonTimer, TimeUnit.MINUTES
+		timer.schedule(timerTask, TimeUnit.MINUTES
 				.toMillis((long) seasons[currentSeason].getCycleTime()));
+	}
+	
+	public final void cancelTimer() {
+		timer.cancel();
 	}
 
 }

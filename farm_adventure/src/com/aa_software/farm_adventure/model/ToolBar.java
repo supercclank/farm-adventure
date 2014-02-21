@@ -24,6 +24,10 @@ public class ToolBar {
 		initializeTools(columns, rows);
 	}
 
+	public AbstractPlantTool getPlantTool() {
+		return (AbstractPlantTool) tools2D[PLANT_TOOL_X][PLANT_TOOL_Y];
+	}
+
 	public AbstractTool getTool(int x, int y) {
 		return tools2D[x][y];
 	}
@@ -39,10 +43,6 @@ public class ToolBar {
 
 	public void setTool(int x, int y, AbstractTool tool) {
 		tools2D[x][y] = tool;
-	}
-	
-	public AbstractPlantTool getPlantTool() {
-		return 	(AbstractPlantTool) tools2D[PLANT_TOOL_X][PLANT_TOOL_Y];
 	}
 
 }

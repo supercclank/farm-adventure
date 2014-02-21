@@ -10,7 +10,6 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
-import com.aa_software.farm_adventure.model.farm.DesertFarm;
 import com.aa_software.farm_adventure.model.farm.RainforestFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
@@ -58,7 +57,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 public class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MINUTES = 8;
+	public static final long GAME_TIME_MINUTES = 2;
 
 	/* Player */
 	public static final Player PLAYER = Player.getInstance();
@@ -67,7 +66,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 	public static final String TILE_MAP_NAME = "tilemap/tileMap128.tmx";
 	public static final String TILE_SET_NAME = "tileSet128";
 	private static final int TILE_SIZE = 128;
-	
+
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
 	public static final int PLANT_TOOL_X = 2;
 	public static final int PLANT_TOOL_Y = 0;
@@ -78,8 +77,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 * For each layer, please provide a method of syncing the model with the
 	 * presenter
 	 */
-	private final String[] allLayers = { "ground", "water", "plant", "tool", 
-			"seed", "status", "select","transparent"};
+	private final String[] allLayers = { "ground", "water", "plant", "tool",
+			"seed", "status", "select", "transparent" };
 	private final int FIELD_STARTING_Y = 2;
 
 	/* Stage */
@@ -100,25 +99,54 @@ public class AbstractFarmScreen extends AbstractScreen {
 	protected TiledMap map;
 	protected TiledMapTileSet tileSet;
 	protected HashMap<String, Integer> tileMap;
-	
+
 	protected Skin skin;
 	protected Stage plantMenuStage;
 	protected Window plantWindow;
 
-	protected TimerTask gameTimer;
+	protected final Timer timer;
+	protected final TimerTask timerTask;
 	protected boolean gameOver;
 
 	public AbstractFarmScreen(FarmAdventure game) {
 		super(game);
 		gameOver = false;
+		this.selection = null;
+		this.state = new DefaultSelectionState();
+		farm = new RainforestFarm();
+		
+		timer = new Timer();
+		timerTask = new java.util.TimerTask() {
+			@Override
+			public void run() {
+				gameOver = true;
+				timerTask.cancel();
+				timer.cancel();
+				farm.cancelTimer();
+			}
+		};
+		timer.schedule(timerTask, TimeUnit.MINUTES.toMillis(GAME_TIME_MINUTES));
+
+		map = new TmxMapLoader().load(TILE_MAP_NAME);
+		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
+		/* Push all of the tiles for each layer into the tile map */
+		Iterator<TiledMapTile> tileIterator;
+		tileMap = new HashMap<String, Integer>();
+		for (int i = 0; i < allLayers.length; i++) {
+			for (tileIterator = tileSet.iterator(); tileIterator.hasNext();) {
+				TiledMapTile tile = tileIterator.next();
+				tileMap.put(tile.getProperties()
+						.get(allLayers[i], String.class), tile.getId());
+			}
+		}
 	}
 
 	/**
 	 * Uses the libgdx library to get the x, y location of a users touch if
 	 * there was one. This value is used to check if the user clicked over the
-	 * plots or over the toolbar. If the user clicks the status bar, there is no
+	 * plots or over the tool bar. If the user clicks the status bar, there is no
 	 * change. If it is a plot, the x , y , and ground string are used to update
-	 * the state. If the tool bar was clicked, the x, y, and toobar string are
+	 * the state. If the tool bar was clicked, the x, y, and tool bar string are
 	 * used to update the state.
 	 */
 	public void checkTouch() {
@@ -128,6 +156,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			camera.unproject(touchPos);
 			int xCell = (int) (touchPos.x / TILE_SIZE);
 			int yCell = (int) (touchPos.y / TILE_SIZE);
+			plantWindow.setVisible(false);
 			updateState(xCell, yCell);
 		}
 	}
@@ -199,57 +228,92 @@ public class AbstractFarmScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Sets the gameTimer to run its thread after GAME_TIME_MINUTES. This thread
-	 * will set gameOver to true which will lead the game to be disposed on next
-	 * render.
-	 * 
-	 * For time remaining (milliseconds): gameTimer.scheduledExecutionTime() -
-	 * System.currentTimeMillis()
-	 * 
-	 * For unit conversion:
-	 * 
-	 * @see TimeUnit
-	 * 
+	 * Sets up the window to choose a seed to plant
 	 */
-	public void setupGameTimer() {
-		Timer timer = new Timer();
-		gameTimer = new java.util.TimerTask() {
-			@Override
-			public void run() {
-				gameOver = true;
-				gameTimer.cancel();
+	public void setupSeedWindow() {
+
+		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
+		Gdx.input.setInputProcessor(plantMenuStage);
+
+		Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
+		Texture beet = new Texture(Gdx.files.internal("textures/beet.png"));
+		Texture rice = new Texture(Gdx.files.internal("textures/rice.png"));
+		Texture banana = new Texture(Gdx.files.internal("textures/banana.png"));
+
+		TextureRegion carrotImage = new TextureRegion(carrot);
+		TextureRegion beetImage = new TextureRegion(beet);
+		TextureRegion riceImage = new TextureRegion(rice);
+		TextureRegion bananaImage = new TextureRegion(banana);
+
+		Button carrotButton = new Button(new Image(carrotImage), skin);
+		Button beetButton = new Button(new Image(beetImage), skin);
+		Button riceButton = new Button(new Image(riceImage), skin);
+		Button bananaButton = new Button(new Image(bananaImage), skin);
+
+		plantWindow = new Window("Pick a Type of Seed", skin);
+		plantWindow.setModal(false);
+		plantWindow.setMovable(false);
+		plantWindow.setVisible(false);
+		plantWindow.setPosition(WINDOW_X, WINDOW_Y);
+		plantWindow.defaults().spaceBottom(10);
+		plantWindow.row().fill().expandX();
+		plantWindow.add(carrotButton);
+		plantWindow.add(beetButton);
+		plantWindow.add(riceButton);
+		plantWindow.add(bananaButton);
+		plantWindow.pack();
+		plantMenuStage.addActor(plantWindow);
+
+		carrotButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
+						.setSeed(new CarrotCrop());
+				return true;
 			}
-		};
-		timer.schedule(gameTimer, TimeUnit.MINUTES.toMillis(GAME_TIME_MINUTES));
+		});
+
+		beetButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
+						.setSeed(new BeetCrop());
+				return true;
+			}
+		});
+
+		riceButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
+						.setSeed(new RiceCrop());
+				return true;
+			}
+		});
+
+		bananaButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
+						.setSeed(new BananaCrop());
+				return true;
+			}
+		});
 	}
 
 	@Override
 	public void show() {
-		setupGameTimer();
-		
+
 		// TODO: We should try to handle screen sizes more appropriately than
 		// stretching.
-		map = new TmxMapLoader().load(TILE_MAP_NAME);
-		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
+
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight());
 
-		this.selection = null;
-		this.state = new DefaultSelectionState();
-		//farm = new DesertFarm();
-
-		/* Push all of the tiles for each layer into the tile map */
-		Iterator<TiledMapTile> tileIterator;
-		tileMap = new HashMap<String, Integer>();
-		for (int i = 0; i < allLayers.length; i++) {
-			for (tileIterator = tileSet.iterator(); tileIterator.hasNext();) {
-				TiledMapTile tile = tileIterator.next();
-				tileMap.put(tile.getProperties()
-						.get(allLayers[i], String.class), tile.getId());
-			}
-		}
 		setupSeedWindow();
 	}
 
@@ -301,6 +365,19 @@ public class AbstractFarmScreen extends AbstractScreen {
 	}
 
 	/**
+	 * Syncs the tool bar cell in the tool bar to match the current seed
+	 */
+	public void syncSeedTile() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"seed");
+		Cell cell = layer.getCell(PLANT_TOOL_X, PLANT_TOOL_Y);
+		TiledMapTile tile = tileSet.getTile(tileMap
+				.get(((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
+						PLANT_TOOL_Y)).getSeed().getSeedName()));
+		cell.setTile(tile);
+	}
+
+	/**
 	 * Syncs the player's tool bar selection. Gives the selected position the
 	 * "select" tile and gives everything else a transparent tile.
 	 * 
@@ -319,6 +396,22 @@ public class AbstractFarmScreen extends AbstractScreen {
 				tile = tileSet.getTile(tileMap.get("transparent"));
 			}
 			selected.getCell(i, 0).setTile(tile);
+		}
+	}
+
+	/**
+	 * Syncs each cell in the status bar to match the current season
+	 */
+	public void syncStatusTiles() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
+				"status");
+		for (int x = 0; x < Field.COLUMNS; x++) {
+			Cell cell = layer.getCell(x, STATUS_BAR_Y);
+			TiledMapTile tile = tileSet.getTile(tileMap.get(farm
+					.getCurrentSeason().getSeasonType().toString()
+					.toLowerCase()
+					+ "" + x));
+			cell.setTile(tile);
 		}
 	}
 
@@ -369,32 +462,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 	}
-	
-	/**
-	 * Syncs each cell in the status bar to match the current season
-	 */
-	public void syncStatusTiles() {
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
-				"status");
-		for (int x = 0; x < Field.COLUMNS; x++){
-			Cell cell = layer.getCell(x, STATUS_BAR_Y);
-			TiledMapTile tile = tileSet.getTile(tileMap.get(farm.getCurrentSeason()
-					.getSeasonType().toString().toLowerCase() + "" + x));
-			cell.setTile(tile);
-		}
-	}
-	
-	/**
-	 * Syncs the tool bar cell in the tool bar to match the current seed
-	 */
-	public void syncSeedTile() {
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
-				"seed");
-		Cell cell = layer.getCell(PLANT_TOOL_X, PLANT_TOOL_Y);
-		TiledMapTile tile = tileSet.getTile(tileMap.get(((AbstractPlantTool) farm.getTool(
-				PLANT_TOOL_X, PLANT_TOOL_Y)).getSeed().getSeedName()));
-		cell.setTile(tile);
-	}
 
 	/**
 	 * Takes in an x, and y value (cell-based) that represents user input, as
@@ -412,12 +479,11 @@ public class AbstractFarmScreen extends AbstractScreen {
 		if (y >= FIELD_STARTING_Y) {
 			state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 		} else if (y == 0) {
-			if(selection != null && selection.equals(farm.getTool(x,y))){
-				if(selection instanceof AbstractPlantTool){
+			if (selection != null && selection.equals(farm.getTool(x, y))) {
+				if (selection instanceof AbstractPlantTool) {
 					plantWindow.setVisible(true);
 				}
-			}
-			else {
+			} else {
 				selection = farm.getTool(x, y);
 				if (selection instanceof AbstractSpell) {
 					state = state.update((AbstractSpell) selection);
@@ -455,8 +521,11 @@ public class AbstractFarmScreen extends AbstractScreen {
 		bankBalance.setPosition(BANK_LABEL_X, BANK_LABEL_Y);
 
 		/* Time label setup */
-		long curTime = gameTimer.scheduledExecutionTime()
+		long curTime = timerTask.scheduledExecutionTime()
 				- System.currentTimeMillis();
+		if (curTime < 0) {
+			curTime = 0;
+		}
 		String time = String.format("%02d:%02d",
 				TimeUnit.MILLISECONDS.toMinutes(curTime),
 				TimeUnit.MILLISECONDS.toSeconds(curTime)
@@ -473,81 +542,5 @@ public class AbstractFarmScreen extends AbstractScreen {
 		statusBarStage.addActor(bankBalance);
 		statusBarStage.addActor(timeRemaining);
 		statusBarStage.addActor(workers);
-	}
-	
-	/**
-	 * Sets up the window to choose a seed to plant
-	 */
-	public void setupSeedWindow(){
-		
-		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		Gdx.input.setInputProcessor(plantMenuStage);
-		
-		Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
-		Texture beet = new Texture(Gdx.files.internal("textures/beet.png"));
-		Texture rice = new Texture(Gdx.files.internal("textures/rice.png"));
-		Texture banana = new Texture(Gdx.files.internal("textures/banana.png"));
-
-		TextureRegion carrotImage = new TextureRegion(carrot);
-		TextureRegion beetImage = new TextureRegion(beet);
-		TextureRegion riceImage = new TextureRegion(rice);
-		TextureRegion bananaImage = new TextureRegion(banana);
-
-		Button carrotButton = new Button(new Image(carrotImage), skin);
-		Button beetButton = new Button(new Image(beetImage), skin);
-		Button riceButton = new Button(new Image(riceImage), skin);
-		Button bananaButton = new Button(new Image(bananaImage), skin);
-
-		plantWindow = new Window("Pick a Type of Seed", skin);
-		plantWindow.setModal(false);
-		plantWindow.setMovable(false);
-		plantWindow.setVisible(false);
-		plantWindow.setPosition(WINDOW_X, WINDOW_Y);
-		plantWindow.defaults().spaceBottom(10);
-		plantWindow.row().fill().expandX();
-		plantWindow.add(carrotButton);
-		plantWindow.add(beetButton);
-		plantWindow.add(riceButton);
-		plantWindow.add(bananaButton);
-		plantWindow.pack();
-		plantMenuStage.addActor(plantWindow);
-
-		carrotButton.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				plantWindow.setVisible(false);
-				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new CarrotCrop());
-				return true;
-			}
-		});
-
-		beetButton.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				plantWindow.setVisible(false);
-				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BeetCrop());
-				return true;
-			}
-		});
-
-		riceButton.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				plantWindow.setVisible(false);
-				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new RiceCrop());
-				return true;
-			}
-		});
-
-		bananaButton.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				plantWindow.setVisible(false);
-				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BananaCrop());
-				return true;
-			}
-		});
 	}
 }

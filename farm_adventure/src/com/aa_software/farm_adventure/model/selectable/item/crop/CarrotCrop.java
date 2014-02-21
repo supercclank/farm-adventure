@@ -38,12 +38,12 @@ public class CarrotCrop extends AbstractCrop {
 		}
 	}
 
+	public String getSeedName() {
+		return SEED_NAME;
+	}
+
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
-	}
-	
-	public String getSeedName() {
-		return SEED_NAME;
 	}
 }

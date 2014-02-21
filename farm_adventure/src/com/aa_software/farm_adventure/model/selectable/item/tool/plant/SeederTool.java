@@ -15,7 +15,7 @@ public class SeederTool extends AbstractPlantTool {
 		workTime = DEFAULT_WORK_TIME;
 		seed = new CarrotCrop();
 	}
-	
+
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;

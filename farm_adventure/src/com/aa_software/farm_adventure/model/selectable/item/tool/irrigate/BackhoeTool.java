@@ -12,7 +12,7 @@ public class BackhoeTool extends AbstractIrrigationTool {
 		value = DEFAULT_VALUE;
 		workTime = DEFAULT_WORK_TIME;
 	}
-	
+
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
