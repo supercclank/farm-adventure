@@ -37,7 +37,6 @@ public class TutorialFarm extends AbstractFarm {
 		 * startingWorkerCount.put(new DefaultWorker(), 1);
 		 */
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 		startingCropCount.put(new CarrotCrop(), 5);
 		startingToolCount.put(new BackhoeTool(), 1);
 		startingToolCount.put(new TrowelTool(), 1);

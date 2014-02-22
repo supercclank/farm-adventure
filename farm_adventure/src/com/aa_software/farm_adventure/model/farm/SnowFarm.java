@@ -25,7 +25,6 @@ public class SnowFarm extends AbstractFarm {
 		}
 		field.createSnowField();
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 	}
 
 }

@@ -21,7 +21,6 @@ public class DesertFarm extends AbstractFarm {
 		}
 		field.createDesertField();
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 	}
 
 }

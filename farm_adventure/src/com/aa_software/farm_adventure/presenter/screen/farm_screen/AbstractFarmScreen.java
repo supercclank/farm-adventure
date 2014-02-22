@@ -57,7 +57,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 public class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MINUTES = 2;
+	public static final long GAME_TIME_MILLIS = 30000;
+	long gameStartTime;
 
 	/* Player */
 	public static final Player PLAYER = Player.getInstance();
@@ -104,8 +105,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 	protected Stage plantMenuStage;
 	protected Window plantWindow;
 
-	protected final Timer timer;
-	protected final TimerTask timerTask;
 	protected boolean gameOver;
 
 	public AbstractFarmScreen(FarmAdventure game) {
@@ -114,18 +113,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 		this.selection = null;
 		this.state = new DefaultSelectionState();
 		farm = new RainforestFarm();
-		
-		timer = new Timer();
-		timerTask = new java.util.TimerTask() {
-			@Override
-			public void run() {
-				gameOver = true;
-				timerTask.cancel();
-				timer.cancel();
-				farm.cancelTimer();
-			}
-		};
-		timer.schedule(timerTask, TimeUnit.MINUTES.toMillis(GAME_TIME_MINUTES));
 
 		map = new TmxMapLoader().load(TILE_MAP_NAME);
 		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
@@ -313,7 +300,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight());
-
+		
+		gameStartTime = System.currentTimeMillis();
 		setupSeedWindow();
 	}
 
@@ -521,10 +509,14 @@ public class AbstractFarmScreen extends AbstractScreen {
 		bankBalance.setPosition(BANK_LABEL_X, BANK_LABEL_Y);
 
 		/* Time label setup */
-		long curTime = timerTask.scheduledExecutionTime()
+		long curTime = gameStartTime + GAME_TIME_MILLIS
 				- System.currentTimeMillis();
 		if (curTime < 0) {
-			curTime = 0;
+			gameOver = true;
+		}
+		//TODO: May want to make this more concrete...
+		if(!(curTime < 1000)) {
+			farm.checkSeasonTimer();
 		}
 		String time = String.format("%02d:%02d",
 				TimeUnit.MILLISECONDS.toMinutes(curTime),

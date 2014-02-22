@@ -29,8 +29,7 @@ public abstract class AbstractFarm {
 	protected ToolBar toolBar;
 	protected Season[] seasons;
 	protected int currentSeason;
-	protected Timer timer;
-	protected TimerTask timerTask;
+	protected long seasonStartTime;
 	/* each farm starts with a certain amount of seeds, workers, equipment */
 	protected Map<AbstractWorker, Integer> startingWorkerCount;
 	protected Map<AbstractCrop, Integer> startingCropCount;
@@ -44,7 +43,7 @@ public abstract class AbstractFarm {
 		startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		field = new Field();
 		toolBar = new ToolBar();
-		timer = new Timer();
+		seasonStartTime = System.currentTimeMillis();
 	}
 
 	public Season getCurrentSeason() {
@@ -67,34 +66,13 @@ public abstract class AbstractFarm {
 		return toolBar.getTool(x, y);
 	}
 
-	/**
-	 * Sets up a task that will increment the season (up to its maximum) after
-	 * the season's cycle time has passed. Tasks spawned this way cancel
-	 * themselves after one run and start anew (with the new season's values).
-	 */
-	public final void setupSeasonTimer() {
-		if(timer != null) {
-			timer.cancel();
+	public void checkSeasonTimer() {
+		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS - System.currentTimeMillis();
+		if(timeLeft < 0) {
+			currentSeason++;
+			currentSeason %= seasons.length;
+			seasons[currentSeason].update(field);
+			seasonStartTime = System.currentTimeMillis();
 		}
-		timer = new Timer();
-		if(timerTask != null) {
-			timerTask.cancel();
-		}
-		timerTask = new java.util.TimerTask() {
-			@Override
-			public void run() {
-				currentSeason++;
-				currentSeason %= seasons.length;
-				seasons[currentSeason].update(field);
-				setupSeasonTimer();
-			}
-		};
-		timer.schedule(timerTask, TimeUnit.MINUTES
-				.toMillis((long) seasons[currentSeason].getCycleTime()));
 	}
-	
-	public final void cancelTimer() {
-		timer.cancel();
-	}
-
 }

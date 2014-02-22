@@ -24,14 +24,14 @@ public class Season {
 	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
 	public static final float FALL_LEAF_COVER_MOD = .2f;
 
-	public static final int CYCLE_TIME_MINUTES = 1;
+	public static final int CYCLE_TIME_MILLIS = 10000;
 
 	private float cycleTime;
 	private SeasonType seasonType;
 	private float growthRateMod = 1;
 
 	public Season(SeasonType seasonType) {
-		this.cycleTime = CYCLE_TIME_MINUTES;
+		this.cycleTime = CYCLE_TIME_MILLIS;
 		this.seasonType = seasonType;
 	}
 

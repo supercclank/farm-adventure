@@ -25,6 +25,5 @@ public class RainforestFarm extends AbstractFarm {
 		}
 		field.createRainforestField();
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 	}
 }
