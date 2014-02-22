@@ -6,9 +6,6 @@ import com.aa_software.farm_adventure.model.farm.RainforestFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.season.Season;
-import com.aa_software.farm_adventure.model.season.SeasonType;
-import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.DesertFarmScreen;
@@ -17,7 +14,6 @@ import com.aa_software.farm_adventure.presenter.screen.farm_screen.SnowFarmScree
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Creates a new WorldScreen and displays it. The screen consists of the
@@ -69,7 +64,14 @@ public class WorldScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		
+	}
+
+	/**
+	 * Sets up the world map screen with a background map and farm buttons. When
+	 * a farm button is selected, the type of farm selected is saved, and
+	 * setupSeasonMenu is called.
+	 */
+	public void setupWorldMap() {
 		// Create background and table
 		Image background = new Image(new Texture(
 				Gdx.files.internal("world/WorldMap.png")));
@@ -90,17 +92,6 @@ public class WorldScreen extends AbstractScreen {
 				Gdx.files.internal("world/DesertFarm.png"));
 		final Texture snowTex = new Texture(
 				Gdx.files.internal("world/SnowFarm.png"));
-		//final int width = t.getWidth() - 2;
-		//final int height = t.getHeight() - 2;
-		//TextureRegion patch = new TextureRegion(t, 1, 1, width, height);
-		
-		//TextureRegion tutImage = new TextureRegion(t);
-
-		// Create the style for the button
-		//TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-		//buttonStyle.up = new TextureRegionDrawable(patch);
-		//buttonStyle.down = new TextureRegionDrawable(patch);
-		//buttonStyle.font = new BitmapFont();
 
 		// Create buttons
 		Button tutorialFarmButton = new Button(new Image(tutorialTex), skin);
@@ -148,8 +139,6 @@ public class WorldScreen extends AbstractScreen {
 				selectedScreen = new RainforestFarmScreen(game);
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
-				// AbstractFarmScreen afs = new AbstractFarmScreen(game);
-				// game.setScreen(afs);
 				return true;
 			}
 		});
@@ -164,8 +153,6 @@ public class WorldScreen extends AbstractScreen {
 				selectedScreen = new DesertFarmScreen(game);
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
-				//AbstractFarmScreen afs = new AbstractFarmScreen(game);
-				//game.setScreen(afs);
 				return true;
 			}
 		});
@@ -179,16 +166,18 @@ public class WorldScreen extends AbstractScreen {
 				selectedScreen = new SnowFarmScreen(game);
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
-				//AbstractFarmScreen afs = new AbstractFarmScreen(game);
-				//game.setScreen(afs);
 				return true;
 			}
 		});
 		// Table.drawDebug(stage);
 	}
 
+	/**
+	 * Sets up the window to display the seasons for the currently selected
+	 * farm and a button to start the selected farm.
+	 */
 	public void setupSeasonMenu() {
-		
+
 		// Gdx.input.setInputProcessor(plantMenuStage);
 
 		Texture spring = new Texture(Gdx.files.internal("textures/spring.png"));
@@ -201,10 +190,6 @@ public class WorldScreen extends AbstractScreen {
 		TextureRegion fallImage = new TextureRegion(fall);
 		TextureRegion winterImage = new TextureRegion(winter);
 
-		Button springButton = new Button(new Image(springImage), skin);
-		Button summerButton = new Button(new Image(summerImage), skin);
-		Button fallButton = new Button(new Image(fallImage), skin);
-		Button winterButton = new Button(new Image(winterImage), skin);
 		TextButton playFarmButton = new TextButton("Play Farm", skin);
 
 		seasonWindow = new Window("Seasons for this farm", skin);
@@ -219,31 +204,37 @@ public class WorldScreen extends AbstractScreen {
 		for (Season s : selectedFarm.getSeasons()) {
 			switch (s.getSeasonType()) {
 			case SPRING:
-				seasonWindow.add(new Button(new Image(springImage), skin)).size(75, 115);
+				seasonWindow.add(new Button(new Image(springImage), skin))
+						.size(75, 115);
 				break;
 			case SUMMER:
-				seasonWindow.add(new Button(new Image(summerImage), skin)).size(75, 115);
+				seasonWindow.add(new Button(new Image(summerImage), skin))
+						.size(75, 115);
 				break;
 			case FALL:
-				seasonWindow.add(new Button(new Image(fallImage), skin)).size(75, 115);
+				seasonWindow.add(new Button(new Image(fallImage), skin)).size(
+						75, 115);
 				break;
 			case WINTER:
-				seasonWindow.add(new Button(new Image(winterImage), skin)).size(75, 115);
+				seasonWindow.add(new Button(new Image(winterImage), skin))
+						.size(75, 115);
 				break;
 			default:
-				seasonWindow.add(new Button(new Image(springImage), skin)).size(75, 115);
+				seasonWindow.add(new Button(new Image(springImage), skin))
+						.size(75, 115);
 				break;
 			}
 		}
 		seasonWindow.row();
-		seasonWindow.add(playFarmButton).colspan(selectedFarm.getSeasons().length).width(200);
+		seasonWindow.add(playFarmButton)
+				.colspan(selectedFarm.getSeasons().length).width(200);
 		seasonWindow.pack();
 		super.addActor(seasonWindow);
 
 		playFarmButton.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				//seasonWindow.setVisible(false);
+				// seasonWindow.setVisible(false);
 				game.setScreen(selectedScreen);
 				return true;
 			}

@@ -2,8 +2,6 @@ package com.aa_software.farm_adventure.model.farm;
 
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
-import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.MolesSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.ScytheTool;
@@ -12,9 +10,16 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.plant.TrowelToo
 import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
 import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
 
-
+/**
+ * Sets up the logic for a snow farm.
+ * @author AASoftware
+ *
+ */
 public class TutorialFarm extends AbstractFarm {
 
+	/**
+	 * Constructs a farm with the correct seasons and field.
+	 */
 	public TutorialFarm() {
 		super();
 		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];

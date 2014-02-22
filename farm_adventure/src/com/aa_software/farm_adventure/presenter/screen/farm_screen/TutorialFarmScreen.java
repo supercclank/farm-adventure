@@ -5,6 +5,9 @@ import com.aa_software.farm_adventure.presenter.FarmAdventure;
 
 public class TutorialFarmScreen extends AbstractFarmScreen {
 
+	/**
+	 * Constructs a farm screen using the specifications of TutorialFarm.
+	 */
 	public TutorialFarmScreen(FarmAdventure game) {
 		super(game);
 		farm = new TutorialFarm();
