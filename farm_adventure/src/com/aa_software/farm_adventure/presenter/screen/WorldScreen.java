@@ -64,6 +64,7 @@ public class WorldScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		setupWorldMap();
 	}
 
 	/**
