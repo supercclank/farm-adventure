@@ -8,8 +8,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	/**
 	 * Constructs a farm screen using the specifications of TutorialFarm.
 	 */
-	public TutorialFarmScreen(FarmAdventure game) {
-		super(game);
+	public TutorialFarmScreen() {
+		super();
 		farm = new TutorialFarm();
 	}
 

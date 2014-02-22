@@ -8,8 +8,8 @@ public class SnowFarmScreen extends AbstractFarmScreen {
 	/**
 	 * Constructs a farm screen using the specifications of SnowFarm.
 	 */
-	public SnowFarmScreen(FarmAdventure game) {
-		super(game);
+	public SnowFarmScreen() {
+		super();
 		farm = new SnowFarm();
 		// TODO Auto-generated constructor stub
 	}
