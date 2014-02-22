@@ -1,5 +1,9 @@
 package com.aa_software.farm_adventure.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
@@ -8,30 +12,53 @@ import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker
  * Inventory: the items that the farm has on hand.
  */
 public class Inventory {
-	private AbstractItem[] items;
-	private AbstractWorker[] workers;
+	private ArrayList<AbstractItem> items;
+	private ArrayList<AbstractWorker> workers;
 
+	/**
+	 * This constructor defaults the items and workers in the inventory
+	 */
 	public Inventory() {
-		// TODO: REPLACE THIS!
-		workers = new AbstractWorker[4];
-		for (int i = 0; i < 4; i++)
-			workers[i] = new DefaultWorker();
+		this.workers = new ArrayList<AbstractWorker>();
+		for (int i = 0; i < 4; i++){
+			this.workers.add(new DefaultWorker());
+		}
+		this.items = new ArrayList<AbstractItem>();
+	}
+	
+	/**
+	 * This constructor is used to define the items and workers that can be 
+	 * in the inventory.
+	 * @param items
+	 * @param workers
+	 */
+	public Inventory(ArrayList<AbstractItem> items, ArrayList<AbstractWorker> workers) {
+		this.items = new ArrayList<AbstractItem>();
+		this.workers = workers;
 	}
 
-	public Inventory(AbstractItem[] items) {
-		this.items = items;
+	public ArrayList<AbstractItem> getItems() {
+		return this.items;
+	}
+	
+	public ArrayList<AbstractWorker> getWorkers() {
+		return this.workers;
 	}
 
-	public AbstractItem[] getItems() {
-		return items;
+	public void addItem(AbstractItem item) {
+		this.items.add(item);
 	}
 
-	public int getWorkerCount() {
-		return workers.length;
+	public void addWorker(AbstractWorker worker) {
+		this.workers.add(worker);
 	}
-
-	public void setItems(AbstractItem[] items) {
-		this.items = items;
+	
+	public int getWorkerCount(){
+		return this.workers.size();
+	}
+	
+	public int getItemCount (AbstractItem item){
+		return 0;
 	}
 
 }

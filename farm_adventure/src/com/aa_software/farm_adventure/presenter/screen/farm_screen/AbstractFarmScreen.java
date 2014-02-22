@@ -30,6 +30,7 @@ import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,8 +52,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class AbstractFarmScreen extends AbstractScreen {
 
@@ -90,7 +97,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 			WORKER_LABEL_X = (float) (Gdx.graphics.getWidth() * .78),
 			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .18),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
-			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13);
+			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
+			INVENTORY_HEIGHT = Gdx.graphics.getHeight()-(TILE_SIZE*2);
 
 	protected AbstractItem selection;
 	protected ISelectionState state;
@@ -100,9 +108,20 @@ public class AbstractFarmScreen extends AbstractScreen {
 	protected TiledMapTileSet tileSet;
 	protected HashMap<String, Integer> tileMap;
 	
+	protected InputMultiplexer inputMultiplexer;
+	
 	protected Skin skin;
 	protected Stage plantMenuStage;
 	protected Window plantWindow;
+	
+	protected Skin inventory_market_Skin;
+	protected Stage inventory_market_Stage;
+	protected Stage inventoryStage;
+	protected Stage marketStage;
+	protected Window inventory_market_Window;
+	
+	protected Boolean inventoryMarketVisible;
+
 
 	protected TimerTask gameTimer;
 	protected boolean gameOver;
@@ -184,6 +203,9 @@ public class AbstractFarmScreen extends AbstractScreen {
 			updateStatusBar();
 			statusBarStage.draw();
 			plantMenuStage.draw();
+			inventory_market_Stage.draw();
+			inventory_market_Stage.act();
+
 		}
 	}
 
@@ -249,7 +271,11 @@ public class AbstractFarmScreen extends AbstractScreen {
 						.get(allLayers[i], String.class), tile.getId());
 			}
 		}
+		
+		inputMultiplexer = new InputMultiplexer();		
 		setupSeedWindow();
+		setupInventoryWindow();
+		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 
 	/**
@@ -414,9 +440,28 @@ public class AbstractFarmScreen extends AbstractScreen {
 			if(selection != null && selection.equals(farm.getTool(x,y))){
 				if(selection instanceof AbstractPlantTool){
 					plantWindow.setVisible(true);
+					System.out.println("Second");
+				}
+				if (inventoryMarketVisible){
+					inventory_market_Window.setVisible(false);
+					inventoryMarketVisible = false;		
+				}
+			} else if (farm.getTool(x, y) instanceof AbstractTool){
+				selection = farm.getTool(x, y);
+				if (selection instanceof AbstractPlantTool){
+					System.out.println("First");
+				}
+				state = state.update((AbstractTool) selection);	
+				syncSelectTiles(x);
+				if (inventoryMarketVisible){
+					inventory_market_Window.setVisible(false);
+					inventoryMarketVisible = false;		
 				}
 			}
 			else {
+				
+				//inventoryWindow.
+				/**
 				selection = farm.getTool(x, y);
 				if (selection instanceof AbstractSpell) {
 					state = state.update((AbstractSpell) selection);
@@ -429,7 +474,12 @@ public class AbstractFarmScreen extends AbstractScreen {
 				} else if (selection instanceof AbstractCrop) {
 					state = state.update((AbstractCrop) selection);
 				}
+				*/
+				
 				syncSelectTiles(x);
+				System.out.println("Inventory was selected");
+				inventory_market_Window.setVisible(true);
+				inventoryMarketVisible = true;
 			}
 		}
 	}
@@ -482,7 +532,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
 		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
-		Gdx.input.setInputProcessor(plantMenuStage);
+		
+		inputMultiplexer.addProcessor(plantMenuStage);
 		
 		Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
 		Texture beet = new Texture(Gdx.files.internal("textures/beet.png"));
@@ -500,7 +551,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 		Button bananaButton = new Button(new Image(bananaImage), skin);
 
 		plantWindow = new Window("Pick a Type of Seed", skin);
-		plantWindow.setModal(false);
+		plantWindow.setModal(true);
 		plantWindow.setMovable(false);
 		plantWindow.setVisible(false);
 		plantWindow.setPosition(WINDOW_X, WINDOW_Y);
@@ -549,4 +600,56 @@ public class AbstractFarmScreen extends AbstractScreen {
 			}
 		});
 	}
+	
+	/**
+	 * Sets up the window to view inventory and market
+	 */
+	public void setupInventoryWindow(){
+		
+		inventory_market_Skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+
+		inventory_market_Stage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
+		inputMultiplexer.addProcessor(inventory_market_Stage);
+		
+		// inventory Stuff
+		final Table inventoryTable = new Table();
+		final Table invScrollTable = new Table();
+		inventory_market_Stage.addActor(inventoryTable);
+		
+		int marketItems = this.farm.getMarket().getItemsCount();
+		for (int j = 0; j<5; j++){
+			for (int i=0; i<marketItems; i++){
+				
+				Label st = new Label(farm.getMarket().getItem(i).getToolType(), inventory_market_Skin);
+				invScrollTable.row();
+				invScrollTable.add(st).align(Align.left).left();
+				invScrollTable.row();
+				st = new Label(farm.getMarket().getItem(i).toString(), inventory_market_Skin);
+				invScrollTable.add(st).align(Align.left).left();
+			}
+		}
+		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
+		inventoryTable.row();
+		Label inventoryLable = new Label("Inventory", inventory_market_Skin);
+		inventoryTable.add(inventoryLable);
+		inventoryTable.row();
+		inventoryTable.add(inventorySP).fill().expand().align(Align.left).left();
+		
+	
+		//Merging inventory and market
+		inventory_market_Window = new Window("", inventory_market_Skin);
+		inventory_market_Window.setModal(true);
+		inventory_market_Window.setMovable(false);
+		inventory_market_Window.setVisible(false);
+		inventoryMarketVisible = false;
+		inventory_market_Window.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
+		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
+		inventory_market_Window.getButtonTable().add(new TextButton("SELL", inventory_market_Skin)).height(inventory_market_Window.getPadTop());
+		inventory_market_Window.defaults().spaceBottom(10);
+		inventory_market_Window.row().fill().expandX();
+		inventory_market_Window.add(inventoryTable).fill().expand().colspan(4).maxHeight(INVENTORY_HEIGHT);
+		inventory_market_Stage.addActor(inventory_market_Window);	 
+	}
+	
 }

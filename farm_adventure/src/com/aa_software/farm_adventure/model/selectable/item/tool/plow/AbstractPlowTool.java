@@ -23,4 +23,8 @@ public class AbstractPlowTool extends AbstractTool{
 	public String getTextureName() {
 		return "arbitrary";
 	}
+	
+	public String getToolType() {
+		return "PLOW TOOL";
+	}
 }

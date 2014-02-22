@@ -19,5 +19,4 @@ public class AbstractTool extends AbstractItem {
 	public void setWorkTime(float workTime) {
 		this.workTime = workTime;
 	}
-
 }

@@ -4,8 +4,21 @@ import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorke
 
 public class BriberyUpgrade extends AbstractUpgrade {
 	public static final String TEXTURE_NAME = "bribery_upgrade";
+	public static final String BRIBERY_NAME = "Bribery";
 	public static final float WAGE_MOD = .5f;
 	public static final float WORK_RATE_MOD = .5f;
+	public static int DEFAULT_COST = 30;
+	public static int DEFAULT_VALUE = 15;
+	
+	public BriberyUpgrade() {
+		this.cost = DEFAULT_COST;
+		this.value = DEFAULT_VALUE;
+		this.name = BRIBERY_NAME;
+	}
+	
+	public String getTextureName() {
+		return TEXTURE_NAME;
+	}
 
 	void update(AbstractWorker worker) {
 		int currentWage = worker.getWage();

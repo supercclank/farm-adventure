@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.selectable.item.crop;
 public class RiceCrop extends AbstractCrop {
 	public static final String TEXTURE_NAME = "riceCrop";
 	public static final String SEED_NAME = "riceSeed";
+	public static final String RICE_NAME = "Rice";	
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
 	public static final int DEFAULT_COST = 20;
@@ -13,6 +14,7 @@ public class RiceCrop extends AbstractCrop {
 		this.output = DEFAULT_OUTPUT;
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
+		this.name = RICE_NAME;
 	}
 
 	public RiceCrop(int growthTime, int output, int cost, int value) {

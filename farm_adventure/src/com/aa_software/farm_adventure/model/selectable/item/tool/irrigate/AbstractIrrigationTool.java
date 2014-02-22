@@ -20,4 +20,8 @@ public class AbstractIrrigationTool extends AbstractTool {
 	public String getTextureName() {
 		return "arbitrary";
 	}
+	
+	public String getToolType() {
+		return "IRRIGATION TOOL";
+	}
 }

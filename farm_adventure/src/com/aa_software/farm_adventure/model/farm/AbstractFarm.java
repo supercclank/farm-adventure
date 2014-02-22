@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
+import com.aa_software.farm_adventure.model.Market;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
@@ -32,6 +33,7 @@ public abstract class AbstractFarm {
 	protected int currentSeason;
 	protected final Timer timer;
 	protected TimerTask seasonTimer;
+	protected Market market;
 	/* each farm starts with a certain amount of seeds, workers, equipment */
 	protected Map<AbstractWorker, Integer> startingWorkerCount;
 	protected Map<AbstractCrop, Integer> startingCropCount;
@@ -46,6 +48,8 @@ public abstract class AbstractFarm {
 		field = new Field();
 		toolBar = new ToolBar();
 		timer = new Timer();
+		market = new Market();
+		
 	}
 
 	public Season getCurrentSeason() {
@@ -83,5 +87,8 @@ public abstract class AbstractFarm {
 		timer.schedule(seasonTimer, TimeUnit.MINUTES
 				.toMillis((long) seasons[currentSeason].getCycleTime()));
 	}
-
+	
+	public Market getMarket(){
+		return this.market;
+	}
 }
