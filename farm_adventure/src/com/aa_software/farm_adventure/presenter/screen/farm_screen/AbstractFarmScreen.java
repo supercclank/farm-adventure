@@ -108,8 +108,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 	protected final TimerTask timerTask;
 	protected boolean gameOver;
 
-	public AbstractFarmScreen(FarmAdventure game) {
-		super(game);
+	public AbstractFarmScreen() {
+		super();
 		gameOver = false;
 		this.selection = null;
 		this.state = new DefaultSelectionState();
@@ -171,7 +171,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 		PLAYER.setBankroll(PLAYER.getBankroll() + 100);
 		map.dispose();
 		renderer.dispose();
-		game.setScreen(new MainMenuScreen(game));
+		FarmAdventure.getInstance().setScreen(new MainMenuScreen());
 	}
 
 	@Override

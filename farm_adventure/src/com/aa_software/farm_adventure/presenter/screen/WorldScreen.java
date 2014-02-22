@@ -52,8 +52,8 @@ public class WorldScreen extends AbstractScreen {
 	 * @param game
 	 *            the current FarmAdventure class that is being played
 	 */
-	public WorldScreen(FarmAdventure game) {
-		super(game);
+	public WorldScreen() {
+		super();
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				selectedFarm = new TutorialFarm();
-				selectedScreen = new TutorialFarmScreen(game);
+				selectedScreen = new TutorialFarmScreen();
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -137,7 +137,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				selectedFarm = new RainforestFarm();
-				selectedScreen = new RainforestFarmScreen(game);
+				selectedScreen = new RainforestFarmScreen();
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -151,7 +151,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				selectedFarm = new DesertFarm();
-				selectedScreen = new DesertFarmScreen(game);
+				selectedScreen = new DesertFarmScreen();
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -164,7 +164,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				selectedFarm = new SnowFarm();
-				selectedScreen = new SnowFarmScreen(game);
+				selectedScreen = new SnowFarmScreen();
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -236,7 +236,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				// seasonWindow.setVisible(false);
-				game.setScreen(selectedScreen);
+				FarmAdventure.getInstance().setScreen(selectedScreen);
 				return true;
 			}
 		});

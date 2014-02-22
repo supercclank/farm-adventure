@@ -11,6 +11,6 @@ public class Main {
 		cfg.width = 640;
 		cfg.height = 1024;
 
-		new LwjglApplication(new FarmAdventure(), cfg);
+		new LwjglApplication(FarmAdventure.getInstance(), cfg);
 	}
 }
