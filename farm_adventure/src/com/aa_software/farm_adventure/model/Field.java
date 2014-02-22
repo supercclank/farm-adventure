@@ -36,6 +36,7 @@ public class Field {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				if (i == 2) {
 					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j].setUsable(false);
 				}
 				else {
 					plots2D[i][j] = new Plot(PlotType.GRASS);
@@ -50,6 +51,7 @@ public class Field {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				if (((i + j) % 3) == 0) {
 					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j].setUsable(false);
 				}
 				else {
 					plots2D[i][j] = new Plot(PlotType.GRASS);
@@ -64,6 +66,7 @@ public class Field {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				if (i == COLUMNS - 1 && j == 0) {
 					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j].setUsable(false);
 				}
 				else {
 					plots2D[i][j] = new Plot(PlotType.GRASS);
@@ -78,6 +81,7 @@ public class Field {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				if (j == 2 && (i == 1 || i ==2 || i ==3)) {
 					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j].setUsable(false);
 				}
 				else {
 					plots2D[i][j] = new Plot(PlotType.GRASS);

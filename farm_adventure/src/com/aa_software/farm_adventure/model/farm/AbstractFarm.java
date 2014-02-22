@@ -43,7 +43,7 @@ public abstract class AbstractFarm {
 		startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		field = new Field();
 		toolBar = new ToolBar();
-		seasonStartTime = System.currentTimeMillis();
+		
 	}
 
 	public Season getCurrentSeason() {
@@ -67,6 +67,8 @@ public abstract class AbstractFarm {
 	}
 
 	public void checkSeasonTimer() {
+		if (seasonStartTime == 0)
+			seasonStartTime = System.currentTimeMillis();
 		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS - System.currentTimeMillis();
 		if(timeLeft < 0) {
 			currentSeason++;
