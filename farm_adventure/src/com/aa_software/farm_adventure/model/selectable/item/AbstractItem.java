@@ -41,7 +41,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 
 	}
 	
-	public String getToolType(){
+	public String getItemType(){
 		return "No working";
 	}
 }

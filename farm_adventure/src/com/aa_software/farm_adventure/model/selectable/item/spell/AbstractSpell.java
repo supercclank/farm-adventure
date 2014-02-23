@@ -17,4 +17,8 @@ public abstract class AbstractSpell extends AbstractItem {
 	public void setSpellLength(float spellLength) {
 		this.spellLength = spellLength;
 	}
+	
+	public String getItemType() {
+		return "SPELLS";
+	}
 }

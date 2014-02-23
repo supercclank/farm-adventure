@@ -37,7 +37,7 @@ public class Player {
 	}
 
 	public Inventory getInventory() {
-		return inventory;
+		return this.inventory;
 	}
 
 	public Preferences getPreferences() {
@@ -46,6 +46,10 @@ public class Player {
 
 	public void setBankroll(int bankroll) {
 		this.bankroll = bankroll;
+	}
+	
+	public void reduceBankroll(int itemCost){
+		this.bankroll -= itemCost;
 	}
 
 	public void setCampaign(AbstractCampaign campaign) {

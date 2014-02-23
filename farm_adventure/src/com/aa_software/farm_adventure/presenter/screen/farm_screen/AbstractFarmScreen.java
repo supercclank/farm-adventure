@@ -1,7 +1,11 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -10,20 +14,14 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
-import com.aa_software.farm_adventure.model.farm.DesertFarm;
-import com.aa_software.farm_adventure.model.farm.RainforestFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
-import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.RiceCrop;
-import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
-import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
@@ -45,21 +43,26 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class AbstractFarmScreen extends AbstractScreen {
 
@@ -122,9 +125,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 	
 	protected Boolean inventoryMarketVisible;
 
-
 	protected TimerTask gameTimer;
 	protected boolean gameOver;
+	
+	protected enum Actions {BUY, SELL}
 
 	public AbstractFarmScreen(FarmAdventure game) {
 		super(game);
@@ -614,30 +618,69 @@ public class AbstractFarmScreen extends AbstractScreen {
 		
 		// inventory Stuff
 		final Table inventoryTable = new Table();
+		inventoryTable.layout();
 		final Table invScrollTable = new Table();
 		inventory_market_Stage.addActor(inventoryTable);
+		invScrollTable.layout();
 		
-		int marketItems = this.farm.getMarket().getItemsCount();
-		for (int j = 0; j<5; j++){
-			for (int i=0; i<marketItems; i++){
+		Map<String, ArrayList<AbstractItem>> marketItems = this.farm.getMarket().getItems();
+		ArrayList<AbstractItem> inventoryItems = PLAYER.getInventory().getItems();
+		int inventoryCount = inventoryItems.size();
+        System.out.println("inventoryCount Before: "+inventoryCount);
+
+		Object [] keyset = marketItems.keySet().toArray();
+		int typeCount = keyset.length;
+		Label type;
+		for (int j = 0; j<typeCount; j++){
+			type = new Label(keyset[j].toString(), inventory_market_Skin, "default-font", Color.ORANGE);
+			type.setWrap(true);
+			invScrollTable.row();
+			invScrollTable.add(type).expand().left();
+			int itemCount = marketItems.get(keyset[j]).size();	
+			int cost = 0;
+			for (int i=0; i<itemCount; i++){
+				int inventoryTypeCount = 0;	
+				for (int k = 0; k<inventoryCount; k++){
+					if (marketItems.get(keyset[j]).get(i).getClass().equals(inventoryItems.get(k).getClass())){
+						inventoryTypeCount++;
+						cost = inventoryItems.get(k).getCost();
+					}			
+				}
+				invScrollTable.row();
+				Label itemName = new Label(marketItems.get(keyset[j]).get(i).toString(), inventory_market_Skin);
+				invScrollTable.add(itemName).expand().left();
+				Label itemInvCount = new Label(Integer.toString(inventoryTypeCount), inventory_market_Skin);
+				invScrollTable.add(itemInvCount).expand().left();		
+				Label itemCost = new Label("$"+Integer.toString(cost), inventory_market_Skin);
+				invScrollTable.add(itemCost).expand().left();
 				
-				Label st = new Label(farm.getMarket().getItem(i).getToolType(), inventory_market_Skin);
-				invScrollTable.row();
-				invScrollTable.add(st).align(Align.left).left();
-				invScrollTable.row();
-				st = new Label(farm.getMarket().getItem(i).toString(), inventory_market_Skin);
-				invScrollTable.add(st).align(Align.left).left();
+				Button buyButton = new TextButton("BUY", inventory_market_Skin, "default");
+				buyButton.addListener(new BuyClickListener(marketItems.get(keyset[j]).get(i)));
+				invScrollTable.add(buyButton).expand().left();
+				
+				Button sellButton = new TextButton("SELL", inventory_market_Skin, "default");
+				sellButton.addListener(new SellClickListener(marketItems.get(keyset[j]).get(i)));
+				invScrollTable.add(sellButton).expand().left();
 			}
 		}
+		
+		invScrollTable.pack();
 		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
 		inventoryTable.row();
-		Label inventoryLable = new Label("Inventory", inventory_market_Skin);
-		inventoryTable.add(inventoryLable);
+		inventoryTable.add(new Label("Inventory", inventory_market_Skin));
+		/**
 		inventoryTable.row();
-		inventoryTable.add(inventorySP).fill().expand().align(Align.left).left();
-		
+		inventoryTable.add(new Label("Item", inventory_market_Skin));
+		inventoryTable.add(new Label("Quantity", inventory_market_Skin));
+		inventoryTable.add(new Label("Price", inventory_market_Skin));
+		inventoryTable.add(new Label("", inventory_market_Skin));
+		inventoryTable.add(new Label("", inventory_market_Skin));
+		*/
+		inventoryTable.row();
+		inventoryTable.add(inventorySP).expand().fill().align(Align.left).left();
+		inventoryTable.pack();	
+		inventoryTable.layout();
 	
-		//Merging inventory and market
 		inventory_market_Window = new Window("", inventory_market_Skin);
 		inventory_market_Window.setModal(true);
 		inventory_market_Window.setMovable(false);
@@ -645,11 +688,52 @@ public class AbstractFarmScreen extends AbstractScreen {
 		inventoryMarketVisible = false;
 		inventory_market_Window.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
 		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
-		inventory_market_Window.getButtonTable().add(new TextButton("SELL", inventory_market_Skin)).height(inventory_market_Window.getPadTop());
 		inventory_market_Window.defaults().spaceBottom(10);
 		inventory_market_Window.row().fill().expandX();
 		inventory_market_Window.add(inventoryTable).fill().expand().colspan(4).maxHeight(INVENTORY_HEIGHT);
 		inventory_market_Stage.addActor(inventory_market_Window);	 
+	}
+	
+	private class BuyClickListener extends ClickListener {
+	    AbstractItem item;
+
+	    public BuyClickListener(AbstractItem item) {
+	        this.item = item;
+	    }
+	    
+	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+	    	int itemCost = item.getCost();
+	    	if(PLAYER.getBankroll()<itemCost){
+	            System.out.println("You don't have enough funds");
+	    	} else{
+	            System.out.println("Buy: "+item.toString());
+	            PLAYER.getInventory().addItem(item);
+	            System.out.println("inventoryCount After: "+PLAYER.getInventory().getItemCount(item));
+	            PLAYER.reduceBankroll(itemCost);
+	    	}
+            return true;
+        }
+
+	    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+        	System.out.println("Released Buy button");
+        }
+	}
+	
+	private class SellClickListener extends ClickListener {
+	    AbstractItem item;
+
+	    public SellClickListener(AbstractItem item) {
+	        this.item = item;
+	    }
+	    
+	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            System.out.println("Sell: "+item.toString());
+            return true;
+        }
+
+	    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+        	System.out.println("Released Sell button");
+        }
 	}
 	
 }

@@ -26,7 +26,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		return seed;
 	}
 	
-	public String getToolType() {
+	public String getItemType() {
 		return "PLANT TOOL";
 	}
 }

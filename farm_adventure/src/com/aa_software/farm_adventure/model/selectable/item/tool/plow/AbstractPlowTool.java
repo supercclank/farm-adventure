@@ -24,7 +24,7 @@ public class AbstractPlowTool extends AbstractTool{
 		return "arbitrary";
 	}
 	
-	public String getToolType() {
+	public String getItemType() {
 		return "PLOW TOOL";
 	}
 }

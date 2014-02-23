@@ -33,4 +33,8 @@ public abstract class AbstractCrop extends AbstractItem {
 	public String getTextureName() {
 		return "texture";
 	}
+	
+	public String getItemType() {
+		return "CROPS";
+	}
 }

@@ -11,4 +11,8 @@ public abstract class AbstractUpgrade extends AbstractItem {
 		return "arbitrary";
 		// TODO: change
 	}
+	
+	public String getItemType() {
+		return "UPGRADES";
+	}
 }
