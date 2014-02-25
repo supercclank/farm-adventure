@@ -1,8 +1,8 @@
 package com.aa_software.farm_adventure.model;
 
-import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 /*
  * Inventory: the items that the farm has on hand.

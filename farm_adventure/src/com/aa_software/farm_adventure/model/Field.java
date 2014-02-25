@@ -1,7 +1,7 @@
 package com.aa_software.farm_adventure.model;
 
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
-import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
+import com.aa_software.farm_adventure.model.plot.Plot;
+import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Field {
 

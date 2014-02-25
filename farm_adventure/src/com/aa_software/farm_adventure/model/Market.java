@@ -1,6 +1,6 @@
 package com.aa_software.farm_adventure.model;
 
-import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
 
 public class Market {
 	private AbstractItem[] items;

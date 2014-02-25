@@ -3,8 +3,8 @@ package com.aa_software.farm_adventure.model.season;
 import java.util.Random;
 
 import com.aa_software.farm_adventure.model.Field;
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
-import com.aa_software.farm_adventure.model.selectable.plot.PlotType;
+import com.aa_software.farm_adventure.model.plot.Plot;
+import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Season {
 
@@ -24,7 +24,7 @@ public class Season {
 	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
 	public static final float FALL_LEAF_COVER_MOD = .2f;
 
-	public static final int CYCLE_TIME_MILLIS = 10000;
+	public static final int CYCLE_TIME_MILLIS = 60000;
 
 	private float cycleTime;
 	private SeasonType seasonType;

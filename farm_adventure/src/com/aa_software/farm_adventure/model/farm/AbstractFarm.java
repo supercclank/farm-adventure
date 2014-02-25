@@ -8,12 +8,12 @@ import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.ToolBar;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
+import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.season.Season;
-import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
-import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
 /*
  * A farm holds the state of the game in progress. The seasons and the 

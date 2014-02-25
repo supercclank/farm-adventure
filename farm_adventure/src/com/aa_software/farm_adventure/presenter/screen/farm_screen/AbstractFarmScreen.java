@@ -2,28 +2,23 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.RainforestFarm;
-import com.aa_software.farm_adventure.model.farm.SnowFarm;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
-import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
-import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.model.selectable.item.crop.BananaCrop;
-import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
-import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.selectable.item.crop.RiceCrop;
-import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
-import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
-import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
+import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
+import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
+import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
+import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
+import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
@@ -57,7 +52,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 public class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MILLIS = 30000;
+	public static final long GAME_TIME_MILLIS = 120000;
 	long gameStartTime;
 
 	/* Player */
