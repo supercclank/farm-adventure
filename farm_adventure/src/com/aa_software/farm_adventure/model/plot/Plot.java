@@ -84,6 +84,10 @@ public class Plot {
 		}
 	}
 	
+	/**
+	 * Changes a plot from containing the "WATERED" keyword to "UNWATERED". This will
+	 * affect the texture used to render the plot.
+	 */
 	public void unwaterPlot() {
 		if(plotType == PlotType.PLOWEDWATERED){
 			plotType = PlotType.PLOWEDUNWATERED;
@@ -93,11 +97,10 @@ public class Plot {
 	}
 
 	public void setPlotType(PlotType plotType) {
-		if(plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
-			this.isUsable = false;
-			this.plotType = plotType;
-		}
 		if(isUsable) {
+			if(plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+				this.isUsable = false;
+			}
 			this.plotType = plotType;
 		}
 	}

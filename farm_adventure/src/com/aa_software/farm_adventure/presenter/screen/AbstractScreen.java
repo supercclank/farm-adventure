@@ -21,8 +21,6 @@ public abstract class AbstractScreen implements Screen {
 	protected OrthogonalTiledMapRenderer renderer;
 	private Skin skin;
 
-	public static final int WIDTH = 800, HEIGHT = 480;
-
 	public AbstractScreen() {
 		// TODO: initiate cameras and maps
 		

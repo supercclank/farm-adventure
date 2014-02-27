@@ -104,48 +104,18 @@ public class Field {
 		EnumSet<Irrigation> choices = EnumSet.noneOf(Irrigation.class);
 
 		if(plot.isUsable()) {
-			if(selectedIrrigation.size() == 1) {
-				Irrigation[] irrigationArray = new Irrigation[1];
-				irrigationArray = selectedIrrigation.toArray(irrigationArray);
-				switch(irrigationArray[0]) {
-					case TOP:
-						if(canIrrigateBottom(plot, x, y)) {
-							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
-						} 
-						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-						break;
-					case BOTTOM:
-						if(canIrrigateTop(plot, x, y)) {
-							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
-						} 
-						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-						break;
-					case LEFT:
-						if(canIrrigateRight(plot, x, y)) {
-							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
-						} 
-						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-						break;
-					case RIGHT:
-						if(canIrrigateLeft(plot, x, y)) {
-							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
-						} 
-						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-						break;
+			if(selectedIrrigation.size() <= 1) {
+				if(canIrrigateBottom(x, y)) {
+					choices.add(Irrigation.BOTTOM);
 				} 
-			} else if (selectedIrrigation.isEmpty()) {
-				//TODO: this should depend on all of the surrounding squares, including PlotType.WATER
-				if(canIrrigateBottom(plot, x, y)) {
-					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
+				if(canIrrigateTop(x, y)) {
+					choices.add(Irrigation.TOP);
 				} 
-				if(canIrrigateTop(plot, x, y)) {
-					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
+				if(canIrrigateRight(x, y)) {
+					choices.add(Irrigation.RIGHT);
 				} 
-				if(canIrrigateRight(plot, x, y)) {
-					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
-				} 
-				if(canIrrigateLeft(plot, x, y)) {
-					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
+				if(canIrrigateLeft(x, y)) {
+					choices.add(Irrigation.LEFT);
 				} 
 			} else {
 				return EnumSet.complementOf(selectedIrrigation);
@@ -154,8 +124,27 @@ public class Field {
 		return choices;
 	}
 	
-	private boolean canIrrigateBottom(Plot plot, int x, int y) {
-		boolean bottomNeighborHasLeftAndRight = y-1 >= 0 &&
+	/**
+	 * Checks whether the bottom of a particular plot is open to irrigation by
+	 * checking its neighboring plots for irrigation or water.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		whether the plot is open to being irrigated across the bottom.
+	 */
+	private boolean canIrrigateBottom(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.BOTTOM)) {
+			return false;
+		}
+		
+		if(plot.getIrrigation().contains(Irrigation.LEFT) || 
+				plot.getIrrigation().contains(Irrigation.RIGHT)) {
+			return true;
+		}
+		
+		boolean bottomNeighborHasLeftOrRight = y-1 >= 0 &&
 				(getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT) ||
 				getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT));
 		
@@ -165,14 +154,33 @@ public class Field {
 		boolean rightNeighborHasBottom = x+1 < Field.COLUMNS &&
 				getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM);
 		
-		boolean canIrrigateBottom = bottomNeighborHasLeftAndRight || leftNeighborHasBottom ||
+		boolean canIrrigateBottom = bottomNeighborHasLeftOrRight || leftNeighborHasBottom ||
 				rightNeighborHasBottom;
 		
 		return canIrrigateBottom;
 	}
 	
-	private boolean canIrrigateTop(Plot plot, int x, int y) {
-		boolean topNeighborHasLeftAndRight = y+1 < Field.ROWS &&
+	/**
+	 * Checks whether the top of a particular plot is open to irrigation by
+	 * checking its neighboring plots for irrigation or water.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		whether the plot is open to being irrigated across the top.
+	 */
+	private boolean canIrrigateTop(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.TOP)) {
+			return false;
+		}
+		
+		if(plot.getIrrigation().contains(Irrigation.LEFT) || 
+				plot.getIrrigation().contains(Irrigation.RIGHT)) {
+			return true;
+		}
+		
+		boolean topNeighborHasLeftOrRight = y+1 < Field.ROWS &&
 				(getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
 				getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT));
 		
@@ -182,14 +190,33 @@ public class Field {
 		boolean rightNeighborHasTop = x+1 < Field.COLUMNS &&
 		getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP);
 		
-		boolean canIrrigateTop = topNeighborHasLeftAndRight || leftNeighborHasTop 
+		boolean canIrrigateTop = topNeighborHasLeftOrRight || leftNeighborHasTop 
 				|| rightNeighborHasTop;
 		
 		return canIrrigateTop;
 	}
 	
-	private boolean canIrrigateRight(Plot plot, int x, int y) {
-		boolean rightNeighborHasTopAndBottom = x+1 < Field.COLUMNS &&
+	/**
+	 * Checks whether the right of a particular plot is open to irrigation by
+	 * checking its neighboring plots for irrigation or water.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		whether the plot is open to being irrigated across the right.
+	 */
+	private boolean canIrrigateRight(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.RIGHT)) {
+			return false;
+		}
+		
+		if(plot.getIrrigation().contains(Irrigation.TOP) || 
+				plot.getIrrigation().contains(Irrigation.BOTTOM)) {
+			return true;
+		}
+		
+		boolean rightNeighborHasTopOrBottom = x+1 < Field.COLUMNS &&
 				(getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP) ||
 				getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM));
 		
@@ -199,14 +226,33 @@ public class Field {
 		boolean bottomNeighborHasRight = y-1 >= 0 &&
 				getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT);
 		
-		boolean canIrrigateRight = rightNeighborHasTopAndBottom || topNeighborHasRight ||
+		boolean canIrrigateRight = rightNeighborHasTopOrBottom || topNeighborHasRight ||
 				bottomNeighborHasRight;
 		
 		return canIrrigateRight;
 	}
 	
-	private boolean canIrrigateLeft(Plot plot, int x, int y) {
-		boolean leftNeighborHasTopAndBottom = x-1 >= 0 &&
+	/**
+	 * Checks whether the left of a particular plot is open to irrigation by
+	 * checking its neighboring plots for irrigation or water.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		whether the plot is open to being irrigated across the left.
+	 */
+	private boolean canIrrigateLeft(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.LEFT)) {
+			return false;
+		}
+		
+		if(plot.getIrrigation().contains(Irrigation.TOP) || 
+				plot.getIrrigation().contains(Irrigation.BOTTOM)) {
+			return true;
+		}
+		
+		boolean leftNeighborHasTopOrBottom = x-1 >= 0 &&
 		(getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP) ||
 		getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM));
 		
@@ -216,12 +262,21 @@ public class Field {
 		boolean bottomNeighborHasLeft = y-1 >= 0 &&
 		getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT);
 		
-		boolean canIrrigateLeft = leftNeighborHasTopAndBottom || topNeighborHasLeft ||
+		boolean canIrrigateLeft = leftNeighborHasTopOrBottom || topNeighborHasLeft ||
 				bottomNeighborHasLeft;
 		
 		return canIrrigateLeft;
 	}
 	
+	/**
+	 * Syncs neighboring square's irrigation with the plot at the given
+	 * x-and-y-coordinate. If the given plot has irrigation that neighbors a square
+	 * or the plot is water, then the neighbor plot should share the irrigation.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * 
+	 */
 	public void syncNeighborIrrigation(int x, int y) {
 		if (plots2D[x][y].getPlotType() == PlotType.WATER) {
 			/* if neighbor does not have right */
@@ -280,6 +335,12 @@ public class Field {
 		}
 	}
 	
+	/**
+	 * Syncs all square's and their neighbor's irrigation.
+	 * 
+	 * @see syncNeighborIrrigation
+	 * 
+	 */
 	public void syncAllIrrigation() {
 		for (int i = 0; i < plots2D.length; i++) {
 			for (int j = 0; j < plots2D[i].length; j++) {
