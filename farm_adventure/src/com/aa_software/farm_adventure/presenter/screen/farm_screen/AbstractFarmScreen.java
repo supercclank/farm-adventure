@@ -307,7 +307,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updateIrrigationWindow(final int x, final int y) {
 
-		irrigationMenuStage.clear();
 		irrigationWindow.clear();
 		
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y).iterator();
@@ -322,15 +321,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			 * know which X and Y it pertains to. */
 			irrigationButton.addListener(new IrrigationListener(x, y) {
 				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) { // farm.getTool(IRRIGATION_TOOL_X, IRRIGATION_TOOL_Y))
-					System.out.println("sel: "+selection.toString() + 
-							"\nstate: " + state.toString() +
-							"\nX: " + this.getX() +
-							"\nY: " + this.getY());
+						int pointer, int button) {
 					if(selection instanceof AbstractIrrigationTool) {
 						((AbstractIrrigationTool) selection).setIrrigationChoice(Irrigation.TOP);
 						state = state.update(farm.getPlot(this.getX(), this.getY()));
-						System.out.println("HERE!");
 					}
 					return true;
 				}
@@ -340,6 +334,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 		irrigationWindow.pack();
 		irrigationMenuStage.addActor(irrigationWindow);
+		Gdx.input.setInputProcessor(irrigationMenuStage);
 	}
 
 	@Override
@@ -353,7 +348,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		
 		setupPlantWindow();
 
-		Gdx.input.setInputProcessor(irrigationMenuStage);
 		Gdx.input.setInputProcessor(plantMenuStage);
 	}
 

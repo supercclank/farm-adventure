@@ -98,7 +98,8 @@ public class Field {
 		EnumSet<Irrigation> selectedIrrigation = getPlot(x, y).getIrrigation();
 		EnumSet<Irrigation> choices = EnumSet.noneOf(Irrigation.class);
 		if(selectedIrrigation.size() == 1) {
-			Irrigation[] irrigationArray = (Irrigation[]) selectedIrrigation.toArray();
+			Irrigation[] irrigationArray = new Irrigation[1];
+			irrigationArray = selectedIrrigation.toArray(irrigationArray);
 			boolean outOfBounds = false;
 			switch(irrigationArray[0]) {
 				case TOP:
@@ -106,7 +107,7 @@ public class Field {
 					(y+1 <= Field.ROWS &&
 					getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
 					getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT)) ||
-					(x-1 < 0 &&
+					(x-1 >= 0 &&
 					getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
 					(x+1 <= Field.COLUMNS &&
 					getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
