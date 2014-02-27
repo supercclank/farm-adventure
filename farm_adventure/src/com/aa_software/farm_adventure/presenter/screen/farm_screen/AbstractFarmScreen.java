@@ -16,6 +16,7 @@ import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
@@ -437,9 +438,9 @@ public class AbstractFarmScreen extends AbstractScreen {
 				Cell cell = layer.getCell(x, y + FIELD_STARTING_Y);
 				/* By default, make the tile transparent */
 				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
-				if (farm.getPlot(x, y).getIrrigation() != null) {
+				if (!farm.getPlot(x, y).getIrrigation().isEmpty()) {
 					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
-							.getIrrigation().toString()));
+							.getIrrigationTextureName()));
 				}
 				cell.setTile(tile);
 			}
@@ -469,7 +470,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			} else {
 				selection = farm.getTool(x, y);
 				if (selection instanceof AbstractSpell) {
-					state = state.update((AbstractSpell) selection);
+					state = state.update((AbstractCrop) selection);
 				} else if (selection instanceof AbstractTool) {
 					state = state.update((AbstractTool) selection);
 				} else if (selection instanceof AbstractWorker) {

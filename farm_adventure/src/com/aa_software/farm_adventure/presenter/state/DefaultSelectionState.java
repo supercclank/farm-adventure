@@ -44,4 +44,8 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	public DefaultSelectionState update(Plot plot) {
 		return new DefaultSelectionState();
 	}
+	
+	public DefaultSelectionState update(Plot[] plot) {
+		return new DefaultSelectionState();
+	}
 }

@@ -44,4 +44,9 @@ public class UpgradeSelectionState extends AbstractSelectionState {
 	public UpgradeSelectionState update(Plot plot) {
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
+	
+	public UpgradeSelectionState update(Plot[] plots) {
+		selection.update(plots);
+		return new UpgradeSelectionState((AbstractUpgrade) selection);
+	}
 }

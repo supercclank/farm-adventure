@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
+import java.util.EnumSet;
+
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -27,7 +29,7 @@ public class AbstractIrrigationTool extends AbstractTool {
 						default:
 							break;
 					}
-					plot.setIrrigation(Irrigation.TOP_LEFT_RIGHT_BOTTOM);
+					plot.setIrrigation(EnumSet.allOf(Irrigation.class));
 					this.cancel();
 			    }
 			}, workTime);

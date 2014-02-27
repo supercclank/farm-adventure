@@ -30,5 +30,9 @@ public abstract class AbstractItem {
 	public void update(Plot plot) {
 
 	}
+	
+	public void update(Plot[] plots) {
+		
+	}
 
 }

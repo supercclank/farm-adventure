@@ -43,4 +43,9 @@ public class ToolSelectionState extends AbstractSelectionState {
 		selection.update(plot);
 		return new ToolSelectionState((AbstractTool) selection);
 	}
+	
+	public ToolSelectionState update(Plot[] plots) {
+		selection.update(plots);
+		return new ToolSelectionState((AbstractTool) selection);
+	}
 }

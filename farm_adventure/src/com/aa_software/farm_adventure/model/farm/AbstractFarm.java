@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.farm;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -12,6 +13,7 @@ import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.season.Season;
 
@@ -60,6 +62,10 @@ public abstract class AbstractFarm {
 
 	public Plot getPlot(int x, int y) {
 		return field.getPlot(x, y);
+	}
+	
+	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
+		return field.getIrrigationChoices(x, y);
 	}
 
 	public AbstractTool getTool(int x, int y) {
