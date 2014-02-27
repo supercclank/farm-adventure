@@ -36,6 +36,7 @@ public class Field {
 				}
 			}
 		}
+		syncAllIrrigation();
 	}
 	
 	public void createRainforestField() {
@@ -50,6 +51,7 @@ public class Field {
 				}
 			}
 		}
+		syncAllIrrigation();
 	}
 	
 	public void createDesertField() {
@@ -64,6 +66,7 @@ public class Field {
 				}
 			}
 		}
+		syncAllIrrigation();
 	}
 	
 	public void createSnowField() {
@@ -78,6 +81,7 @@ public class Field {
 				}
 			}
 		}
+		syncAllIrrigation();
 	}
 	
 	public void setPlot(int x, int y, Plot plot) {
@@ -95,59 +99,35 @@ public class Field {
 	 * @return		the available choices for irrigation.
 	 */
 	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
-		EnumSet<Irrigation> selectedIrrigation = getPlot(x, y).getIrrigation();
+		Plot plot = getPlot(x, y);
+		EnumSet<Irrigation> selectedIrrigation = plot.getIrrigation();
 		EnumSet<Irrigation> choices = EnumSet.noneOf(Irrigation.class);
-		if(getPlot(x,y).isUsable()) {
+
+		if(plot.isUsable()) {
 			if(selectedIrrigation.size() == 1) {
 				Irrigation[] irrigationArray = new Irrigation[1];
 				irrigationArray = selectedIrrigation.toArray(irrigationArray);
 				switch(irrigationArray[0]) {
-				//TODO: Doesn't take into account PlotType.WATER
 					case TOP:
-						if(
-						(y+1 < Field.ROWS &&
-						(getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
-						getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) ||
-						(x-1 >= 0 &&
-						getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
-						(x+1 < Field.COLUMNS &&
-						getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
+						if(canIrrigateBottom(plot, x, y)) {
 							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
 						} 
 						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
 						break;
 					case BOTTOM:
-						if((y-1 >= 0 &&
-						(getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT) ||
-						getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT))) ||
-						(x-1 >= 0 &&
-						getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP)) ||
-						(x+1 < Field.COLUMNS &&
-						getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP))) {
+						if(canIrrigateTop(plot, x, y)) {
 							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
 						} 
 						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
 						break;
 					case LEFT:
-						if((x+1 < Field.COLUMNS &&
-						(getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP) ||
-						getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) ||
-						(y-1 >= 0 &&
-						getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT)) ||
-						(y+1 < Field.ROWS &&
-						getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
+						if(canIrrigateRight(plot, x, y)) {
 							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
 						} 
 						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
 						break;
 					case RIGHT:
-						if((x-1 >= 0 &&
-						(getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP) ||
-						getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM))) ||
-						(y-1 >= 0 &&
-						getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT)) ||
-						(y+1 < Field.ROWS &&
-						getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
+						if(canIrrigateLeft(plot, x, y)) {
 							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
 						} 
 						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
@@ -155,11 +135,159 @@ public class Field {
 				} 
 			} else if (selectedIrrigation.isEmpty()) {
 				//TODO: this should depend on all of the surrounding squares, including PlotType.WATER
-				return EnumSet.allOf(Irrigation.class);
+				if(canIrrigateBottom(plot, x, y)) {
+					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
+				} 
+				if(canIrrigateTop(plot, x, y)) {
+					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
+				} 
+				if(canIrrigateRight(plot, x, y)) {
+					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
+				} 
+				if(canIrrigateLeft(plot, x, y)) {
+					choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
+				} 
 			} else {
 				return EnumSet.complementOf(selectedIrrigation);
 			}
 		}
 		return choices;
+	}
+	
+	private boolean canIrrigateBottom(Plot plot, int x, int y) {
+		boolean bottomNeighborHasLeftAndRight = y-1 >= 0 &&
+				(getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT) ||
+				getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT));
+		
+		boolean leftNeighborHasBottom = x-1 >= 0 &&
+				getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM);
+				
+		boolean rightNeighborHasBottom = x+1 < Field.COLUMNS &&
+				getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM);
+		
+		boolean canIrrigateBottom = bottomNeighborHasLeftAndRight || leftNeighborHasBottom ||
+				rightNeighborHasBottom;
+		
+		return canIrrigateBottom;
+	}
+	
+	private boolean canIrrigateTop(Plot plot, int x, int y) {
+		boolean topNeighborHasLeftAndRight = y+1 < Field.ROWS &&
+				(getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
+				getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT));
+		
+		boolean leftNeighborHasTop = x-1 >= 0 &&
+				getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP);
+		
+		boolean rightNeighborHasTop = x+1 < Field.COLUMNS &&
+		getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP);
+		
+		boolean canIrrigateTop = topNeighborHasLeftAndRight || leftNeighborHasTop 
+				|| rightNeighborHasTop;
+		
+		return canIrrigateTop;
+	}
+	
+	private boolean canIrrigateRight(Plot plot, int x, int y) {
+		boolean rightNeighborHasTopAndBottom = x+1 < Field.COLUMNS &&
+				(getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP) ||
+				getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM));
+		
+		boolean topNeighborHasRight = y+1 < Field.ROWS &&
+				getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT);
+		
+		boolean bottomNeighborHasRight = y-1 >= 0 &&
+				getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT);
+		
+		boolean canIrrigateRight = rightNeighborHasTopAndBottom || topNeighborHasRight ||
+				bottomNeighborHasRight;
+		
+		return canIrrigateRight;
+	}
+	
+	private boolean canIrrigateLeft(Plot plot, int x, int y) {
+		boolean leftNeighborHasTopAndBottom = x-1 >= 0 &&
+		(getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP) ||
+		getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM));
+		
+		boolean topNeighborHasLeft = y+1 < Field.ROWS &&
+		getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT);
+		
+		boolean bottomNeighborHasLeft = y-1 >= 0 &&
+		getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT);
+		
+		boolean canIrrigateLeft = leftNeighborHasTopAndBottom || topNeighborHasLeft ||
+				bottomNeighborHasLeft;
+		
+		return canIrrigateLeft;
+	}
+	
+	public void syncNeighborIrrigation(int x, int y) {
+		if (plots2D[x][y].getPlotType() == PlotType.WATER) {
+			/* if neighbor does not have right */
+			if(x-1 >= 0 &&
+					!(plots2D[x-1][y].getPlotType() == PlotType.WATER) &&
+					!plots2D[x-1][y].getIrrigation().contains(Irrigation.RIGHT)) {
+				plots2D[x-1][y].addIrrigation(Irrigation.RIGHT);
+			}
+			/* if neighbor does not have left */
+			if(x+1 < Field.COLUMNS &&
+					!(plots2D[x+1][y].getPlotType() == PlotType.WATER) &&
+					!plots2D[x+1][y].getIrrigation().contains(Irrigation.LEFT)) {
+				plots2D[x+1][y].addIrrigation(Irrigation.LEFT);
+			}
+			/* if neighbor does not have top */
+			if(y+1 < Field.ROWS &&
+					!(plots2D[x][y+1].getPlotType() == PlotType.WATER) &&
+					!plots2D[x][y+1].getIrrigation().contains(Irrigation.BOTTOM)) {
+				plots2D[x][y+1].addIrrigation(Irrigation.BOTTOM);
+			}
+			/* if neighbor does not have bottom */
+			if(y-1 >= 0 &&
+					!(plots2D[x][y-1].getPlotType() == PlotType.WATER) &&
+					!plots2D[x][y-1].getIrrigation().contains(Irrigation.TOP)) {
+				plots2D[x][y-1].addIrrigation(Irrigation.TOP);
+			}
+		} else if (plots2D[x][y].isIrrigated()) {
+			/* if selected has left and neighbor does not have right */
+			if(plots2D[x][y].getIrrigation().contains(Irrigation.LEFT) && 
+					x-1 >= 0 &&
+					!(plots2D[x-1][y].getPlotType() == PlotType.WATER) &&
+					!plots2D[x-1][y].getIrrigation().contains(Irrigation.RIGHT)) {
+				plots2D[x-1][y].addIrrigation(Irrigation.RIGHT);
+			}
+			/* if selected has right and neighbor does not have left */
+			if(plots2D[x][y].getIrrigation().contains(Irrigation.RIGHT) &&
+					x+1 < Field.COLUMNS &&
+					!(plots2D[x+1][y].getPlotType() == PlotType.WATER) &&
+					!plots2D[x+1][y].getIrrigation().contains(Irrigation.LEFT)) {
+				plots2D[x+1][y].addIrrigation(Irrigation.LEFT);
+			}
+			/* if selected has top and neighbor does not have top */
+			if(plots2D[x][y].getIrrigation().contains(Irrigation.TOP) && 
+					y+1 < Field.ROWS  &&
+					!(plots2D[x][y+1].getPlotType() == PlotType.WATER) &&
+					!plots2D[x][y+1].getIrrigation().contains(Irrigation.BOTTOM)) {
+				plots2D[x][y+1].addIrrigation(Irrigation.BOTTOM);
+			}
+			/* if selected has bottom and neighbor does not have bottom */
+			if(plots2D[x][y].getIrrigation().contains(Irrigation.BOTTOM) && 
+					y-1 >= 0  &&
+					!(plots2D[x][y-1].getPlotType() == PlotType.WATER) &&
+					!plots2D[x][y-1].getIrrigation().contains(Irrigation.TOP)) {
+				plots2D[x][y-1].addIrrigation(Irrigation.TOP);
+			}
+		}
+	}
+	
+	public void syncAllIrrigation() {
+		for (int i = 0; i < plots2D.length; i++) {
+			for (int j = 0; j < plots2D[i].length; j++) {
+				if (plots2D[i][j].getPlotType() == PlotType.WATER ||
+						plots2D[i][j].isIrrigated()) {
+					syncNeighborIrrigation(i, j);
+				} 
+			}
+		}
 	}
 }

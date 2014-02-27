@@ -102,7 +102,6 @@ public class Season {
 								Plot plot = field.getPlot(x, y);
 								plot.setIrrigation(EnumSet.noneOf(Irrigation.class));
 								plot.setCrop(null);
-								plot.setPlotType(PlotType.PLOWEDUNWATERED);
 							}
 						}
 					}

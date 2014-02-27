@@ -204,6 +204,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 			checkTouch();
+			farm.getField().syncAllIrrigation();
 			syncWaterTiles();
 			syncPlantTiles();
 			syncGroundTiles();

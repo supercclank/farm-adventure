@@ -70,7 +70,7 @@ public class Plot {
 	}
 
 	public void setCrop(final AbstractCrop crop) {
-		if (plotType == PlotType.PLOWEDWATERED && isUsable) {
+		if (!isUnplowed() && isIrrigated() && !hasCrop() && isUsable) {
 			this.crop = crop;
 		}
 	}
@@ -78,6 +78,17 @@ public class Plot {
 	public void setIrrigation(EnumSet<Irrigation> irrigation) {
 		if(isUsable) {
 			this.irrigation = irrigation;
+		}
+		if(irrigation.isEmpty() && !plotType.toString().toLowerCase().endsWith("unwatered")) {
+			unwaterPlot();
+		}
+	}
+	
+	public void unwaterPlot() {
+		if(plotType == PlotType.PLOWEDWATERED){
+			plotType = PlotType.PLOWEDUNWATERED;
+		} else if(plotType == PlotType.UNPLOWEDWATERED){
+			plotType = PlotType.UNPLOWEDUNWATERED;
 		}
 	}
 
