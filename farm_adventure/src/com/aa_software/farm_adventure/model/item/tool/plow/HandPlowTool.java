@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.plow;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+
 public class HandPlowTool extends AbstractPlowTool {
 	public static final String TEXTURE_NAME = "handPlowTool";
 	// TODO: arbitrary values
@@ -17,5 +19,11 @@ public class HandPlowTool extends AbstractPlowTool {
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 }

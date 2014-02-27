@@ -23,16 +23,10 @@ public abstract class AbstractItem {
 		this.value = value;
 	}
 
-	public void update(AbstractItem item) {
+	abstract public void update(AbstractItem item);
 
-	}
-
-	public void update(Plot plot) {
-
-	}
+	abstract public void update(Plot plot);
 	
-	public void update(Plot[] plots) {
-		
-	}
+	abstract public String getTextureName();
 
 }

@@ -302,28 +302,32 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		});
 	}
 	
-	/**
-	 * Sets up the window to choose a seed to plant
-	 */
+/**
+ * Updates the window for selecting irrigation.
+ * 
+ * @param x		the x coordinate of the selected plot
+ * @param y		the y coordinate of the selected plot
+ */
 	public void updateIrrigationWindow(final int x, final int y) {
 
 		irrigationWindow.clear();
 		
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y).iterator();
 		for( ; iterator.hasNext(); ) {
+			Irrigation irrigation = iterator.next();
 			Texture irrigationTexture = new Texture(Gdx.files.internal(
 					TextureHelper.getIrrigationTextureFileName(
-							EnumSet.of(iterator.next()))));
+							EnumSet.of(irrigation))));
 			TextureRegion irrigationImage = new TextureRegion(irrigationTexture);
 			Button irrigationButton = new Button(new Image(irrigationImage), skin);
 			/* creates an input listener that additionally has the fields for 
 			 * the selected X and Y. This way, when the listener is called, it will
 			 * know which X and Y it pertains to. */
-			irrigationButton.addListener(new IrrigationListener(x, y) {
+			irrigationButton.addListener(new IrrigationListener(x, y, irrigation) {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if(selection instanceof AbstractIrrigationTool) {
-						((AbstractIrrigationTool) selection).setIrrigationChoice(Irrigation.TOP);
+						((AbstractIrrigationTool) selection).setIrrigationChoice(this.getIrrigation());
 						state = state.update(farm.getPlot(this.getX(), this.getY()));
 					}
 					return true;
@@ -334,7 +338,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 		irrigationWindow.pack();
 		irrigationMenuStage.addActor(irrigationWindow);
-		Gdx.input.setInputProcessor(irrigationMenuStage);
+
 	}
 
 	@Override
@@ -347,8 +351,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		gameStartTime = System.currentTimeMillis();
 		
 		setupPlantWindow();
-
-		Gdx.input.setInputProcessor(plantMenuStage);
 	}
 
 	/**
@@ -513,7 +515,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		if (y >= FIELD_STARTING_Y) {
 			if(selection instanceof AbstractIrrigationTool) {
 				updateIrrigationWindow(x, y - FIELD_STARTING_Y);
-				irrigationWindow.setVisible(true);
+				if(irrigationWindow.getChildren().size > 0) {
+						irrigationWindow.setVisible(true);
+						Gdx.input.setInputProcessor(irrigationMenuStage);
+				}
 			} else {
 				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 			}
@@ -521,6 +526,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			if (selection != null && selection.equals(farm.getTool(x, y))) {
 				if (selection instanceof AbstractPlantTool) {
 					plantWindow.setVisible(true);
+					Gdx.input.setInputProcessor(plantMenuStage);
 				}
 			} else {
 				selection = farm.getTool(x, y);

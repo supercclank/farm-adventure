@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.item.spell;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractSpell extends AbstractItem {
 	protected float spellLength;
@@ -16,5 +17,17 @@ public abstract class AbstractSpell extends AbstractItem {
 
 	public void setSpellLength(float spellLength) {
 		this.spellLength = spellLength;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Plot plot) {
+		// TODO Auto-generated method stub
+		
 	}
 }

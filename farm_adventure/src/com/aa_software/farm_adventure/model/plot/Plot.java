@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model.plot;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
@@ -16,14 +15,22 @@ public class Plot {
 		this.crop = null;
 		this.irrigation = EnumSet.noneOf(Irrigation.class);
 		this.plotType = plotType;
-		this.isUsable = true;
+		if(plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+			this.isUsable = false;
+		} else {
+			this.isUsable = true;
+		}
 	}
 
 	public Plot(PlotType plotType, EnumSet<Irrigation> irrigation) {
 		this.crop = null;
 		this.irrigation = irrigation;
 		this.plotType = plotType;
-		this.isUsable = true;
+		if(plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+			this.isUsable = false;
+		} else {
+			this.isUsable = true;
+		}
 	}
 
 	public AbstractCrop getCrop() {
@@ -55,8 +62,7 @@ public class Plot {
 	 * @return		the texture name corresponding to this plots irrigation.
 	 */
 	public String getIrrigationTextureName() {
-		String textureName = TextureHelper.getIrrigationTextureName(irrigation);
-		return textureName;
+		return TextureHelper.getIrrigationTextureName(irrigation);
 	}
 
 	public boolean isUsable() {
@@ -76,6 +82,10 @@ public class Plot {
 	}
 
 	public void setPlotType(PlotType plotType) {
+		if(plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+			this.isUsable = false;
+			this.plotType = plotType;
+		}
 		if(isUsable) {
 			this.plotType = plotType;
 		}

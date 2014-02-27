@@ -97,66 +97,68 @@ public class Field {
 	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
 		EnumSet<Irrigation> selectedIrrigation = getPlot(x, y).getIrrigation();
 		EnumSet<Irrigation> choices = EnumSet.noneOf(Irrigation.class);
-		if(selectedIrrigation.size() == 1) {
-			Irrigation[] irrigationArray = new Irrigation[1];
-			irrigationArray = selectedIrrigation.toArray(irrigationArray);
-			boolean outOfBounds = false;
-			switch(irrigationArray[0]) {
-				case TOP:
-					if(!outOfBounds &&
-					(y+1 <= Field.ROWS &&
-					getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
-					getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT)) ||
-					(x-1 >= 0 &&
-					getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
-					(x+1 <= Field.COLUMNS &&
-					getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
-						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
-					} 
-					choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-					break;
-				case BOTTOM:
-					if((y-1 >= 0 &&
-					getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT) ||
-					getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT)) ||
-					(x-1 >= 0 &&
-					getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP)) ||
-					(x+1 <= Field.COLUMNS &&
-					getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP))) {
-						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
-					} 
-					choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-					break;
-				case LEFT:
-					if((x+1 <= Field.COLUMNS &&
-					getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP) ||
-					getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
-					(y-1 >= 0 &&
-					getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT)) ||
-					(y+1 <= Field.ROWS &&
-					getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
-						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
-					} 
-					choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-					break;
-				case RIGHT:
-					if((x-1 >= 0 &&
-					getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP) ||
-					getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
-					(y-1 >= 0 &&
-					getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT)) ||
-					(y+1 <= Field.ROWS &&
-					getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
-						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
-					} 
-					choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-					break;
+		if(getPlot(x,y).isUsable()) {
+			if(selectedIrrigation.size() == 1) {
+				Irrigation[] irrigationArray = new Irrigation[1];
+				irrigationArray = selectedIrrigation.toArray(irrigationArray);
+				switch(irrigationArray[0]) {
+				//TODO: Doesn't take into account PlotType.WATER
+					case TOP:
+						if(
+						(y+1 < Field.ROWS &&
+						(getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT) ||
+						getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) ||
+						(x-1 >= 0 &&
+						getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM)) ||
+						(x+1 < Field.COLUMNS &&
+						getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
+							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
+						} 
+						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
+						break;
+					case BOTTOM:
+						if((y-1 >= 0 &&
+						(getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT) ||
+						getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT))) ||
+						(x-1 >= 0 &&
+						getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP)) ||
+						(x+1 < Field.COLUMNS &&
+						getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP))) {
+							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
+						} 
+						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
+						break;
+					case LEFT:
+						if((x+1 < Field.COLUMNS &&
+						(getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP) ||
+						getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) ||
+						(y-1 >= 0 &&
+						getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT)) ||
+						(y+1 < Field.ROWS &&
+						getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
+							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
+						} 
+						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
+						break;
+					case RIGHT:
+						if((x-1 >= 0 &&
+						(getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP) ||
+						getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM))) ||
+						(y-1 >= 0 &&
+						getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT)) ||
+						(y+1 < Field.ROWS &&
+						getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
+							choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
+						} 
+						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
+						break;
+				} 
+			} else if (selectedIrrigation.isEmpty()) {
+				//TODO: this should depend on all of the surrounding squares, including PlotType.WATER
+				return EnumSet.allOf(Irrigation.class);
+			} else {
+				return EnumSet.complementOf(selectedIrrigation);
 			}
-		} else if (selectedIrrigation.isEmpty()) {
-			//TODO: this should depend on all the surrounding squares.
-			return EnumSet.allOf(Irrigation.class);
-		} else {
-			return EnumSet.complementOf(selectedIrrigation);
 		}
 		return choices;
 	}

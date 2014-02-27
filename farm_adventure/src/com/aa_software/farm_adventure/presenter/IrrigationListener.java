@@ -1,29 +1,31 @@
 package com.aa_software.farm_adventure.presenter;
 
+import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class IrrigationListener extends InputListener {
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
+	private final Irrigation irrigation;
 	
-	public IrrigationListener(int x, int y) {
+	public IrrigationListener(int x, int y, Irrigation irrigation) {
 		this.x = x;
 		this.y = y;
+		this.irrigation = irrigation;
 	}
 
 	public int getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
 
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+
+	public Irrigation getIrrigation() {
+		return irrigation;
 	}
+
 }

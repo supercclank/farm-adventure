@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.item.worker;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractWorker extends AbstractItem {
 	public static final int DEFAULT_WAGE = 200;
@@ -123,5 +124,17 @@ public abstract class AbstractWorker extends AbstractItem {
 
 	public void setWorkRate(int workRate) {
 		this.workRate = workRate;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Plot plot) {
+		// TODO Auto-generated method stub
+		
 	}
 }

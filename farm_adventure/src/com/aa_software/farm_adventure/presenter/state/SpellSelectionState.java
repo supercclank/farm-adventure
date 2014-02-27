@@ -44,9 +44,4 @@ public class SpellSelectionState extends AbstractSelectionState {
 		selection.update(plot);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
-	
-	public SpellSelectionState update(Plot[] plots) {
-		selection.update(plots);
-		return new SpellSelectionState((AbstractSpell) selection);
-	}
 }

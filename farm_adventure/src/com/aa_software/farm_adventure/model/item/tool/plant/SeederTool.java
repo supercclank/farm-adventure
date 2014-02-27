@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.item.tool.plant;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 
 public class SeederTool extends AbstractPlantTool {
@@ -19,5 +20,11 @@ public class SeederTool extends AbstractPlantTool {
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 }

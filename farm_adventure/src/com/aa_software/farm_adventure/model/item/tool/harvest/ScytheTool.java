@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.harvest;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+
 public class ScytheTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "scytheTool";
 	public static int DEFAULT_COST = 10;
@@ -16,6 +18,12 @@ public class ScytheTool extends AbstractHarvestTool {
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+
 public class BackhoeTool extends AbstractIrrigationTool {
 	public static final String TEXTURE_NAME = "backhoeTool";
 	public static int DEFAULT_COST = 30;
@@ -16,5 +18,11 @@ public class BackhoeTool extends AbstractIrrigationTool {
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 }

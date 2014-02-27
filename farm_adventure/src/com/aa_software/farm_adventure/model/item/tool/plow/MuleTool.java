@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.plow;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+
 public class MuleTool extends AbstractPlowTool {
 	public static final String TEXTURE_NAME = "muleTool";
 	public static int DEFAULT_COST = 30;
@@ -16,6 +18,12 @@ public class MuleTool extends AbstractPlowTool {
 	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

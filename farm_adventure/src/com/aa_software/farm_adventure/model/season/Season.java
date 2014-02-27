@@ -78,8 +78,9 @@ public class Season {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
-				field.getPlot(x, y).setUsable(true);
-				if (field.getPlot(x, y).getPlotType().equals(PlotType.LEAVES)) {
+				if(field.getPlot(x,y).getPlotType() != PlotType.WATER)
+					field.getPlot(x, y).setUsable(true);
+				if (field.getPlot(x, y).getPlotType() == PlotType.LEAVES) {
 					field.getPlot(x, y).setPlotType(PlotType.GRASS);
 				}
 			}

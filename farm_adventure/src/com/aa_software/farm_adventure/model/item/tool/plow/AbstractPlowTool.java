@@ -1,12 +1,13 @@
 package com.aa_software.farm_adventure.model.item.tool.plow;
 
+import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class AbstractPlowTool extends AbstractTool {
+public abstract class AbstractPlowTool extends AbstractTool {
 	@Override
 	public void update(final Plot plot) {
 		if(plot.isUsable() && (plot.isGrass() || plot.isUnplowed())) {

@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.item.crop;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractCrop extends AbstractItem {
 	public static final float DEFAULT_GROWTH_TIME = 5;
@@ -38,5 +39,17 @@ public abstract class AbstractCrop extends AbstractItem {
 	
 	public boolean isHarvestable() {
 		return isHarvestable;
+	}
+
+	@Override
+	public void update(AbstractItem item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Plot plot) {
+		// TODO Auto-generated method stub
+		
 	}
 }
