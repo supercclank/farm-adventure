@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.presenter.TextureHelper;
 
 public class Plot {
 	private AbstractCrop crop;
@@ -47,49 +48,14 @@ public class Plot {
 		return plotType.toString().toLowerCase();
 	}
 	
+	/**
+	 * Translates the plots irrigation enumeration set into its corresponding
+	 * texture name.
+	 * 
+	 * @return		the texture name corresponding to this plots irrigation.
+	 */
 	public String getIrrigationTextureName() {
-		String textureName = null;
-		if(irrigation.containsAll(Arrays.asList(Irrigation.values()))) {
-			textureName = "TOP_LEFT_RIGHT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.BOTTOM, Irrigation.LEFT))) {
-			textureName = "TOP_LEFT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.BOTTOM, Irrigation.RIGHT))) {
-			textureName = "TOP_RIGHT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.RIGHT, Irrigation.LEFT))) {
-			textureName = "TOP_LEFT_RIGHT";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.RIGHT, 
-				Irrigation.LEFT, Irrigation.BOTTOM))) {
-			textureName = "LEFT_RIGHT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.RIGHT, 
-				Irrigation.BOTTOM))) {
-			textureName = "RIGHT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.BOTTOM, 
-				Irrigation.LEFT))) {
-			textureName = "LEFT_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.RIGHT, 
-				Irrigation.LEFT))) {
-			textureName = "LEFT_RIGHT";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.LEFT))) {
-			textureName = "TOP_LEFT";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.BOTTOM))) {
-			textureName = "TOP_BOTTOM";
-		} else if(irrigation.containsAll(Arrays.asList(Irrigation.TOP, 
-				Irrigation.RIGHT))) {
-			textureName = "TOP_RIGHT";
-		} else if(irrigation.contains(Irrigation.TOP)) {
-			textureName = "TOP";
-		} else if(irrigation.contains(Irrigation.BOTTOM)) {
-			textureName = "BOTTOM";
-		} else if(irrigation.contains(Irrigation.LEFT)) {
-			textureName = "LEFT";
-		} else if(irrigation.contains(Irrigation.RIGHT)) {
-			textureName = "RIGHT";
-		}
+		String textureName = TextureHelper.getIrrigationTextureName(irrigation);
 		return textureName;
 	}
 

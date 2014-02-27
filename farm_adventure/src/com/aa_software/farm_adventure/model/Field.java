@@ -84,6 +84,16 @@ public class Field {
 		plots2D[x][y] = plot;
 	}
 
+	/**
+	 * Calculates and returns the enumeration set corresponding to the selected
+	 * plot's available irrigation choices. The takes into account the current
+	 * state of the plot's irrigation, then reaches out to neighboring plots if 
+	 * more information is needed.
+	 * 
+	 * @param x		the x value of the selected plot.
+	 * @param y		the y value of the selected plot.
+	 * @return		the available choices for irrigation.
+	 */
 	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
 		EnumSet<Irrigation> selectedIrrigation = getPlot(x, y).getIrrigation();
 		EnumSet<Irrigation> choices = EnumSet.noneOf(Irrigation.class);
@@ -101,9 +111,8 @@ public class Field {
 					(x+1 <= Field.COLUMNS &&
 					getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
 						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.TOP)));
-					} else {
-						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-					}
+					} 
+					choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
 					break;
 				case BOTTOM:
 					if((y-1 >= 0 &&
@@ -114,9 +123,8 @@ public class Field {
 					(x+1 <= Field.COLUMNS &&
 					getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP))) {
 						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.BOTTOM)));
-					} else {
-						choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
-					}
+					} 
+					choices.addAll(EnumSet.of(Irrigation.LEFT, Irrigation.RIGHT));
 					break;
 				case LEFT:
 					if((x+1 <= Field.COLUMNS &&
@@ -127,9 +135,8 @@ public class Field {
 					(y+1 <= Field.ROWS &&
 					getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
 						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.LEFT)));
-					} else {
-						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-					}
+					} 
+					choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
 					break;
 				case RIGHT:
 					if((x-1 >= 0 &&
@@ -140,12 +147,12 @@ public class Field {
 					(y+1 <= Field.ROWS &&
 					getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
 						choices.addAll(EnumSet.complementOf(EnumSet.of(Irrigation.RIGHT)));
-					} else {
-						choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
-					}
+					} 
+					choices.addAll(EnumSet.of(Irrigation.TOP, Irrigation.BOTTOM));
 					break;
 			}
 		} else if (selectedIrrigation.isEmpty()) {
+			//TODO: this should depend on all the surrounding squares.
 			return EnumSet.allOf(Irrigation.class);
 		} else {
 			return EnumSet.complementOf(selectedIrrigation);
