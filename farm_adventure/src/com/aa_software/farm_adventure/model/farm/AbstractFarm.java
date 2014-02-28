@@ -95,6 +95,10 @@ public abstract class AbstractFarm {
 		return this.market;
 	}
 	
+	/**
+	 * Returns farm inventory
+	 * @return inventory
+	 */
 	public Inventory getInventory(){
 		return this.inventory;
 	}

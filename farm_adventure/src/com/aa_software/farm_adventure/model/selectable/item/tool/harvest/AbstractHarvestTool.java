@@ -17,6 +17,10 @@ public class AbstractHarvestTool extends AbstractTool {
 		}
 	}
 	
+	/**
+	 * Removes a crop from the plot iff it currently has a crop and moves
+	 * the crop to the inventory
+	 */
 	public void update(Plot plot, Inventory inventory) {
 		AbstractCrop crop = plot.getCrop();
 		if (crop != null) {

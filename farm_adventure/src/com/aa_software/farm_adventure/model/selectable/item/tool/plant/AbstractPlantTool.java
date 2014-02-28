@@ -17,9 +17,12 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}
 	}
 
+	/**
+	 * Adds a crop to the plot iff it has been irrigated, it currently does not have a crop, 
+	 * and if there are enough crop seeds in the inventory
+	 */
 	public void update(Plot plot, Inventory inventory) {
-		if (plot.getIrrigation() != null) {
-			inventory.removeItem(seed);
+		if (plot.getIrrigation() != null && plot.getCrop()==null && inventory.removeItem(seed)) {
 			plot.setCrop(seed);
 		}
 	}

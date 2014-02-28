@@ -68,7 +68,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	}
 	
 	/**
-	 * Changes the status of the given plot and market
+	 * Changes the status of the given plot and inventory
 	 * @param plot
 	 */
 	public void update(Plot plot, Inventory inventory) {

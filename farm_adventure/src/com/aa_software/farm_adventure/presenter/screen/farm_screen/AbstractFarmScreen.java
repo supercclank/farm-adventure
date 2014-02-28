@@ -118,6 +118,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 	protected Stage marketStage;
 	protected Window inventory_market_Window;
 	
+	protected Table invScrollTable;
+	
 	protected Boolean inventoryMarketVisible;
 
 	protected TimerTask gameTimer;
@@ -270,7 +272,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 		
-		inputMultiplexer = new InputMultiplexer();		
+		inputMultiplexer = new InputMultiplexer();	
+		invScrollTable = new Table();
 		setupSeedWindow();
 		setupInventoryWindow();
 		Gdx.input.setInputProcessor(inputMultiplexer);
@@ -434,6 +437,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 	public void updateState(int x, int y) {
 		if (y >= FIELD_STARTING_Y) {
 				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), farm.getInventory());	
+				updateInventoryTable();
 		} else if (y == 0) {
 			if(selection != null && selection.equals(farm.getTool(x,y))){
 				if(selection instanceof AbstractPlantTool){
@@ -610,13 +614,42 @@ public class AbstractFarmScreen extends AbstractScreen {
 				Gdx.graphics.getHeight(), true);
 		inputMultiplexer.addProcessor(inventory_market_Stage);
 		
-		// inventory Stuff
-		final Table inventoryTable = new Table();
+		Table inventoryTable = new Table();
 		inventoryTable.layout();
-		final Table invScrollTable = new Table();
 		inventory_market_Stage.addActor(inventoryTable);
-		invScrollTable.layout();
 		
+		// add inventory items
+		updateInventoryTable();
+		
+		invScrollTable.pack();
+		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
+		inventoryTable.row();
+		inventoryTable.add(new Label("Inventory", inventory_market_Skin));
+		inventoryTable.row();
+		inventoryTable.add(inventorySP).expand().fill().align(Align.left).left();
+		inventoryTable.pack();	
+		inventoryTable.layout();
+	
+		inventory_market_Window = new Window("", inventory_market_Skin);
+		inventory_market_Window.setModal(true);
+		inventory_market_Window.setMovable(false);
+		inventory_market_Window.setVisible(false);
+		inventoryMarketVisible = false;
+		inventory_market_Window.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
+		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
+		inventory_market_Window.defaults().spaceBottom(10);
+		inventory_market_Window.row().fill().expandX();
+		inventory_market_Window.add(inventoryTable).fill().expand().colspan(4).maxHeight(INVENTORY_HEIGHT);
+		inventory_market_Stage.addActor(inventory_market_Window);	 
+	}
+	
+	/**
+	 * Populates the inventory/market table with item image, inventory quantity, buy cost, and sell value
+	 */
+	public void updateInventoryTable(){
+		invScrollTable.clear();
+		invScrollTable.layout();
+		// inventory Stuff	
 		Map<String, ArrayList<AbstractItem>> marketItems = this.farm.getMarket().getItems();		
 		
 		Object [] keyset = marketItems.keySet().toArray();
@@ -667,28 +700,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 				
 			}
 		}
-		
-		invScrollTable.pack();
-		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
-		inventoryTable.row();
-		inventoryTable.add(new Label("Inventory", inventory_market_Skin));
-		inventoryTable.row();
-		inventoryTable.add(inventorySP).expand().fill().align(Align.left).left();
-		inventoryTable.pack();	
-		inventoryTable.layout();
-	
-		inventory_market_Window = new Window("", inventory_market_Skin);
-		inventory_market_Window.setModal(true);
-		inventory_market_Window.setMovable(false);
-		inventory_market_Window.setVisible(false);
-		inventoryMarketVisible = false;
-		inventory_market_Window.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
-		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
-		inventory_market_Window.defaults().spaceBottom(10);
-		inventory_market_Window.row().fill().expandX();
-		inventory_market_Window.add(inventoryTable).fill().expand().colspan(4).maxHeight(INVENTORY_HEIGHT);
-		inventory_market_Stage.addActor(inventory_market_Window);	 
 	}
+	
 	
 	/**
 	 * 
