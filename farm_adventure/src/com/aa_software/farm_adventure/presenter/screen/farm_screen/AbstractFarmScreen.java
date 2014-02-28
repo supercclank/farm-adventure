@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +20,7 @@ import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.RiceCrop;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
@@ -43,21 +43,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -209,7 +204,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 			plantMenuStage.draw();
 			inventory_market_Stage.draw();
 			inventory_market_Stage.act();
-
 		}
 	}
 
@@ -439,7 +433,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updateState(int x, int y) {
 		if (y >= FIELD_STARTING_Y) {
-			state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
+				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), farm.getInventory());	
 		} else if (y == 0) {
 			if(selection != null && selection.equals(farm.getTool(x,y))){
 				if(selection instanceof AbstractPlantTool){
@@ -519,7 +513,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 
 		/* Worker label setup */
 		Label workers = new Label("Workers: "
-				+ PLAYER.getInventory().getWorkerCount(), style1);
+				+ farm.getInventory().getWorkerCount(), style1);
 		workers.setPosition(WORKER_LABEL_X, WORKER_LABEL_Y);
 
 		/* Stage setup */
@@ -623,11 +617,8 @@ public class AbstractFarmScreen extends AbstractScreen {
 		inventory_market_Stage.addActor(inventoryTable);
 		invScrollTable.layout();
 		
-		Map<String, ArrayList<AbstractItem>> marketItems = this.farm.getMarket().getItems();
-		ArrayList<AbstractItem> inventoryItems = PLAYER.getInventory().getItems();
-		int inventoryCount = inventoryItems.size();
-        System.out.println("inventoryCount Before: "+inventoryCount);
-
+		Map<String, ArrayList<AbstractItem>> marketItems = this.farm.getMarket().getItems();		
+		
 		Object [] keyset = marketItems.keySet().toArray();
 		int typeCount = keyset.length;
 		Label type;
@@ -635,32 +626,45 @@ public class AbstractFarmScreen extends AbstractScreen {
 			type = new Label(keyset[j].toString(), inventory_market_Skin, "default-font", Color.ORANGE);
 			type.setWrap(true);
 			invScrollTable.row();
-			invScrollTable.add(type).expand().left();
+			invScrollTable.add(type).left();
 			int itemCount = marketItems.get(keyset[j]).size();	
 			int cost = 0;
+			int value = 0;
+			int inventoryTypeCount = 0;
 			for (int i=0; i<itemCount; i++){
-				int inventoryTypeCount = 0;	
-				for (int k = 0; k<inventoryCount; k++){
-					if (marketItems.get(keyset[j]).get(i).getClass().equals(inventoryItems.get(k).getClass())){
-						inventoryTypeCount++;
-						cost = inventoryItems.get(k).getCost();
-					}			
-				}
+				
+				Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
+				TextureRegion carrotImage = new TextureRegion(carrot);
+				Button carrotButton = new Button(new Image(carrotImage), inventory_market_Skin);
+				carrotButton.setDisabled(true);
+				
+				inventoryTypeCount = farm.getInventory().getCount(marketItems.get(keyset[j]).get(i));	
+				System.out.println("Farm inventory count: "+farm.getInventory().getItemsCount());
+				cost = marketItems.get(keyset[j]).get(i).getCost();
+				value = marketItems.get(keyset[j]).get(i).getValue();
 				invScrollTable.row();
+				invScrollTable.add(carrotButton).left();
 				Label itemName = new Label(marketItems.get(keyset[j]).get(i).toString(), inventory_market_Skin);
-				invScrollTable.add(itemName).expand().left();
+				invScrollTable.add(itemName).width((float) (Gdx.graphics.getWidth()*.2)).left();
 				Label itemInvCount = new Label(Integer.toString(inventoryTypeCount), inventory_market_Skin);
-				invScrollTable.add(itemInvCount).expand().left();		
-				Label itemCost = new Label("$"+Integer.toString(cost), inventory_market_Skin);
-				invScrollTable.add(itemCost).expand().left();
+				invScrollTable.add(itemInvCount).width((float) (Gdx.graphics.getWidth()*.2)).left();	
+				Button buyButton, sellButton;
+				if (type.getText().toString().equals("WORKERS")){
+					buyButton = new TextButton( "HIRE "+" $"+ cost, inventory_market_Skin, "default");
+					sellButton = new TextButton("FIRE "+" $"+ value, inventory_market_Skin, "default");
+
+				} else {
+					buyButton = new TextButton( "BUY "+" $"+ cost, inventory_market_Skin, "default");
+					sellButton = new TextButton("SELL "+" $"+ value, inventory_market_Skin, "default");
+				}
 				
-				Button buyButton = new TextButton("BUY", inventory_market_Skin, "default");
-				buyButton.addListener(new BuyClickListener(marketItems.get(keyset[j]).get(i)));
-				invScrollTable.add(buyButton).expand().left();
+				buyButton.addListener(new BuyClickListener(marketItems.get(keyset[j]).get(i), itemInvCount));
+				invScrollTable.add(buyButton).width((float) (Gdx.graphics.getWidth()*.2)).left();
 				
-				Button sellButton = new TextButton("SELL", inventory_market_Skin, "default");
-				sellButton.addListener(new SellClickListener(marketItems.get(keyset[j]).get(i)));
-				invScrollTable.add(sellButton).expand().left();
+				
+				sellButton.addListener(new SellClickListener(marketItems.get(keyset[j]).get(i), itemInvCount));
+				invScrollTable.add(sellButton).width((float) (Gdx.graphics.getWidth()*.2)).left();
+				
 			}
 		}
 		
@@ -668,14 +672,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
 		inventoryTable.row();
 		inventoryTable.add(new Label("Inventory", inventory_market_Skin));
-		/**
-		inventoryTable.row();
-		inventoryTable.add(new Label("Item", inventory_market_Skin));
-		inventoryTable.add(new Label("Quantity", inventory_market_Skin));
-		inventoryTable.add(new Label("Price", inventory_market_Skin));
-		inventoryTable.add(new Label("", inventory_market_Skin));
-		inventoryTable.add(new Label("", inventory_market_Skin));
-		*/
 		inventoryTable.row();
 		inventoryTable.add(inventorySP).expand().fill().align(Align.left).left();
 		inventoryTable.pack();	
@@ -694,45 +690,65 @@ public class AbstractFarmScreen extends AbstractScreen {
 		inventory_market_Stage.addActor(inventory_market_Window);	 
 	}
 	
+	/**
+	 * 
+	 * @author FarmAdventure Devs
+	 *
+	 */
 	private class BuyClickListener extends ClickListener {
 	    AbstractItem item;
-
-	    public BuyClickListener(AbstractItem item) {
+	    Label itemInvCount;
+	    
+	    /**
+	     * This button enables buying of the item and updating of the item quantity
+	     * @param item
+	     * @param itemInvCount
+	     */
+	    public BuyClickListener(AbstractItem item, Label itemInvCount) {
 	        this.item = item;
+	        this.itemInvCount = itemInvCount;
 	    }
 	    
+	    /**
+	     * On button touch the item is bought and the item quantity is updated in the inventory
+	     */
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-	    	int itemCost = item.getCost();
-	    	if(PLAYER.getBankroll()<itemCost){
-	            System.out.println("You don't have enough funds");
-	    	} else{
-	            System.out.println("Buy: "+item.toString());
-	            PLAYER.getInventory().addItem(item);
-	            System.out.println("inventoryCount After: "+PLAYER.getInventory().getItemCount(item));
-	            PLAYER.reduceBankroll(itemCost);
-	    	}
+	    	if (PLAYER.buyItem(this.item)){
+		    	farm.getInventory().addItem(item);
+	    		itemInvCount.setText(Integer.toString(farm.getInventory().getCount(this.item)));
+	    	}        
             return true;
-        }
-
-	    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-        	System.out.println("Released Buy button");
         }
 	}
 	
+	/**
+	 * 
+	 * @author FarmAdventure Devs
+	 *
+	 */
 	private class SellClickListener extends ClickListener {
 	    AbstractItem item;
+	    Label itemInvCount;
 
-	    public SellClickListener(AbstractItem item) {
+	    /**
+	     * This button enables selling of the item and updating of the item quantity
+	     * @param item
+	     * @param itemInvCount
+	     */
+	    public SellClickListener(AbstractItem item, Label itemInvCount) {
 	        this.item = item;
+	        this.itemInvCount = itemInvCount;
 	    }
 	    
+	    /**
+	     * On button touch the item is bought and the item quantity is updated in the inventory
+	     */
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-            System.out.println("Sell: "+item.toString());
+	    	if (farm.getInventory().removeItem(item)){
+	    		PLAYER.sellItem(this.item);
+	    		itemInvCount.setText(Integer.toString(farm.getInventory().getCount(this.item)));
+	    	}
             return true;
-        }
-
-	    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-        	System.out.println("Released Sell button");
         }
 	}
 	

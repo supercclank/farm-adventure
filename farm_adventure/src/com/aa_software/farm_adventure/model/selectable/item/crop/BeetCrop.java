@@ -13,7 +13,7 @@ public class BeetCrop extends AbstractCrop {
 		this.growthTime = DEFAULT_GROWTH_TIME;
 		this.output = DEFAULT_OUTPUT;
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.name = BEET_NAME;
 		
 	}

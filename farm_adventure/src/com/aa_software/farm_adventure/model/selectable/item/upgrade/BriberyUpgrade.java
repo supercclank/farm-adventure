@@ -12,7 +12,7 @@ public class BriberyUpgrade extends AbstractUpgrade {
 	
 	public BriberyUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.name = BRIBERY_NAME;
 	}
 	

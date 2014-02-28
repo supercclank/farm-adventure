@@ -1,6 +1,8 @@
 package com.aa_software.farm_adventure.model.selectable.item.tool;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
+import com.aa_software.farm_adventure.model.selectable.plot.Plot;
 
 public class AbstractTool extends AbstractItem {
 

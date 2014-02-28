@@ -12,7 +12,7 @@ public class TrowelTool extends AbstractPlantTool {
 
 	public TrowelTool() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.seed = new CarrotCrop();
 		this.name = TROWELTOOL_NAME;

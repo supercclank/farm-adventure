@@ -8,7 +8,7 @@ public class WindmillUpgrade extends AbstractUpgrade {
 	
 	public WindmillUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.name = WINDMILL_NAME;
 	}
 }

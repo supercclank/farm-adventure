@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.presenter.state;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
@@ -41,7 +42,7 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public DefaultSelectionState update(Plot plot) {
+	public DefaultSelectionState update(Plot plot, Inventory inventory) {
 		return new DefaultSelectionState();
 	}
 }

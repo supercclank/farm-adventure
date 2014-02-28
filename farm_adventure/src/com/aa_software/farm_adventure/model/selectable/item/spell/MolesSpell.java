@@ -8,5 +8,6 @@ public class MolesSpell extends AbstractSpell {
 	public MolesSpell (){
 		this.name = MOLES_SPELL_NAME;
 		this.cost = DEFAULT_COST;
+		this.value = this.cost/2;
 	}
 }

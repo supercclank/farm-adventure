@@ -8,7 +8,7 @@ public class IllusionistSpell extends AbstractSpell {
 	public IllusionistSpell (){
 		this.name = ILLUSIONIST_SPELL_NAME;
 		this.cost = DEFAULT_COST;
-		
+		this.value = this.cost/2;
 	}
 
 }

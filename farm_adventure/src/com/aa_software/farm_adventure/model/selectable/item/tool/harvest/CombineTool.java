@@ -10,7 +10,7 @@ public class CombineTool extends AbstractHarvestTool {
 
 	public CombineTool() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = COMBINETOOL_NAME;
 	}

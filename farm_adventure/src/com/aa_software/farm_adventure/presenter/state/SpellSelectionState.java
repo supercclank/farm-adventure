@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.presenter.state;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
@@ -40,7 +41,7 @@ public class SpellSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public SpellSelectionState update(Plot plot) {
+	public SpellSelectionState update(Plot plot, Inventory inventory) {
 		selection.update(plot);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}

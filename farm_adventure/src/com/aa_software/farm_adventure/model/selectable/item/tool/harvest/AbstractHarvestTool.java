@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.selectable.item.tool.harvest;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
@@ -13,6 +14,16 @@ public class AbstractHarvestTool extends AbstractTool {
 			// TODO: how to add the crop to inventory?
 			plot.setCrop(null);
 			plot.setPlotType(PlotType.UNPLOWEDWATERED);
+		}
+	}
+	
+	public void update(Plot plot, Inventory inventory) {
+		AbstractCrop crop = plot.getCrop();
+		if (crop != null) {
+			// TODO: how to add the crop to inventory?
+			plot.setCrop(null);
+			plot.setPlotType(PlotType.UNPLOWEDWATERED);
+			inventory.addItem(crop);
 		}
 	}
 	

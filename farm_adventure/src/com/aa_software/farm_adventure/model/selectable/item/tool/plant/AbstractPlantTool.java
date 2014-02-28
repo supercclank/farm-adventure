@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.selectable.item.tool.plant;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.selectable.plot.Plot;
@@ -16,6 +17,14 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}
 	}
 
+	public void update(Plot plot, Inventory inventory) {
+		if (plot.getIrrigation() != null) {
+			inventory.removeItem(seed);
+			plot.setCrop(seed);
+		}
+	}
+	
+	
 	public void setSeed(AbstractCrop crop) {
 		// TODO: we'll have to decide if we're making a distinction between
 		// produce and seeds. If so, change crop to seed.

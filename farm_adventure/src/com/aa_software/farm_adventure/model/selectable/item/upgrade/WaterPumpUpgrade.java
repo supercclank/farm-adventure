@@ -8,7 +8,7 @@ public class WaterPumpUpgrade extends AbstractUpgrade {
 	
 	public WaterPumpUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.name = WATERPUMP_NAME;
 	}
 }

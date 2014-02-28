@@ -8,5 +8,6 @@ public class TimeFreezeSpell extends AbstractSpell {
 	public TimeFreezeSpell (){
 		this.name = TIME_FREEZE_SPELL_NAME;
 		this.cost = DEFAULT_COST;
+		this.value = this.cost/2;
 	}
 }

@@ -10,7 +10,7 @@ public class MuleTool extends AbstractPlowTool {
 
 	public MuleTool() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = MULETOOL_NAME;
 	}

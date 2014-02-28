@@ -35,6 +35,9 @@ public class Market {
 	
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
 	
+	/**
+	 * Create market from default items
+	 */
 	public Market(){
 		int itemCount = this.defaultItems.size();
 		for (int i=0; i<itemCount; i++){
@@ -42,6 +45,10 @@ public class Market {
 		}
 	}
 	
+	/**
+	 * Create market from provided list of AbstractItems
+	 * @param items
+	 */
 	public Market (ArrayList<AbstractItem> items){
 		int itemCount = items.size();
 		for (int i=0; i<itemCount; i++){
@@ -49,6 +56,10 @@ public class Market {
 		}
 	}
 
+	/**
+	 * Add AbstractItem to the market based on its type (e.g. plow tool, irrigation tool, ...)
+	 * @param item
+	 */
 	public void addItem(AbstractItem item) {
 		if (marketItems.size()==0){
 			String itemType = item.getItemType();
@@ -67,20 +78,18 @@ public class Market {
 		}
 	}
 	
+	/**
+	 * Returns a hashMap of all items in the market (the key is the itemType)
+	 * @return marketItems
+	 */
 	public Map<String, ArrayList<AbstractItem>> getItems() {
 		return this.marketItems;
 	}
 	
 	/**
-	public void addWorder(AbstractWorker worker) {
-		this.workers.add(worker);
-	}
-	
-		public int getWorkersCount(){
-		return this.workers.size();
-	}
-	
-	*/
+	 * Returns the number of all items in the market
+	 * @return count of all items in the market
+	 */
 	public int getItemsCount(){
 		if (marketItems.size()==0){
 			return 0;

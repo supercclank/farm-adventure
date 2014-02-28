@@ -8,5 +8,6 @@ public class RainCallSpell extends AbstractSpell {
 	public RainCallSpell (){
 		this.name = RAIN_CALL_SPELL_NAME;
 		this.cost = DEFAULT_COST;
+		this.value = this.cost/2;
 	}
 }

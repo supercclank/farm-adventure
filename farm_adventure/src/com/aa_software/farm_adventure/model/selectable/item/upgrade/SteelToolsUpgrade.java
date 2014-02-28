@@ -9,7 +9,7 @@ public class SteelToolsUpgrade extends CopperToolsUpgrade {
 	
 	public SteelToolsUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
+		this.value = this.cost/2;
 		this.name = STEELTOOL_NAME;
 	}
 }
