@@ -96,7 +96,7 @@ public abstract class AbstractScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
+		statusBarStage.setViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	@Override

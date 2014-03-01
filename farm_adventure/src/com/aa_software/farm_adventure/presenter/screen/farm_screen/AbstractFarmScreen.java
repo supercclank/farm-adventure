@@ -211,7 +211,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-
 	}
 
 	@Override
@@ -254,8 +253,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		camera.setToOrtho(false,640,1024);
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
