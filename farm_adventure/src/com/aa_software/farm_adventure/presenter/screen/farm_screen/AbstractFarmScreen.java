@@ -346,8 +346,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public void show() {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		camera.setToOrtho(false, 640, 1024);
 		
 		gameStartTime = System.currentTimeMillis();
 		

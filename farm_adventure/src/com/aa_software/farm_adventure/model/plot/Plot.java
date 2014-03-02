@@ -70,7 +70,9 @@ public class Plot {
 	}
 
 	public void setCrop(final AbstractCrop crop) {
-		if (!isUnplowed() && isIrrigated() && !hasCrop() && isUsable) {
+		if(crop == null && isUsable) {
+			this.crop = null;
+		} else if (!isUnplowed() && isIrrigated() && !hasCrop() && isUsable) {
 			this.crop = crop;
 		}
 	}
