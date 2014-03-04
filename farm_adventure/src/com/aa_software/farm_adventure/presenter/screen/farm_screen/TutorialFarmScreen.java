@@ -100,6 +100,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			syncToolTiles();
 			syncStatusTiles();
 			syncSeedTile();
+			syncTaskTiles();
 			camera.update();
 			renderer.setView(camera);
 			renderer.render();
@@ -270,51 +271,17 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	 */
 	@Override
 	public void updateState(int x, int y) {
+		super.updateState(x,  y);
 		if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
 			if(!foundClick && waitingForY > 1) {
 				foundClick = true;
 			}
-			if(selection instanceof AbstractIrrigationTool) {
-				updateIrrigationWindow(x, y - FIELD_STARTING_Y);
-				if(irrigationWindow.getChildren().size > 0) {
-						if(!irrigationMenuClicksDisabled) {
-							irrigationWindow.setVisible(true);
-							Gdx.input.setInputProcessor(irrigationMenuStage);
-						}
-				}
-			} else {
-				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), getUnbusyWorker());
-			}
 		} else if (y == 0 && !toolBarClicksDisabled) {
-			/* check for double-click */
-			if (selection != null && selection.equals(farm.getTool(x, y))) {
-				if (selection instanceof AbstractPlantTool) {
-					if(!plantMenuClicksDisabled) {
-						plantWindow.setVisible(true);
-						Gdx.input.setInputProcessor(plantMenuStage);
-					}
-				}
-			} else {
-				selection = farm.getTool(x, y);
-				if (selection instanceof AbstractSpell) {
-					state = state.update((AbstractCrop) selection);
-				} else if (selection instanceof AbstractTool) {
-					state = state.update((AbstractTool) selection);
-				} else if (selection instanceof AbstractWorker) {
-					state = state.update((AbstractWorker) selection);
-				} else if (selection instanceof AbstractUpgrade) {
-					state = state.update((AbstractUpgrade) selection);
-				} else if (selection instanceof AbstractCrop) {
-					state = state.update((AbstractCrop) selection);
-				}
-				syncSelectTiles(x);
-				if(!foundClick && waitingForY == 0) {
-					if(selection.equals(farm.getTool(waitingForX, waitingForY))) {
-						foundClick = true;
-					}
+			if(!foundClick && waitingForY == 0) {
+				if(selection.equals(farm.getTool(waitingForX, waitingForY))) {
+					foundClick = true;
 				}
 			}
 		}
-	}
-	
+	}	
 }
