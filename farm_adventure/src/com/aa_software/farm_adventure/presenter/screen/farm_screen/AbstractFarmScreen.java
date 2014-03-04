@@ -81,7 +81,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			IRRIGATION_TOOL_Y = 0, STATUS_BAR_Y = 1, FIELD_STARTING_Y = 2;
 
 	/* Stage */
-	public static final float FONT_SCALE = 1;
+	public static final float FONT_SCALE = (float) (Gdx.graphics.getHeight() * .0001);
 	public static final float BANK_LABEL_X = (float) (Gdx.graphics.getWidth() * .03),
 			BANK_LABEL_Y = (float) (Gdx.graphics.getHeight() * .18),
 			TIME_LABEL_X = (float) (Gdx.graphics.getWidth() * .38),
@@ -91,10 +91,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13);
 
-	/* Font setup */
-	final BitmapFont fontType = new BitmapFont();
-	final LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
-	
 	protected AbstractItem selection;
 	protected ISelectionState state;
 	protected AbstractFarm farm;
@@ -109,23 +105,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected final Stage statusBarStage;
 	protected Window plantWindow;
 	protected final Window irrigationWindow;
-	
-	protected boolean irrigationMenuClicksDisabled;
-	protected boolean plantMenuClicksDisabled;
-	protected boolean toolBarClicksDisabled;
-	protected boolean fieldClicksDisabled;
 
 	protected boolean gameOver;
-	
-	protected boolean disableGameTime;
 
 	public AbstractFarmScreen() {
 		gameOver = false;
-		disableGameTime = false;
-		irrigationMenuClicksDisabled = false;
-		plantMenuClicksDisabled = false;
-		toolBarClicksDisabled = false;
-		fieldClicksDisabled = false;
 		this.selection = null;
 		this.state = new DefaultSelectionState();
 
@@ -143,7 +127,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		}
 		
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		
 		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		irrigationMenuStage = new Stage(Gdx.graphics.getWidth(),
@@ -158,8 +141,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationWindow.setPosition(WINDOW_X, WINDOW_Y);
 		irrigationWindow.defaults().spaceBottom(10);
 		irrigationWindow.row().fill().expandX();
-		
-		irrigationMenuStage.addActor(irrigationWindow);
 	}
 
 	/**
@@ -223,7 +204,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 			checkTouch();
-			
 			farm.getField().syncAllIrrigation();
 			syncWaterTiles();
 			syncPlantTiles();
@@ -235,7 +215,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			renderer.setView(camera);
 			renderer.render();
 
-			fontType.setScale(FONT_SCALE);
 			updateStatusBar();
 			statusBarStage.draw();
 			plantMenuStage.draw();
@@ -324,19 +303,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		});
 	}
 	
-	public void disableAllGameClicks() {
-		fieldClicksDisabled = true;
-		toolBarClicksDisabled = true;
-		irrigationMenuClicksDisabled = true;
-		plantMenuClicksDisabled = true;
-	}
-	
-	/**
-	 * Updates the window for selecting irrigation.
-	 * 
-	 * @param x		the x coordinate of the selected plot
-	 * @param y		the y coordinate of the selected plot
-	 */
+/**
+ * Updates the window for selecting irrigation.
+ * 
+ * @param x		the x coordinate of the selected plot
+ * @param y		the y coordinate of the selected plot
+ */
 	public void updateIrrigationWindow(final int x, final int y) {
 
 		irrigationWindow.clear();
@@ -366,6 +338,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		}
 
 		irrigationWindow.pack();
+		irrigationMenuStage.addActor(irrigationWindow);
+
 	}
 
 	@Override
@@ -538,26 +512,21 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * @param property
 	 */
 	public void updateState(int x, int y) {
-		if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
+		if (y >= FIELD_STARTING_Y) {
 			if(selection instanceof AbstractIrrigationTool) {
 				updateIrrigationWindow(x, y - FIELD_STARTING_Y);
 				if(irrigationWindow.getChildren().size > 0) {
-						if(!irrigationMenuClicksDisabled) {
-							irrigationWindow.setVisible(true);
-							Gdx.input.setInputProcessor(irrigationMenuStage);
-						}
+						irrigationWindow.setVisible(true);
+						Gdx.input.setInputProcessor(irrigationMenuStage);
 				}
 			} else {
 				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 			}
-		} else if (y == 0 && !toolBarClicksDisabled) {
-			/* check for double-click */
+		} else if (y == 0) {
 			if (selection != null && selection.equals(farm.getTool(x, y))) {
 				if (selection instanceof AbstractPlantTool) {
-					if(!plantMenuClicksDisabled) {
-						plantWindow.setVisible(true);
-						Gdx.input.setInputProcessor(plantMenuStage);
-					}
+					plantWindow.setVisible(true);
+					Gdx.input.setInputProcessor(plantMenuStage);
 				}
 			} else {
 				selection = farm.getTool(x, y);
@@ -586,29 +555,30 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		/* Stage setup */
 		statusBarStage.clear();
 
+		/* Font setup */
+		BitmapFont fontType = new BitmapFont();
+		fontType.scale(FONT_SCALE);
+		LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
+
 		/* Bankroll label setup */
 		Label bankBalance = new Label("Bank Balance: $" + PLAYER.getBankroll(),
 				style1);
 		bankBalance.setPosition(BANK_LABEL_X, BANK_LABEL_Y);
+
 		/* Time label setup */
-		String time = null;
-		if(!disableGameTime) {
-			long curTime = gameStartTime + GAME_TIME_MILLIS
-					- System.currentTimeMillis();
-			if (curTime < 0) {
-				gameOver = true;
-			}
-			//TODO: May want to make this more concrete...
-			if(!(curTime < 1000)) {
-				farm.checkSeasonTimer();
-			}
-			time = String.format("%02d:%02d",
-					TimeUnit.MILLISECONDS.toMinutes(curTime),
-					TimeUnit.MILLISECONDS.toSeconds(curTime)
-							- TimeUnit.MILLISECONDS.toMinutes(curTime) * 60);
-		} else {
-			time = "Infinite!";
+		long curTime = gameStartTime + GAME_TIME_MILLIS
+				- System.currentTimeMillis();
+		if (curTime < 0) {
+			gameOver = true;
 		}
+		//TODO: May want to make this more concrete...
+		if(!(curTime < 1000)) {
+			farm.checkSeasonTimer();
+		}
+		String time = String.format("%02d:%02d",
+				TimeUnit.MILLISECONDS.toMinutes(curTime),
+				TimeUnit.MILLISECONDS.toSeconds(curTime)
+						- TimeUnit.MILLISECONDS.toMinutes(curTime) * 60);
 		Label timeRemaining = new Label("Time Remaining: " + time, style1);
 		timeRemaining.setPosition(TIME_LABEL_X, TIME_LABEL_Y);
 
