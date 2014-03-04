@@ -10,6 +10,8 @@ public class Plot {
 	private EnumSet<Irrigation> irrigation;
 	private PlotType plotType;
 	private boolean isUsable;
+	private int taskTextureIndex;
+	public static final String[] WORK_STATUS_TEXTURES = { null, "task1", "task2", "task3", "task4" };
 
 	public Plot(PlotType plotType) {
 		this.crop = null;
@@ -55,6 +57,10 @@ public class Plot {
 		return plotType.toString().toLowerCase();
 	}
 	
+	public String getTaskTextureName() {
+		return WORK_STATUS_TEXTURES[taskTextureIndex];
+	}
+	
 	/**
 	 * Translates the plots irrigation enumeration set into its corresponding
 	 * texture name.
@@ -91,9 +97,9 @@ public class Plot {
 	 * affect the texture used to render the plot.
 	 */
 	public void unwaterPlot() {
-		if(plotType == PlotType.PLOWEDWATERED){
+		if(plotType == PlotType.PLOWEDWATERED) {
 			plotType = PlotType.PLOWEDUNWATERED;
-		} else if(plotType == PlotType.UNPLOWEDWATERED){
+		} else if(plotType == PlotType.UNPLOWEDWATERED) {
 			plotType = PlotType.UNPLOWEDUNWATERED;
 		}
 	}
@@ -131,6 +137,18 @@ public class Plot {
 			return false;
 		}
 		return true;
+	}
+	
+	public void incrementTaskTextureIndex() {
+		taskTextureIndex++;
+	}
+	
+	public void setTaskTextureIndex(int taskTextureIndex) {
+		this.taskTextureIndex = taskTextureIndex;
+	}
+	
+	public int getTaskTextureIndex() {
+		return taskTextureIndex;
 	}
 
 }

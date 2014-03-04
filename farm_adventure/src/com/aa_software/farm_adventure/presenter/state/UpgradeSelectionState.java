@@ -41,7 +41,7 @@ public class UpgradeSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public UpgradeSelectionState update(Plot plot) {
+	public UpgradeSelectionState update(Plot plot, AbstractWorker worker) {
 		return new UpgradeSelectionState((AbstractUpgrade) selection);
 	}
 }

@@ -39,8 +39,9 @@ public class ToolSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public ToolSelectionState update(Plot plot) {
-		selection.update(plot);
+	public ToolSelectionState update(Plot plot, AbstractWorker worker) {
+		selection.update(plot, worker);
+		worker.setBusy(true);
 		return new ToolSelectionState((AbstractTool) selection);
 	}
 }

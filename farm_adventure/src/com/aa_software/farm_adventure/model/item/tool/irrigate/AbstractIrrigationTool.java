@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.presenter.IrrigationTask;
@@ -11,10 +12,11 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	private Irrigation irrigationChoice;
 	
 	@Override
-	public void update(final Plot plot) {
+	public void update(final Plot plot, final AbstractWorker worker) {
 		if(plot.isUsable()) {
 			plot.setUsable(false);
-			Timer.schedule(new IrrigationTask(plot, irrigationChoice), workTime);
+			float delay = workTime * worker.getWorkRate() / (Plot.WORK_STATUS_TEXTURES.length - 1);
+			Timer.schedule(new IrrigationTask(plot, irrigationChoice, worker, delay), delay);
 		}
 	}
 
