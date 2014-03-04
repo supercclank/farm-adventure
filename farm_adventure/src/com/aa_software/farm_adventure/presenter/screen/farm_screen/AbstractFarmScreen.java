@@ -113,7 +113,6 @@ public class AbstractFarmScreen extends AbstractScreen {
 		gameOver = false;
 		this.selection = null;
 		this.state = new DefaultSelectionState();
-		farm = new RainforestFarm();
 		
 		timer = new Timer();
 		timerTask = new java.util.TimerTask() {

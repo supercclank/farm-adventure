@@ -42,7 +42,6 @@ public abstract class AbstractFarm {
 		startingCropCount = new HashMap<AbstractCrop, Integer>();
 		startingToolCount = new HashMap<AbstractTool, Integer>();
 		startingSpellCount = new HashMap<AbstractSpell, Integer>();
-		field = new Field();
 		toolBar = new ToolBar();
 		timer = new Timer();
 	}

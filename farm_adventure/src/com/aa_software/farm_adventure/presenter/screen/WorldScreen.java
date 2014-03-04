@@ -1,11 +1,11 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
-import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.DesertFarm;
+import com.aa_software.farm_adventure.model.farm.FarmType;
 import com.aa_software.farm_adventure.model.farm.RainforestFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
-import com.aa_software.farm_adventure.model.season.Season;
+import com.aa_software.farm_adventure.model.season.SeasonType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.DesertFarmScreen;
@@ -39,12 +39,15 @@ public class WorldScreen extends AbstractScreen {
 	public static final float WINDOW_X = (float) (Gdx.graphics.getWidth() * .25);
 	public static final float WINDOW_Y = (float) (Gdx.graphics.getHeight() * .40);
 
+	protected float screenWidth = Gdx.graphics.getWidth();
+	protected float screenHeight = Gdx.graphics.getHeight();
+
 	protected Skin skin;
 	protected Stage plantMenuStage;
 	protected Window seasonWindow;
 
-	protected AbstractFarm selectedFarm;
-	protected AbstractFarmScreen selectedScreen;
+	protected SeasonType[] seasons;
+	protected FarmType selectedFarm;
 
 	/**
 	 * Constructs a WorldScreen based on the current game.
@@ -102,20 +105,24 @@ public class WorldScreen extends AbstractScreen {
 
 		// Add buttons to the correct position
 		super.addActor(tutorialFarmButton);
-		table.add(tutorialFarmButton).size(100, 100).top().left().padTop(50)
-				.padLeft(80);
+		table.add(tutorialFarmButton).size(100, 100).top().left()
+				.padTop((float) (.05 * screenHeight))
+				.padLeft((float) (.15 * screenWidth));
 		table.row();
 		super.addActor(rainforestFarmButton);
 		table.add(rainforestFarmButton).size(100, 100).expand().top().right()
-				.padTop(200).padRight(60);
+				.padTop((float) (.20 * screenHeight))
+				.padRight((float) (.10 * screenWidth));
 		table.row();
 		super.addActor(desertFarmButton);
 		table.add(desertFarmButton).size(100, 100).expand().bottom().left()
-				.padBottom(150).padLeft(50);
+				.padBottom((float) (.05 * screenHeight))
+				.padLeft((float) (.07 * screenWidth));
 		table.row();
 		super.addActor(snowFarmButton);
 		table.add(snowFarmButton).size(100, 100).expand().bottom().right()
-				.padBottom(100).padRight(120);
+				.padBottom((float) (.10 * screenHeight))
+				.padRight((float) (.15 * screenWidth));
 		table.row();
 
 		// This line of code will take the user to the farm on click or touch of
@@ -123,8 +130,8 @@ public class WorldScreen extends AbstractScreen {
 		tutorialFarmButton.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				selectedFarm = new TutorialFarm();
-				selectedScreen = new TutorialFarmScreen();
+				seasons = TutorialFarm.DEFAULT_SEASONS;
+				selectedFarm = FarmType.TUTORIAL;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -136,8 +143,8 @@ public class WorldScreen extends AbstractScreen {
 		rainforestFarmButton.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				selectedFarm = new RainforestFarm();
-				selectedScreen = new RainforestFarmScreen();
+				seasons = RainforestFarm.DEFAULT_SEASONS;
+				selectedFarm = FarmType.RAINFOREST;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -150,8 +157,8 @@ public class WorldScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				selectedFarm = new DesertFarm();
-				selectedScreen = new DesertFarmScreen();
+				seasons = DesertFarm.DEFAULT_SEASONS;
+				selectedFarm = FarmType.DESERT;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
@@ -163,19 +170,19 @@ public class WorldScreen extends AbstractScreen {
 		snowFarmButton.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				selectedFarm = new SnowFarm();
-				selectedScreen = new SnowFarmScreen();
+				seasons = SnowFarm.DEFAULT_SEASONS;
+				selectedFarm = FarmType.SNOW;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
 				return true;
 			}
 		});
-		// Table.drawDebug(stage);
+		// Table.drawDebug(statusBarStage);
 	}
 
 	/**
-	 * Sets up the window to display the seasons for the currently selected
-	 * farm and a button to start the selected farm.
+	 * Sets up the window to display the seasons for the currently selected farm
+	 * and a button to start the selected farm.
 	 */
 	public void setupSeasonMenu() {
 
@@ -202,8 +209,8 @@ public class WorldScreen extends AbstractScreen {
 		seasonWindow.row().fill().expandX();
 
 		/* Decide the season order */
-		for (Season s : selectedFarm.getSeasons()) {
-			switch (s.getSeasonType()) {
+		for (SeasonType s : seasons) {
+			switch (s) {
 			case SPRING:
 				seasonWindow.add(new Button(new Image(springImage), skin))
 						.size(75, 115);
@@ -227,16 +234,32 @@ public class WorldScreen extends AbstractScreen {
 			}
 		}
 		seasonWindow.row();
-		seasonWindow.add(playFarmButton)
-				.colspan(selectedFarm.getSeasons().length).width(200);
+		seasonWindow.add(playFarmButton).colspan(4).width(200);
 		seasonWindow.pack();
 		super.addActor(seasonWindow);
 
 		playFarmButton.addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				// seasonWindow.setVisible(false);
-				FarmAdventure.getInstance().setScreen(selectedScreen);
+				AbstractFarmScreen farmScreen;
+				switch (selectedFarm) {
+				case TUTORIAL:
+					farmScreen = new TutorialFarmScreen();
+					break;
+				case RAINFOREST:
+					farmScreen = new RainforestFarmScreen();
+					break;
+				case DESERT:
+					farmScreen = new DesertFarmScreen();
+					break;
+				case SNOW:
+					farmScreen = new SnowFarmScreen();
+					break;
+				default:
+					farmScreen = new TutorialFarmScreen();
+					break;
+				}
+				FarmAdventure.getInstance().setScreen(farmScreen);
 				return true;
 			}
 		});

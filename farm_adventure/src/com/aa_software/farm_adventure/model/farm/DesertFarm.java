@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.farm;
 
+import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
 
@@ -10,6 +11,11 @@ import com.aa_software.farm_adventure.model.season.SeasonType;
  */
 public class DesertFarm extends AbstractFarm {
 
+	public static final FarmType type = FarmType.DESERT;
+	public static final SeasonType[] DEFAULT_SEASONS = { SeasonType.SUMMER,
+		SeasonType.SUMMER, SeasonType.SUMMER, SeasonType.SUMMER };
+	private final float WATER_PLOT_MOD = .02f;
+	
 	/**
 	 * Constructs a farm with the correct seasons and field.
 	 */
@@ -19,7 +25,7 @@ public class DesertFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 			seasons[i] = new Season(SeasonType.SUMMER);
 		}
-		field.createDesertField();
+		field = new Field(WATER_PLOT_MOD);
 		seasons[currentSeason].update(field);
 		setupSeasonTimer();
 	}
