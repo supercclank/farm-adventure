@@ -247,6 +247,16 @@
     <property name="status" value="fall4"/>
    </properties>
   </tile>
+  <tile id="113">
+   <properties>
+    <property name="task" value="task1"/>
+   </properties>
+  </tile>
+  <tile id="114">
+   <properties>
+    <property name="task" value="task4"/>
+   </properties>
+  </tile>
   <tile id="120">
    <properties>
     <property name="status" value="summer0"/>
@@ -272,6 +282,11 @@
     <property name="status" value="summer4"/>
    </properties>
   </tile>
+  <tile id="125">
+   <properties>
+    <property name="task" value="task2"/>
+   </properties>
+  </tile>
   <tile id="132">
    <properties>
     <property name="status" value="winter0"/>
@@ -295,6 +310,11 @@
   <tile id="136">
    <properties>
     <property name="status" value="winter4"/>
+   </properties>
+  </tile>
+  <tile id="137">
+   <properties>
+    <property name="task" value="task3"/>
    </properties>
   </tile>
  </tileset>
@@ -350,6 +370,11 @@
   <properties>
    <property name="select" value=""/>
   </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="task" width="5" height="8">
   <data encoding="base64">
    EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
   </data>
