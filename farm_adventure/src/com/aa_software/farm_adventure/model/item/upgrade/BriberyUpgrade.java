@@ -11,7 +11,7 @@ public class BriberyUpgrade extends AbstractUpgrade {
 		int currentWage = worker.getWage();
 		currentWage *= WAGE_MOD;
 		worker.setWage(currentWage);
-		float workRate = worker.getWorkRate();
+		int workRate = worker.getWorkRate();
 		workRate *= WORK_RATE_MOD;
 		worker.setWorkRate(workRate);
 	}

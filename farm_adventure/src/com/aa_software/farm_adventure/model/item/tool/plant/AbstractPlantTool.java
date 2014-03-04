@@ -2,9 +2,8 @@ package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.presenter.PlantTask;
+import com.aa_software.farm_adventure.presenter.state.PlantTask;
 import com.badlogic.gdx.utils.Timer;
 
 public abstract class AbstractPlantTool extends AbstractTool {
@@ -21,11 +20,10 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	}
 	
 	@Override
-	public void update(final Plot plot, final AbstractWorker worker) {
+	public void update(final Plot plot) {
 		if(plot.isUsable() && plot.isIrrigated()) {
 			plot.setUsable(false);
-			float delay = workTime * worker.getWorkRate()/(Plot.WORK_STATUS_TEXTURES.length - 1);
-			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
+			Timer.schedule(new PlantTask(plot, seed), workTime);
 		}
 	}
 }

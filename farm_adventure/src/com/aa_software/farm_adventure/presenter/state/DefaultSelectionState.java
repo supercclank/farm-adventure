@@ -41,7 +41,7 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public DefaultSelectionState update(Plot plot, AbstractWorker worker) {
+	public DefaultSelectionState update(Plot plot) {
 		return new DefaultSelectionState();
 	}
 	

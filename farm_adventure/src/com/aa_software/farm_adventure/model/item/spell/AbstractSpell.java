@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model.item.spell;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractSpell extends AbstractItem {
@@ -27,7 +26,7 @@ public abstract class AbstractSpell extends AbstractItem {
 	}
 
 	@Override
-	public void update(Plot plot, final AbstractWorker worker) {
+	public void update(Plot plot) {
 		// TODO Auto-generated method stub
 		
 	}

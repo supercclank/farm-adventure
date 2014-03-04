@@ -18,5 +18,5 @@ public interface ISelectionState {
 
 	ISelectionState update(AbstractWorker worker);
 
-	ISelectionState update(Plot plot, AbstractWorker worker);
+	ISelectionState update(Plot plot);
 }

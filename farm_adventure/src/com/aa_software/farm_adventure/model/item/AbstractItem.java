@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model.item;
 
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractItem {
@@ -26,8 +25,8 @@ public abstract class AbstractItem {
 
 	abstract public void update(AbstractItem item);
 
-	abstract public void update(Plot plot, AbstractWorker worker);
+	abstract public void update(Plot plot);
 	
 	abstract public String getTextureName();
-	
+
 }

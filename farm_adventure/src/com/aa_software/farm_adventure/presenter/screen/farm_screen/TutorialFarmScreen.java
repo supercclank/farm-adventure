@@ -283,7 +283,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 						}
 				}
 			} else {
-				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), getUnbusyWorker());
+				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 			}
 		} else if (y == 0 && !toolBarClicksDisabled) {
 			/* check for double-click */

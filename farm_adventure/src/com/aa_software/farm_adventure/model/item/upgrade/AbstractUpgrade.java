@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model.item.upgrade;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 /*
@@ -21,7 +20,7 @@ public abstract class AbstractUpgrade extends AbstractItem {
 	}
 
 	@Override
-	public void update(Plot plot, AbstractWorker worker) {
+	public void update(Plot plot) {
 		// TODO Auto-generated method stub
 		
 	}

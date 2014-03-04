@@ -3,7 +3,6 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
@@ -22,7 +21,6 @@ import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigatio
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
@@ -78,7 +76,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * presenter
 	 */
 	private final String[] allLayers = { "ground", "water", "plant", "tool",
-			"seed", "status", "select", "transparent", "task" };
+			"seed", "status", "select", "transparent" };
 	public static final int PLANT_TOOL_X = 2, PLANT_TOOL_Y = 0, IRRIGATION_TOOL_X = 1,
 			IRRIGATION_TOOL_Y = 0, STATUS_BAR_Y = 1, FIELD_STARTING_Y = 2;
 
@@ -120,8 +118,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected boolean gameOver;
 	
 	protected boolean disableGameTime;
-	
-	protected LinkedList<AbstractWorker> temporaryWorkerPool = new LinkedList<AbstractWorker>();
 
 	public AbstractFarmScreen() {
 		gameOver = false;
@@ -164,9 +160,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationWindow.row().fill().expandX();
 		
 		irrigationMenuStage.addActor(irrigationWindow);
-		
-		for(int i = 0; i < 4; i++)
-			temporaryWorkerPool.add(new DefaultWorker());
 	}
 
 	/**
@@ -238,7 +231,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			syncToolTiles();
 			syncStatusTiles();
 			syncSeedTile();
-			syncTaskTiles();
 			camera.update();
 			renderer.setView(camera);
 			renderer.render();
@@ -365,7 +357,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						int pointer, int button) {
 					if(selection instanceof AbstractIrrigationTool) {
 						((AbstractIrrigationTool) selection).setIrrigationChoice(this.getIrrigation());
-						state = state.update(farm.getPlot(this.getX(), this.getY()), getUnbusyWorker());
+						state = state.update(farm.getPlot(this.getX(), this.getY()));
 					}
 					return true;
 				}
@@ -386,17 +378,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		
 		setupPlantWindow();
 	}
-	
-	public AbstractWorker getUnbusyWorker() {
-		if(temporaryWorkerPool != null && temporaryWorkerPool.size() != 0) {
-			for(int i = 0; i < temporaryWorkerPool.size(); i++) {
-				if(!temporaryWorkerPool.get(i).isBusy()) {
-					return temporaryWorkerPool.get(i);
-				}
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Syncs each cell's ground tile with the field.
@@ -414,29 +395,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				/* Get the ground texture for our cell to use */
 				tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
 						.getTextureName()));
-				cell.setTile(tile);
-			}
-		}
-	}
-	
-	/**
-	 * Syncs each cell's ground tile with the field.
-	 * 
-	 */
-	public void syncTaskTiles() {
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(
-				"task");
-		for (int y = 0; y < Field.ROWS; y++) {
-			for (int x = 0; x < Field.COLUMNS; x++) {
-				/* Get the cell we wish to update, converting field Y to cell Y */
-				Cell cell = layer.getCell(x, y + FIELD_STARTING_Y);
-				/* By default, make the tile transparent */
-				TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
-				/* Get the ground texture for our cell to use */
-				if(farm.getPlot(x, y).getTaskTextureName() != null) {
-					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
-						.getTaskTextureName()));
-				}
 				cell.setTile(tile);
 			}
 		}
@@ -581,10 +539,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updateState(int x, int y) {
 		if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
-			if(getUnbusyWorker() == null) {
-				return;
-				//TODO: need warning message.
-			}
 			if(selection instanceof AbstractIrrigationTool) {
 				updateIrrigationWindow(x, y - FIELD_STARTING_Y);
 				if(irrigationWindow.getChildren().size > 0) {
@@ -594,7 +548,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						}
 				}
 			} else {
-				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), getUnbusyWorker());
+				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
 			}
 		} else if (y == 0 && !toolBarClicksDisabled) {
 			/* check for double-click */
@@ -644,7 +598,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			if (curTime < 0) {
 				gameOver = true;
 			}
-			/* 1000 milliseconds = 1 second */
+			//TODO: May want to make this more concrete...
 			if(!(curTime < 1000)) {
 				farm.checkSeasonTimer();
 			}
