@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.aa_software.farm_adventure.model.selectable.item.AbstractItem;
 import com.aa_software.farm_adventure.model.selectable.item.crop.BananaCrop;
@@ -24,14 +23,16 @@ import com.aa_software.farm_adventure.model.selectable.item.tool.plant.SeederToo
 import com.aa_software.farm_adventure.model.selectable.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plow.MuleTool;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
 
 public class Market {
-	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ new DefaultWorker(),
-			new ShovelTool(), new HandPlowTool(), new TrowelTool(), new ScytheTool(), new MuleTool(), new SeederTool(),
-			new BackhoeTool(), new CombineTool(), new IllusionistSpell(), new LocustSwarmSpell(), new MolesSpell(), 
-			new RainCallSpell(), new TimeFreezeSpell(), new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop()}));
+	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
+			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new DefaultWorker(),
+			new HandPlowTool(), new ShovelTool(), new TrowelTool(), new ScytheTool()	
+	}));
+	
+	
+	
 	
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
 	

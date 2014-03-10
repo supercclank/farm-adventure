@@ -82,4 +82,8 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	public String getItemType(){
 		return "";
 	}
+	
+	public String getTextureName() {
+		return "";
+	}
 }

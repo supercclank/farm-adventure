@@ -20,7 +20,6 @@ import com.aa_software.farm_adventure.model.selectable.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.selectable.item.crop.RiceCrop;
 import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
@@ -48,7 +47,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -96,7 +94,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .18),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
-			INVENTORY_HEIGHT = Gdx.graphics.getHeight()-(TILE_SIZE*2);
+			INVENTORY_HEIGHT = Gdx.graphics.getHeight()-5*(TILE_SIZE/7);
 
 	protected AbstractItem selection;
 	protected ISelectionState state;
@@ -535,10 +533,10 @@ public class AbstractFarmScreen extends AbstractScreen {
 		
 		inputMultiplexer.addProcessor(plantMenuStage);
 		
-		Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
-		Texture beet = new Texture(Gdx.files.internal("textures/beet.png"));
-		Texture rice = new Texture(Gdx.files.internal("textures/rice.png"));
-		Texture banana = new Texture(Gdx.files.internal("textures/banana.png"));
+		Texture carrot = new Texture(Gdx.files.internal("textures/carrotCrop.png"));
+		Texture beet = new Texture(Gdx.files.internal("textures/beetCrop.png"));
+		Texture rice = new Texture(Gdx.files.internal("textures/riceCrop.png"));
+		Texture banana = new Texture(Gdx.files.internal("textures/bananaCrop.png"));
 
 		TextureRegion carrotImage = new TextureRegion(carrot);
 		TextureRegion beetImage = new TextureRegion(beet);
@@ -664,7 +662,7 @@ public class AbstractFarmScreen extends AbstractScreen {
 			int inventoryTypeCount = 0;
 			for (int i=0; i<itemCount; i++){
 				
-				Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
+				Texture carrot = new Texture(Gdx.files.internal("textures/"+marketItems.get(keyset[j]).get(i).getTextureName()+".png"));
 				TextureRegion carrotImage = new TextureRegion(carrot);
 				Button carrotButton = new Button(new Image(carrotImage), inventory_market_Skin);
 				carrotButton.setDisabled(true);

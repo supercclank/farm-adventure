@@ -104,7 +104,7 @@ public abstract class AbstractWorker extends AbstractItem {
 	}
 
 	public String getTextureName() {
-		return "arbitrary";
+		return "worker";
 		// TODO: change
 	}
 
