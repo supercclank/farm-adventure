@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;

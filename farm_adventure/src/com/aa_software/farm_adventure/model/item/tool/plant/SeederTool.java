@@ -2,7 +2,6 @@ package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.plot.Plot;
 
 public class SeederTool extends AbstractPlantTool {
 	public static final String SEEDERTOOL_NAME = "Seeder";
