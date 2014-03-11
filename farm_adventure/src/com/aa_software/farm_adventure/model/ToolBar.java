@@ -1,11 +1,11 @@
 package com.aa_software.farm_adventure.model;
 
-import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.ScytheTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.irrigate.ShovelTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.AbstractPlantTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.TrowelTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
+import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
+import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
+import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
 
 public class ToolBar {
 	public static final int COLUMNS = 5;
@@ -20,6 +20,10 @@ public class ToolBar {
 
 	public ToolBar(int columns, int rows) {
 		initializeTools(columns, rows);
+	}
+
+	public AbstractPlantTool getPlantTool() {
+		return (AbstractPlantTool) tools2D[PLANT_TOOL_X][PLANT_TOOL_Y];
 	}
 
 	public AbstractTool getTool(int x, int y) {
@@ -37,10 +41,6 @@ public class ToolBar {
 
 	public void setTool(int x, int y, AbstractTool tool) {
 		tools2D[x][y] = tool;
-	}
-	
-	public AbstractPlantTool getPlantTool() {
-		return 	(AbstractPlantTool) tools2D[PLANT_TOOL_X][PLANT_TOOL_Y];
 	}
 
 }

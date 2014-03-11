@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuScreen extends AbstractScreen {
 
-	public MainMenuScreen(FarmAdventure game) {
-		super(game);
+	public MainMenuScreen() {
+		super();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				game.setScreen(new WorldScreen(game));
+				FarmAdventure.getInstance().setScreen(new WorldScreen());
 				return true;
 			}
 		});
