@@ -8,6 +8,8 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
+import com.aa_software.farm_adventure.model.Inventory;
+import com.aa_software.farm_adventure.model.Market;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
@@ -31,7 +33,14 @@ public abstract class AbstractFarm {
 	protected ToolBar toolBar;
 	protected Season[] seasons;
 	protected int currentSeason;
+
+	protected final Timer timer;
+	protected TimerTask seasonTimer;
+	protected Market market;
+	protected Inventory inventory;
+
 	protected long seasonStartTime;
+
 	/* each farm starts with a certain amount of seeds, workers, equipment */
 	protected Map<AbstractWorker, Integer> startingWorkerCount;
 	protected Map<AbstractCrop, Integer> startingCropCount;
@@ -39,16 +48,20 @@ public abstract class AbstractFarm {
 	protected Map<AbstractSpell, Integer> startingSpellCount;
 
 	public AbstractFarm() {
-		startingWorkerCount = new HashMap<AbstractWorker, Integer>();
-		startingCropCount = new HashMap<AbstractCrop, Integer>();
-		startingToolCount = new HashMap<AbstractTool, Integer>();
-		startingSpellCount = new HashMap<AbstractSpell, Integer>();
-		toolBar = new ToolBar();
-		
+
+		this.startingWorkerCount = new HashMap<AbstractWorker, Integer>();
+		this.startingCropCount = new HashMap<AbstractCrop, Integer>();
+		this.startingToolCount = new HashMap<AbstractTool, Integer>();
+		this.startingSpellCount = new HashMap<AbstractSpell, Integer>();
+		this.field = new Field();
+		this.toolBar = new ToolBar();
+		this.timer = new Timer();
+		this.market = new Market();
+		this.inventory = new Inventory();
 	}
 
 	public Season getCurrentSeason() {
-		return seasons[currentSeason];
+		return this.seasons[currentSeason];
 	}
 	
 	public Season[] getSeasons() {
@@ -56,11 +69,11 @@ public abstract class AbstractFarm {
 	}
 
 	public Field getField() {
-		return field;
+		return this.field;
 	}
 
 	public Plot getPlot(int x, int y) {
-		return field.getPlot(x, y);
+		return this.field.getPlot(x, y);
 	}
 	
 	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
@@ -68,7 +81,39 @@ public abstract class AbstractFarm {
 	}
 
 	public AbstractTool getTool(int x, int y) {
-		return toolBar.getTool(x, y);
+		return this.toolBar.getTool(x, y);
+	}
+	
+	/**
+	 * Sets up a task that will increment the season (up to its maximum) after
+	 * the season's cycle time has passed. Tasks spawned this way cancel
+	 * themselves after one run and start anew (with the new season's values).
+	 */
+	public final void setupSeasonTimer() {
+		this.seasonTimer = new java.util.TimerTask() {
+			@Override
+			public void run() {
+				currentSeason++;
+				currentSeason %= seasons.length;
+				seasons[currentSeason].update(field);
+				seasonTimer.cancel();
+				setupSeasonTimer();
+			}
+		};
+		timer.schedule(seasonTimer, TimeUnit.MINUTES
+				.toMillis((long) seasons[currentSeason].getCycleTime()));
+	}
+	
+	public Market getMarket(){
+		return this.market;
+	}
+	
+	/**
+	 * Returns farm inventory
+	 * @return inventory
+	 */
+	public Inventory getInventory(){
+		return this.inventory;
 	}
 
 	public void checkSeasonTimer() {

@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import com.aa_software.farm_adventure.model.farm.RainforestFarm;
-import com.aa_software.farm_adventure.presenter.FarmAdventure;
 
 public class RainforestFarmScreen extends AbstractFarmScreen {
 

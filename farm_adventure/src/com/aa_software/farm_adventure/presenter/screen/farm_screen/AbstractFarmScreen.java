@@ -1,27 +1,30 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.EnumSet;
+
+
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
+import com.aa_software.farm_adventure.model.farm.SnowFarm;
+
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
-import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
-import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
+
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
@@ -30,6 +33,7 @@ import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,8 +55,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public abstract class AbstractFarmScreen extends AbstractScreen {
 
@@ -89,24 +98,42 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WORKER_LABEL_X = (float) (Gdx.graphics.getWidth() * .78),
 			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .18),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
-			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13);
+			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
+			INVENTORY_HEIGHT = Gdx.graphics.getHeight()-15*(TILE_SIZE/10);
 
 	protected AbstractItem selection;
 	protected ISelectionState state;
 	protected AbstractFarm farm;
 
-	protected final TiledMap map;
-	protected final TiledMapTileSet tileSet;
-	protected final HashMap<String, Integer> tileMap;
 
-	protected final Skin skin;
-	protected final Stage plantMenuStage;
+	protected TiledMap map;
+	protected TiledMapTileSet tileSet;
+	protected HashMap<String, Integer> tileMap;
+	
+	protected InputMultiplexer inputMultiplexer;
+	
+	protected Skin skin;
+	protected Stage plantMenuStage;
+	protected Window plantWindow;
+	
+	protected Skin inventory_market_Skin;
+	protected Stage inventory_market_Stage;
+	protected Stage inventoryStage;
+	protected Stage marketStage;
+	protected Window inventory_market_Window;
+	
+	protected Table invScrollTable;
+	
+	protected Boolean inventoryMarketVisible;
+
 	protected final Stage irrigationMenuStage;
 	protected final Stage statusBarStage;
-	protected Window plantWindow;
 	protected final Window irrigationWindow;
 
+
 	protected boolean gameOver;
+	
+	protected enum Actions {BUY, SELL}
 
 	public AbstractFarmScreen() {
 		gameOver = false;
@@ -132,6 +159,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationMenuStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		statusBarStage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
+		inventory_market_Stage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		
 		irrigationWindow = new Window("Pick a Side to Irrigate", skin);
@@ -218,13 +247,17 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			updateStatusBar();
 			statusBarStage.draw();
 			plantMenuStage.draw();
+
+			inventory_market_Stage.draw();
+			inventory_market_Stage.act();
+
 			irrigationMenuStage.draw();
+
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
 	}
 
 	@Override
@@ -237,10 +270,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public final void setupPlantWindow() {
 
-		Texture carrot = new Texture(Gdx.files.internal("textures/carrot.png"));
-		Texture beet = new Texture(Gdx.files.internal("textures/beet.png"));
-		Texture rice = new Texture(Gdx.files.internal("textures/rice.png"));
-		Texture banana = new Texture(Gdx.files.internal("textures/banana.png"));
+		Texture carrot = new Texture(Gdx.files.internal("textures/carrotCrop.png"));
+		Texture beet = new Texture(Gdx.files.internal("textures/beetCrop.png"));
+		Texture rice = new Texture(Gdx.files.internal("textures/riceCrop.png"));
+		Texture banana = new Texture(Gdx.files.internal("textures/bananaCrop.png"));
 
 		TextureRegion carrotImage = new TextureRegion(carrot);
 		TextureRegion beetImage = new TextureRegion(beet);
@@ -302,55 +335,37 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		});
 	}
-	
-/**
- * Updates the window for selecting irrigation.
- * 
- * @param x		the x coordinate of the selected plot
- * @param y		the y coordinate of the selected plot
- */
-	public void updateIrrigationWindow(final int x, final int y) {
-
-		irrigationWindow.clear();
-		
-		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y).iterator();
-		for( ; iterator.hasNext(); ) {
-			Irrigation irrigation = iterator.next();
-			Texture irrigationTexture = new Texture(Gdx.files.internal(
-					TextureHelper.getIrrigationTextureFileName(
-							EnumSet.of(irrigation))));
-			TextureRegion irrigationImage = new TextureRegion(irrigationTexture);
-			Button irrigationButton = new Button(new Image(irrigationImage), skin);
-			/* creates an input listener that additionally has the fields for 
-			 * the selected X and Y. This way, when the listener is called, it will
-			 * know which X and Y it pertains to. */
-			irrigationButton.addListener(new IrrigationListener(x, y, irrigation) {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					if(selection instanceof AbstractIrrigationTool) {
-						((AbstractIrrigationTool) selection).setIrrigationChoice(this.getIrrigation());
-						state = state.update(farm.getPlot(this.getX(), this.getY()));
-					}
-					return true;
-				}
-			});
-			irrigationWindow.add(irrigationButton);
-		}
-
-		irrigationWindow.pack();
-		irrigationMenuStage.addActor(irrigationWindow);
-
-	}
 
 	@Override
 	public void show() {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 640, 1024);
-		
+
 		gameStartTime = System.currentTimeMillis();
+
+		this.selection = null;
+		this.state = new DefaultSelectionState();
+		farm = new SnowFarm();
+
+		/* Push all of the tiles for each layer into the tile map */
+		Iterator<TiledMapTile> tileIterator;
+		tileMap = new HashMap<String, Integer>();
+		for (int i = 0; i < allLayers.length; i++) {
+			for (tileIterator = tileSet.iterator(); tileIterator.hasNext();) {
+				TiledMapTile tile = tileIterator.next();
+				tileMap.put(tile.getProperties()
+						.get(allLayers[i], String.class), tile.getId());
+			}
+		}
 		
+		inputMultiplexer = new InputMultiplexer();	
+		invScrollTable = new Table();
 		setupPlantWindow();
+		setupSeedWindow();
+		setupInventoryWindow();
+		Gdx.input.setInputProcessor(inputMultiplexer);
+
 	}
 
 	/**
@@ -500,6 +515,46 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	}
 
 	/**
+	 * Updates the window for selecting irrigation.
+	 * 
+	 * @param x		the x coordinate of the selected plot
+	 * @param y		the y coordinate of the selected plot
+	 */
+		public void updateIrrigationWindow(final int x, final int y) {
+
+			irrigationWindow.clear();
+			
+			Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y).iterator();
+			for( ; iterator.hasNext(); ) {
+				Irrigation irrigation = iterator.next();
+				Texture irrigationTexture = new Texture(Gdx.files.internal(
+						TextureHelper.getIrrigationTextureFileName(
+								EnumSet.of(irrigation))));
+				TextureRegion irrigationImage = new TextureRegion(irrigationTexture);
+				Button irrigationButton = new Button(new Image(irrigationImage), skin);
+				/* creates an input listener that additionally has the fields for 
+				 * the selected X and Y. This way, when the listener is called, it will
+				 * know which X and Y it pertains to. */
+				irrigationButton.addListener(new IrrigationListener(x, y, irrigation) {
+					public boolean touchDown(InputEvent event, float x, float y,
+							int pointer, int button) {
+						if(selection instanceof AbstractIrrigationTool) {
+							((AbstractIrrigationTool) selection).setIrrigationChoice(this.getIrrigation());
+							System.out.println("HERE");
+							state = state.update(farm.getPlot(this.getX(), this.getY()), farm.getInventory());
+						}
+						return true;
+					}
+				});
+				irrigationWindow.add(irrigationButton);
+			}
+
+			irrigationWindow.pack();
+			irrigationMenuStage.addActor(irrigationWindow);
+
+		}
+		
+	/**
 	 * Takes in an x, and y value (cell-based) that represents user input, as
 	 * well as the type of cell that was clicked. The options for this is ground
 	 * or tool bar. If the user clicked on the tool bar, that tool is selected
@@ -513,6 +568,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updateState(int x, int y) {
 		if (y >= FIELD_STARTING_Y) {
+			System.out.println("PLOT	x: "+x+" y: "+y);
 			if(selection instanceof AbstractIrrigationTool) {
 				updateIrrigationWindow(x, y - FIELD_STARTING_Y);
 				if(irrigationWindow.getChildren().size > 0) {
@@ -520,15 +576,33 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						Gdx.input.setInputProcessor(irrigationMenuStage);
 				}
 			} else {
-				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y));
+				state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y), farm.getInventory());	
+				updateInventoryTable();
 			}
-		} else if (y == 0) {
+		} else if (y==0){
+			System.out.println("TOOL	x: "+x+" y: "+y);
 			if (selection != null && selection.equals(farm.getTool(x, y))) {
 				if (selection instanceof AbstractPlantTool) {
 					plantWindow.setVisible(true);
 					Gdx.input.setInputProcessor(plantMenuStage);
 				}
-			} else {
+				
+				if (inventoryMarketVisible){
+					inventory_market_Window.setVisible(false);
+					inventoryMarketVisible = false;		
+				}
+					
+			} else if (farm.getTool(x, y) instanceof AbstractTool){
+				if (inventoryMarketVisible){
+					inventory_market_Window.setVisible(false);
+					inventoryMarketVisible = false;		
+				}
+				selection = farm.getTool(x, y);
+				state = state.update((AbstractTool) selection);	
+				syncSelectTiles(x);				
+			} else {		
+				//TO-DO spell and Upgrade Selection
+				/**
 				selection = farm.getTool(x, y);
 				if (selection instanceof AbstractSpell) {
 					state = state.update((AbstractCrop) selection);
@@ -541,7 +615,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				} else if (selection instanceof AbstractCrop) {
 					state = state.update((AbstractCrop) selection);
 				}
+				*/	
+				selection = null;
+				state = new DefaultSelectionState();
 				syncSelectTiles(x);
+				inventory_market_Window.setVisible(true);
+				Gdx.input.setInputProcessor(inventory_market_Stage);
+				inventoryMarketVisible = true;
 			}
 		}
 	}
@@ -584,12 +664,243 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 		/* Worker label setup */
 		Label workers = new Label("Workers: "
-				+ PLAYER.getInventory().getWorkerCount(), style1);
+				+ farm.getInventory().getWorkerCount(), style1);
 		workers.setPosition(WORKER_LABEL_X, WORKER_LABEL_Y);
 
 		/* Stage setup */
 		statusBarStage.addActor(bankBalance);
 		statusBarStage.addActor(timeRemaining);
 		statusBarStage.addActor(workers);
+	}
+	
+	/**
+	 * Sets up the window to choose a seed to plant
+	 */
+	public void setupSeedWindow(){
+		
+		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		
+		Texture carrot = new Texture(Gdx.files.internal("textures/carrotCrop.png"));
+		Texture beet = new Texture(Gdx.files.internal("textures/beetCrop.png"));
+		Texture rice = new Texture(Gdx.files.internal("textures/riceCrop.png"));
+		Texture banana = new Texture(Gdx.files.internal("textures/bananaCrop.png"));
+
+		TextureRegion carrotImage = new TextureRegion(carrot);
+		TextureRegion beetImage = new TextureRegion(beet);
+		TextureRegion riceImage = new TextureRegion(rice);
+		TextureRegion bananaImage = new TextureRegion(banana);
+
+		Button carrotButton = new Button(new Image(carrotImage), skin);
+		Button beetButton = new Button(new Image(beetImage), skin);
+		Button riceButton = new Button(new Image(riceImage), skin);
+		Button bananaButton = new Button(new Image(bananaImage), skin);
+
+		plantWindow = new Window("Pick a Type of Seed", skin);
+		plantWindow.setModal(true);
+		plantWindow.setMovable(false);
+		plantWindow.setVisible(false);
+		plantWindow.setPosition(WINDOW_X, WINDOW_Y);
+		plantWindow.defaults().spaceBottom(10);
+		plantWindow.row().fill().expandX();
+		plantWindow.add(carrotButton);
+		plantWindow.add(beetButton);
+		plantWindow.add(riceButton);
+		plantWindow.add(bananaButton);
+		plantWindow.pack();
+		plantMenuStage.addActor(plantWindow);
+
+		carrotButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				plantWindow.setVisible(false);
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new CarrotCrop());
+				return true;
+			}
+		});
+
+		beetButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				plantWindow.setVisible(false);
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BeetCrop());
+				return true;
+			}
+		});
+
+		riceButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				plantWindow.setVisible(false);
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new RiceCrop());
+				return true;
+			}
+		});
+
+		bananaButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				plantWindow.setVisible(false);
+				((AbstractPlantTool)farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y)).setSeed(new BananaCrop());
+				return true;
+			}
+		});
+	}
+	
+	/**
+	 * Sets up the window to view inventory and market
+	 */
+	public void setupInventoryWindow(){
+		
+		inventory_market_Skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+
+		Table marketTable = new Table();
+		marketTable.layout();
+		inventory_market_Stage.addActor(marketTable);
+		
+		// add inventory items
+		updateInventoryTable();
+		
+		invScrollTable.pack();
+		ScrollPane inventorySP = new ScrollPane(invScrollTable, inventory_market_Skin);	
+		marketTable.row();
+		marketTable.add(new Label("MARKETPLACE", inventory_market_Skin));
+		marketTable.row();
+		marketTable.add(inventorySP).expand().fill().align(Align.left).left();
+		marketTable.pack();	
+		marketTable.layout();
+	
+		inventory_market_Window = new Window("", inventory_market_Skin);
+		inventory_market_Window.setModal(true);
+		inventory_market_Window.setMovable(false);
+		inventory_market_Window.setVisible(false);
+		inventoryMarketVisible = false;
+		inventory_market_Window.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
+		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
+		inventory_market_Window.defaults().spaceBottom(10);
+		inventory_market_Window.row().fill().expandX();
+		inventory_market_Window.add(marketTable).fill().expand().colspan(4).maxHeight(INVENTORY_HEIGHT);
+		inventory_market_Stage.addActor(inventory_market_Window);	 
+	}
+	
+	/**
+	 * Populates the inventory/market table with item image, inventory quantity, buy cost, and sell value
+	 */
+	public void updateInventoryTable(){
+		invScrollTable.clear();
+		invScrollTable.layout();
+		// inventory Stuff	
+		Map<String, ArrayList<AbstractItem>> marketItems = this.farm.getMarket().getItems();		
+		
+		Object [] keyset = marketItems.keySet().toArray();
+		int typeCount = keyset.length;
+		Label type;
+		for (int j = 0; j<typeCount; j++){
+			type = new Label(keyset[j].toString(), inventory_market_Skin, "default-font", Color.ORANGE);
+			type.setWrap(true);
+			invScrollTable.row();
+			invScrollTable.add(type).left();
+			int itemCount = marketItems.get(keyset[j]).size();	
+			int cost = 0;
+			int value = 0;
+			int inventoryTypeCount = 0;
+			for (int i=0; i<itemCount; i++){
+				
+				Texture itemTexture = new Texture(Gdx.files.internal("textures/"+marketItems.get(keyset[j]).get(i).getTextureName()+".png"));
+				TextureRegion itemImage = new TextureRegion(itemTexture);
+				Button carrotButton = new Button(new Image(itemImage), inventory_market_Skin);
+				carrotButton.setDisabled(true);
+				
+				inventoryTypeCount = farm.getInventory().getCount(marketItems.get(keyset[j]).get(i));	
+				System.out.println("Farm inventory count: "+farm.getInventory().getItemsCount());
+				cost = marketItems.get(keyset[j]).get(i).getCost();
+				value = marketItems.get(keyset[j]).get(i).getValue();
+				invScrollTable.row();
+				invScrollTable.add(carrotButton).left();
+				Label itemName = new Label(marketItems.get(keyset[j]).get(i).toString(), inventory_market_Skin);
+				invScrollTable.add(itemName).width((float) (Gdx.graphics.getWidth()*.2)).left();
+				Label itemInvCount = new Label(Integer.toString(inventoryTypeCount), inventory_market_Skin);
+				invScrollTable.add(itemInvCount).width((float) (Gdx.graphics.getWidth()*.2)).left();	
+				Button buyButton, sellButton;
+				if (type.getText().toString().equals("WORKERS")){
+					buyButton = new TextButton( "HIRE "+" $"+ cost, inventory_market_Skin, "default");
+					sellButton = new TextButton("FIRE "+" $"+ value, inventory_market_Skin, "default");
+
+				} else {
+					buyButton = new TextButton( "BUY "+" $"+ cost, inventory_market_Skin, "default");
+					sellButton = new TextButton("SELL "+" $"+ value, inventory_market_Skin, "default");
+				}
+				
+				buyButton.addListener(new BuyClickListener(marketItems.get(keyset[j]).get(i), itemInvCount));
+				invScrollTable.add(buyButton).width((float) (Gdx.graphics.getWidth()*.2)).left();
+				
+				
+				sellButton.addListener(new SellClickListener(marketItems.get(keyset[j]).get(i), itemInvCount));
+				invScrollTable.add(sellButton).width((float) (Gdx.graphics.getWidth()*.2)).left();
+				
+			}
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @author FarmAdventure Devs
+	 *
+	 */
+	private class BuyClickListener extends ClickListener {
+	    AbstractItem item;
+	    Label itemInvCount;
+	    
+	    /**
+	     * This button enables buying of the item and updating of the item quantity
+	     * @param item
+	     * @param itemInvCount
+	     */
+	    public BuyClickListener(AbstractItem item, Label itemInvCount) {
+	        this.item = item;
+	        this.itemInvCount = itemInvCount;
+	    }
+	    
+	    /**
+	     * On button touch the item is bought and the item quantity is updated in the inventory
+	     */
+	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+	    	if (PLAYER.buyItem(this.item)){
+		    	farm.getInventory().addItem(item);
+	    		itemInvCount.setText(Integer.toString(farm.getInventory().getCount(this.item)));
+	    	}        
+            return true;
+        }
+	}
+	
+	/**
+	 * 
+	 * @author FarmAdventure Devs
+	 *
+	 */
+	private class SellClickListener extends ClickListener {
+	    AbstractItem item;
+	    Label itemInvCount;
+
+	    /**
+	     * This button enables selling of the item and updating of the item quantity
+	     * @param item
+	     * @param itemInvCount
+	     */
+	    public SellClickListener(AbstractItem item, Label itemInvCount) {
+	        this.item = item;
+	        this.itemInvCount = itemInvCount;
+	    }
+	    
+	    /**
+	     * On button touch the item is bought and the item quantity is updated in the inventory
+	     */
+	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+	    	if (farm.getInventory().removeItem(item)){
+	    		PLAYER.sellItem(this.item);
+	    		itemInvCount.setText(Integer.toString(farm.getInventory().getCount(this.item)));
+	    	}
+            return true;
+        }
 	}
 }

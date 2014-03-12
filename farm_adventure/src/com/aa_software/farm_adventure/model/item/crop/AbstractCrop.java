@@ -52,4 +52,8 @@ public abstract class AbstractCrop extends AbstractItem {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public String getItemType() {
+		return "CROPS";
+	}
 }

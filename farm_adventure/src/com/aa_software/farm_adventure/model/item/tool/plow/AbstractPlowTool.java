@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model.item.tool.plow;
 
-import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
@@ -25,5 +24,9 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			    }
 			}, workTime);
 		}
+	}
+	
+	public String getItemType() {
+		return "Plow Tools";
 	}
 }

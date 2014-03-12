@@ -25,4 +25,8 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	public void setIrrigationChoice(Irrigation irrigationChoice) {
 		this.irrigationChoice = irrigationChoice;
 	}
+	
+	public String getItemType() {
+		return "Irrigation Tools";
+	}
 }

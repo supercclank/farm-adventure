@@ -12,6 +12,7 @@ public abstract class AbstractWorker extends AbstractItem {
 	public static final int MAX_LEVEL = 2;
 	public static final float LEVEL_WAGE_MOD = .5f;
 	public static final float LEVEL_WORK_RATE_MOD = .7f;
+	public static final String WORKER_NAME = "Worker";
 
 	private int experience;
 	private int level;
@@ -23,6 +24,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.experience = DEFAULT_EXPERIENCE;
 		this.wage = DEFAULT_WAGE;
 		this.workRate = DEFAULT_WORK_RATE;
+		this.name = WORKER_NAME;
 	}
 
 	public AbstractWorker(int level) {
@@ -105,7 +107,7 @@ public abstract class AbstractWorker extends AbstractItem {
 	}
 
 	public String getTextureName() {
-		return "arbitrary";
+		return "worker";
 		// TODO: change
 	}
 
@@ -125,6 +127,10 @@ public abstract class AbstractWorker extends AbstractItem {
 	public void setWorkRate(int workRate) {
 		this.workRate = workRate;
 	}
+	
+	public String getItemType() {
+		return "WORKERS";
+	}
 
 	@Override
 	public void update(AbstractItem item) {
@@ -134,7 +140,6 @@ public abstract class AbstractWorker extends AbstractItem {
 
 	@Override
 	public void update(Plot plot) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 }

@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.item.tool.plant;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -20,10 +21,17 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	}
 	
 	@Override
-	public void update(final Plot plot) {
-		if(plot.isUsable() && plot.isIrrigated()) {
+	public void update(final Plot plot, Inventory inventory) {
+		if(plot.isUsable() && plot.isIrrigated() && inventory.removeItem(seed)) {
 			plot.setUsable(false);
 			Timer.schedule(new PlantTask(plot, seed), workTime);
 		}
+	}
+	
+	public void update(final Plot plot) {
+	}
+	
+	public String getItemType() {
+		return "Plant Tools";
 	}
 }
