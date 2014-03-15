@@ -34,6 +34,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class TutorialFarmScreen extends AbstractFarmScreen {
 
+	//TODO We need a way to enforce users to plow/irrigate such that they will be able to move
+	// forward in the tutorial (or some other way to handle the problem). Basically, if they
+	// get to the "plant a crop" part, and do not have anywhere to plant a crop because they
+	// plowed a random piece of land, they are stuck.
+	
 	enum State {
 		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_IRRIGATE_MENU, WAIT_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_BUY, DESCRIBE_SELL, DESCRIBE_END, END
 	}
