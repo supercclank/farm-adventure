@@ -48,7 +48,6 @@ public abstract class AbstractFarm {
 	protected Map<AbstractSpell, Integer> startingSpellCount;
 
 	public AbstractFarm() {
-
 		this.startingWorkerCount = new HashMap<AbstractWorker, Integer>();
 		this.startingCropCount = new HashMap<AbstractCrop, Integer>();
 		this.startingToolCount = new HashMap<AbstractTool, Integer>();

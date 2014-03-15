@@ -35,7 +35,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -76,6 +75,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public static final String TILE_SET_NAME = "tileSet128";
 	private static final int TILE_SIZE = 128;
 
+	/* Skin */
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
 
 	/* Layer */
@@ -119,15 +119,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Stage plantMenuStage;
 	protected Window plantWindow;
 
-	protected Skin inventory_market_Skin;
-	protected Stage inventory_market_Stage;
+	protected Skin inventorySkin;
 	protected Stage inventoryStage;
-	protected Stage marketStage;
-	protected Window inventory_market_Window;
-
-	protected Table invScrollTable;
-
-	protected Boolean inventoryMarketVisible;
+	protected Window inventoryWindow;
+	protected Table inventoryScrollTable;
 
 	protected final Stage irrigationMenuStage;
 	protected final Stage statusBarStage;
@@ -137,6 +132,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected boolean plantMenuClicksDisabled;
 	protected boolean toolBarClicksDisabled;
 	protected boolean fieldClicksDisabled;
+	protected boolean inventoryClicksDisabled;
 	protected boolean disableGameTime;
 
 	protected boolean gameOver;
@@ -152,6 +148,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		plantMenuClicksDisabled = false;
 		toolBarClicksDisabled = false;
 		fieldClicksDisabled = false;
+		inventoryClicksDisabled = false;
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
@@ -176,7 +173,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Gdx.graphics.getHeight(), true);
 		statusBarStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
-		inventory_market_Stage = new Stage(Gdx.graphics.getWidth(),
+		inventoryStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 
 		irrigationWindow = new Window("Pick a Side to Irrigate", skin);
@@ -198,6 +195,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		plantWindow.row().fill().expandX();
 
 		plantMenuStage.addActor(plantWindow);
+		
+		inputMultiplexer = new InputMultiplexer();
+		inventoryScrollTable = new Table();
+		setupInventoryWindow();
 	}
 
 	/**
@@ -230,16 +231,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		map.dispose();
 		renderer.dispose();
 		FarmAdventure.getInstance().setScreen(new MainMenuScreen());
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void pause() {
-
 	}
 
 	/**
@@ -276,9 +267,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			updateStatusBar();
 			statusBarStage.draw();
 			plantMenuStage.draw();
-
-			inventory_market_Stage.draw();
-			inventory_market_Stage.act();
+			inventoryStage.draw();
+			inventoryStage.act();
 
 			irrigationMenuStage.draw();
 
@@ -291,10 +281,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		plantMenuStage.setViewport(width, height);
 		irrigationMenuStage.setViewport(width, height);
 	}
-
-	@Override
-	public void resume() {
-
+	
+	public void disableAllGameClicks() {
+		fieldClicksDisabled = true;
+		toolBarClicksDisabled = true;
+		irrigationMenuClicksDisabled = true;
+		plantMenuClicksDisabled = true;
+		inventoryClicksDisabled = true;
 	}
 
 	/**
@@ -385,7 +378,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
-		farm = new SnowFarm();
 
 		/* Push all of the tiles for each layer into the tile map */
 		Iterator<TiledMapTile> tileIterator;
@@ -398,11 +390,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 
-		inputMultiplexer = new InputMultiplexer();
-		invScrollTable = new Table();
-		setupInventoryWindow();
 		Gdx.input.setInputProcessor(inputMultiplexer);
-
 	}
 
 	/**
@@ -424,13 +412,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				cell.setTile(tile);
 			}
 		}
-	}
-
-	public void disableAllGameClicks() {
-		fieldClicksDisabled = true;
-		toolBarClicksDisabled = true;
-		irrigationMenuClicksDisabled = true;
-		plantMenuClicksDisabled = true;
 	}
 
 	/**
@@ -676,21 +657,19 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					}
 				}
 
-				if (inventoryMarketVisible) {
-					inventory_market_Window.setVisible(false);
-					inventoryMarketVisible = false;
+				if (inventoryWindow.isVisible()) {
+					inventoryWindow.setVisible(false);
 				}
 
 			} else if (farm.getTool(x, y) instanceof AbstractTool) {
-				if (inventoryMarketVisible) {
-					inventory_market_Window.setVisible(false);
-					inventoryMarketVisible = false;
+				if (inventoryWindow.isVisible()) {
+					inventoryWindow.setVisible(false);
 				}
 				selection = farm.getTool(x, y);
 				state = state.update((AbstractTool) selection);
 				syncSelectTiles(x);
 			} else {
-				// TO-DO spell and Upgrade Selection
+				// TODO spell and Upgrade Selection
 				/**
 				 * selection = farm.getTool(x, y); if (selection instanceof
 				 * AbstractSpell) { state = state.update((AbstractCrop)
@@ -706,9 +685,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				selection = null;
 				state = new DefaultSelectionState();
 				syncSelectTiles(x);
-				inventory_market_Window.setVisible(true);
-				Gdx.input.setInputProcessor(inventory_market_Stage);
-				inventoryMarketVisible = true;
+				if(!inventoryClicksDisabled) {
+					inventoryWindow.setVisible(true);
+					Gdx.input.setInputProcessor(inventoryStage);
+				}
 			}
 		}
 	}
@@ -765,38 +745,34 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void setupInventoryWindow() {
 
-		inventory_market_Skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		inventorySkin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
 
 		Table marketTable = new Table();
 		marketTable.layout();
-		inventory_market_Stage.addActor(marketTable);
+		inventoryStage.addActor(marketTable);
 
-		// add inventory items
-		updateInventoryTable();
-
-		invScrollTable.pack();
-		ScrollPane inventorySP = new ScrollPane(invScrollTable,
-				inventory_market_Skin);
+		inventoryScrollTable.pack();
+		ScrollPane inventorySP = new ScrollPane(inventoryScrollTable,
+				inventorySkin);
 		marketTable.row();
-		marketTable.add(new Label("MARKETPLACE", inventory_market_Skin));
+		marketTable.add(new Label("MARKETPLACE", inventorySkin));
 		marketTable.row();
 		marketTable.add(inventorySP).expand().fill().align(Align.left).left();
 		marketTable.pack();
 		marketTable.layout();
 
-		inventory_market_Window = new Window("", inventory_market_Skin);
-		inventory_market_Window.setModal(true);
-		inventory_market_Window.setMovable(false);
-		inventory_market_Window.setVisible(false);
-		inventoryMarketVisible = false;
-		inventory_market_Window.setSize(Gdx.graphics.getWidth(),
+		inventoryWindow = new Window("", inventorySkin);
+		inventoryWindow.setModal(true);
+		inventoryWindow.setMovable(false);
+		inventoryWindow.setVisible(false);
+		inventoryWindow.setSize(Gdx.graphics.getWidth(),
 				INVENTORY_HEIGHT);
-		inventory_market_Window.setPosition(0, Gdx.graphics.getHeight());
-		inventory_market_Window.defaults().spaceBottom(10);
-		inventory_market_Window.row().fill().expandX();
-		inventory_market_Window.add(marketTable).fill().expand().colspan(4)
+		inventoryWindow.setPosition(0, Gdx.graphics.getHeight());
+		inventoryWindow.defaults().spaceBottom(10);
+		inventoryWindow.row().fill().expandX();
+		inventoryWindow.add(marketTable).fill().expand().colspan(4)
 				.maxHeight(INVENTORY_HEIGHT);
-		inventory_market_Stage.addActor(inventory_market_Window);
+		inventoryStage.addActor(inventoryWindow);
 	}
 
 	/**
@@ -804,8 +780,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * buy cost, and sell value
 	 */
 	public void updateInventoryTable() {
-		invScrollTable.clear();
-		invScrollTable.layout();
+		inventoryScrollTable.clear();
+		inventoryScrollTable.layout();
 		// inventory Stuff
 		Map<String, ArrayList<AbstractItem>> marketItems = this.farm
 				.getMarket().getItems();
@@ -814,11 +790,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		int typeCount = keyset.length;
 		Label type;
 		for (int j = 0; j < typeCount; j++) {
-			type = new Label(keyset[j].toString(), inventory_market_Skin,
+			type = new Label(keyset[j].toString(), inventorySkin,
 					"default-font", Color.ORANGE);
 			type.setWrap(true);
-			invScrollTable.row();
-			invScrollTable.add(type).left();
+			inventoryScrollTable.row();
+			inventoryScrollTable.add(type).left();
 			int itemCount = marketItems.get(keyset[j]).size();
 			int cost = 0;
 			int value = 0;
@@ -831,7 +807,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 										.getTextureName() + ".png"));
 				TextureRegion itemImage = new TextureRegion(itemTexture);
 				Button carrotButton = new Button(new Image(itemImage),
-						inventory_market_Skin);
+						inventorySkin);
 				carrotButton.setDisabled(true);
 
 				inventoryTypeCount = farm.getInventory().getCount(
@@ -840,39 +816,39 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						+ farm.getInventory().getItemsCount());
 				cost = marketItems.get(keyset[j]).get(i).getCost();
 				value = marketItems.get(keyset[j]).get(i).getValue();
-				invScrollTable.row();
-				invScrollTable.add(carrotButton).left();
+				inventoryScrollTable.row();
+				inventoryScrollTable.add(carrotButton).left();
 				Label itemName = new Label(marketItems.get(keyset[j]).get(i)
-						.toString(), inventory_market_Skin);
-				invScrollTable.add(itemName)
+						.toString(), inventorySkin);
+				inventoryScrollTable.add(itemName)
 						.width((float) (Gdx.graphics.getWidth() * .2)).left();
 				Label itemInvCount = new Label(
 						Integer.toString(inventoryTypeCount),
-						inventory_market_Skin);
-				invScrollTable.add(itemInvCount)
+						inventorySkin);
+				inventoryScrollTable.add(itemInvCount)
 						.width((float) (Gdx.graphics.getWidth() * .2)).left();
 				Button buyButton, sellButton;
 				if (type.getText().toString().equals("WORKERS")) {
 					buyButton = new TextButton("HIRE " + " $" + cost,
-							inventory_market_Skin, "default");
+							inventorySkin, "default");
 					sellButton = new TextButton("FIRE " + " $" + value,
-							inventory_market_Skin, "default");
+							inventorySkin, "default");
 
 				} else {
 					buyButton = new TextButton("BUY " + " $" + cost,
-							inventory_market_Skin, "default");
+							inventorySkin, "default");
 					sellButton = new TextButton("SELL " + " $" + value,
-							inventory_market_Skin, "default");
+							inventorySkin, "default");
 				}
 
 				buyButton.addListener(new BuyClickListener(marketItems.get(
 						keyset[j]).get(i), itemInvCount));
-				invScrollTable.add(buyButton)
+				inventoryScrollTable.add(buyButton)
 						.width((float) (Gdx.graphics.getWidth() * .2)).left();
 
 				sellButton.addListener(new SellClickListener(marketItems.get(
 						keyset[j]).get(i), itemInvCount));
-				invScrollTable.add(sellButton)
+				inventoryScrollTable.add(sellButton)
 						.width((float) (Gdx.graphics.getWidth() * .2)).left();
 
 			}

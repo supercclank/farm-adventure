@@ -52,6 +52,10 @@ public class Plot {
 		if (!this.irrigation.contains(irrigation) && isUsable) {
 			this.irrigation.add(irrigation);
 		}
+		if (!this.irrigation.isEmpty()
+			&& plotType.toString().toLowerCase().endsWith("unwatered")) {
+			waterPlot();
+		}
 	}
 
 	public PlotType getPlotType() {
@@ -96,6 +100,9 @@ public class Plot {
 		if (irrigation.isEmpty()
 				&& !plotType.toString().toLowerCase().endsWith("unwatered")) {
 			unwaterPlot();
+		} else if (!irrigation.isEmpty()
+				&& plotType.toString().toLowerCase().endsWith("unwatered")) {
+			waterPlot();
 		}
 	}
 
@@ -108,6 +115,18 @@ public class Plot {
 			plotType = PlotType.PLOWEDUNWATERED;
 		} else if (plotType == PlotType.UNPLOWEDWATERED) {
 			plotType = PlotType.UNPLOWEDUNWATERED;
+		}
+	}
+	
+	/**
+	 * Changes a plot from containing the "UNWATERED" keyword to "WATERED". This
+	 * will affect the texture used to render the plot.
+	 */
+	public void waterPlot() {
+		if (plotType == PlotType.PLOWEDUNWATERED) {
+			plotType = PlotType.PLOWEDWATERED;
+		} else if (plotType == PlotType.UNPLOWEDUNWATERED) {
+			plotType = PlotType.UNPLOWEDWATERED;
 		}
 	}
 

@@ -22,7 +22,7 @@ public class TutorialFarm extends AbstractFarm {
 	public static final FarmType type = FarmType.TUTORIAL;
 	public static final SeasonType[] DEFAULT_SEASONS = { SeasonType.SPRING,
 			SeasonType.SPRING, SeasonType.SPRING, SeasonType.SPRING };
-	private final float WATER_PLOT_MOD = .20f;
+	private final float WATER_PLOT_MOD = .10f;
 
 	/**
 	 * Constructs a farm with the correct seasons and field.

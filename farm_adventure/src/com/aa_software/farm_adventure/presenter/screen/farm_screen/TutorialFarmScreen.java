@@ -84,11 +84,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	}
 
 	@Override
-	public void show() {
-		super.show();
-	}
-
-	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		descriptionStage.setViewport(width, height);
@@ -279,6 +274,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
+			inventoryClicksDisabled = false;
 			foundClick = false;
 			waitingForX = 4;
 			break;
@@ -376,7 +372,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
 				super.updateState(x, y);
-				if (selection.equals(farm.getTool(waitingForX, y))) {
+				if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
 					foundClick = true;
 				}
 			}
