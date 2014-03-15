@@ -15,6 +15,7 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 //import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
@@ -163,12 +164,25 @@ public class Inventory {
 	 * of items in the mapped list
 	 * @return
 	 */
-	public int getWorkerCount(){
+	public int getWorkerCount() {
 		String itemType = "WORKERS";
-		if (inventoryItems.containsKey(itemType)){
+		if (inventoryItems.containsKey(itemType)) {
 			return inventoryItems.get(itemType).size();				
 		} else {
 			return 0;
 		}
+	}
+	
+	public AbstractWorker getFreeWorker() {
+		String itemType = "WORKERS";
+		if (inventoryItems.containsKey(itemType)) {
+			for(int i = 0; i < getWorkerCount(); i++) {
+				AbstractWorker worker = (AbstractWorker)inventoryItems.get(itemType).get(i);
+				if(!worker.isBusy()) {
+					return worker;	
+				}
+			}
+		}
+		return null;
 	}
 }

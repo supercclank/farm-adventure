@@ -42,7 +42,7 @@ public class SpellSelectionState extends AbstractSelectionState {
 
 	@Override
 	public SpellSelectionState update(Plot plot, Inventory inventory) {
-		selection.update(plot);
+		selection.update(plot, inventory);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
 

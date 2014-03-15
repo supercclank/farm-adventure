@@ -10,5 +10,4 @@ public class IllusionistSpell extends AbstractSpell {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 	}
-
 }

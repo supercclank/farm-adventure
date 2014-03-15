@@ -44,11 +44,7 @@ public class ToolSelectionState extends AbstractSelectionState {
 
 	@Override
 	public ToolSelectionState update(Plot plot, Inventory inventory) {
-		if ((selection instanceof AbstractHarvestTool)||(selection instanceof AbstractPlantTool)){
-			selection.update(plot, inventory);
-		} else {
-			selection.update(plot);
-		}
+		selection.update(plot, inventory);
 		return new ToolSelectionState((AbstractTool) selection);
 	}
 

@@ -59,9 +59,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	 * Changes the status of the given plot and inventory
 	 * @param plot
 	 */
-	public void update(Plot plot, Inventory inventory) {
-
-	}
+	 abstract public void update(Plot plot, Inventory inventory);
 	
 	/**
 	 * Returns the itemType as a String
@@ -76,7 +74,6 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	}
 	
 	abstract public void update(AbstractItem item);
-	abstract public void update(Plot plot);
 	abstract public String getTextureName();
 	
 }

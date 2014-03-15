@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.item.worker;
 
+import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
@@ -7,17 +8,18 @@ public abstract class AbstractWorker extends AbstractItem {
 	public static final int DEFAULT_WAGE = 200;
 	public static final int DEFAULT_LEVEL = 0;
 	public static final int DEFAULT_EXPERIENCE = 0;
-	public static final int DEFAULT_WORK_RATE = 1;
-	public static final int LEVEL_UP_EXPERIENCE_THRESH = 25;
+	public static final float DEFAULT_WORK_RATE = 1;
+	public static final int LEVEL_UP_EXPERIENCE_THRESH = 5;
 	public static final int MAX_LEVEL = 2;
 	public static final float LEVEL_WAGE_MOD = .5f;
 	public static final float LEVEL_WORK_RATE_MOD = .7f;
 	public static final String WORKER_NAME = "Worker";
 
+	private boolean isBusy;
 	private int experience;
 	private int level;
 	private int wage;
-	private int workRate;
+	private float workRate;
 
 	public AbstractWorker() {
 		this.level = DEFAULT_LEVEL;
@@ -85,8 +87,8 @@ public abstract class AbstractWorker extends AbstractItem {
 		return wage;
 	}
 
-	private final int calculateWorkRate() {
-		int workRate = DEFAULT_WORK_RATE;
+	private final float calculateWorkRate() {
+		float workRate = DEFAULT_WORK_RATE;
 		if (level > DEFAULT_LEVEL) {
 			for (int i = 1; i < level + 1; i++) {
 				workRate += workRate * LEVEL_WORK_RATE_MOD;
@@ -116,7 +118,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		return wage;
 	}
 
-	public int getWorkRate() {
+	public float getWorkRate() {
 		return workRate;
 	}
 
@@ -124,7 +126,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.wage = wage;
 	}
 
-	public void setWorkRate(int workRate) {
+	public void setWorkRate(float workRate) {
 		this.workRate = workRate;
 	}
 	
@@ -135,11 +137,20 @@ public abstract class AbstractWorker extends AbstractItem {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void update(Plot plot) {
-		// TODO Auto-generated method stub	
+	public void update(Plot plot, Inventory inventory) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void setBusy(boolean isBusy) {
+		this.isBusy = isBusy;
 	}
 }

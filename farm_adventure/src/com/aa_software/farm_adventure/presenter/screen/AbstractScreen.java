@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class AbstractScreen implements Screen {
 	
+	public static final int STARTING_WIDTH = 640;
+	public static final int STARTING_HEIGHT = 1024;
+	
 	protected final Stage statusBarStage;
 
 	protected OrthographicCamera camera;
@@ -94,7 +97,7 @@ public abstract class AbstractScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		statusBarStage.setViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		statusBarStage.setViewport(width, height);
 	}
 
 	@Override
@@ -106,6 +109,10 @@ public abstract class AbstractScreen implements Screen {
 
 	@Override
 	public void show() {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, STARTING_WIDTH, STARTING_HEIGHT);
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
 		FarmAdventure.log("Showing screen: " + getName());
 		
 
