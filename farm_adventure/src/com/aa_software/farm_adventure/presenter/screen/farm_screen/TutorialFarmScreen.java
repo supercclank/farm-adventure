@@ -75,7 +75,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		descriptionWindow.setVisible(true);
 
 		descriptionStage.addActor(descriptionWindow);
-		stateIndex = 22;
 		getDescription();
 		updateDescription();
 		disableAllGameClicks();
@@ -280,8 +279,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case DESCRIBE_INVENTORY_SCREEN:
 			description = "This is your inventory and market screen.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case DESCRIBE_QUANTITY:
 			description = "This is the quantity that you own of a certain item.";
