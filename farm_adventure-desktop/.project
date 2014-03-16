@@ -24,7 +24,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<location>C:/Users/Bebop/Documents/GitHub/farm-adventure/farm_adventure-android/assets</location>
+			<location>PARENT-1-PROJECT_LOC/farm_adventure-android/assets</location>
 		</link>
 	</linkedResources>
 </projectDescription>
