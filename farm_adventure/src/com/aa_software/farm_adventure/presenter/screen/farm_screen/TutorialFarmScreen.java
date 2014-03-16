@@ -40,7 +40,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	// plowed a random piece of land, they are stuck.
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_IRRIGATE_MENU, WAIT_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_BUY, DESCRIBE_SELL, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_IRRIGATE_MENU, WAIT_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
 	}
 
 	/* Font setup */
@@ -75,7 +75,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		descriptionWindow.setVisible(true);
 
 		descriptionStage.addActor(descriptionWindow);
-
+		stateIndex = 22;
 		getDescription();
 		updateDescription();
 		disableAllGameClicks();
@@ -192,7 +192,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			irrigationMenuClicksDisabled = false;
 			break;
 		case WAIT_IRRIGATE_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task!\nIf your plot is already beside water, no change\nto the plot's color is made.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_PLANT:
@@ -278,9 +278,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			foundClick = false;
 			waitingForX = 4;
 			break;
-		case DESCRIBE_BUY:
+		case DESCRIBE_INVENTORY_SCREEN:
+			description = "This is your inventory and market screen.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
-		case DESCRIBE_SELL:
+		case DESCRIBE_QUANTITY:
+			description = "This is the quantity that you own of a certain item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			break;
+		case DESCRIBE_BUY_AND_SELL:
+			description = "These are the buy and sell items that\nallow you to purchase and sell items.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case DESCRIBE_END:
 			description = "Good job! Now try out a real farm!";
