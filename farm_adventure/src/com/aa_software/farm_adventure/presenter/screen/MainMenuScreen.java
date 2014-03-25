@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
+import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -30,6 +31,10 @@ public class MainMenuScreen extends AbstractScreen {
 		TextButton startGameButton = new TextButton("Start game",
 				super.getSkin());
 
+		// Start Music
+		Sounds sounds = Sounds.getInstance();
+		sounds.playMusic();
+		
 		// This line of code will take the user to the world screen on click or
 		// touch
 		startGameButton.addListener(new InputListener() {
