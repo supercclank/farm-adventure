@@ -1,15 +1,15 @@
 package com.aa_software.farm_adventure.model.farm;
 
+import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
+import com.aa_software.farm_adventure.model.item.spell.MolesSpell;
+import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
+import com.aa_software.farm_adventure.model.item.tool.irrigate.BackhoeTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
+import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
-import com.aa_software.farm_adventure.model.selectable.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.selectable.item.spell.MolesSpell;
-import com.aa_software.farm_adventure.model.selectable.item.tool.harvest.ScytheTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.irrigate.BackhoeTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plant.TrowelTool;
-import com.aa_software.farm_adventure.model.selectable.item.tool.plow.HandPlowTool;
-import com.aa_software.farm_adventure.model.selectable.item.worker.DefaultWorker;
 
 /**
  * Sets up the logic for a snow farm.
@@ -22,16 +22,16 @@ public class TutorialFarm extends AbstractFarm {
 	public static final FarmType type = FarmType.TUTORIAL;
 	public static final SeasonType[] DEFAULT_SEASONS = { SeasonType.SPRING,
 			SeasonType.SPRING, SeasonType.SPRING, SeasonType.SPRING };
-	private final float WATER_PLOT_MOD = .20f;
+	private final float WATER_PLOT_MOD = .10f;
 
 	/**
 	 * Constructs a farm with the correct seasons and field.
 	 */
 	public TutorialFarm() {
 		super();
-		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
+		seasons = new Season[DEFAULT_SEASONS.length];
 		for (int i = 0; i < seasons.length; i++) {
-			seasons[i] = new Season(SeasonType.SPRING);
+				seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
 		field = new Field(WATER_PLOT_MOD);
 
@@ -41,7 +41,6 @@ public class TutorialFarm extends AbstractFarm {
 		 * startingWorkerCount.put(new DefaultWorker(), 1);
 		 */
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 		startingCropCount.put(new CarrotCrop(), 5);
 		startingToolCount.put(new BackhoeTool(), 1);
 		startingToolCount.put(new TrowelTool(), 1);

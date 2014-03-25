@@ -14,7 +14,7 @@ public class RainforestFarm extends AbstractFarm {
 	public static final FarmType type = FarmType.RAINFOREST;
 	public static final SeasonType[] DEFAULT_SEASONS = { SeasonType.SUMMER,
 		SeasonType.SPRING, SeasonType.SUMMER, SeasonType.SPRING };
-	private final float WATER_PLOT_MOD = .40f;
+	private final float WATER_PLOT_MOD = .30f;
 	
 	/**
 	 * Constructs a farm with the correct seasons and field.
@@ -22,15 +22,11 @@ public class RainforestFarm extends AbstractFarm {
 	public RainforestFarm() {
 		super();
 		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
+		seasons = new Season[DEFAULT_SEASONS.length];
 		for (int i = 0; i < seasons.length; i++) {
-			if (i % 2 == 0) {
-				seasons[i] = new Season(SeasonType.SUMMER);
-			} else {
-				seasons[i] = new Season(SeasonType.SPRING);
-			}
+				seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
 		field = new Field(WATER_PLOT_MOD);
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 	}
 }

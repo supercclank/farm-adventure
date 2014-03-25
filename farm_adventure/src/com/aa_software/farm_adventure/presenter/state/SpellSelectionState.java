@@ -1,11 +1,12 @@
 package com.aa_software.farm_adventure.presenter.state;
 
-import com.aa_software.farm_adventure.model.selectable.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.model.selectable.item.spell.AbstractSpell;
-import com.aa_software.farm_adventure.model.selectable.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.selectable.item.upgrade.AbstractUpgrade;
-import com.aa_software.farm_adventure.model.selectable.item.worker.AbstractWorker;
-import com.aa_software.farm_adventure.model.selectable.plot.Plot;
+import com.aa_software.farm_adventure.model.Inventory;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
+import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.Plot;
 
 public class SpellSelectionState extends AbstractSelectionState {
 	public SpellSelectionState(AbstractSpell selection) {
@@ -40,8 +41,9 @@ public class SpellSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public SpellSelectionState update(Plot plot) {
-		selection.update(plot);
+	public SpellSelectionState update(Plot plot, Inventory inventory) {
+		selection.update(plot, inventory);
 		return new SpellSelectionState((AbstractSpell) selection);
 	}
+
 }

@@ -24,7 +24,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/farm_adventure-android/assets</locationURI>
+			<location>PARENT-1-PROJECT_LOC/farm_adventure-android/assets</location>
 		</link>
 	</linkedResources>
 </projectDescription>

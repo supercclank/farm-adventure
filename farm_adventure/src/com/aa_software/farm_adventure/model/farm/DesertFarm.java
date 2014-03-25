@@ -21,13 +21,12 @@ public class DesertFarm extends AbstractFarm {
 	 */
 	public DesertFarm() {
 		super();
-		seasons = new Season[DEFAULT_NUMBER_OF_SEASONS];
+		seasons = new Season[DEFAULT_SEASONS.length];
 		for (int i = 0; i < seasons.length; i++) {
-			seasons[i] = new Season(SeasonType.SUMMER);
+				seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
 		field = new Field(WATER_PLOT_MOD);
 		seasons[currentSeason].update(field);
-		setupSeasonTimer();
 	}
 
 }

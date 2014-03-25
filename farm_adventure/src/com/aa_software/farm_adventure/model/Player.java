@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model;
 
 import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
 
 public class Player {
 
@@ -19,11 +20,9 @@ public class Player {
 	private AbstractCampaign campaign;
 	private Preferences preferences;
 
-	private Inventory inventory;
 
 	private Player() {
 		this.bankroll = STARTING_BANKROLL;
-		this.inventory = new Inventory();
 		// this.campaign = new TutorialCampaign();
 		this.preferences = new Preferences();
 	}
@@ -34,10 +33,6 @@ public class Player {
 
 	public AbstractCampaign getCampaign() {
 		return campaign;
-	}
-
-	public Inventory getInventory() {
-		return inventory;
 	}
 
 	public Preferences getPreferences() {
@@ -52,11 +47,26 @@ public class Player {
 		this.campaign = campaign;
 	}
 
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
-	}
-
 	public void setPreferences(Preferences preferences) {
 		this.preferences = preferences;
+	}
+	
+	public Boolean buyItem(AbstractItem item){
+		
+		int itemCost = item.getCost();
+    	if(this.bankroll<itemCost){
+    		System.out.println("You don't have enough funds");
+            return false;
+    	} else{
+            System.out.println("Buy: "+item.toString());
+            this.bankroll-=itemCost;
+    		return true;
+    	}
+	}
+	
+	public void sellItem(AbstractItem item){
+		int itemValue = item.getValue();
+	    System.out.println("Sell: "+item.toString());
+	    this.bankroll+=itemValue;
 	}
 }
