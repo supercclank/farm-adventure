@@ -1,10 +1,14 @@
 package com.aa_software.farm_adventure.model.item;
 
 import com.aa_software.farm_adventure.model.Inventory;
+import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractItem implements Comparable<AbstractItem>{
 
+	/* Sound */
+	public static final Sounds sounds = Sounds.getInstance();
+	
 	protected int cost;
 	protected int value;
 	protected String name;

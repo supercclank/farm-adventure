@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
+import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.DesertFarm;
 import com.aa_software.farm_adventure.model.farm.FarmType;
 import com.aa_software.farm_adventure.model.farm.RainforestFarm;
@@ -34,6 +35,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
  * 
  */
 public class WorldScreen extends AbstractScreen {
+	
+	/* Sound */
+	public static final Sounds sounds = Sounds.getInstance();
 
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
 	public static final float WINDOW_X = (float) (Gdx.graphics.getWidth() * .25);
@@ -134,6 +138,7 @@ public class WorldScreen extends AbstractScreen {
 				selectedFarm = FarmType.TUTORIAL;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
+				sounds.playClick();
 				return true;
 			}
 		});
@@ -147,6 +152,7 @@ public class WorldScreen extends AbstractScreen {
 				selectedFarm = FarmType.RAINFOREST;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
+				sounds.playClick();
 				return true;
 			}
 		});
@@ -161,6 +167,7 @@ public class WorldScreen extends AbstractScreen {
 				selectedFarm = FarmType.DESERT;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
+				sounds.playClick();
 				return true;
 			}
 		});
@@ -174,6 +181,7 @@ public class WorldScreen extends AbstractScreen {
 				selectedFarm = FarmType.SNOW;
 				setupSeasonMenu();
 				seasonWindow.setVisible(true);
+				sounds.playClick();
 				return true;
 			}
 		});
@@ -260,6 +268,7 @@ public class WorldScreen extends AbstractScreen {
 					break;
 				}
 				FarmAdventure.getInstance().setScreen(farmScreen);
+				sounds.playClick();
 				return true;
 			}
 		});
