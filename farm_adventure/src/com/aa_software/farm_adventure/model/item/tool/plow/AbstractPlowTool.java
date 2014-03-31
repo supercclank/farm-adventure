@@ -18,6 +18,7 @@ public abstract class AbstractPlowTool extends AbstractTool {
 		if(plot.isUsable() && (plot.isGrass() || plot.isUnplowed())) {
 			worker.setBusy(true);
 			plot.setUsable(false);
+			sounds.playClick();
 			Timer.schedule(new Task(){
 			    @Override
 			    public void run() {
