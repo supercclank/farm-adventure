@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="5" height="8" tilewidth="128" tileheight="128">
+ <tileset firstgid="1" name="tileSet128" tilewidth="128" tileheight="128">
+  <image source="../tileSet128/tileSet128.png" trans="ff00ff" width="1536" height="1536"/>
+  <tile id="0">
+   <properties>
+    <property name="ground" value="grass"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="ground" value="unplowedunwatered"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="ground" value="unplowedwatered"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="ground" value="plowedunwatered"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="ground" value="plowedwatered"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="select" value="select"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="ground" value="leaves"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="tool" value="handPlowTool"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="tool" value="shovelTool"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="tool" value="trowelTool"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="tool" value="scytheTool"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="tool" value="market"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="transparent" value="transparent"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="status" value="spring0"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="status" value="spring1"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="status" value="spring2"/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="status" value="spring3"/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="status" value="spring4"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="seed" value="riceSeed"/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="seed" value="bananaSeed"/>
+   </properties>
+  </tile>
+  <tile id="38">
+   <properties>
+    <property name="seed" value="beetSeed"/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="seed" value="carrotSeed"/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="plant" value="riceCrop"/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="plant" value="carrotCrop"/>
+   </properties>
+  </tile>
+  <tile id="50">
+   <properties>
+    <property name="plant" value="beetCrop"/>
+   </properties>
+  </tile>
+  <tile id="51">
+   <properties>
+    <property name="plant" value="bananaCrop"/>
+   </properties>
+  </tile>
+  <tile id="52">
+   <properties>
+    <property name="plant" value="pleaves"/>
+   </properties>
+  </tile>
+  <tile id="53">
+   <properties>
+    <property name="water" value="TOP_RIGHT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="water" value="RIGHT"/>
+   </properties>
+  </tile>
+  <tile id="62">
+   <properties>
+    <property name="water" value="LEFT_RIGHT"/>
+   </properties>
+  </tile>
+  <tile id="64">
+   <properties>
+    <property name="water" value="TOP"/>
+   </properties>
+  </tile>
+  <tile id="66">
+   <properties>
+    <property name="water" value="TOP_RIGHT"/>
+   </properties>
+  </tile>
+  <tile id="73">
+   <properties>
+    <property name="water" value="TOP_LEFT_RIGHT"/>
+   </properties>
+  </tile>
+  <tile id="75">
+   <properties>
+    <property name="water" value="TOP_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="77">
+   <properties>
+    <property name="water" value="TOP_RIGHT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="79">
+   <properties>
+    <property name="water" value="TOP_LEFT_RIGHT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="84">
+   <properties>
+    <property name="water" value="TOP_LEFT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="86">
+   <properties>
+    <property name="water" value="TOP_LEFT"/>
+   </properties>
+  </tile>
+  <tile id="88">
+   <properties>
+    <property name="water" value="BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="water" value="RIGHT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="97">
+   <properties>
+    <property name="water" value="LEFT_RIGHT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="99">
+   <properties>
+    <property name="water" value="LEFT_BOTTOM"/>
+   </properties>
+  </tile>
+  <tile id="101">
+   <properties>
+    <property name="water" value="LEFT"/>
+   </properties>
+  </tile>
+  <tile id="103">
+   <properties>
+    <property name="water" value="water"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="status" value="fall0"/>
+   </properties>
+  </tile>
+  <tile id="109">
+   <properties>
+    <property name="status" value="fall1"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="status" value="fall2"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="status" value="fall3"/>
+   </properties>
+  </tile>
+  <tile id="112">
+   <properties>
+    <property name="status" value="fall4"/>
+   </properties>
+  </tile>
+  <tile id="120">
+   <properties>
+    <property name="status" value="summer0"/>
+   </properties>
+  </tile>
+  <tile id="121">
+   <properties>
+    <property name="status" value="summer1"/>
+   </properties>
+  </tile>
+  <tile id="122">
+   <properties>
+    <property name="status" value="summer2"/>
+   </properties>
+  </tile>
+  <tile id="123">
+   <properties>
+    <property name="status" value="summer3"/>
+   </properties>
+  </tile>
+  <tile id="124">
+   <properties>
+    <property name="status" value="summer4"/>
+   </properties>
+  </tile>
+  <tile id="132">
+   <properties>
+    <property name="status" value="winter0"/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="status" value="winter1"/>
+   </properties>
+  </tile>
+  <tile id="134">
+   <properties>
+    <property name="status" value="winter2"/>
+   </properties>
+  </tile>
+  <tile id="135">
+   <properties>
+    <property name="status" value="winter3"/>
+   </properties>
+  </tile>
+  <tile id="136">
+   <properties>
+    <property name="status" value="winter4"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="ground" width="5" height="8">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="water" width="5" height="8">
+  <properties>
+   <property name="water" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="plant" width="5" height="8">
+  <properties>
+   <property name="plant" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="tool" width="5" height="8">
+  <properties>
+   <property name="tool" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAANAAAADgAAAA8AAAAQAAAAEQAAAA==
+  </data>
+ </layer>
+ <layer name="seed" width="5" height="8">
+  <properties>
+   <property name="crop" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="status" width="5" height="8">
+  <properties>
+   <property name="status" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAGQAAABoAAAAbAAAAHAAAAB0AAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+ <layer name="select" width="5" height="8">
+  <properties>
+   <property name="select" value=""/>
+  </properties>
+  <data encoding="base64">
+   EgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAABIAAAASAAAAEgAAAA==
+  </data>
+ </layer>
+</map>
