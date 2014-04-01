@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
+import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.farm.SnowFarm;
 
@@ -69,6 +70,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 	/* Player */
 	public static final Player PLAYER = Player.getInstance();
+	
+	/* Sound */
+	public static final Sounds sounds = Sounds.getInstance();
 
 	/* Tile */
 	public static final String TILE_MAP_NAME = "tilemap/tileMap128.tmx";
@@ -312,6 +316,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					plantWindow.setVisible(false);
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).setSeed(new CarrotCrop());
+					sounds.playClick();
 					return true;
 				}
 			});
@@ -328,6 +333,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					plantWindow.setVisible(false);
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).setSeed(new BeetCrop());
+					sounds.playClick();
 					return true;
 				}
 			});
@@ -344,6 +350,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					plantWindow.setVisible(false);
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).setSeed(new RiceCrop());
+					sounds.playClick();
 					return true;
 				}
 			});
@@ -361,6 +368,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					plantWindow.setVisible(false);
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).setSeed(new BananaCrop());
+					sounds.playClick();
 					return true;
 				}
 			});
@@ -600,6 +608,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
+						sounds.playClick();
 					}
 					irrigationWindow.setVisible(false);
 					return true;
@@ -636,6 +645,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					if (irrigationWindow.getChildren().size > 0) {
 						irrigationWindow.setVisible(true);
 						Gdx.input.setInputProcessor(irrigationMenuStage);
+						sounds.playClick();
 					}
 				}
 			} else {
@@ -644,6 +654,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				updateInventoryTable();
 			}
 		} else if (y == 0 && !toolBarClicksDisabled) {
+			sounds.playClick();
 			plantWindow.setVisible(false);
 			irrigationWindow.setVisible(false);
 			if (selection != null && selection.equals(farm.getTool(x, y))) {
@@ -886,6 +897,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				farm.getInventory().addItem(item);
 				itemInvCount.setText(Integer.toString(farm.getInventory()
 						.getCount(this.item)));
+				sounds.playMoney();
 			}
 			return true;
 		}
@@ -922,6 +934,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				PLAYER.sellItem(this.item);
 				itemInvCount.setText(Integer.toString(farm.getInventory()
 						.getCount(this.item)));
+				sounds.playMoney();
 			}
 			return true;
 		}

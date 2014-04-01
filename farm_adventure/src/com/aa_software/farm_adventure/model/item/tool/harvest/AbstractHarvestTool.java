@@ -29,6 +29,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 					plot.setTaskTextureIndex(0);
 					worker.addExperience();
 					worker.setBusy(false);
+					sounds.playClick();
 				    } else {
 				    	plot.incrementTaskTextureIndex();
 				    	Timer.schedule(this, (workTime * worker.getWorkRate())/(Plot.WORK_STATUS_TEXTURES.length-1));

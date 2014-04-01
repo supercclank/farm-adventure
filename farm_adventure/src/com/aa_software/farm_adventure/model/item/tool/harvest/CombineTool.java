@@ -3,7 +3,7 @@ package com.aa_software.farm_adventure.model.item.tool.harvest;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
 public class CombineTool extends AbstractHarvestTool {
-	public static final String TEXTURE_NAME = "comibneTool";
+	public static final String TEXTURE_NAME = "combineTool";
 	public static final String COMBINETOOL_NAME = "Combine";
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 10;

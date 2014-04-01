@@ -2,19 +2,19 @@ package com.aa_software.farm_adventure.model.item.tool.plow;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
-public class MuleTool extends AbstractPlowTool {
-	public static final String TEXTURE_NAME = "muleTool";
-	public static final String MULETOOL_NAME = "Mule";
+public class TractorPlowTool extends AbstractPlowTool {
+	public static final String TEXTURE_NAME = "tractorPlowTool";
+	public static final String TRACTOR_PLOW_TOOL_NAME = "Tractor Plow";
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;
 	/* measured in seconds */
 	public static final int DEFAULT_WORK_TIME = 3;
 
-	public MuleTool() {
+	public TractorPlowTool() {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
-		this.name = MULETOOL_NAME;
+		this.name = TRACTOR_PLOW_TOOL_NAME;
 	}
 
 	@Override
