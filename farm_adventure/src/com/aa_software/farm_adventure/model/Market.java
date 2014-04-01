@@ -11,16 +11,21 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.tool.harvest.CombineTool;
 import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
+import com.aa_software.farm_adventure.model.item.tool.irrigate.BackhoeTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.SeederTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
+import com.aa_software.farm_adventure.model.item.tool.plow.TractorPlowTool;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 public class Market {
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
-			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), 
-			new ShovelTool(), new TrowelTool(), new ScytheTool(), new DefaultWorker()
+			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), new TractorPlowTool(), 
+			new ShovelTool(), new BackhoeTool(), new TrowelTool(), new SeederTool(), new ScytheTool(), new CombineTool(), 
+			new DefaultWorker()
 	}));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
