@@ -1,10 +1,15 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
 import com.aa_software.farm_adventure.model.audio.Sounds;
+import com.aa_software.farm_adventure.presenter.FarmAdventure;
+import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -43,6 +48,7 @@ public class OptionsScreen extends AbstractScreen {
 		//Create masterVolume label
 		table.add("Master Volume: ");
 		masterVolume = new Slider(0, 100, 5, false, super.getSkin());
+		masterVolume.setValue(100*sounds.getMasterVolume());
 		
 		//Add listener
 		masterVolume.addListener(new ChangeListener(){
@@ -62,11 +68,12 @@ public class OptionsScreen extends AbstractScreen {
 		//Create gameVolume label
 		table.add("Game Volume: ");
 		gameVolume = new Slider(0, 100, 5, false, super.getSkin());
+		gameVolume.setValue(100*sounds.getSoundVolume());
 		
 		//Add listener
 		gameVolume.addListener(new ChangeListener(){
 			public void changed(ChangeEvent event, Actor actor) {
-				gameValue.setText("" + (int)masterVolume.getValue() + "%");
+				gameValue.setText("" + (int)gameVolume.getValue() + "%");
 				sounds.setSoundVolume( (masterVolume.getValue()/100) * (gameVolume.getValue()/100));
 			}
 		});
@@ -78,10 +85,12 @@ public class OptionsScreen extends AbstractScreen {
 		//Create musicVolume label
 		table.add("Music Volume: ");
 		musicVolume = new Slider(0, 100, 5, false, super.getSkin());
+		musicVolume.setValue(100*sounds.getMusicVolume());
+		
 		//Add listener
 		musicVolume.addListener(new ChangeListener(){
 			public void changed(ChangeEvent event, Actor actor) {
-				musicValue.setText("" + (int)masterVolume.getValue() + "%");
+				musicValue.setText("" + (int)musicVolume.getValue() + "%");
 				sounds.setMusicVolume( (masterVolume.getValue()/100) * (musicVolume.getValue()/100));
 			}
 		});
@@ -89,13 +98,16 @@ public class OptionsScreen extends AbstractScreen {
 		musicValue = new Label("" + (int)musicVolume.getValue() + "%", super.getSkin());
 		table.add(musicValue);
 		table.row();
-	}
-	
-	public void render(float delta) {
-		super.render(delta);
 		
-		gameValue.setText("" + (int)gameVolume.getValue() + "%");
-		musicValue.setText("" + (int)musicVolume.getValue() + "%");
+		//back button
+		TextButton backButton = new TextButton("Back", super.getSkin());
+		backButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				FarmAdventure.getInstance().setScreen(new MainMenuScreen());
+				return true;
+			}
+		});
+		table.add(backButton).spaceTop(200).colspan(3).width(300);
 	}
 
 }
