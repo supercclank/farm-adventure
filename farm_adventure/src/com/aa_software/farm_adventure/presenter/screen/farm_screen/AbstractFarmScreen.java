@@ -895,8 +895,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				int pointer, int button) {
 			if (PLAYER.buyItem(this.item)) {
 				farm.getInventory().addItem(item);
-				itemInvCount.setText(Integer.toString(farm.getInventory()
-						.getCount(this.item)));
+				itemInvCount.setText(Integer.toString(farm.getInventory().getCount(this.item)));
 				sounds.playMoney();
 			}
 			return true;
