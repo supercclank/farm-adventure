@@ -21,7 +21,8 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			Timer.schedule(new Task() {
 			    @Override
 			    public void run() {
-			    	if(plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
+			    	plot.setTaskTexturePrefix(0);
+			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 					plot.setUsable(true);
 					inventory.addItem(plot.getCrop());
 					plot.setCrop(null);
@@ -32,10 +33,10 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 					sounds.playClick();
 				    } else {
 				    	plot.incrementTaskTextureIndex();
-				    	Timer.schedule(this, (workTime * worker.getWorkRate())/(Plot.WORK_STATUS_TEXTURES.length-1));
+				    	Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
 				    }
 			    }
-			}, (workTime * worker.getWorkRate())/(Plot.WORK_STATUS_TEXTURES.length - 1));
+			}, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength() - 1));
 		}
 	}
 	

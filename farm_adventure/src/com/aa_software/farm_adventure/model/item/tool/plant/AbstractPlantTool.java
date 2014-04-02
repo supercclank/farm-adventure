@@ -27,11 +27,12 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		if(worker == null) {
 			return;
 		}
+		plot.setTaskTexturePrefix(0);
 		if(!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated() && 
 			!plot.hasCrop() && plot.isUsable() && inventory.removeItem(seed)) {
 			worker.setBusy(true);
 			plot.setUsable(false);
-			float delay = workTime * worker.getWorkRate()/(Plot.WORK_STATUS_TEXTURES.length - 1);
+			float delay = workTime * worker.getWorkRate()/(plot.getWorkStatusTextureLength() - 1);
 			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
 			sounds.playClick();
 		}

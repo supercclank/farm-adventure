@@ -14,9 +14,12 @@ public class Plot {
 	private EnumSet<Irrigation> irrigation;
 	private PlotType plotType;
 	private boolean isUsable;
+	private int taskTexturePrefix;
 	private int taskTextureIndex;
-	public static final String[] WORK_STATUS_TEXTURES = { null, "task1",
-			"task2", "task3", "task4" };
+	public static final String[][] WORK_STATUS_TEXTURES = new String[][] {
+			{ null, "task1", "task2", "task3", "task4" },
+			{ null, "puw1", "puw2", "puw3", "puw4" },
+			{ null, "pw1", "pw2", "pw3", "pw4" } };
 
 	public Plot(PlotType plotType) {
 		this.crop = null;
@@ -53,7 +56,7 @@ public class Plot {
 			this.irrigation.add(irrigation);
 		}
 		if (!this.irrigation.isEmpty()
-			&& plotType.toString().toLowerCase().endsWith("unwatered")) {
+				&& plotType.toString().toLowerCase().endsWith("unwatered")) {
 			waterPlot();
 		}
 	}
@@ -67,7 +70,11 @@ public class Plot {
 	}
 
 	public String getTaskTextureName() {
-		return WORK_STATUS_TEXTURES[taskTextureIndex];
+		return WORK_STATUS_TEXTURES[taskTexturePrefix][taskTextureIndex];
+	}
+
+	public int getWorkStatusTextureLength() {
+		return WORK_STATUS_TEXTURES[taskTexturePrefix].length;
 	}
 
 	/**
@@ -117,7 +124,7 @@ public class Plot {
 			plotType = PlotType.UNPLOWEDUNWATERED;
 		}
 	}
-	
+
 	/**
 	 * Changes a plot from containing the "UNWATERED" keyword to "WATERED". This
 	 * will affect the texture used to render the plot.
@@ -169,12 +176,24 @@ public class Plot {
 		taskTextureIndex++;
 	}
 
+	public void incrementTaskTexturePrefix() {
+		taskTexturePrefix++;
+	}
+
 	public void setTaskTextureIndex(int taskTextureIndex) {
 		this.taskTextureIndex = taskTextureIndex;
 	}
 
+	public void setTaskTexturePrefix(int taskTexturePrefix) {
+		this.taskTexturePrefix = taskTexturePrefix;
+	}
+
 	public int getTaskTextureIndex() {
 		return taskTextureIndex;
+	}
+
+	public int getTaskTexturePrefix() {
+		return taskTexturePrefix;
 	}
 
 }

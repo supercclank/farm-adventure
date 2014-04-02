@@ -22,7 +22,12 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			Timer.schedule(new Task(){
 			    @Override
 			    public void run() {
-			    	if(plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
+			    	if (plot.isIrrigated()) {
+							plot.setTaskTexturePrefix(2);
+					} else {
+							plot.setTaskTexturePrefix(1);
+					}
+			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 						plot.setUsable(true);
 						if (plot.isIrrigated()) {
 							plot.setPlotType(PlotType.PLOWEDWATERED);
@@ -34,10 +39,10 @@ public abstract class AbstractPlowTool extends AbstractTool {
 						worker.setBusy(false);
 			    	} else {
 			    		plot.incrementTaskTextureIndex();
-			    		Timer.schedule(this, (workTime * worker.getWorkRate())/(Plot.WORK_STATUS_TEXTURES.length-1));
+			    		Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
 			    	}
 			    }
-			}, workTime * worker.getWorkRate()/(Plot.WORK_STATUS_TEXTURES.length - 1));
+			}, workTime * worker.getWorkRate()/(plot.getWorkStatusTextureLength() - 1));
 		}
 	}
 	

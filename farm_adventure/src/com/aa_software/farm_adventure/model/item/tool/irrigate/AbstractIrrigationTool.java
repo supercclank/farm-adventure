@@ -21,6 +21,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 		if(plot.isUsable()) {
 			worker.setBusy(true);
 			plot.setUsable(false);
+			plot.setTaskTexturePrefix(0);
 			float delay = workTime * worker.getWorkRate() / (Plot.WORK_STATUS_TEXTURES.length - 1);
 			Timer.schedule(new IrrigationTask(plot, irrigationChoice, worker, delay), delay);
 		}
