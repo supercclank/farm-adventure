@@ -8,6 +8,8 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
@@ -468,7 +470,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new CarrotCrop());
+							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 						foundClick = true;
 					}
@@ -487,7 +489,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new BeetCrop());
+							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 						foundClick = true;
 					}
@@ -506,7 +508,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new RiceCrop());
+							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 						foundClick = true;
 					}
@@ -526,7 +528,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new BananaCrop());
+							PLANT_TOOL_Y)).setSeed(new BananaSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 						foundClick = true;
 					}

@@ -11,6 +11,10 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.CombineTool;
 import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.BackhoeTool;
@@ -25,7 +29,7 @@ public class Market {
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
 			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), new TractorPlowTool(), 
 			new ShovelTool(), new BackhoeTool(), new TrowelTool(), new SeederTool(), new ScytheTool(), new CombineTool(), 
-			new DefaultWorker()
+			new DefaultWorker(), new BananaSeed(), new CarrotSeed(), new RiceSeed(), new BeetSeed()
 	}));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();

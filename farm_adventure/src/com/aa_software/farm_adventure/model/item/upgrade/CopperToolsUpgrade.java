@@ -4,7 +4,7 @@ import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 
 public class CopperToolsUpgrade extends AbstractUpgrade {
 	public static final String TEXTURE_NAME = "copper_tools_upgrade";
-	public static final String COPPERTOOL_NAME = "Copper Tools";
+	public static final String COPPERTOOL_NAME = "Copper Upgrade";
 	public static final float WORK_RATE_MOD = .8f;
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;

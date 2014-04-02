@@ -11,6 +11,10 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
@@ -26,7 +30,7 @@ import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 public class Inventory {
 	
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
-			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), 
+			new BananaSeed(), new BeetSeed(), new CarrotSeed(), new RiceSeed(), new HandPlowTool(), 
 			new ShovelTool(), new TrowelTool(), new ScytheTool(), new DefaultWorker()
 			 
 	}));

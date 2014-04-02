@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,9 +21,11 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
+import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 
@@ -312,85 +315,18 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updatePlantWindow() {
 		plantWindow.clear();
-		boolean inventoryHasCarrot = true;
-		boolean inventoryHasBeet = true;
-		boolean inventoryHasRice = true;
-		boolean inventoryHasBanana = true;
-
-		if (inventoryHasCarrot) {
-			Texture carrot = new Texture(
-					Gdx.files.internal("textures/carrotCrop.png"));
-			TextureRegion carrotImage = new TextureRegion(carrot);
-			Button carrotButton = new Button(new Image(carrotImage), skin);
-			plantWindow.add(carrotButton);
-			carrotButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					plantWindow.setVisible(false);
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new CarrotCrop());
-					sounds.playClick();
-					Gdx.input.setInputProcessor(workerStage);
-					return true;
-				}
-			});
+		if (farm.getInventory().getItems().get("SEEDS")!=null){
+			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
+			for (int i= 0; i<seedNum; i++){
+				final AbstractSeed tempSeed = (AbstractSeed) farm.getInventory().getItems().get("SEEDS").get(i);
+				Texture seedTexture = new Texture(Gdx.files.internal("textures/"+tempSeed.getTextureName()+".png"));
+				TextureRegion seedImage = new TextureRegion(seedTexture);
+				Button seedButton = new Button(new Image(seedImage), skin);
+				plantWindow.add(seedButton);
+				seedButton.addListener(new SeedClickListener(tempSeed));
+			
+			}
 		}
-
-		if (inventoryHasBeet) {
-			Texture beet = new Texture(Gdx.files.internal("textures/beetCrop.png"));
-			TextureRegion beetImage = new TextureRegion(beet);
-			Button beetButton = new Button(new Image(beetImage), skin);
-			plantWindow.add(beetButton);
-			beetButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					plantWindow.setVisible(false);
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new BeetCrop());
-					sounds.playClick();
-					Gdx.input.setInputProcessor(workerStage);
-					return true;
-				}
-			});
-		}
-
-		if (inventoryHasRice) {
-			Texture rice = new Texture(Gdx.files.internal("textures/riceCrop.png"));
-			TextureRegion riceImage = new TextureRegion(rice);
-			Button riceButton = new Button(new Image(riceImage), skin);
-			plantWindow.add(riceButton);
-			riceButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					plantWindow.setVisible(false);
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new RiceCrop());
-					sounds.playClick();
-					Gdx.input.setInputProcessor(workerStage);
-					return true;
-				}
-			});
-		}
-
-		if (inventoryHasBanana) {
-			Texture banana = new Texture(
-					Gdx.files.internal("textures/bananaCrop.png"));
-			TextureRegion bananaImage = new TextureRegion(banana);
-			Button bananaButton = new Button(new Image(bananaImage), skin);
-			plantWindow.add(bananaButton);
-			bananaButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					plantWindow.setVisible(false);
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new BananaCrop());
-					sounds.playClick();
-					Gdx.input.setInputProcessor(workerStage);
-					return true;
-				}
-			});
-		}
-
 		plantWindow.pack();
 	}
 
@@ -415,7 +351,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 
-		//Gdx.input.setInputProcessor(inputMultiplexer);
 		workerQueue = new Table();
 		setupWorkersWindow();
 		Gdx.input.setInputProcessor(workerStage);
@@ -802,14 +737,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				TextureRegion workerImage = new TextureRegion(workerTexture);
 				Button workerButton = new Button(new Image(workerImage), skin);
 				workerButton.padBottom(2);
-				workerButton.padLeft(2);
-				workerButton.padRight(2);
+				workerButton.padLeft(5);
+				workerButton.padRight(5);
 				workerButton.padTop(2);
 				workerButton.addListener(new WorkerClickListener(i));
 				workerQueue.add(workerButton).left().padLeft(3);
 			}
-		}
-		
+		}	
 	}
 
 	/**
@@ -858,24 +792,24 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		Map<String, ArrayList<AbstractItem>> marketItems = this.farm
 				.getMarket().getItems();
 
-		Object[] keyset = marketItems.keySet().toArray();
-		int typeCount = keyset.length;
+		ArrayList <String>  typeSet = new ArrayList<String>(Arrays.asList("WORKERS", "PLOW TOOLS", "IRRIGATION TOOLS", 
+				"PLANT TOOLS", "HARVEST TOOLS", "SEEDS", "CROPS"));
+		int typeCount = typeSet.size();
 		Label type;
 		for (int j = 0; j < typeCount; j++) {
-			type = new Label(keyset[j].toString(), inventorySkin,
-					"default-font", Color.ORANGE);
+			type = new Label(typeSet.get(j), inventorySkin, "default-font", Color.ORANGE);
 			type.setWrap(true);
 			inventoryScrollTable.row();
 			inventoryScrollTable.add(type).left();
-			int itemCount = marketItems.get(keyset[j]).size();
+			int itemCount = marketItems.get(typeSet.get(j)).size();
+			
 			int cost = 0;
 			int value = 0;
 			int inventoryTypeCount = 0;
 			for (int i = 0; i < itemCount; i++) {
-
 				Texture itemTexture = new Texture(
 						Gdx.files.internal("textures/"
-								+ marketItems.get(keyset[j]).get(i)
+								+ marketItems.get(typeSet.get(j)).get(i)
 										.getTextureName() + ".png"));
 				TextureRegion itemImage = new TextureRegion(itemTexture);
 				Button carrotButton = new Button(new Image(itemImage),
@@ -883,14 +817,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				carrotButton.setDisabled(true);
 
 				inventoryTypeCount = farm.getInventory().getCount(
-						marketItems.get(keyset[j]).get(i));
+						marketItems.get(typeSet.get(j)).get(i));
 				System.out.println("Farm inventory count: "
 						+ farm.getInventory().getItemsCount());
-				cost = marketItems.get(keyset[j]).get(i).getCost();
-				value = marketItems.get(keyset[j]).get(i).getValue();
+				cost = marketItems.get(typeSet.get(j)).get(i).getCost();
+				value = marketItems.get(typeSet.get(j)).get(i).getValue();
 				inventoryScrollTable.row();
 				inventoryScrollTable.add(carrotButton).left();
-				Label itemName = new Label(marketItems.get(keyset[j]).get(i)
+				Label itemName = new Label(marketItems.get(typeSet.get(j)).get(i)
 						.toString(), inventorySkin);
 				inventoryScrollTable.add(itemName)
 						.width((float) (Gdx.graphics.getWidth() * .2)).left();
@@ -898,32 +832,72 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						Integer.toString(inventoryTypeCount),
 						inventorySkin);
 				inventoryScrollTable.add(itemInvCount)
-						.width((float) (Gdx.graphics.getWidth() * .2)).left();
-				Button buyButton, sellButton;
+						.width((float) (Gdx.graphics.getWidth() * .1)).left();
+				Button buyButton = null;
+				Button sellButton = null;
+				//if there are workers then add hire or layoff buttons
 				if (type.getText().toString().equals("WORKERS")) {
-					buyButton = new TextButton("HIRE " + " $" + cost,
+					cost = ((AbstractWorker)marketItems.get(typeSet.get(j)).get(i)).getWage();
+					buyButton = new TextButton("HIRE " + " $" + cost+"/s",
 							inventorySkin, "default");
-					sellButton = new TextButton("FIRE " + " $" + value,
+					sellButton = new TextButton("LAYOFF ",
 							inventorySkin, "default");
+					
+					buyButton.addListener(new BuyClickListener(marketItems.get(
+							typeSet.get(j)).get(i), itemInvCount, false));
+					inventoryScrollTable.add(buyButton)
+							.width((float) (Gdx.graphics.getWidth() * .3)).left();
+					sellButton.addListener(new SellClickListener(marketItems.get(
+							typeSet.get(j)).get(i), itemInvCount));
+					inventoryScrollTable.add(sellButton)
+							.width((float) (Gdx.graphics.getWidth() * .2)).left();
 
+				} else if (j>0 && j<5){ //if there are tools then 
+						
+					if (inventoryTypeCount>0){
+						ArrayList<AbstractUpgrade> toolUpgrades= ((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getUpgrades();
+						
+						if (toolUpgrades.size()>0){   //check if upgrades apply
+							cost = toolUpgrades.get(0).getCost();
+							String upgradeName = toolUpgrades.get(toolUpgrades.size()-1).getName();
+							buyButton = new TextButton( upgradeName+" $"+cost,
+										inventorySkin, "default");
+							
+							buyButton.addListener(new BuyClickListener(marketItems.get(
+									typeSet.get(j)).get(i), itemInvCount, true));
+							inventoryScrollTable.add(buyButton)
+									.width((float) (Gdx.graphics.getWidth() * .3)).left();	
+						} else {
+							Label noUpgrade = new Label("No Upgrade", inventorySkin);
+							inventoryScrollTable.add(noUpgrade)
+									.width((float) (Gdx.graphics.getWidth() * .3)).left();
+						}
+					
+					}else { //else buy or trade for the current tool
+						buyButton = new TextButton("BUY " + " $" + cost,
+									inventorySkin, "default");
+						buyButton.addListener(new BuyClickListener(marketItems.get(
+								typeSet.get(j)).get(i), itemInvCount, false));
+						inventoryScrollTable.add(buyButton)
+								.width((float) (Gdx.graphics.getWidth() * .3)).left();
+					}
+					
 				} else {
 					buyButton = new TextButton("BUY " + " $" + cost,
 							inventorySkin, "default");
 					sellButton = new TextButton("SELL " + " $" + value,
 							inventorySkin, "default");
+					buyButton.addListener(new BuyClickListener(marketItems.get(
+							typeSet.get(j)).get(i), itemInvCount, false));
+					inventoryScrollTable.add(buyButton)
+							.width((float) (Gdx.graphics.getWidth() * .3)).left();
+					sellButton.addListener(new SellClickListener(marketItems.get(
+							typeSet.get(j)).get(i), itemInvCount));
+					inventoryScrollTable.add(sellButton)
+							.width((float) (Gdx.graphics.getWidth() * .2)).left();
 				}
-
-				buyButton.addListener(new BuyClickListener(marketItems.get(
-						keyset[j]).get(i), itemInvCount));
-				inventoryScrollTable.add(buyButton)
-						.width((float) (Gdx.graphics.getWidth() * .2)).left();
-
-				sellButton.addListener(new SellClickListener(marketItems.get(
-						keyset[j]).get(i), itemInvCount));
-				inventoryScrollTable.add(sellButton)
-						.width((float) (Gdx.graphics.getWidth() * .2)).left();
-
 			}
+			
 		}
 	}
 	
@@ -950,6 +924,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 	    	selectedWorker = this.selectionIndex;
 	    	System.out.println("Worker selected: "+selectedWorker); 
+	    	sounds.playClick();
             return true;
         }
 	}
@@ -962,6 +937,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private class BuyClickListener extends ClickListener {
 		AbstractItem item;
 		Label itemInvCount;
+		Boolean isUpgrade;
 
 		/**
 		 * This button enables buying of the item and updating of the item
@@ -970,9 +946,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		 * @param item
 		 * @param itemInvCount
 		 */
-		public BuyClickListener(AbstractItem item, Label itemInvCount) {
+		public BuyClickListener(AbstractItem item, Label itemInvCount, Boolean isUpgrade) {
 			this.item = item;
 			this.itemInvCount = itemInvCount;
+			this.isUpgrade = isUpgrade;
 		}
 
 		/**
@@ -981,7 +958,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		 */
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
-			if (PLAYER.buyItem(this.item)) {
+			if(this.isUpgrade){
+				if (PLAYER.buyItem(((AbstractTool)this.item).peekUpgrade())){
+					((AbstractTool)this.item).dequeueUpgrade();
+					sounds.playMoney();
+				}
+				
+			} else if (PLAYER.buyItem(this.item)) {
 				farm.getInventory().addItem(item);
 				itemInvCount.setText(Integer.toString(farm.getInventory()
 						.getCount(this.item)));
@@ -990,6 +973,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			return true;
 		}
 	}
+	
 
 	/**
 	 * 
@@ -1024,6 +1008,41 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						.getCount(this.item)));
 				sounds.playMoney();
 			}
+			return true;
+		}
+	}
+	
+	/**
+	 * 
+	 * @author FarmAdventure Devs
+	 * 
+	 */
+	private class SeedClickListener extends ClickListener {
+		AbstractItem item;
+
+		/**
+		 * This button enables buying of the item and updating of the item
+		 * quantity
+		 * 
+		 * @param item
+		 * @param itemInvCount
+		 */
+		public SeedClickListener(AbstractItem item) {
+			this.item = item;
+		}
+
+		/**
+		 * On button touch the item is bought and the item quantity is updated
+		 * in the inventory
+		 */
+		public boolean touchDown(InputEvent event, float x, float y,
+				int pointer, int button) {
+			
+			plantWindow.setVisible(false);
+			((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
+					PLANT_TOOL_Y)).setSeed(((AbstractSeed)this.item));
+			sounds.playClick();
+			Gdx.input.setInputProcessor(workerStage);
 			return true;
 		}
 	}

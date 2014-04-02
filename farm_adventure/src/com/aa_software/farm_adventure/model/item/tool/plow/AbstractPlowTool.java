@@ -1,7 +1,13 @@
 package com.aa_software.farm_adventure.model.item.tool.plow;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.CopperToolsUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.SteelToolsUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
@@ -9,6 +15,12 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public abstract class AbstractPlowTool extends AbstractTool {
+	
+	public AbstractPlowTool(){
+		super();
+		this.upgrades = new ArrayList<AbstractUpgrade>(Arrays.asList(new SteelToolsUpgrade(), new CopperToolsUpgrade()));
+	}
+	
 	@Override
 	public void update(final Plot plot, Inventory inventory) {
 		final AbstractWorker worker;
@@ -44,6 +56,6 @@ public abstract class AbstractPlowTool extends AbstractTool {
 	}
 	
 	public String getItemType() {
-		return "Plow Tools";
+		return "PLOW TOOLS";
 	}
 }

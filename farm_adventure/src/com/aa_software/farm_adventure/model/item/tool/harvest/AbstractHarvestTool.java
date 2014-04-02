@@ -42,6 +42,6 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	}
 	
 	public String getItemType() {
-		return "Harvest Tools";
+		return "HARVEST TOOLS";
 	}
 }

@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
 
 public class SeederTool extends AbstractPlantTool {
 	public static final String SEEDERTOOL_NAME = "Seeder";
@@ -15,7 +16,7 @@ public class SeederTool extends AbstractPlantTool {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
-		this.seed = new CarrotCrop();
+		this.seed = new CarrotSeed();
 		this.name = SEEDERTOOL_NAME;
 	}
 

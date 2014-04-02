@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.plot;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
 //TODO: change from checking if usable before setting. This will allow the plot
 // to asynchronously be updated even while a task is being completed.
@@ -11,6 +12,7 @@ import com.aa_software.farm_adventure.presenter.TextureHelper;
 
 public class Plot {
 	private AbstractCrop crop;
+	private AbstractSeed seed;
 	private EnumSet<Irrigation> irrigation;
 	private PlotType plotType;
 	private boolean isUsable;
@@ -90,6 +92,16 @@ public class Plot {
 		} else if (!isGrass() && !isUnplowed() && isIrrigated() && !hasCrop()
 				&& isUsable) {
 			this.crop = crop;
+		}
+	}
+	
+	public void setSeed(final AbstractSeed seed) {
+		if (seed == null && isUsable) {
+			this.seed = null;
+		} else if (!isGrass() && !isUnplowed() && isIrrigated() && !hasCrop()
+				&& isUsable) {
+			this.seed = seed;
+			this.crop = seed.getCrop();
 		}
 	}
 
