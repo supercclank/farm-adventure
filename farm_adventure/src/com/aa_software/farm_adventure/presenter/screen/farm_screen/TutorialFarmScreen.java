@@ -143,21 +143,21 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_PLOW:
-			description = "Click the plow tool!";
+			description = "Click the plow tool.";
 			toolBarClicksDisabled = false;
 			foundClick = false;
 			waitingForX = 0;
 			break;
 		case CLICK_PLOW_PLOT:
 			// TODO: make sure that the plot actually is plowable.
-			description = "Now click a plot to plow it!";
+			description = "Now click a plot to plow it.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_PLOW_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_IRRIGATE:
@@ -166,7 +166,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_IRRIGATE:
-			description = "Click the irrigation tool!";
+			description = "Click the irrigation tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .18);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -176,7 +176,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		case CLICK_IRRIGATE_PLOT:
 			// TODO: Make sure that it only goes forward if you click a plot
 			// open to irrigation!
-			description = "Now click a plot to irrigate it!";
+			description = "Now click a plot to irrigate it.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
@@ -184,7 +184,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			fieldClicksDisabled = false;
 			break;
 		case CLICK_IRRIGATE_MENU:
-			description = "Now choose a side to irrigate!";
+			description = "Now choose a side to irrigate.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
@@ -200,7 +200,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_PLANT:
-			description = "Click the plant tool!";
+			description = "Click the plant tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .40);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -208,7 +208,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			waitingForX = 2;
 			break;
 		case CLICK_CLICK_PLANT:
-			description = "Click the plant tool\nagain to choose a plant!";
+			description = "Click the plant tool\nagain to choose a plant.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .37);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			plantMenuClicksDisabled = false;
@@ -218,7 +218,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_PLANT_MENU:
 			// TODO: the menu shouldn'y dissapear if you click elsewhere
-			description = "Now choose a type of seed!";
+			description = "Now choose a type of seed.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
@@ -226,14 +226,14 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_PLANT_PLOT:
 			// should make sure the plot clicked is available for plants!
-			description = "Now choose a plot to plant on!";
+			description = "Now choose a plot to plant on.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_PLANT_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_HARVEST:
@@ -242,7 +242,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_HARVEST:
-			description = "Click the harvest tool!";
+			description = "Click the harvest tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .60);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -251,7 +251,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_HARVEST_PLOT:
 			// TODO: should make sure the harvested plot had a plant!
-			description = "Now click a plot to harvest it!";
+			description = "Now click a plot to harvest it.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
@@ -259,7 +259,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_HARVEST_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_INVENTORY:
@@ -269,7 +269,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_INVENTORY:
 			// TODO: stopped here. market isn't in this build
-			description = "Click the inventory\nand market button!";
+			description = "Click the inventory\nand market button.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -283,18 +283,18 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case DESCRIBE_QUANTITY:
-			description = "This is the quantity that you own of a certain item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			description = "This is the quantity\nthat you own of\na certain item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .95);
 			break;
 		case DESCRIBE_BUY_AND_SELL:
 			description = "These are the buy and sell items that\nallow you to purchase and sell items.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .60);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .95);
 			break;
 		case DESCRIBE_END:
-			description = "Good job! Now try out a real farm!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			description = "Good job! Now try out a real farm.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case END:
@@ -383,6 +383,10 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			} else if (y == 0 && !toolBarClicksDisabled) {
 				super.updateState(x, y);
 				if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
+					foundClick = true;
+				}
+				//THIS SHOULD BE TAKEN OUT LATER - IT IS JUST A QUICK FIX
+				else if (selection == null) {
 					foundClick = true;
 				}
 			}
