@@ -78,6 +78,10 @@ public abstract class AbstractFarm {
 	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
 		return field.getIrrigationChoices(x, y);
 	}
+	
+	public Irrigation getIrrigationChoiceReason(int x, int y, Irrigation irr) {
+		return field.getIrrigationChoiceReason(x, y, irr);
+	}
 
 	public AbstractTool getTool(int x, int y) {
 		return this.toolBar.getTool(x, y);

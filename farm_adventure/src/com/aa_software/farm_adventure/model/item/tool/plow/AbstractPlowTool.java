@@ -23,9 +23,9 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			    @Override
 			    public void run() {
 			    	if (plot.isIrrigated()) {
-							plot.setTaskTexturePrefix(2);
-					} else {
 							plot.setTaskTexturePrefix(1);
+					} else {
+							plot.setTaskTexturePrefix(0);
 					}
 			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 						plot.setUsable(true);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 public abstract class AbstractIrrigationTool extends AbstractTool {
 	
 	private Irrigation irrigationChoice;
+	private Irrigation irrigationReason;
 	
 	@Override
 	public void update(Plot plot, Inventory inventory) {
@@ -22,17 +23,25 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			worker.setBusy(true);
 			plot.setUsable(false);
 			plot.setTaskTexturePrefix(0);
-			float delay = workTime * worker.getWorkRate() / (Plot.WORK_STATUS_TEXTURES.length - 1);
-			Timer.schedule(new IrrigationTask(plot, irrigationChoice, worker, delay), delay);
+			float delay = workTime * worker.getWorkRate() / (plot.getWorkStatusTextureLength() - 1);
+			Timer.schedule(new IrrigationTask(plot, irrigationChoice, irrigationReason, worker, delay), delay);
 		}
 	}
 
 	public Irrigation getIrrigationChoice() {
 		return irrigationChoice;
 	}
+	
+	public Irrigation getIrrigationReason() {
+		return irrigationReason;
+	}
 
 	public void setIrrigationChoice(Irrigation irrigationChoice) {
 		this.irrigationChoice = irrigationChoice;
+	}
+	
+	public void setIrrigationReason(Irrigation irrigationReason) {
+		this.irrigationReason = irrigationReason;
 	}
 	
 	public String getItemType() {

@@ -17,10 +17,16 @@ public class Plot {
 	private int taskTexturePrefix;
 	private int taskTextureIndex;
 	public static final String[][] WORK_STATUS_TEXTURES = new String[][] {
-			{ null, "task1", "task2", "task3", "task4" },
 			{ null, "puw1", "puw2", "puw3", "puw4" },
-			{ null, "pw1", "pw2", "pw3", "pw4" } };
-
+			{ null, "pw1", "pw2", "pw3", "pw4" } ,
+			{ null, "leftT1", "leftT2", "leftT3", "leftT4" },
+			{ null, "leftB1", "leftB2", "leftB3", "leftB4" },
+			{ null, "rightT1", "rightT2", "rightT3", "rightT4" },
+			{ null, "rightB1", "rightB2", "rightB3", "rightB4" },
+			{ null, "topL1", "topL2", "topL3", "topL4" },
+			{ null, "topB1", "topB2", "topB3", "topB4" },
+	};
+	
 	public Plot(PlotType plotType) {
 		this.crop = null;
 		this.irrigation = EnumSet.noneOf(Irrigation.class);

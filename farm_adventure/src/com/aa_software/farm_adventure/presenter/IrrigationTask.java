@@ -10,20 +10,22 @@ import com.badlogic.gdx.utils.Timer.Task;
 public class IrrigationTask extends Task {
 
 	private Irrigation irrigationChoice;
+	private Irrigation irrigationReason;
 	private Plot plot;
 	private AbstractWorker worker;
 	private float delay;
 
 	public IrrigationTask(Plot plot, Irrigation irrigationChoice,
-			AbstractWorker worker, float delay) {
+			Irrigation irrigationReason, AbstractWorker worker, float delay) {
 		this.irrigationChoice = irrigationChoice;
+		this.irrigationReason = irrigationReason;
 		this.plot = plot;
 		this.worker = worker;
 		this.delay = delay;
 	}
 
 	public void run() {
-		if (plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
+		if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
 			switch (plot.getPlotType()) {
 			case PLOWEDUNWATERED:

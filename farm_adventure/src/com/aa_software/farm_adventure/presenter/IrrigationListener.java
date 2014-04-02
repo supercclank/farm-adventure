@@ -7,11 +7,13 @@ public class IrrigationListener extends InputListener {
 	private final int x;
 	private final int y;
 	private final Irrigation irrigation;
+	private final Irrigation reason;
 	
-	public IrrigationListener(int x, int y, Irrigation irrigation) {
+	public IrrigationListener(int x, int y, Irrigation irrigation, Irrigation reason) {
 		this.x = x;
 		this.y = y;
 		this.irrigation = irrigation;
+		this.reason = reason;
 	}
 
 	public int getX() {
@@ -26,6 +28,10 @@ public class IrrigationListener extends InputListener {
 
 	public Irrigation getIrrigation() {
 		return irrigation;
+	}
+	
+	public Irrigation getReason() {
+		return reason;
 	}
 
 }

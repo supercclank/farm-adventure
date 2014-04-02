@@ -586,6 +586,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				.iterator();
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
+			Irrigation reason = farm.getIrrigationChoiceReason(x,y,irrigation);
 			Texture irrigationTexture = new Texture(
 					Gdx.files.internal(TextureHelper
 							.getIrrigationTextureFileName(EnumSet
@@ -599,12 +600,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			 * will know which X and Y it pertains to.
 			 */
 			irrigationButton.addListener(new IrrigationListener(x, y,
-					irrigation) {
+					irrigation,reason) {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
+						((AbstractIrrigationTool) selection)
+								.setIrrigationReason(this.getReason());
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
