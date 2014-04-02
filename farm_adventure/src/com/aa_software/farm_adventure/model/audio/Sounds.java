@@ -14,6 +14,7 @@ public class Sounds {
 	protected Sound money;
 	protected Music mainMusic;
 	protected float soundVolume;
+	protected float masterVolume;
 	
 	private static Sounds Instance;
 
@@ -36,6 +37,7 @@ public class Sounds {
 		money = Gdx.audio.newSound(Gdx.files.internal("sounds/money.mp3"));
 		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/rain.mp3"));
 		soundVolume = 1;
+		masterVolume = 1;
 	}
 	
 	/**
@@ -81,5 +83,25 @@ public class Sounds {
 	 */
 	public void setSoundVolume(float vol) {
 		soundVolume = vol;
+	}
+	
+	/**
+	 * Sets the volume of the master volume
+	 * @param vol a float in the range [0,1]. 0 is the lowest volume and 1 is the highest.
+	 */
+	public void setMasterVolume(float vol) {
+		masterVolume = vol;
+	}
+	
+	public float getMasterVolume() {
+		return masterVolume;
+	}
+	
+	public float getSoundVolume() {
+		return soundVolume;
+	}
+	
+	public float getMusicVolume() {
+		return mainMusic.getVolume();
 	}
 }
