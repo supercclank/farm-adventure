@@ -6,7 +6,7 @@ public class ScytheTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "scytheTool";
 	public static final String SYTHETOOL_NAME = "Scythe";
 	public static int DEFAULT_COST = 10;
-	public static int DEFAULT_VALUE = 5;
+	public static int DEFAULT_VALUE = 0;
 	/* measured in seconds */
 	public static final int DEFAULT_WORK_TIME = 5;
 

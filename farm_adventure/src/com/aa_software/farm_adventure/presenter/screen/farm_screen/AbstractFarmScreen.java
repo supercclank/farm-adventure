@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.EnumSet;
 
@@ -13,7 +14,6 @@ import com.aa_software.farm_adventure.model.Player;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
-import com.aa_software.farm_adventure.model.farm.SnowFarm;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
@@ -232,11 +232,22 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	@Override
 	public void dispose() {
-		// TODO: score evaluation for player bankroll
-		PLAYER.setBankroll(PLAYER.getBankroll() + 100);
+		PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
 		map.dispose();
 		renderer.dispose();
 		FarmAdventure.getInstance().setScreen(new MainMenuScreen());
+	}
+	
+	public int calculateScore() {
+		int score = 0;
+		Map<String, ArrayList<AbstractItem>> inventoryMap = farm.getInventory().getItems();
+		List<ArrayList<AbstractItem>> inventoryMapValues = new ArrayList<ArrayList<AbstractItem>>(inventoryMap.values());
+		for(ArrayList<AbstractItem> itemList : inventoryMapValues) {
+			for(AbstractItem item : itemList) {
+				score += item.getValue();
+			}
+		}
+		return score;
 	}
 
 	/**
@@ -288,12 +299,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationMenuStage.setViewport(width, height);
 	}
 	
-	public void disableAllGameClicks() {
-		fieldClicksDisabled = true;
-		toolBarClicksDisabled = true;
-		irrigationMenuClicksDisabled = true;
-		plantMenuClicksDisabled = true;
-		inventoryClicksDisabled = true;
+	public void setAllGameClicksDisabled(boolean bool) {
+		fieldClicksDisabled = bool;
+		toolBarClicksDisabled = bool;
+		irrigationMenuClicksDisabled = bool;
+		plantMenuClicksDisabled = bool;
+		inventoryClicksDisabled = bool;
 	}
 
 	/**
@@ -642,7 +653,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			plantWindow.setVisible(false);
 			irrigationWindow.setVisible(false);
 			if (farm.getInventory().getFreeWorker() == null) {
-				return;
+				return; //TODO maybe put a warning that there are no free workers.
 			}
 			if (selection instanceof AbstractIrrigationTool) {
 				if (!irrigationMenuClicksDisabled) {

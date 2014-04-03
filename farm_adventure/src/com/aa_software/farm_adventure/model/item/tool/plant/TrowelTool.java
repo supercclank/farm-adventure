@@ -7,7 +7,7 @@ public class TrowelTool extends AbstractPlantTool {
 	public static final String TEXTURE_NAME = "trowelTool";
 	public static final String TROWELTOOL_NAME = "Trowel";
 	public static int DEFAULT_COST = 10;
-	public static int DEFAULT_VALUE = 5;
+	public static int DEFAULT_VALUE = 0;
 	/* measured in seconds */
 	public static final int DEFAULT_WORK_TIME = 5;
 
