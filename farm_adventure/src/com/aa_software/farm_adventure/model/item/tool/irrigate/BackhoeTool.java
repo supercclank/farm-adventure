@@ -11,10 +11,12 @@ public class BackhoeTool extends AbstractIrrigationTool {
 	public static final int DEFAULT_WORK_TIME = 5;
 
 	public BackhoeTool() {
+		super();
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = BACKHOE_NAME;
+		this.upgrade = null;
 	}
 
 	@Override

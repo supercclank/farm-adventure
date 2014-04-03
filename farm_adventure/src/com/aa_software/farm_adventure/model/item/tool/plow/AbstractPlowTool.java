@@ -16,11 +16,6 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public abstract class AbstractPlowTool extends AbstractTool {
 	
-	public AbstractPlowTool(){
-		super();
-		this.upgrades = new ArrayList<AbstractUpgrade>(Arrays.asList(new SteelToolsUpgrade(), new CopperToolsUpgrade()));
-	}
-	
 	@Override
 	public void update(final Plot plot, Inventory inventory) {
 		final AbstractWorker worker;

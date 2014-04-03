@@ -10,7 +10,8 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	public static final Sounds sounds = Sounds.getInstance();
 	protected int cost;
 	protected int value;
-	protected String name;
+	protected String name = "N/A";
+	protected String description = this.name + " description";
 
 	/**
 	 * Rerun the item's buying cost
@@ -74,6 +75,10 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	
 	public String getName(){
 		return this.name;
+	}
+	
+	public String getDescription(){
+		return this.description;
 	}
 	
 	abstract public void update(AbstractItem item);

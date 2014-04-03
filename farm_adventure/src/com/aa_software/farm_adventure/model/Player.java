@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure.model;
 
 import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 
 public class Player {
 
@@ -52,8 +53,12 @@ public class Player {
 	}
 	
 	public Boolean buyItem(AbstractItem item){
-		
-		int itemCost = item.getCost();
+		int itemCost;
+		if (item instanceof AbstractWorker){
+			itemCost = ((AbstractWorker)item).getWage();
+		} else {
+			itemCost = item.getCost();
+		}
     	if(this.bankroll<itemCost){
     		System.out.println("You don't have enough funds");
             return false;

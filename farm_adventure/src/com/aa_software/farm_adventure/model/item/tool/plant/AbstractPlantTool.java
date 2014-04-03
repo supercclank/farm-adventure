@@ -10,8 +10,8 @@ import com.aa_software.farm_adventure.presenter.PlantTask;
 import com.badlogic.gdx.utils.Timer;
 
 public abstract class AbstractPlantTool extends AbstractTool {
-	protected AbstractSeed seed;
-	protected AbstractCrop crop;
+	protected AbstractSeed seed = null;
+	protected AbstractCrop crop = null;
 
 	public AbstractSeed getSeed() {
 		return this.seed;
@@ -26,12 +26,14 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	
 	@Override
 	public void update(final Plot plot, Inventory inventory) {
-		final AbstractWorker worker = inventory.getFreeWorker();
-		if(worker == null) {
+		final AbstractWorker worker;
+		if(workerIndex<0 || ((AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex)).isBusy()) {
 			return;
+		}else{
+			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
 		if(!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated() && 
-			!plot.hasCrop() && plot.isUsable() && inventory.removeItem(seed)) {
+			!plot.hasCrop() && plot.isUsable() && this.seed!=null && inventory.removeItem(seed)) {
 			worker.setBusy(true);
 			plot.setUsable(false);
 			float delay = workTime * worker.getWorkRate()/(Plot.WORK_STATUS_TEXTURES.length - 1);

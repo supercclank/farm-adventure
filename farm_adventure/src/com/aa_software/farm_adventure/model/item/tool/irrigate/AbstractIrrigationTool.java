@@ -20,11 +20,6 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	
 	private Irrigation irrigationChoice;
 	
-	public AbstractIrrigationTool(){
-		super();
-		this.upgrades = new ArrayList<AbstractUpgrade>(Arrays.asList(new WaterPumpUpgrade(), new WindmillUpgrade()));
-	}
-	
 	@Override
 	public void update(Plot plot, Inventory inventory) {
 		final AbstractWorker worker;

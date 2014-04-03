@@ -11,7 +11,8 @@ public abstract class AbstractTool extends AbstractItem {
 
 	protected float workTime;
 	protected int workerIndex;
-	protected ArrayList <AbstractUpgrade> upgrades = new ArrayList <AbstractUpgrade>();
+	protected AbstractTool upgrade;
+	protected AbstractTool predecessor = null;
 
 	public float getWorkTime() {
 		return workTime;
@@ -28,25 +29,16 @@ public abstract class AbstractTool extends AbstractItem {
 		this.workerIndex = selectedWorker;
 	}
 	
-	public ArrayList <AbstractUpgrade> getUpgrades(){
-		return this.upgrades;
+	public AbstractTool getUpgrade(){
+		return this.upgrade;
 	}
 	
-	public AbstractUpgrade peekUpgrade(){
-		if (this.upgrades.size()>0){
-			return this.upgrades.get(this.upgrades.size()-1);
-		} else {
-			return null;
-		}
+	public AbstractTool setPredecessor(AbstractTool preTool){
+		return this.predecessor = preTool;
 	}
 	
-	public AbstractUpgrade dequeueUpgrade(){
-		if (this.upgrades.size()>0){
-			AbstractUpgrade tempUpgrade = this.upgrades.get(this.upgrades.size()-1);
-			this.upgrades.remove(this.upgrades.size()-1);
-			return tempUpgrade;
-		} else {
-			return null;
-		}
+	public AbstractTool getPredecessor(){
+		return this.predecessor;
 	}
+	
 }

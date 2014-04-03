@@ -13,11 +13,13 @@ public class SeederTool extends AbstractPlantTool {
 	public static final int DEFAULT_WORK_TIME = 5;
 
 	public SeederTool() {
+		super();
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.seed = new CarrotSeed();
 		this.name = SEEDERTOOL_NAME;
+		this.upgrade = null;
 	}
 
 	@Override

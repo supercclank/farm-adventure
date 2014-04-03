@@ -13,11 +13,14 @@ public class TrowelTool extends AbstractPlantTool {
 	public static final int DEFAULT_WORK_TIME = 5;
 
 	public TrowelTool() {
+		super();
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
-		this.seed = new CarrotSeed();
+		this.seed = null;
 		this.name = TROWELTOOL_NAME;
+		this.upgrade = new SeederTool();
+		this.upgrade.setPredecessor(this);
 	}
 
 	@Override
