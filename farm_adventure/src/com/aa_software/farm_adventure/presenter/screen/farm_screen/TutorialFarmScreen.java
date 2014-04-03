@@ -421,10 +421,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				} else if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
 					foundClick = true;
 				}
-				//THIS SHOULD BE TAKEN OUT LATER - IT IS JUST A QUICK FIX
-				else if (selection == null) {
-					foundClick = true;
-				}
 			}
 		} else {
 			super.updateState(x, y);
