@@ -77,7 +77,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		descriptionStage.addActor(descriptionWindow);
 		getDescription();
 		updateDescription();
-		disableAllGameClicks();
+		setAllGameClicksDisabled(true);
 		disableGameTime = true;
 		foundClick = true;
 		
@@ -346,6 +346,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	 */
 	@Override
 	public void dispose() {
+		setAllGameClicksDisabled(false);
 		map.dispose();
 		renderer.dispose();
 		descriptionStage.dispose();
@@ -354,7 +355,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 
 	public void transitionState() {
 		descriptionWindow.clear();
-		disableAllGameClicks();
+		setAllGameClicksDisabled(true);
 		if (!(stateIndex + 1 > states.length)) {
 			stateIndex++;
 		}

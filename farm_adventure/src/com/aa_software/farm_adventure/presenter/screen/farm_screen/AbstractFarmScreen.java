@@ -297,12 +297,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationMenuStage.setViewport(width, height);
 	}
 	
-	public void disableAllGameClicks() {
-		fieldClicksDisabled = true;
-		toolBarClicksDisabled = true;
-		irrigationMenuClicksDisabled = true;
-		plantMenuClicksDisabled = true;
-		inventoryClicksDisabled = true;
+	public void setAllGameClicksDisabled(boolean bool) {
+		fieldClicksDisabled = bool;
+		toolBarClicksDisabled = bool;
+		irrigationMenuClicksDisabled = bool;
+		plantMenuClicksDisabled = bool;
+		inventoryClicksDisabled = bool;
 	}
 
 	/**
