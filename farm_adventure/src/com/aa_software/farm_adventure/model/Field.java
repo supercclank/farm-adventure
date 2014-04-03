@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
+import com.aa_software.farm_adventure.model.plot.TaskType;
+
 import java.util.Random;
 
 /**
@@ -193,6 +195,47 @@ public class Field {
 	}
 	
 	/**
+	 * Gets the reason irrigation can happen for the selected plot and uses
+	 * this value to find the start location for the irrigation task.
+	 * @param x 	the x value of the selected plot
+	 * @param y 	the y value of the selected plot
+	 * @param irr 	the irrigation value of the selected plot
+	 * @return the WorkStatusType for the selected plot
+	 */
+	public TaskType getTaskType (int x, int y, Irrigation irr) {
+		Irrigation reason = getIrrigationChoiceReason(x,y,irr);
+		switch(irr) {
+		case TOP:
+			if(reason == Irrigation.LEFT) {
+				return TaskType.IRR_TOP_LT;
+			} else {
+				return TaskType.IRR_TOP_RT;
+			}
+		case BOTTOM:
+			if(reason == Irrigation.LEFT) {
+				return TaskType.IRR_BOT_LT;
+			} else {
+				return TaskType.IRR_BOT_RT;
+			}
+		case LEFT:
+			if(reason == Irrigation.TOP) {
+				return TaskType.IRR_LT_TOP;
+			} else {
+				return TaskType.IRR_LT_BOT;
+			}
+		case RIGHT:
+			if(reason == Irrigation.TOP) {
+				return TaskType.IRR_RT_TOP;
+			} else {
+				return TaskType.IRR_BOT_LT;
+			}
+		default:
+			return TaskType.PLOW_UW; // for debug 
+		}
+		
+	}
+	
+	/**
 	 * Checks the neighboring plots to see the reason why the current irrigation
 	 * is a valid irrigation for the plot and returns the irrigation side that the
 	 * selected plot's irrigation should be displayed from.
@@ -202,7 +245,7 @@ public class Field {
 	 * @param irr   the irrigation value of the selected plot.
 	 * @return		the irrigation side to display from
 	 */
-	public Irrigation getIrrigationChoiceReason(int x, int y, Irrigation irr) {
+	private Irrigation getIrrigationChoiceReason(int x, int y, Irrigation irr) {
 		switch(irr) {
 		case TOP: 
 			return checkTopReason(x,y);

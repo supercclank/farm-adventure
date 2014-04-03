@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.item.tool.plow;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.badlogic.gdx.utils.Timer;
@@ -23,9 +24,9 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			    @Override
 			    public void run() {
 			    	if (plot.isIrrigated()) {
-							plot.setTaskTexturePrefix(1);
+							plot.setTaskTexturePrefix(TaskType.PLOW_W);
 					} else {
-							plot.setTaskTexturePrefix(0);
+							plot.setTaskTexturePrefix(TaskType.PLOW_UW);
 					}
 			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 						plot.setUsable(true);

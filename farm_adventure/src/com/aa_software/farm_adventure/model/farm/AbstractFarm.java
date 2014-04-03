@@ -17,6 +17,7 @@ import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.season.Season;
 
 /*
@@ -79,8 +80,8 @@ public abstract class AbstractFarm {
 		return field.getIrrigationChoices(x, y);
 	}
 	
-	public Irrigation getIrrigationChoiceReason(int x, int y, Irrigation irr) {
-		return field.getIrrigationChoiceReason(x, y, irr);
+	public TaskType getTaskType(int x, int y, Irrigation irr) {
+		return field.getTaskType(x, y, irr);
 	}
 
 	public AbstractTool getTool(int x, int y) {

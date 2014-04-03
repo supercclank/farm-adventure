@@ -23,7 +23,7 @@ public class PlantTask extends Task {
 
 	@Override
     public void run() {
-		plot.setTaskTexturePrefix(0);
+		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
 		if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
 			plot.setCrop(seed);

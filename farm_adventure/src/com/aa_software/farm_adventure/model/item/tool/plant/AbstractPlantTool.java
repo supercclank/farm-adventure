@@ -6,6 +6,7 @@ import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.presenter.PlantTask;
+import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 
 public abstract class AbstractPlantTool extends AbstractTool {
@@ -27,7 +28,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		if(worker == null) {
 			return;
 		}
-		plot.setTaskTexturePrefix(0);
+		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
 		if(!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated() && 
 			!plot.hasCrop() && plot.isUsable() && inventory.removeItem(seed)) {
 			worker.setBusy(true);

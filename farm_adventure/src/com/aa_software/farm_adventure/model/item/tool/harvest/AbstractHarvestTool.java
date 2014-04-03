@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.item.tool.harvest;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.badlogic.gdx.utils.Timer;
@@ -18,13 +19,15 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			}
 			worker.setBusy(true);
 			plot.setUsable(false);
+			//TODO: not the best way to do this, but to get the animation for removing the crops, this
+			// had to happen. Need a better solution here!
+			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h" + plot.getCrop().getTextureName()));
+			inventory.addItem(plot.getCrop());
 			Timer.schedule(new Task() {
 			    @Override
 			    public void run() {
-			    	plot.setTaskTexturePrefix(0);
 			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 					plot.setUsable(true);
-					inventory.addItem(plot.getCrop());
 					plot.setCrop(null);
 					plot.setPlotType(PlotType.UNPLOWEDWATERED);
 					plot.setTaskTextureIndex(0);
@@ -33,6 +36,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 					sounds.playClick();
 				    } else {
 				    	plot.incrementTaskTextureIndex();
+				    	plot.harvestRemoveCrop(plot.getCrop());
 				    	Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
 				    }
 			    }
