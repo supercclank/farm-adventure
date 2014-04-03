@@ -39,7 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 public class TutorialFarmScreen extends AbstractFarmScreen {
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
 	final int MARKET_X = 4;
@@ -303,6 +303,48 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 					"purchase and sell items.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .7);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+			break;
+		case BEFORE_LEAVING:
+			description = "Before leaving the tutorial\n" +
+					"you should know about seasons.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SEASONS:
+			description = "Each farm you play will have\n" +
+					"a specific cycle of seasons.\n" +
+					"and each season has a\n" +
+					"different effect on the farm.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SPRING:
+			description = "Spring is the perfect farming\n" +
+					"season. In this season, crops\n" +
+					"grow twice as quickly.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SUMMER:
+			description = "Summer brings a lack of water.\n" +
+					"In this season, plots can\n" +
+					"suddenly lose their irrigation.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_FALL:
+			description = "Fall drops leaves from trees.\n" +
+					"In this season, leaves can\n" +
+					"cover plots, making them unusable.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_WINTER:
+			description = "Winter lacks the warm sun's\n" +
+					"rays. In this season, crops\n" +
+					"grow twice as slowly.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case DESCRIBE_END:
 			description = "Good job! Now try out a real farm.";
