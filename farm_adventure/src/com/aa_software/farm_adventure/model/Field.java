@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
+import com.aa_software.farm_adventure.model.plot.TaskType;
+
 import java.util.Random;
 
 /**
@@ -190,6 +192,180 @@ public class Field {
 			}
 		}
 		return choices;
+	}
+	
+	/**
+	 * Gets the reason irrigation can happen for the selected plot and uses
+	 * this value to find the start location for the irrigation task.
+	 * @param x 	the x value of the selected plot
+	 * @param y 	the y value of the selected plot
+	 * @param irr 	the irrigation value of the selected plot
+	 * @return the WorkStatusType for the selected plot
+	 */
+	public TaskType getTaskType (int x, int y, Irrigation irr) {
+		Irrigation reason = getIrrigationChoiceReason(x,y,irr);
+		switch(irr) {
+		case TOP:
+			if(reason == Irrigation.LEFT) {
+				return TaskType.IRR_TOP_LT;
+			} else {
+				return TaskType.IRR_TOP_RT;
+			}
+		case BOTTOM:
+			if(reason == Irrigation.LEFT) {
+				return TaskType.IRR_BOT_LT;
+			} else {
+				return TaskType.IRR_BOT_RT;
+			}
+		case LEFT:
+			if(reason == Irrigation.TOP) {
+				return TaskType.IRR_LT_TOP;
+			} else {
+				return TaskType.IRR_LT_BOT;
+			}
+		case RIGHT:
+			if(reason == Irrigation.TOP) {
+				return TaskType.IRR_RT_TOP;
+			} else {
+				return TaskType.IRR_BOT_LT;
+			}
+		default:
+			return TaskType.PLOW_UW; // for debug 
+		}
+		
+	}
+	
+	/**
+	 * Checks the neighboring plots to see the reason why the current irrigation
+	 * is a valid irrigation for the plot and returns the irrigation side that the
+	 * selected plot's irrigation should be displayed from.
+	 * 
+	 * @param x		the x value of the selected plot.
+	 * @param y		the y value of the selected plot.
+	 * @param irr   the irrigation value of the selected plot.
+	 * @return		the irrigation side to display from
+	 */
+	private Irrigation getIrrigationChoiceReason(int x, int y, Irrigation irr) {
+		switch(irr) {
+		case TOP: 
+			return checkTopReason(x,y);
+		case LEFT:
+			return checkLeftReason(x,y);
+		case RIGHT:
+			return checkRightReason(x,y);
+		case BOTTOM:
+			return checkBottomReason(x,y);
+		default:
+			return Irrigation.TOP;
+		}
+	}
+	
+	/**
+	 * Checks what side of the selected plot or neighboring plots
+	 * make the TOP selection valid.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		valid irrigation side LEFT or RIGHT.
+	 */
+	private Irrigation checkTopReason(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.LEFT)){
+			return Irrigation.LEFT;
+		} else if(plot.getIrrigation().contains(Irrigation.RIGHT)) {
+			return Irrigation.RIGHT;
+		} else if(y+1 < Field.ROWS && (getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
+			return Irrigation.LEFT;
+		} else if(y+1 < Field.ROWS && (getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
+			return Irrigation.RIGHT;
+		} else if(x-1 >= 0 && (getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP))) {
+			return Irrigation.LEFT;
+		} else if(x+1 < Field.COLUMNS && getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP)) {
+			return Irrigation.RIGHT;
+		} else
+			return Irrigation.LEFT;
+	}
+	
+	/**
+	 * Checks what side of the selected plot or neighboring plots
+	 * make the BOTTOM selection valid.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		valid irrigation side LEFT or RIGHT.
+	 */
+	private Irrigation checkBottomReason(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.LEFT)){
+			return Irrigation.LEFT;
+		} else if(plot.getIrrigation().contains(Irrigation.RIGHT)) {
+			return Irrigation.RIGHT;
+		} else if(y-1 >= 0 && (getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT))) {
+			return Irrigation.LEFT;
+		} else if(y-1 >= 0 && (getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT))) {
+			return Irrigation.RIGHT;
+		} else if(x-1 >= 0 && (getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
+			return Irrigation.LEFT;
+		} else if(x+1 < Field.COLUMNS && getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM)) {
+			return Irrigation.RIGHT;
+		} else
+			return Irrigation.LEFT;
+	}
+	
+	/**
+	 * Checks what side of the selected plot or neighboring plots
+	 * make the LEFT selection valid.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		valid irrigation side TOP or BOTTOM.
+	 */
+	private Irrigation checkLeftReason(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.TOP)){
+			return Irrigation.TOP;
+		} else if(plot.getIrrigation().contains(Irrigation.BOTTOM)) {
+			return Irrigation.BOTTOM;
+		} else if(x-1 >= 0 && (getPlot(x-1, y).getIrrigation().contains(Irrigation.TOP))) {
+			return Irrigation.TOP;
+		} else if(x-1 >= 0 && (getPlot(x-1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
+			return Irrigation.BOTTOM;
+		} else if(y+1 < Field.ROWS && (getPlot(x, y+1).getIrrigation().contains(Irrigation.LEFT))) {
+			return Irrigation.TOP;
+		} else if(y-1 >= 0 && getPlot(x, y-1).getIrrigation().contains(Irrigation.LEFT)) {
+			return Irrigation.BOTTOM;
+		} else
+			return Irrigation.TOP;		
+	}
+	
+	/**
+	 * Checks what side of the selected plot or neighboring plots
+	 * make the RIGHT selection valid.
+	 * 
+	 * @param x		the x-coordinate of the selected plot.
+	 * @param y		the y-coordinate of the selected plot.
+	 * @return		valid irrigation side TOP or BOTTOM.
+	 */
+	private Irrigation checkRightReason(int x, int y) {
+		Plot plot = getPlot(x, y);
+		
+		if(plot.getIrrigation().contains(Irrigation.TOP)){
+			return Irrigation.TOP;
+		} else if(plot.getIrrigation().contains(Irrigation.BOTTOM)) {
+			return Irrigation.BOTTOM;
+		} else if(x+1 < Field.COLUMNS && (getPlot(x+1, y).getIrrigation().contains(Irrigation.TOP))) {
+			return Irrigation.TOP;
+		} else if(x+1 < Field.COLUMNS && (getPlot(x+1, y).getIrrigation().contains(Irrigation.BOTTOM))) {
+			return Irrigation.BOTTOM;
+		} else if(y+1 < Field.ROWS && (getPlot(x, y+1).getIrrigation().contains(Irrigation.RIGHT))) {
+			return Irrigation.TOP;
+		} else if(y-1 >= 0 && getPlot(x, y-1).getIrrigation().contains(Irrigation.RIGHT)) {
+			return Irrigation.BOTTOM;
+		} else
+			return Irrigation.TOP;
 	}
 	
 	/**

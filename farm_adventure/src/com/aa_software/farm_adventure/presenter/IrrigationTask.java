@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.presenter;
 
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
@@ -10,20 +11,23 @@ import com.badlogic.gdx.utils.Timer.Task;
 public class IrrigationTask extends Task {
 
 	private Irrigation irrigationChoice;
+	private TaskType task;
 	private Plot plot;
 	private AbstractWorker worker;
 	private float delay;
 
 	public IrrigationTask(Plot plot, Irrigation irrigationChoice,
-			AbstractWorker worker, float delay) {
+			TaskType task, AbstractWorker worker, float delay) {
 		this.irrigationChoice = irrigationChoice;
+		this.task = task;
 		this.plot = plot;
 		this.worker = worker;
 		this.delay = delay;
 	}
 
 	public void run() {
-		if (plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
+		plot.setTaskTexturePrefix(task);
+		if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
 			switch (plot.getPlotType()) {
 			case PLOWEDUNWATERED:

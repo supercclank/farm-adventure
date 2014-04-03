@@ -21,9 +21,11 @@ import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
@@ -597,6 +599,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				.iterator();
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
+			TaskType task = farm.getTaskType(x, y, irrigation);
 			Texture irrigationTexture = new Texture(
 					Gdx.files.internal(TextureHelper
 							.getIrrigationTextureFileName(EnumSet
@@ -610,12 +613,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			 * will know which X and Y it pertains to.
 			 */
 			irrigationButton.addListener(new IrrigationListener(x, y,
-					irrigation) {
+					irrigation,task) {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
+						((AbstractIrrigationTool) selection)
+								.setTaskType(this.getTaskType());
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());

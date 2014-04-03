@@ -16,6 +16,7 @@ import com.aa_software.farm_adventure.model.item.tool.plow.AbstractPlowTool;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
@@ -442,6 +443,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				.iterator();
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
+			TaskType task = farm.getTaskType(x,y,irrigation);
 			Texture irrigationTexture = new Texture(
 					Gdx.files.internal(TextureHelper
 							.getIrrigationTextureFileName(EnumSet
@@ -455,12 +457,14 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			 * will know which X and Y it pertains to.
 			 */
 			irrigationButton.addListener(new IrrigationListener(x, y,
-					irrigation) {
+					irrigation, task) {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
+						((AbstractIrrigationTool) selection)
+						.setTaskType(this.getTaskType());
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());

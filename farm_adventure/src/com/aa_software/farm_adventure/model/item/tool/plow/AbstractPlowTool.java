@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model.item.tool.plow;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.badlogic.gdx.utils.Timer;
@@ -22,7 +23,12 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			Timer.schedule(new Task(){
 			    @Override
 			    public void run() {
-			    	if(plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
+			    	if (plot.isIrrigated()) {
+							plot.setTaskTexturePrefix(TaskType.PLOW_W);
+					} else {
+							plot.setTaskTexturePrefix(TaskType.PLOW_UW);
+					}
+			    	if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 						plot.setUsable(true);
 						if (plot.isIrrigated()) {
 							plot.setPlotType(PlotType.PLOWEDWATERED);
@@ -34,10 +40,10 @@ public abstract class AbstractPlowTool extends AbstractTool {
 						worker.setBusy(false);
 			    	} else {
 			    		plot.incrementTaskTextureIndex();
-			    		Timer.schedule(this, (workTime * worker.getWorkRate())/(Plot.WORK_STATUS_TEXTURES.length-1));
+			    		Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
 			    	}
 			    }
-			}, workTime * worker.getWorkRate()/(Plot.WORK_STATUS_TEXTURES.length - 1));
+			}, workTime * worker.getWorkRate()/(plot.getWorkStatusTextureLength() - 1));
 		}
 	}
 	

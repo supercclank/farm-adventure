@@ -8,30 +8,31 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public class PlantTask extends Task {
 
-private Plot plot;
-private AbstractCrop seed;
-private AbstractWorker worker;
-private float delay;
+	private Plot plot;
+	private AbstractCrop seed;
+	private AbstractWorker worker;
+	private float delay;
 
-public PlantTask(Plot plot, AbstractCrop seed, AbstractWorker worker, float delay) {
-this.plot = plot;
-this.seed = seed;
-this.worker = worker;
-this.delay = delay;
-}
+	public PlantTask(Plot plot, AbstractCrop seed, AbstractWorker worker,
+			float delay) {
+		this.plot = plot;
+		this.seed = seed;
+		this.worker = worker;
+		this.delay = delay;
+	}
 
-@Override
+	@Override
     public void run() {
-if(plot.getTaskTextureIndex() == Plot.WORK_STATUS_TEXTURES.length - 1) {
-plot.setUsable(true);
-plot.setCrop(seed);
-plot.setTaskTextureIndex(0);
-worker.addExperience();
-worker.setBusy(false);
-} else {
-plot.incrementTaskTextureIndex();
-Timer.schedule(this, delay);
-}
+		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
+		if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
+			plot.setUsable(true);
+			plot.setCrop(seed);
+			plot.setTaskTextureIndex(0);
+			worker.addExperience();
+			worker.setBusy(false);
+		} else {
+			plot.incrementTaskTextureIndex();
+			Timer.schedule(this, delay);
+		}
     }
-
 }

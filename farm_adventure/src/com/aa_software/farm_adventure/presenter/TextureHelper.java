@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.plot.Irrigation;
+import com.aa_software.farm_adventure.model.plot.TaskType;
 
 public class TextureHelper {
 	
@@ -97,6 +98,36 @@ public class TextureHelper {
 			textureName = "RIGHT";
 		}
 		return textureName;
+	}
+	
+	public static TaskType getTaskTypeValue(String textureName) {
+		TaskType type = null;
+		if(textureName.equals("plowedunwatered")) {
+			type = TaskType.PLOW_UW;
+		} else if(textureName.equals("plowedwatered")) {
+			type = TaskType.PLOW_W;
+		} else if(textureName.equals("pbananaCrop")) {
+			type = TaskType.PBAN;
+		} else if(textureName.equals("hbananaCrop")) {
+			type = TaskType.HBAN;
+		} else if (textureName.equals("pbeetCrop")) {
+			type = TaskType.PBEET;
+		} else if (textureName.equals("hbeetCrop")) {
+			type = TaskType.HBEET;
+		} else if (textureName.equals("pcarrotCrop")) {
+			type = TaskType.PCAR;
+		} else if (textureName.equals("hcarrotCrop")) {
+			type = TaskType.HCAR;
+		} else if (textureName.equals("priceCrop")) {
+			type = TaskType.PRIC;
+		} else if (textureName.equals("hriceCrop")) {
+			type = TaskType.HRIC;
+		} else if (textureName.equals("pbuddingCrop")) {
+			type = TaskType.PBUD;
+		} else if (textureName.equals("hbuddingCrop")) {
+			type = TaskType.HBUD;
+		}
+		return type;
 	}
 	
 	public static EnumSet<Irrigation> getIrrigationSet(String textureName) {
