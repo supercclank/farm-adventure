@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
@@ -12,11 +13,13 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestToo
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.AbstractPlowTool;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
+import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.aa_software.farm_adventure.presenter.screen.WorldScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -33,16 +36,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class TutorialFarmScreen extends AbstractFarmScreen {
-
-	//TODO We need a way to enforce users to plow/irrigate such that they will be able to move
-	// forward in the tutorial (or some other way to handle the problem). Basically, if they
-	// get to the "plant a crop" part, and do not have anywhere to plant a crop because they
-	// plowed a random piece of land, they are stuck.
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_IRRIGATE_MENU, WAIT_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
 	}
 
+	final int MARKET_X = 4;
+	
 	/* Font setup */
 	final LabelStyle style2 = new LabelStyle(fontType, Color.WHITE);
 
@@ -80,6 +80,11 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		disableAllGameClicks();
 		disableGameTime = true;
 		foundClick = true;
+		
+		//TODO: Maybe there is a better way to stop the deficient worker deadlock.
+		for(int i = 0; i < 2; i++) {
+			farm.getInventory().addItem(new DefaultWorker());
+		}
 	}
 
 	@Override
@@ -108,8 +113,14 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		if (allGameClicksAreDisabled) {
 			Gdx.input.setInputProcessor(descriptionStage);
 		}
-
-		if (states[stateIndex].toString().toLowerCase().contains("click")
+		//TODO change this hacky fix. Perhaps add a set of "wait" states, similar to the
+		// "click" set that transition on a given condition.
+		if(states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
+			if(unwateredPlowedPlotExists() && foundClick) {
+				transitionState();
+			}
+		}
+		else if (states[stateIndex].toString().toLowerCase().contains("click")
 				&& foundClick) {
 			transitionState();
 		}
@@ -143,21 +154,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_PLOW:
-			description = "Click the plow tool!";
+			description = "Click the plow tool.";
 			toolBarClicksDisabled = false;
 			foundClick = false;
 			waitingForX = 0;
 			break;
 		case CLICK_PLOW_PLOT:
-			// TODO: make sure that the plot actually is plowable.
-			description = "Now click a plot to plow it!";
+			description = "Now click a plot to plow it.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			foundClick = false;
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_PLOW_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_IRRIGATE:
@@ -166,7 +176,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_IRRIGATE:
-			description = "Click the irrigation tool!";
+			description = "Click the irrigation tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .18);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -176,13 +186,15 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		case CLICK_IRRIGATE_PLOT:
 			// TODO: Make sure that it only goes forward if you click a plot
 			// open to irrigation!
-			description = "Now click a plot to irrigate it!";
+			description = "Now click a plot to irrigate it.\nTry to get the irrigation\n" +
+					"to the plowed plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			foundClick = false;
 			irrigationMenuClicksDisabled = false;
 			fieldClicksDisabled = false;
 			break;
+			/*
 		case CLICK_IRRIGATE_MENU:
 			description = "Now choose a side to irrigate!";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
@@ -193,7 +205,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		case WAIT_IRRIGATE_PLOT:
 			description = "One of your workers has taken up the task!\nIf your plot is already beside water, no change\nto the plot's color is made.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			break;
+			break;*/
 		case DESCRIBE_PLANT:
 			description = "This is the planting\ntool which plants seeds.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
@@ -225,7 +237,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			plantMenuClicksDisabled = false;
 			break;
 		case CLICK_PLANT_PLOT:
-			// should make sure the plot clicked is available for plants!
 			description = "Now choose a plot to plant on!";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
@@ -253,7 +264,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			// TODO: should make sure the harvested plot had a plant!
 			description = "Now click a plot to harvest it!";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			foundClick = false;
 			irrigationMenuClicksDisabled = false;
 			fieldClicksDisabled = false;
@@ -268,7 +279,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_INVENTORY:
-			// TODO: stopped here. market isn't in this build
 			description = "Click the inventory\nand market button!";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
@@ -284,13 +294,14 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case DESCRIBE_QUANTITY:
 			description = "This is the quantity that you own of a certain item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .13);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			break;
 		case DESCRIBE_BUY_AND_SELL:
-			description = "These are the buy and sell items that\nallow you to purchase and sell items.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+			description = "You can use these buttons to\n" +
+					"purchase and sell items.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .7);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			break;
 		case DESCRIBE_END:
 			description = "Good job! Now try out a real farm!";
@@ -329,10 +340,16 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		descriptionWindow.setPosition(descriptionX, descriptionY);
 	}
 
-	public void endTutorial() {
+	/**
+	 * This method disposes of our left over libGDX elements, updates the
+	 * player's score, and returns the player to the main menu.
+	 */
+	@Override
+	public void dispose() {
 		map.dispose();
 		renderer.dispose();
-		FarmAdventure.getInstance().setScreen(new WorldScreen());
+		descriptionStage.dispose();
+		FarmAdventure.getInstance().setScreen(new MainMenuScreen());
 	}
 
 	public void transitionState() {
@@ -340,13 +357,25 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		disableAllGameClicks();
 		if (!(stateIndex + 1 > states.length)) {
 			stateIndex++;
-		} else {
-			endTutorial();
 		}
 		getDescription();
 		updateDescription();
 	}
 
+	public boolean unwateredPlowedPlotExists() {
+		//TODO probably want to move this logic to Farm
+		Field field = farm.getField();
+		for(int i = 0; i < Field.COLUMNS; i++) {
+			for(int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if(!(plot.isUnplowed() || plot.isGrass()) && plot.isIrrigated()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Takes in an x, and y value (cell-based) that represents user input, as
 	 * well as the type of cell that was clicked. The options for this is ground
@@ -367,22 +396,27 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				if (plot.isUsable()) {
 					boolean harvested = selection instanceof AbstractHarvestTool
 							&& plot.hasCrop();
-					boolean irrigated = selection instanceof AbstractIrrigationTool
-							&& ((AbstractIrrigationTool) selection)
-									.getIrrigationChoice() != null;
 					boolean planted = selection instanceof AbstractPlantTool
 							&& !plot.isGrass() && !plot.isUnplowed()
 							&& plot.isIrrigated() && !plot.hasCrop();
 					boolean plowed = selection instanceof AbstractPlowTool
 							&& (plot.isGrass() || plot.isUnplowed());
-					if (harvested || irrigated || planted || plowed) {
+					//TODO probably not the best way to handle this.
+					if ((harvested && states[stateIndex] == State.CLICK_HARVEST_PLOT) 
+							|| (planted && states[stateIndex] == State.CLICK_PLANT_PLOT)
+							|| (plowed && states[stateIndex] == State.CLICK_PLOW_PLOT)) {
 						foundClick = true;
 					}
 					super.updateState(x, y);
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
 				super.updateState(x, y);
-				if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
+				//TODO: hardcoded for now. Magic numbers are bad.
+				if(x == MARKET_X) {
+					if(states[stateIndex] == State.CLICK_INVENTORY) {
+						foundClick = true;
+					}
+				} else if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
 					foundClick = true;
 				}
 			}
@@ -402,10 +436,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	@Override
 	public void updateIrrigationWindow(final int x, final int y) {
 		irrigationWindow.clear();
-
-		if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-			foundClick = true;
-		}
 
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y)
 				.iterator();
@@ -434,7 +464,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 					}
-					if (states[stateIndex] == State.CLICK_IRRIGATE_MENU) {
+					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
 						foundClick = true;
 					}
 					irrigationWindow.setVisible(false);
