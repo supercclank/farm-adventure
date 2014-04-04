@@ -17,6 +17,10 @@ import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
@@ -281,6 +285,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 		
+		score = score - BananaSeed.DEFAULT_VALUE - BeetSeed.DEFAULT_VALUE - 
+				CarrotSeed.DEFAULT_VALUE - RiceSeed.DEFAULT_VALUE;
 		score = score - Player.STARTING_BANKROLL;
 		
 		return score;
