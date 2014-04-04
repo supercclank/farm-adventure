@@ -1,37 +1,34 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.EnumSet;
-
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Player;
+import com.aa_software.farm_adventure.model.Stats;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
-
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
-
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.IrrigationListener;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
-import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
+import com.aa_software.farm_adventure.presenter.screen.ScoreScreen;
 import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
 import com.aa_software.farm_adventure.presenter.state.ISelectionState;
 import com.badlogic.gdx.Gdx;
@@ -161,6 +158,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private Window infoWindow;
 
 	protected boolean gameOver;
+	
+	protected Stats stats;
 
 	protected enum Actions {
 		BUY, SELL
@@ -200,6 +199,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Gdx.graphics.getHeight(), true);
 		inventoryStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
+		
+		stats = new Stats();
+		
 		workerStage = new Stage(Gdx.graphics.getWidth(),WORKER_HEIGHT, true);
 
 		irrigationWindow = new Window("Pick a Side to Irrigate", skin);
@@ -260,10 +262,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	@Override
 	public void dispose() {
+		stats.setScore(PLAYER.getBankroll() + calculateScore());
 		PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
 		map.dispose();
 		renderer.dispose();
-		FarmAdventure.getInstance().setScreen(new MainMenuScreen());
+		FarmAdventure.getInstance().setScreen(new ScoreScreen(stats));
 	}
 	
 	public int calculateScore() {
@@ -275,6 +278,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				score += item.getValue();
 			}
 		}
+		
+		score = score - Player.STARTING_BANKROLL;
+		
 		return score;
 	}
 
