@@ -11,7 +11,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem>{
 	protected int cost;
 	protected int value;
 	protected String name = "N/A";
-	protected String description = this.name + " description";
+	protected String description = "No description available";
 
 	/**
 	 * Rerun the item's buying cost

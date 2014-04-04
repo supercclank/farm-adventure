@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
 
 public class SeederTool extends AbstractPlantTool {
-	public static final String SEEDERTOOL_NAME = "Seeder";
+	public static final String SEEDERTOOL_NAME = "seederTool";
 	public static final String TEXTURE_NAME = "seederTool";
 	public static int DEFAULT_COST = 10;
 	public static int DEFAULT_VALUE = 5;

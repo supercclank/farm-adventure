@@ -18,7 +18,6 @@ public class BananaCrop extends AbstractCrop {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.name = BANANA_NAME ;
-		this.description = "Bananas that you can sell in the market place";
 	}
 
 	public BananaCrop(int growthTime, int output, int cost, int value) {

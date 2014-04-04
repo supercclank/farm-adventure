@@ -19,7 +19,6 @@ public class ShovelTool extends AbstractIrrigationTool {
 		this.name = SHOVELTOOL_NAME;
 		this.upgrade = new BackhoeTool();
 		this.upgrade.setPredecessor(this);
-		this.description = "A shovel allows you to irrigate land at an average pace.";
 	}
 
 	@Override

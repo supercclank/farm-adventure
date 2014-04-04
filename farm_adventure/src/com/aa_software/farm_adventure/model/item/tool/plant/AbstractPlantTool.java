@@ -34,7 +34,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}else{
 			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
-
+		
 		if(!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated() && 
 			!plot.hasCrop() && plot.isUsable() && this.seed!=null && inventory.removeItem(seed)) {		
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));

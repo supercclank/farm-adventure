@@ -457,6 +457,11 @@
     <property name="task" value="task4"/>
    </properties>
   </tile>
+  <tile id="115">
+   <properties>
+    <property name="tool" value="combineTool"/>
+   </properties>
+  </tile>
   <tile id="120">
    <properties>
     <property name="status" value="summer0"/>
@@ -485,6 +490,11 @@
   <tile id="125">
    <properties>
     <property name="task" value="task2"/>
+   </properties>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="tool" value="backhoeTool"/>
    </properties>
   </tile>
   <tile id="132">
@@ -517,6 +527,11 @@
     <property name="task" value="task3"/>
    </properties>
   </tile>
+  <tile id="139">
+   <properties>
+    <property name="tool" value="seederTool"/>
+   </properties>
+  </tile>
   <tile id="144">
    <properties>
     <property name="task" value="ban1"/>
@@ -542,6 +557,16 @@
     <property name="task" value="bud1"/>
    </properties>
   </tile>
+  <tile id="151">
+   <properties>
+    <property name="tool" value="tractorPlowTool"/>
+   </properties>
+  </tile> 
+  <tile id="152">
+   <properties>
+    <property name="seed" value="transparent"/>
+   </properties>
+  </tile>
   <tile id="156">
    <properties>
     <property name="task" value="ban2"/>
@@ -565,6 +590,11 @@
   <tile id="160">
    <properties>
     <property name="task" value="bud2"/>
+   </properties>
+  </tile>
+  <tile id="163">
+   <properties>
+    <property name="worker" value="worker"/>
    </properties>
   </tile>
   <tile id="168">

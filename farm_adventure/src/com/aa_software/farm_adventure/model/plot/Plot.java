@@ -122,6 +122,7 @@ public class Plot {
 		}
 	}
 	
+
 	public void setSeed(final AbstractSeed seed) {
 		if (seed == null && isUsable) {
 			this.seed = null;

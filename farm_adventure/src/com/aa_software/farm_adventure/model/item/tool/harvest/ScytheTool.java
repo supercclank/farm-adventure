@@ -19,7 +19,6 @@ public class ScytheTool extends AbstractHarvestTool {
 		this.name = SYTHETOOL_NAME;
 		this.upgrade = new CombineTool();
 		this.upgrade.setPredecessor(this);
-		this.description = "A tool that allows you to harvest at an average pace";
 	}
 	
 

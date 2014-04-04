@@ -96,7 +96,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			"seed", "status", "select", "transparent", "task" };
 	public static final int PLANT_TOOL_X = 2, PLANT_TOOL_Y = 0,
 			IRRIGATION_TOOL_X = 1, IRRIGATION_TOOL_Y = 0, STATUS_BAR_Y = 1,
-			FIELD_STARTING_Y = 2;
+			FIELD_STARTING_Y = 2, UNSELECT = -1;
 
 	/* Stage */
 	public static final float FONT_SCALE = 1;
@@ -112,8 +112,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WORKER_HEIGHT = 70,
 			INFO_X = (float) (Gdx.graphics.getWidth() * .25), 
 			INFO_Y = (float) (Gdx.graphics.getHeight() * .5),
-			INFO_HEIGHT = (float) (Gdx.graphics.getHeight() * .10),
-			INFO_WIDGTH = (float) (Gdx.graphics.getWidth() * .25);		
+			INFO_WIDGTH = (float) (Gdx.graphics.getWidth() * .25);
+			
 
 	/* Font setup */
 	BitmapFont fontType = new BitmapFont();
@@ -138,6 +138,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Window inventoryWindow;
 	protected Table inventoryScrollTable;
 	protected Boolean inventoryOpen = false;
+	
 
 	protected final Stage irrigationMenuStage;
 	protected final Stage statusBarStage;
@@ -146,7 +147,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Stage workerStage;
 	protected Table workerQueue;
 	protected Table workerWindow;
-	public int selectedWorker = -1;
+	public int selectedWorker = UNSELECT;
 
 	protected boolean irrigationMenuClicksDisabled;
 	protected boolean plantMenuClicksDisabled;
@@ -232,9 +233,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		infoWindow.row().fill().expandX();
 		infoStage.addActor(infoWindow);
 		
-		//inputMultiplexer = new InputMultiplexer();
-		inventoryScrollTable = new Table();
-		setupInventoryWindow();
 	}
 
 	/**
@@ -389,6 +387,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		workerQueue = new Table();
 		setupWorkersWindow();
 		Gdx.input.setInputProcessor(workerStage);
+		inventoryScrollTable = new Table();
+		setupInventoryWindow();
 	}
 
 	/**
@@ -473,7 +473,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					.get(((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).getSeed().getSeedName()));
 			cell.setTile(tile);
-		}	
+		} else {
+			TiledMapTile tile = tileSet.getTile(tileMap.get("transparent"));
+			cell.setTile(tile);
+			
+		}
 	}
 
 	/**
@@ -578,6 +582,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				.iterator();
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
+			selectedWorker = UNSELECT;
+			syncSelectTiles(UNSELECT);
 			TaskType task = farm.getTaskType(x, y, irrigation);
 			Texture irrigationTexture = new Texture(
 					Gdx.files.internal(TextureHelper
@@ -643,8 +649,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							}
 					}
 				} else {
-					selectedWorker = -1;
-					syncSelectTiles(-1);
+					selectedWorker = UNSELECT;
+					syncSelectTiles(UNSELECT);
 					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
 					updateInventoryTable();
@@ -1036,14 +1042,17 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				}else{
 					int cost = item.getCost()-preTool.getCost();
 					item.setCost(cost);
+					
 				
-				if (PLAYER.buyItem(this.item)){
-					farm.getInventory().addItem(item);
-					farm.getMarket().addItem(item);
-					farm.getInventory().removeItem(preTool);
-					farm.getMarket().removeItem(preTool);
-					((AbstractTool)item).setPredecessor(null);
-				}
+					if (PLAYER.buyItem(this.item)){
+						farm.getInventory().addItem(item);
+						farm.getMarket().addItem(item);
+						farm.getInventory().removeItem(preTool);
+						farm.getMarket().removeItem(preTool);
+						((AbstractTool)item).setPredecessor(null);
+						updateInventoryTable();
+						farm.updateToolBar();
+					}
 				
 				}			
 			} else if (PLAYER.buyItem(this.item)) {
@@ -1166,7 +1175,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						return true;
 					}
 			});
-			infoWindow.add(closeButton);
+			infoWindow.add(closeButton).padLeft(10);
 			infoWindow.pack();
 			infoWindow.setVisible(true);
 			Gdx.input.setInputProcessor(infoStage);
