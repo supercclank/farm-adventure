@@ -31,6 +31,6 @@ public abstract class AbstractSpell extends AbstractItem {
 	public void update(Plot plot, Inventory inventory) {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
 	
 }

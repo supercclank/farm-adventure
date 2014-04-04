@@ -1,7 +1,15 @@
 package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
+import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.CopperToolsUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.SteelToolsUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.WaterPumpUpgrade;
+import com.aa_software.farm_adventure.model.item.upgrade.WindmillUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
@@ -16,11 +24,14 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	
 	@Override
 	public void update(Plot plot, Inventory inventory) {
-		final AbstractWorker worker = inventory.getFreeWorker();
-		if(worker == null) {
+		final AbstractWorker worker;
+		if(workerIndex<0 || ((AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex)).isBusy()) {
 			return;
+		}else{
+			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
 		if(plot.isUsable()) {
+			System.out.println("Plot Type: "+plot.getPlotType());
 			worker.setBusy(true);
 			plot.setUsable(false);
 			plot.setTaskTexturePrefix(task);
@@ -46,6 +57,6 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	}
 	
 	public String getItemType() {
-		return "Irrigation Tools";
+		return "IRRIGATION TOOLS";
 	}
 }

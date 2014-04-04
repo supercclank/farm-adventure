@@ -24,7 +24,7 @@ public abstract class AbstractCrop extends AbstractItem {
 	}
 
 	public String getSeedName() {
-		return "seed";
+		return "crops";
 	}
 
 	public String getTextureName() {

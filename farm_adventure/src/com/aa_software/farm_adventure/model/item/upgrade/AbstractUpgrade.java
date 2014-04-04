@@ -22,4 +22,5 @@ public abstract class AbstractUpgrade extends AbstractItem {
 
 	@Override
 	public void update(Plot plot, Inventory inventory) {}
+	
 }
