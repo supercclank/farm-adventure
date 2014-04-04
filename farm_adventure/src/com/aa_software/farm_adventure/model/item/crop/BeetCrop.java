@@ -16,7 +16,7 @@ public class BeetCrop extends AbstractCrop {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.name = BEET_NAME;
-		
+		this.description = "Beets that you can sell in the market place";
 	}
 
 	public BeetCrop(int growthTime, int output, int cost, int value) {

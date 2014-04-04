@@ -15,6 +15,7 @@ public class BeetSeed extends AbstractSeed{
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
 		this.name = "Beet Seed";
+		this.description = "Plant this seed and it will produce Beets over time.";
 	}
 	
 	public String getSeedName() {
