@@ -20,6 +20,7 @@ public class SeederTool extends AbstractPlantTool {
 		this.seed = new CarrotSeed();
 		this.name = SEEDERTOOL_NAME;
 		this.upgrade = null;
+		this.description = "A trowel which allows you to plant seeds at an average pace.";
 	}
 
 	@Override

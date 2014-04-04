@@ -17,6 +17,7 @@ public class HandPlowTool extends AbstractPlowTool {
 		this.name = HANDPLOWTOOL_NAME;
 		this.upgrade = new TractorPlowTool();
 		this.upgrade.setPredecessor(this);
+		this.description = "A hand plow which allows you to plow land at an average pace.";
 	}
 
 	@Override

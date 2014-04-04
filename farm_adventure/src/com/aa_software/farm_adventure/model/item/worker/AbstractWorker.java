@@ -27,6 +27,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.wage = DEFAULT_WAGE;
 		this.workRate = DEFAULT_WORK_RATE;
 		this.name = WORKER_NAME;
+		this.description = "A worker who will help you work the land.";
 	}
 
 	public AbstractWorker(int level) {
