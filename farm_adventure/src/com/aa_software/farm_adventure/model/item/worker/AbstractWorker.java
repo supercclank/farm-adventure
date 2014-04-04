@@ -20,6 +20,7 @@ public abstract class AbstractWorker extends AbstractItem {
 	private int level;
 	private int wage;
 	private float workRate;
+	private boolean isWorking;
 
 	public AbstractWorker() {
 		this.level = DEFAULT_LEVEL;
@@ -77,7 +78,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		return threshExperience;
 	}
 
-	private final int calculateWage() {
+	public final int calculateWage() {
 		int wage = DEFAULT_WAGE;
 		/* level 0 = 200; level 1 = 200 + 100; level 2 = 200 + 100 + 150 */
 		if (level > DEFAULT_LEVEL) {
@@ -153,5 +154,13 @@ public abstract class AbstractWorker extends AbstractItem {
 
 	public void setBusy(boolean isBusy) {
 		this.isBusy = isBusy;
+	}
+	
+	public void setWorkingStatus(boolean b) {
+		this.isWorking = b;
+	}
+	
+	public boolean isWorking() {
+		return this.isWorking;
 	}
 }
