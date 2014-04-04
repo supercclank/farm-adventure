@@ -6,7 +6,7 @@ public class BeetCrop extends AbstractCrop {
 	public static final String BEET_NAME = "Beet";
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
-	public static final int DEFAULT_COST = 20;
+	public static final int DEFAULT_COST = 60;
 	public static final int DEFAULT_VALUE = 10;
 
 	public BeetCrop() {
@@ -16,7 +16,6 @@ public class BeetCrop extends AbstractCrop {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.name = BEET_NAME;
-		
 	}
 
 	public BeetCrop(int growthTime, int output, int cost, int value) {

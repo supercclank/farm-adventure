@@ -6,7 +6,7 @@ public class CarrotCrop extends AbstractCrop {
 	public static final String CARROT_NAME = "Carrot";
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
-	public static final int DEFAULT_COST = 20;
+	public static final int DEFAULT_COST = 60;
 	public static final int DEFAULT_VALUE = 10;
 
 	public CarrotCrop() {
