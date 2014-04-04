@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractWorker extends AbstractItem {
-	public static final int DEFAULT_WAGE = 200;
+	public static final int DEFAULT_WAGE = 20;
 	public static final int DEFAULT_LEVEL = 0;
 	public static final int DEFAULT_EXPERIENCE = 0;
 	public static final float DEFAULT_WORK_RATE = 1;
@@ -27,6 +27,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.wage = DEFAULT_WAGE;
 		this.workRate = DEFAULT_WORK_RATE;
 		this.name = WORKER_NAME;
+		this.description = "A worker who will help you work the land.";
 	}
 
 	public AbstractWorker(int level) {

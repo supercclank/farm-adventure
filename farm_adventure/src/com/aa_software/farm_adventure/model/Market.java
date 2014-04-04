@@ -11,6 +11,10 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.CombineTool;
 import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.BackhoeTool;
@@ -23,9 +27,9 @@ import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 public class Market {
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
-			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), new TractorPlowTool(), 
-			new ShovelTool(), new BackhoeTool(), new TrowelTool(), new SeederTool(), new ScytheTool(), new CombineTool(), 
-			new DefaultWorker()
+			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), 
+			new ShovelTool(), new TrowelTool(), new ScytheTool(),  
+			new DefaultWorker(), new BananaSeed(), new CarrotSeed(), new RiceSeed(), new BeetSeed()
 	}));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
@@ -71,6 +75,33 @@ public class Market {
 				marketItems.put(itemType, items);
 			}
 		}
+	}
+	
+	/**
+	 * Removes item from the inventory
+	 * @param item
+	 * @return true if item was deleted and false if the item was not found
+	 */
+	public boolean removeItem(AbstractItem item) {
+		if (marketItems.size()!=0){
+			String itemType = item.getItemType();
+			if (marketItems.containsKey(itemType)){
+				int del = 0;
+				int itemsCount = marketItems.get(itemType).size();
+				for (int i = 0; i<itemsCount; i++){
+					if (marketItems.get(itemType).get(i).compareTo(item)==0){
+						marketItems.get(itemType).remove(i);
+						del++;
+					}
+					if (del>0){
+						System.out.println(item.toString()+" was Removed from inventory");
+						return true;
+					}
+				}
+			} 
+		}
+		System.out.println("You don't have more of this item to sell");
+		return false;
 	}
 	
 	/**

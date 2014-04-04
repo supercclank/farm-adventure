@@ -16,6 +16,7 @@ public class CarrotCrop extends AbstractCrop {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.name = CARROT_NAME;
+		this.description = "Carrots that you can sell in the market place";
 	}
 
 	public CarrotCrop(int growthTime, int output, int cost, int value) {

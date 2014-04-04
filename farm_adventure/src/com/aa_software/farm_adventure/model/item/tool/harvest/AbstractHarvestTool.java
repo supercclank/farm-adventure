@@ -13,9 +13,11 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	
 	public void update(final Plot plot, final Inventory inventory) {
 		if(plot.isUsable() && plot.hasCrop()) {
-			final AbstractWorker worker = (AbstractWorker) inventory.getFreeWorker();
-			if(worker == null) {
+			final AbstractWorker worker;
+			if(workerIndex<0 || ((AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex)).isBusy()) {
 				return;
+			}else{
+				worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 			}
 			worker.setBusy(true);
 			plot.setUsable(false);
@@ -45,6 +47,6 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	}
 	
 	public String getItemType() {
-		return "Harvest Tools";
+		return "HARVEST TOOLS";
 	}
 }

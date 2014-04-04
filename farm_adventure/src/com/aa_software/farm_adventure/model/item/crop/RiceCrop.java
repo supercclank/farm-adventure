@@ -16,6 +16,7 @@ public class RiceCrop extends AbstractCrop {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.name = RICE_NAME;
+		this.description = "Rice that you can sell in the market place";
 	}
 
 	public RiceCrop(int growthTime, int output, int cost, int value) {
