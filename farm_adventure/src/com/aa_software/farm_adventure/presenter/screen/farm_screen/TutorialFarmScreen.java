@@ -41,7 +41,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 public class TutorialFarmScreen extends AbstractFarmScreen {
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
 	final int MARKET_X = 4;
@@ -199,7 +199,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 			/*
 		case CLICK_IRRIGATE_MENU:
-			description = "Now choose a side to irrigate!";
+			description = "Now choose a side to irrigate.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
@@ -215,7 +215,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_PLANT:
-			description = "Click the plant tool!";
+			description = "Click the plant tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .40);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -223,7 +223,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			waitingForX = 2;
 			break;
 		case CLICK_CLICK_PLANT:
-			description = "Click the plant tool\nagain to choose a plant!";
+			description = "Click the plant tool\nagain to choose a plant.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .37);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			plantMenuClicksDisabled = false;
@@ -233,21 +233,21 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_PLANT_MENU:
 			// TODO: the menu shouldn'y dissapear if you click elsewhere
-			description = "Now choose a type of seed!";
+			description = "Now choose a type of seed.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
 			plantMenuClicksDisabled = false;
 			break;
 		case CLICK_PLANT_PLOT:
-			description = "Now choose a plot to plant on!";
+			description = "Now choose a plot to plant on.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			foundClick = false;
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_PLANT_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_HARVEST:
@@ -256,7 +256,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_HARVEST:
-			description = "Click the harvest tool!";
+			description = "Click the harvest tool.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .60);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -265,7 +265,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case CLICK_HARVEST_PLOT:
 			// TODO: should make sure the harvested plot had a plant!
-			description = "Now click a plot to harvest it!";
+			description = "Now click a plot to harvest it.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			foundClick = false;
@@ -273,7 +273,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			fieldClicksDisabled = false;
 			break;
 		case WAIT_HARVEST_PLOT:
-			description = "One of your workers has taken up the task!";
+			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;
 		case DESCRIBE_INVENTORY:
@@ -282,7 +282,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case CLICK_INVENTORY:
-			description = "Click the inventory\nand market button!";
+			description = "Click the inventory\nand market button.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			toolBarClicksDisabled = false;
@@ -306,9 +306,51 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionX = (float) (Gdx.graphics.getWidth() * .7);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			break;
+		case BEFORE_LEAVING:
+			description = "Before leaving the tutorial\n" +
+					"you should know about seasons.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SEASONS:
+			description = "Each farm you play will have\n" +
+					"a specific cycle of seasons.\n" +
+					"and each season has a\n" +
+					"different effect on the farm.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SPRING:
+			description = "Spring is the perfect farming\n" +
+					"season. In this season, crops\n" +
+					"grow twice as quickly.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_SUMMER:
+			description = "Summer brings a lack of water.\n" +
+					"In this season, plots can\n" +
+					"suddenly lose their irrigation.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_FALL:
+			description = "Fall drops leaves from trees.\n" +
+					"In this season, leaves can\n" +
+					"cover plots, making them unusable.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_WINTER:
+			description = "Winter lacks the warm sun's\n" +
+					"rays. In this season, crops\n" +
+					"grow twice as slowly.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
 		case DESCRIBE_END:
-			description = "Good job! Now try out a real farm!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			description = "Good job! Now try out a real farm.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .30);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case END:
