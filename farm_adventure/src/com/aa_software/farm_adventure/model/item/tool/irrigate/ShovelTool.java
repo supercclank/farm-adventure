@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 public class ShovelTool extends AbstractIrrigationTool {
 	public static final String TEXTURE_NAME = "shovelTool";
 	public static final String SHOVELTOOL_NAME = "Shovel";
-	public static int DEFAULT_COST = 10;
+	public static int DEFAULT_COST = 0;
 	public static int DEFAULT_VALUE = 0;
 	/* measured in seconds */
 	public static final int DEFAULT_WORK_TIME = 10;

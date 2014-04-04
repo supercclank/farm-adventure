@@ -4,8 +4,6 @@ public class Stats {
 
 	int score = 0;
 	
-	//PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
-	
 	public void setScore(int score) {
 		this.score = score;
 	}

@@ -64,7 +64,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public abstract class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MILLIS = 1200;
+	public static final long GAME_TIME_MILLIS = 120000;
 	long gameStartTime;
 
 	/* Player */
@@ -233,8 +233,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	@Override
 	public void dispose() {
-		PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
 		stats.setScore(PLAYER.getBankroll() + calculateScore());
+		PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
 		map.dispose();
 		renderer.dispose();
 		FarmAdventure.getInstance().setScreen(new ScoreScreen(stats));
@@ -249,6 +249,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				score += item.getValue();
 			}
 		}
+		
+		score = score - Player.STARTING_BANKROLL;
+		
 		return score;
 	}
 
