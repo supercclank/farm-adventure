@@ -35,7 +35,7 @@ public class Sounds {
 	private Sounds() {
 		click = Gdx.audio.newSound(Gdx.files.internal("sounds/drop.wav"));
 		money = Gdx.audio.newSound(Gdx.files.internal("sounds/money.mp3"));
-		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/rain.mp3"));
+		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
 		soundVolume = 1;
 		masterVolume = 1;
 	}
