@@ -724,7 +724,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				
 				
 				if (selection != null && selection.equals(farm.getTool(x, y))) {
-					if(selectedWorker >=0){
 						if (selection instanceof AbstractPlantTool) {
 							if (!plantMenuClicksDisabled) {
 								updatePlantWindow();
@@ -735,7 +734,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							}
 						}
 						sounds.playClick();
-					}
 				} else if (farm.getTool(x, y) instanceof AbstractTool) {
 					if(selectedWorker >=0){
 						selection = farm.getTool(x, y);
