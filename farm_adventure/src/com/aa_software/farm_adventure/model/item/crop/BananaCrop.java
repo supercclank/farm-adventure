@@ -8,15 +8,15 @@ public class BananaCrop extends AbstractCrop {
 	public static final String BANANA_NAME = "Banana";
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
-	public static final int DEFAULT_COST = 60;
-	//public static final int DEFAULT_VALUE = 10;
+	public static final int DEFAULT_COST = 80;
+	public static final int DEFAULT_VALUE = 80;
 
 	public BananaCrop() {
 		super();
 		this.growthTime = DEFAULT_GROWTH_TIME;
 		this.output = DEFAULT_OUTPUT;
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = DEFAULT_VALUE;
 		this.name = BANANA_NAME ;
 		this.description = "Bananas that you can sell in the market place";
 	}
