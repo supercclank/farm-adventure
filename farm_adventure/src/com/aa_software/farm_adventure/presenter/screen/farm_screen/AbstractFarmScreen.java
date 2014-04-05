@@ -719,6 +719,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			boolean seasonHasChanged = farm.checkSeasonTimer();
 			if(seasonHasChanged) {
 				//DO STUFF.
+				farm.getInventory().getWorkerCount();
 			}
 			
 			time = String.format("%02d:%02d",
