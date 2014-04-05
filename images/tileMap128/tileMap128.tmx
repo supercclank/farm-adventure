@@ -404,7 +404,7 @@
   </tile>
   <tile id="104">
    <properties>
-    <property name="task" value="leftB4"/>
+    <property name="leftB4" value=""/>
    </properties>
   </tile>
   <tile id="105">
