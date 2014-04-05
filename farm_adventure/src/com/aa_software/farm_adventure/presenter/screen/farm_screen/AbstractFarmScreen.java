@@ -625,7 +625,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public void updateIrrigationWindow(final int x, final int y) {
 
 		irrigationWindow.clear();
-
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y)
 				.iterator();
 		for (; iterator.hasNext();) {
@@ -661,6 +660,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
 							selectedWorker = UNSELECT;
 						}
+						selection = null;
 						syncSelectTiles(UNSELECT);
 						sounds.playClick();
 					}
@@ -713,6 +713,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						selectedWorker = UNSELECT;
 					}
 					syncSelectTiles(UNSELECT);
+					if (!(selection instanceof AbstractIrrigationTool)){
+						selection = null;
+					}
 					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
 					updateInventoryTable();
