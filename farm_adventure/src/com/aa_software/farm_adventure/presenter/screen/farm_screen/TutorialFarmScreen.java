@@ -237,8 +237,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				descriptionX = (float) (Gdx.graphics.getWidth() * .18);
 				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 				toolBarClicksDisabled = false;
-				doneWaiting = false;
 				waitingForX = 1;
+				doneWaiting = false;
 				break;
 			case CLICK_IRRIGATE_PLOT:
 				description = "Now click a plot to irrigate it.\n" +
@@ -246,6 +246,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 						"to the plowed plot.";
 				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				toolBarClicksDisabled = false;
+				waitingForX = 1;
 				doneWaiting = false;
 				irrigationMenuClicksDisabled = false;
 				fieldClicksDisabled = false;
@@ -508,6 +510,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection)
 						.setTaskType(this.getTaskType());
+						selectedWorker = -1;
+						syncSelectTiles(-1);
+						selection = null;
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
