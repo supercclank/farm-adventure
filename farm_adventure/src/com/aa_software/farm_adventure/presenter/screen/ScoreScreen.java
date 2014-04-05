@@ -27,11 +27,11 @@ public class ScoreScreen extends AbstractScreen{
 
 			super.addActor(table);
 
-			table.add("Score!").spaceBottom(50);
+			table.add("Score:").spaceBottom(50);
 			table.row();
-			table.add(Integer.toString(stats.getScore())).spaceBottom(30);
-
-			TextButton startGameButton = new TextButton("Done", super.getSkin());
+			table.add(Integer.toString(stats.getScore())).spaceBottom(50);
+			table.row();
+			TextButton startGameButton = new TextButton("Continue to the Map", super.getSkin());
 
 			
 			// This line of code will take the user to the world screen on click or

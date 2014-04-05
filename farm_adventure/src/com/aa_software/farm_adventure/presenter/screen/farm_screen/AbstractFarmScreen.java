@@ -283,6 +283,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		}
 		
+		score = score - BananaSeed.DEFAULT_VALUE - BeetSeed.DEFAULT_VALUE - 
+				CarrotSeed.DEFAULT_VALUE - RiceSeed.DEFAULT_VALUE;
 		score = score - Player.STARTING_BANKROLL;
 		
 		return score;
