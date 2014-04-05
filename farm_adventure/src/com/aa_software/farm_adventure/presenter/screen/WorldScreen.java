@@ -217,28 +217,33 @@ public class WorldScreen extends AbstractScreen {
 		seasonWindow.row().fill().expandX();
 
 		/* Decide the season order */
+		Button seasonButton;
 		for (SeasonType s : seasons) {
 			switch (s) {
-			case SPRING:
-				seasonWindow.add(new Button(new Image(springImage), skin))
-						.size(75, 115);
-				break;
-			case SUMMER:
-				seasonWindow.add(new Button(new Image(summerImage), skin))
-						.size(75, 115);
-				break;
-			case FALL:
-				seasonWindow.add(new Button(new Image(fallImage), skin)).size(
-						75, 115);
-				break;
-			case WINTER:
-				seasonWindow.add(new Button(new Image(winterImage), skin))
-						.size(75, 115);
-				break;
-			default:
-				seasonWindow.add(new Button(new Image(springImage), skin))
-						.size(75, 115);
-				break;
+				case SPRING:
+					seasonButton = new Button(new Image(springImage),skin);
+					seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+					seasonWindow.add(seasonButton).size(75, 115);
+					break;
+				case SUMMER:
+					seasonButton = new Button(new Image(summerImage), skin);
+					seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+					seasonWindow.add(seasonButton).size(75, 115);
+					break;
+				case FALL:
+					seasonButton = new Button(new Image(fallImage), skin);
+					seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+					seasonWindow.add(seasonButton).size(75, 115);
+					break;
+				case WINTER:
+					seasonButton = new Button(new Image(winterImage), skin);
+					seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+					seasonWindow.add(seasonButton).size(75, 115);
+					break;
+				default:
+					seasonWindow.add(new Button(new Image(springImage), skin))
+							.size(75, 115);
+					break;
 			}
 		}
 		seasonWindow.row();

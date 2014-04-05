@@ -30,13 +30,14 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 		}else{
 			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
-		if(plot.isUsable()) {
+		if(plot.isUsable() || plot.isUnplowed()) {
 			System.out.println("Plot Type: "+plot.getPlotType());
 			worker.setBusy(true);
 			plot.setUsable(false);
 			plot.setTaskTexturePrefix(task);
 			float delay = workTime * worker.getWorkRate() / (plot.getWorkStatusTextureLength() - 1);
 			Timer.schedule(new IrrigationTask(plot, irrigationChoice, task, worker, delay), delay);
+			worker.resetTexture();
 		}
 	}
 

@@ -21,7 +21,6 @@ public class TrowelTool extends AbstractPlantTool {
 		this.name = TROWELTOOL_NAME;
 		this.upgrade = new SeederTool();
 		this.upgrade.setPredecessor(this);
-		this.description = "A trowel which allows you to plant seeds at an average pace.";
 	}
 
 	@Override

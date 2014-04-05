@@ -43,9 +43,9 @@ public class ToolSelectionState extends AbstractSelectionState {
 	}	
 
 	@Override
-	public DefaultSelectionState update(Plot plot, Inventory inventory) {
+	public ToolSelectionState update(Plot plot, Inventory inventory) {
 		selection.update(plot, inventory);
-		return new DefaultSelectionState();
+		return new ToolSelectionState((AbstractTool) selection);
 	}
 
 }

@@ -51,6 +51,7 @@ public abstract class AbstractPlowTool extends AbstractTool {
 			    		plot.incrementTaskTextureIndex();
 			    		Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
 			    	}
+			    	worker.resetTexture();
 			    }
 			}, workTime * worker.getWorkRate()/(plot.getWorkStatusTextureLength() - 1));
 		}
