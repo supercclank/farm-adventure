@@ -17,6 +17,10 @@ import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
+import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
@@ -354,19 +358,46 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	public void updatePlantWindow() {
 		plantWindow.clear();
-		if (farm.getInventory().getItems().get("SEEDS")!=null){
+		if (farm.getInventory().getItems().get("SEEDS")!=null){	
+			ArrayList<AbstractSeed> seedKey = new ArrayList<AbstractSeed>();
+			AbstractSeed tempSeed;
 			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
 			for (int i= 0; i<seedNum; i++){
-				final AbstractSeed tempSeed = (AbstractSeed) farm.getInventory().getItems().get("SEEDS").get(i);
-				Texture seedTexture = new Texture(Gdx.files.internal("textures/"+tempSeed.getTextureName()+".png"));
-				TextureRegion seedImage = new TextureRegion(seedTexture);
-				Button seedButton = new Button(new Image(seedImage), skin);
-				plantWindow.add(seedButton);
-				seedButton.addListener(new SeedClickListener(tempSeed));
-			
+				System.out.println("Seed Key: "+seedKey.size());
+				tempSeed = (AbstractSeed) farm.getInventory().getItems().get("SEEDS").get(i);
+				if (seedKey.size()==0){
+					seedKey.add(tempSeed);
+					addSeedButton(tempSeed);
+				} else {
+					Boolean inSeedKey = false;
+					for (int j = 0; j<seedKey.size(); j++){
+						if (seedKey.get(j).compareTo(tempSeed)==0){
+							inSeedKey = true;
+							j = seedKey.size();	
+						}
+					}
+					if (!inSeedKey){
+						seedKey.add(tempSeed);
+						addSeedButton(tempSeed);
+					}
+				}
 			}
 		}
 		plantWindow.pack();
+	}
+	
+	public void addSeedButton(AbstractSeed seed){
+		Table seedTable = new Table();
+		Texture seedTexture = new Texture(Gdx.files.internal("textures/"+seed.getTextureName()+".png"));
+		TextureRegion seedImage = new TextureRegion(seedTexture);						
+		seedTable.row();
+		seedTable.add(new Image(seedImage));
+		Label seedQuantity = new Label(""+farm.getInventory().getCount(seed),style1);
+		seedTable.row();
+		seedTable.add(seedQuantity);
+		Button seedButton = new Button(seedTable, skin);
+		plantWindow.add(seedButton);
+		seedButton.addListener(new SeedClickListener(seed));
 	}
 
 	@Override
@@ -696,6 +727,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					syncSelectTiles(x);
 					if(!inventoryClicksDisabled) {
 						inventoryWindow.setVisible(true);
+						if(selectedWorker>=0){
+							((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+						}
 						inventoryOpen = true;
 						Gdx.input.setInputProcessor(inventoryStage);
 					}
@@ -781,13 +815,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			if (!((AbstractWorker) invWorkers.get(i)).isBusy()){
 				Texture workerTexture = new Texture(Gdx.files.internal("textures/"+invWorkers.get(i).
 						getTextureName()+".png"));
-				TextureRegion workerImage = new TextureRegion(workerTexture);
-				Button workerButton = new Button(new Image(workerImage), skin);
-				workerButton.padBottom(2);
-				workerButton.padLeft(5);
-				workerButton.padRight(5);
-				workerButton.padTop(2);
-				workerButton.addListener(new WorkerClickListener(i));
+				TextureRegion workerTRigion = new TextureRegion(workerTexture);
+				Image workerImage = new Image(workerTRigion);
+				Button workerButton = new Button(workerImage, skin);
+				workerButton.padBottom(2).padLeft(2).padRight(2).padTop(2);
+				workerButton.addListener(new WorkerClickListener(i, workerButton, (AbstractWorker)invWorkers.get(i)));
 				workerQueue.add(workerButton).left().padLeft(3);
 			}
 		}	
@@ -988,25 +1020,31 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 */
 	private class WorkerClickListener extends ClickListener {
 	    int selectionIndex;
-	    
+	    Button workerButton;
+	    AbstractWorker worker;
 	    /**
 	     * This button enables buying of the item and updating of the item quantity
 	     * @param workerButton 
 	     * @param workerButton 
+	     * @param workerButton 
+	     * @param image 
 	     * @param item
 	     * @param itemInvCount
 	     */
-	    public WorkerClickListener(int workerIndex) {
+	    public WorkerClickListener(int workerIndex, Button workerButton, AbstractWorker worker) {
 	        this.selectionIndex = workerIndex;  
+	        this.workerButton = workerButton;
+	        this.worker = worker;
 	    }
 	    
 	    /**
 	     * On button touch the item is bought and the item quantity is updated in the inventory
 	     */
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-	    	selectedWorker = this.selectionIndex;
-	    	System.out.println("Worker selected: "+selectedWorker);
+	    	selectedWorker = this.selectionIndex;	
+	    	this.worker.setSelectTexture();  	
 	    	sounds.playClick();
+	    	System.out.println("Worker selected: "+this.selectionIndex);	
             return true;
         }
 	}

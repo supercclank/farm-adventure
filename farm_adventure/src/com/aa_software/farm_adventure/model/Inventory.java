@@ -189,4 +189,8 @@ public class Inventory {
 		}
 		return null;
 	}
+	
+	public ArrayList<AbstractItem> getAllWorkers(){
+		return inventoryItems.get("WORKERS");
+	}
 }

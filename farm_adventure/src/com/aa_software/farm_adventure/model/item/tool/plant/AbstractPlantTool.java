@@ -44,6 +44,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
 			sounds.playClick();
 			this.seed = null;
+			worker.resetTexture();
 		}
 	}
 	

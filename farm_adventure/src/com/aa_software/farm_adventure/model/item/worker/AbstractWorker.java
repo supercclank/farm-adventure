@@ -14,12 +14,15 @@ public abstract class AbstractWorker extends AbstractItem {
 	public static final float LEVEL_WAGE_MOD = .5f;
 	public static final float LEVEL_WORK_RATE_MOD = .7f;
 	public static final String WORKER_NAME = "Worker";
+	public static final String UNSELECTEDWORKER_TEXTURE = "worker";
+	public static final String SELECTEDWORKER_TEXTURE = "selectedworker";
 
 	private boolean isBusy;
 	private int experience;
 	private int level;
 	private int wage;
 	private float workRate;
+	private String texture;
 
 	public AbstractWorker() {
 		this.level = DEFAULT_LEVEL;
@@ -28,6 +31,7 @@ public abstract class AbstractWorker extends AbstractItem {
 		this.workRate = DEFAULT_WORK_RATE;
 		this.name = WORKER_NAME;
 		this.description = "A worker who will help you work the land.";
+		this.texture = "worker";
 	}
 
 	public AbstractWorker(int level) {
@@ -110,9 +114,17 @@ public abstract class AbstractWorker extends AbstractItem {
 	}
 
 	public String getTextureName() {
-		return "worker";
-		// TODO: change
+		return this.texture;
 	}
+	
+	public void setSelectTexture(){
+		this.texture = SELECTEDWORKER_TEXTURE;
+	}
+	
+	public void resetTexture(){
+		this.texture = UNSELECTEDWORKER_TEXTURE;
+	}
+	
 
 	public int getWage() {
 		wage = calculateWage();
