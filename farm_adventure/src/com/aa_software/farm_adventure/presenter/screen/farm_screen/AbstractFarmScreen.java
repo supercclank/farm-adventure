@@ -144,15 +144,17 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected final Stage irrigationMenuStage;
 	protected final Stage statusBarStage;
 	protected final Window irrigationWindow;
+	InputMultiplexer marketMultiplexer;
 	
 	protected Stage workerStage;
 	protected Table workerQueue;
 	protected Table workerWindow;
 	public int selectedWorker = UNSELECT;
 
+	protected boolean workerClicksDisabled;
+	protected boolean toolBarClicksDisabled;
 	protected boolean irrigationMenuClicksDisabled;
 	protected boolean plantMenuClicksDisabled;
-	protected boolean toolBarClicksDisabled;
 	protected boolean fieldClicksDisabled;
 	protected boolean inventoryClicksDisabled;
 	protected boolean disableGameTime;
@@ -172,6 +174,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public AbstractFarmScreen() {
 		gameOver = false;
 		disableGameTime = false;
+		workerClicksDisabled = false;
 		irrigationMenuClicksDisabled = false;
 		plantMenuClicksDisabled = false;
 		toolBarClicksDisabled = false;
@@ -203,10 +206,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Gdx.graphics.getHeight(), true);
 		inventoryStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
+		workerStage = new Stage(Gdx.graphics.getWidth(),WORKER_HEIGHT, true);
+		
+		marketMultiplexer = new InputMultiplexer();
+		marketMultiplexer.addProcessor(inventoryStage);
+		marketMultiplexer.addProcessor(workerStage);
 		
 		stats = new Stats();
 		
-		workerStage = new Stage(Gdx.graphics.getWidth(),WORKER_HEIGHT, true);
 
 		irrigationWindow = new Window("Pick a Side to Irrigate", skin);
 		irrigationWindow.setModal(false);
@@ -348,8 +355,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	}
 	
 	public void setAllGameClicksDisabled(boolean bool) {
-		fieldClicksDisabled = bool;
+		workerClicksDisabled = bool;
 		toolBarClicksDisabled = bool;
+		fieldClicksDisabled = bool;
 		irrigationMenuClicksDisabled = bool;
 		plantMenuClicksDisabled = bool;
 		inventoryClicksDisabled = bool;
@@ -648,6 +656,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
+						if(selectedWorker>=0){
+							((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+							selectedWorker = UNSELECT;
+						}
+						syncSelectTiles(UNSELECT);
 						sounds.playClick();
 					}
 					irrigationWindow.setVisible(false);
@@ -685,10 +698,19 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								irrigationWindow.setVisible(true);
 								Gdx.input.setInputProcessor(irrigationMenuStage);
 								sounds.playClick();
+							} else {
+								if(selectedWorker>=0){
+									((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+									selectedWorker = UNSELECT;
+									syncSelectTiles(UNSELECT);
+								}
 							}
 					}
 				} else {
-					selectedWorker = UNSELECT;
+					if(selectedWorker>=0){
+						((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+						selectedWorker = UNSELECT;
+					}
 					syncSelectTiles(UNSELECT);
 					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
@@ -724,18 +746,19 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						sounds.playClick();
 					}
 				} else {
-					selection = null;
-					state = new DefaultSelectionState();
-					syncSelectTiles(x);
 					if(!inventoryClicksDisabled) {
+						selection = null;
+						state = new DefaultSelectionState();
+						syncSelectTiles(x);
 						inventoryWindow.setVisible(true);
 						if(selectedWorker>=0){
 							((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+							selectedWorker = UNSELECT;
 						}
 						inventoryOpen = true;
-						Gdx.input.setInputProcessor(inventoryStage);
+						Gdx.input.setInputProcessor(marketMultiplexer);
+						sounds.playClick();
 					}
-					sounds.playClick();
 				}
 			}
 		}
@@ -831,13 +854,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * Sets up the window to view inventory and market
 	 */
 	public void setupInventoryWindow() {
-
-		inventorySkin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		
+		inventorySkin = new Skin(Gdx.files.internal(SKIN_JSON_UI));	
 		Table marketTable = new Table();
 		marketTable.layout();
 		inventoryStage.addActor(marketTable);
-
 		inventoryScrollTable.pack();
 		ScrollPane inventorySP = new ScrollPane(inventoryScrollTable,
 				inventorySkin);
@@ -845,7 +865,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		marketTable.add(new Label("INVENTORY", inventorySkin)).padLeft((float) (Gdx.graphics.getWidth()*.4))
 			.padRight((float) (Gdx.graphics.getWidth()*.15))
 			.width((float) (Gdx.graphics.getWidth()*.35));
-		
 		TextButton exitButton = new TextButton("EXIT",inventorySkin, "default");
 		exitButton.setColor(Color.RED);
 		exitButton.addListener(new InputListener() {
@@ -859,12 +878,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		});
 		marketTable.add(exitButton).width((float) (Gdx.graphics.getWidth()*.1));
-		
 		marketTable.row();
 		marketTable.add(inventorySP).colspan(2).width((float) (Gdx.graphics.getWidth()));
 		marketTable.pack();
 		marketTable.layout();
-
 		inventoryWindow = new Window("", inventorySkin);
 		inventoryWindow.setModal(true);
 		inventoryWindow.setMovable(false);
@@ -1024,15 +1041,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	    int selectionIndex;
 	    Button workerButton;
 	    AbstractWorker worker;
-	    /**
-	     * This button enables buying of the item and updating of the item quantity
-	     * @param workerButton 
-	     * @param workerButton 
-	     * @param workerButton 
-	     * @param image 
-	     * @param item
-	     * @param itemInvCount
-	     */
+	    
 	    public WorkerClickListener(int workerIndex, Button workerButton, AbstractWorker worker) {
 	        this.selectionIndex = workerIndex;  
 	        this.workerButton = workerButton;
@@ -1043,6 +1052,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	     * On button touch the item is bought and the item quantity is updated in the inventory
 	     */
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+	    	if(selectedWorker>=0){
+				((AbstractWorker)farm.getInventory().getAllWorkers().get(selectedWorker)).resetTexture();
+			}
 	    	selectedWorker = this.selectionIndex;	
 	    	this.worker.setSelectTexture();  	
 	    	sounds.playClick();
@@ -1061,13 +1073,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		Label itemInvCount;
 		Boolean isUpgrade;
 
-		/**
-		 * This button enables buying of the item and updating of the item
-		 * quantity
-		 * 
-		 * @param item
-		 * @param itemInvCount
-		 */
 		public BuyClickListener(AbstractItem item, Label itemInvCount, Boolean isUpgrade) {
 			this.item = item;
 			this.itemInvCount = itemInvCount;
@@ -1088,8 +1093,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				}else{
 					int cost = item.getCost()-preTool.getCost();
 					item.setCost(cost);
-					
-				
 					if (PLAYER.buyItem(this.item)){
 						farm.getInventory().addItem(item);
 						farm.getMarket().addItem(item);
@@ -1099,7 +1102,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						updateInventoryTable();
 						farm.updateToolBar();
 					}
-				
 				}			
 			} else if (PLAYER.buyItem(this.item)) {
 				farm.getInventory().addItem(item);
@@ -1119,14 +1121,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private class SellClickListener extends ClickListener {
 		AbstractItem item;
 		Label itemInvCount;
-
-		/**
-		 * This button enables selling of the item and updating of the item
-		 * quantity
-		 * 
-		 * @param item
-		 * @param itemInvCount
-		 */
+		
 		public SellClickListener(AbstractItem item, Label itemInvCount) {
 			this.item = item;
 			this.itemInvCount = itemInvCount;
@@ -1156,13 +1151,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private class SeedClickListener extends ClickListener {
 		AbstractItem item;
 
-		/**
-		 * This button enables buying of the item and updating of the item
-		 * quantity
-		 * 
-		 * @param item
-		 * @param itemInvCount
-		 */
 		public SeedClickListener(AbstractItem item) {
 			this.item = item;
 		}
@@ -1191,13 +1179,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private class InfoClickListener extends ClickListener {
 		AbstractItem item;
 
-		/**
-		 * This button enables buying of the item and updating of the item
-		 * quantity
-		 * 
-		 * @param item
-		 * @param itemInvCount
-		 */
 		public InfoClickListener(AbstractItem item) {
 			this.item = item;
 		}
@@ -1217,7 +1198,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 						infoWindow.setVisible(false);
-						Gdx.input.setInputProcessor(inventoryStage);
+						Gdx.input.setInputProcessor(marketMultiplexer);
 						return true;
 					}
 			});

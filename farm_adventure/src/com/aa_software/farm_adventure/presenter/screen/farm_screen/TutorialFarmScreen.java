@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.farm.TutorialFarm;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
@@ -37,14 +38,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TutorialFarmScreen extends AbstractFarmScreen {
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER,
+		DESCRIBE_TOOL_BAR,
+		DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, 
+		CLICK_IRRIGATE_WORKER,DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, 
+		CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, 
+		CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, 
+		DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, 
+		DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, CLICK_EXIT_INFO,
+		BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
-	final int MARKET_X = 4;
+	final int MARKET_X = 22;
 	
 	/* Font setup */
 	final LabelStyle style2 = new LabelStyle(fontType, Color.WHITE);
@@ -85,7 +95,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		foundClick = true;
 		
 		//TODO: Maybe there is a better way to stop the deficient worker deadlock.
-		for(int i = 0; i < 2; i++) {
+		for(int i = 0; i < 1; i++) {
 			farm.getInventory().addItem(new DefaultWorker());
 		}
 	}
@@ -112,10 +122,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 
 		boolean allGameClicksAreDisabled = fieldClicksDisabled
 				&& toolBarClicksDisabled && irrigationMenuClicksDisabled
-				&& plantMenuClicksDisabled;
+				&& plantMenuClicksDisabled && workerClicksDisabled;
 		if (allGameClicksAreDisabled) {
 			Gdx.input.setInputProcessor(descriptionStage);
+		} else if (!workerClicksDisabled && (states[stateIndex] == State.CLICK_PLOW_WORKER
+				|| states[stateIndex] == State.CLICK_IRRIGATE_WORKER) ||   
+				states[stateIndex] == State.CLICK_PLANT_WORKER || states[stateIndex] == State.CLICK_HARVEST_WORKER){
+			Gdx.input.setInputProcessor(workerStage);
+			if (selectedWorker>=0){
+				workerClicksDisabled = true;
+				foundClick = true;
+				
+			}
 		}
+		
 		//TODO change this hacky fix. Perhaps add a set of "wait" states, similar to the
 		// "click" set that transition on a given condition.
 		if(states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
@@ -145,6 +165,39 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			description = "This is the status bar which displays\nyour money, time left, and workers.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .25);
+			break;
+		case DESCRIBE_PLOW_WORKER:
+			description = "These are \navailable farmers \nthat can labor \na plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			break;
+		case CLICK_PLOW_WORKER:
+			description = "Select a worker to \nplow a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
+			break;
+		case CLICK_IRRIGATE_WORKER:
+			description = "Select a worker to \nirrigate a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
+			break;
+		case CLICK_PLANT_WORKER:
+			description = "Select a worker to \nplant on a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
+			break;
+		case CLICK_HARVEST_WORKER:
+			description = "Select a worker to \nharvest a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
 			break;
 		case DESCRIBE_TOOL_BAR:
 			description = "This is the tool bar which allows\nyou to perform actions on the farm.";
@@ -495,11 +548,11 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			TextureRegion irrigationImage = new TextureRegion(irrigationTexture);
 			Button irrigationButton = new Button(new Image(irrigationImage),
 					skin);
-			/*
-			 * creates an input listener that additionally has the fields for
-			 * the selected X and Y. This way, when the listener is called, it
-			 * will know which X and Y it pertains to.
-			 */
+			
+			 // creates an input listener that additionally has the fields for
+			 // the selected X and Y. This way, when the listener is called, it
+			 // will know which X and Y it pertains to.
+			 
 			irrigationButton.addListener(new IrrigationListener(x, y,
 					irrigation, task) {
 				public boolean touchDown(InputEvent event, float x, float y,
@@ -526,9 +579,12 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		irrigationWindow.pack();
 	}
 
+	
+
 	/**
 	 * Sets up the window to choose a seed to plant
 	 */
+	/**
 	@Override
 	public void updatePlantWindow() {
 		plantWindow.clear();
@@ -614,7 +670,35 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				}
 			});
 		}
+		
 
 		plantWindow.pack();
+	}
+	*/
+	
+	private class SeedClickListener extends ClickListener {
+		AbstractItem item;
+
+		public SeedClickListener(AbstractItem item) {
+			this.item = item;
+		}
+
+		/**
+		 * On button touch the item is bought and the item quantity is updated
+		 * in the inventory
+		 */
+		public boolean touchDown(InputEvent event, float x, float y,
+				int pointer, int button) {
+			
+			plantWindow.setVisible(false);
+			((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
+					PLANT_TOOL_Y)).setSeed(((AbstractSeed)this.item));
+			if (states[stateIndex] == State.CLICK_PLANT_MENU) {
+				foundClick = true;
+			}
+			sounds.playClick();
+			Gdx.input.setInputProcessor(workerStage);
+			return true;
+		}
 	}
 }

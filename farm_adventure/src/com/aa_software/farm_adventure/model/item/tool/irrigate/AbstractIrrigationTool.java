@@ -30,7 +30,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 		}else{
 			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
-		if(plot.isUsable()) {
+		if(plot.isUsable() || plot.isUnplowed()) {
 			System.out.println("Plot Type: "+plot.getPlotType());
 			worker.setBusy(true);
 			plot.setUsable(false);

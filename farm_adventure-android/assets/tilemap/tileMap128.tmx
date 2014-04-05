@@ -561,7 +561,7 @@
    <properties>
     <property name="tool" value="tractorPlowTool"/>
    </properties>
-  </tile> 
+  </tile>
   <tile id="152">
    <properties>
     <property name="seed" value="transparent"/>
@@ -710,6 +710,11 @@
   </data>
  </layer>
  <layer name="task" width="5" height="8">
+  <data encoding="base64">
+   CAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAA==
+  </data>
+ </layer>
+ <layer name="worker" width="5" height="8">
   <data encoding="base64">
    CAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAA==
   </data>

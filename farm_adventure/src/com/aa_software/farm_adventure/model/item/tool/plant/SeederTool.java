@@ -17,7 +17,7 @@ public class SeederTool extends AbstractPlantTool {
 		this.cost = DEFAULT_COST;
 		this.value = this.cost/2;
 		this.workTime = DEFAULT_WORK_TIME;
-		this.seed = new CarrotSeed();
+		this.seed = null;
 		this.name = SEEDERTOOL_NAME;
 		this.upgrade = null;
 		this.description = "A trowel which allows you to plant seeds at an average pace.";
