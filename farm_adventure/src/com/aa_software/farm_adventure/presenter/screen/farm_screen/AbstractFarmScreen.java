@@ -70,7 +70,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 public abstract class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MILLIS = 120000;
+	public static final long GAME_TIME_MILLIS = 240000;
 	long gameStartTime;
 
 	/* Player */
