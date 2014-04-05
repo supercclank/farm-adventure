@@ -189,4 +189,16 @@ public class Inventory {
 		}
 		return null;
 	}
+	
+	public ArrayList<AbstractWorker> getWorkers() {
+		String itemType = "WORKERS";
+		ArrayList<AbstractWorker> workers = new ArrayList<AbstractWorker>();
+		if (inventoryItems.containsKey(itemType)) {
+			for(int i = 0; i < getWorkerCount(); i++) {
+				AbstractWorker worker = (AbstractWorker)inventoryItems.get(itemType).get(i);
+					workers.add(worker);
+			}
+		}
+		return workers;
+	}
 }

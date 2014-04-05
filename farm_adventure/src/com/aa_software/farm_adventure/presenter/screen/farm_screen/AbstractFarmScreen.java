@@ -731,8 +731,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			/* 1000 milliseconds = 1 second */
 			boolean seasonHasChanged = farm.checkSeasonTimer();
 			if(seasonHasChanged) {
-				//DO STUFF.
-				farm.getInventory().getWorkerCount();
+				payWorker();
 			}
 			
 			time = String.format("%02d:%02d",
@@ -795,6 +794,17 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				workerQueue.add(workerButton).left().padLeft(3);
 			}
 		}	
+	}
+	
+
+	public void payWorker() {
+		int totalWorkerCost = 0;
+		ArrayList<AbstractWorker> workers = farm.getInventory().getWorkers();
+		for (AbstractWorker w : workers) {
+			totalWorkerCost += w.getWage();
+		}
+		
+		PLAYER.setBankroll(PLAYER.getBankroll() - totalWorkerCost);
 	}
 
 	/**
