@@ -40,6 +40,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 				    	plot.incrementTaskTextureIndex();
 				    	plot.harvestRemoveCrop(plot.getCrop());
 				    	Timer.schedule(this, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength()-1));
+				    	worker.resetTexture();
 				    }
 			    }
 			}, (workTime * worker.getWorkRate())/(plot.getWorkStatusTextureLength() - 1));

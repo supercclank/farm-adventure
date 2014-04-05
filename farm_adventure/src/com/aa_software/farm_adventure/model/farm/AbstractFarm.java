@@ -54,10 +54,10 @@ public abstract class AbstractFarm {
 		this.startingToolCount = new HashMap<AbstractTool, Integer>();
 		this.startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		this.field = new Field();
-		this.toolBar = new ToolBar();
 		this.timer = new Timer();
 		this.market = new Market();
 		this.inventory = new Inventory();
+		this.toolBar = new ToolBar(this.inventory);
 	}
 
 	public Season getCurrentSeason() {
@@ -120,18 +120,19 @@ public abstract class AbstractFarm {
 		return this.inventory;
 	}
 
-	public boolean checkSeasonTimer() {
-		boolean seasonChanged = false;
+	public void checkSeasonTimer() {
 		if (seasonStartTime == 0)
 			seasonStartTime = System.currentTimeMillis();
 		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS - System.currentTimeMillis();
 		if(timeLeft < 0) {
-			seasonChanged = true;
 			currentSeason++;
 			currentSeason %= seasons.length;
 			seasons[currentSeason].update(field);
 			seasonStartTime = System.currentTimeMillis();
 		}
-		return seasonChanged;
+	}
+	
+	public void updateToolBar(){
+		this.toolBar.updateTools(this.inventory);
 	}
 }

@@ -4,7 +4,7 @@ import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 
 public class CarrotSeed extends AbstractSeed{
 
-	public static final int DEFAULT_COST = 10;
+	public static final int DEFAULT_COST = 20;
 	public static final int DEFAULT_VALUE = 10;
 	
 	public CarrotSeed(){

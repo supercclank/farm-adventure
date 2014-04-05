@@ -6,9 +6,8 @@ public class BananaSeed extends AbstractSeed{
 	
 	public static final int DEFAULT_COST = 20;
 	public static final int DEFAULT_VALUE = 10;
-	
 
-	public BananaSeed() {
+	public BananaSeed(){
 		super();
 		this.crop = new BananaCrop();
 		this.texture = "bananaCrop";

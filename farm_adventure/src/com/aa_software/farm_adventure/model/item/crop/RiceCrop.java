@@ -6,7 +6,7 @@ public class RiceCrop extends AbstractCrop {
 	public static final String RICE_NAME = "Rice";	
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
-	public static final int DEFAULT_COST = 80;
+	public static final int DEFAULT_COST = 60;
 	public static final int DEFAULT_VALUE = 10;
 
 	public RiceCrop() {
