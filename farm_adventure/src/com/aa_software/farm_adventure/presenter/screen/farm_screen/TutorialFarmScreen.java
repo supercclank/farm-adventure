@@ -9,7 +9,9 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
-import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
+import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
+import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
+import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
 import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
@@ -41,7 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 public class TutorialFarmScreen extends AbstractFarmScreen {
 	
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_SEASONS, DESCRIBE_WORKER_BAR, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_FOR_PLOW, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_FOR_PLANT, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_FOR_HARVEST, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_END, END
 	}
 
 	final int MARKET_X = 4;
@@ -55,7 +57,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	private float descriptionX, descriptionY;
 	private State[] states;
 	private int stateIndex;
-	private boolean foundClick;
+	private boolean doneWaiting;
 	private int waitingForX;
 
 	/**
@@ -82,7 +84,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 		setAllGameClicksDisabled(true);
 		disableGameTime = true;
-		foundClick = true;
+		doneWaiting = true;
 		
 		//TODO: Maybe there is a better way to stop the deficient worker deadlock.
 		for(int i = 0; i < 2; i++) {
@@ -116,209 +118,248 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		if (allGameClicksAreDisabled) {
 			Gdx.input.setInputProcessor(descriptionStage);
 		}
+		
+		checkClickPlotStates();
+	}
+	
+	public void checkClickPlotStates() {
 		//TODO change this hacky fix. Perhaps add a set of "wait" states, similar to the
 		// "click" set that transition on a given condition.
 		if(states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-			if(unwateredPlowedPlotExists() && foundClick) {
+			if(wateredPlowedPlotExists()) {
 				transitionState();
 			}
-		}
-		else if (states[stateIndex].toString().toLowerCase().contains("click")
-				&& foundClick) {
+		} else if (states[stateIndex].toString().toLowerCase().contains("click")
+				&& doneWaiting) {
 			transitionState();
 		}
+	}
+	
+	public boolean cropExists() {
+		//TODO probably want to move this logic to Farm/Field
+		Field field = farm.getField();
+		for(int i = 0; i < Field.COLUMNS; i++) {
+			for(int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if(plot.hasCrop()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean plowedPlotExists() {
+		//TODO probably want to move this logic to Farm/Field
+		Field field = farm.getField();
+		for(int i = 0; i < Field.COLUMNS; i++) {
+			for(int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if(!(plot.isUnplowed() || plot.isGrass())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void getDescription() {
 		switch (states[stateIndex]) {
-		case DESCRIBE_OBJECTIVE:
-			description = "Welcome to your first farm!\nYour objective is to make the most\nmoney before time runs out.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .27);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			break;
-		case DESCRIBE_FIELD:
-			description = "This is your field with plots and water.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			break;
-		case DESCRIBE_STATUS_BAR:
-			description = "This is the status bar which displays\nyour money, time left, and workers.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .25);
-			break;
-		case DESCRIBE_TOOL_BAR:
-			description = "This is the tool bar which allows\nyou to perform actions on the farm.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case DESCRIBE_PLOW:
-			description = "This is the plow\ntool which plows \n a plot of land.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * 0);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case CLICK_PLOW:
-			description = "Click the plow tool.";
-			toolBarClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 0;
-			break;
-		case CLICK_PLOW_PLOT:
-			description = "Now click a plot to plow it.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
-			foundClick = false;
-			fieldClicksDisabled = false;
-			break;
-		case WAIT_PLOW_PLOT:
-			description = "One of your workers has taken up the task.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			break;
-		case DESCRIBE_IRRIGATE:
-			description = "This is the irrigation\ntool which allows you\nto irrigate your plots.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .15);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case CLICK_IRRIGATE:
-			description = "Click the irrigation tool.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .18);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			toolBarClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 1;
-			break;
-		case CLICK_IRRIGATE_PLOT:
-			// TODO: Make sure that it only goes forward if you click a plot
-			// open to irrigation!
-			description = "Now click a plot to irrigate it.\nTry to get the irrigation\n" +
-					"to the plowed plot.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
-			foundClick = false;
-			irrigationMenuClicksDisabled = false;
-			fieldClicksDisabled = false;
-			break;
-			/*
-		case CLICK_IRRIGATE_MENU:
-			description = "Now choose a side to irrigate!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			foundClick = false;
-			irrigationMenuClicksDisabled = false;
-			break;
-		case WAIT_IRRIGATE_PLOT:
-			description = "One of your workers has taken up the task!\nIf your plot is already beside water, no change\nto the plot's color is made.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			break;*/
-		case DESCRIBE_PLANT:
-			description = "This is the planting\ntool which plants seeds.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case CLICK_PLANT:
-			description = "Click the plant tool!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .40);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			toolBarClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 2;
-			break;
-		case CLICK_CLICK_PLANT:
-			description = "Click the plant tool\nagain to choose a plant!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .37);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			plantMenuClicksDisabled = false;
-			toolBarClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 2;
-			break;
-		case CLICK_PLANT_MENU:
-			// TODO: the menu shouldn'y dissapear if you click elsewhere
-			description = "Now choose a type of seed!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			foundClick = false;
-			plantMenuClicksDisabled = false;
-			break;
-		case CLICK_PLANT_PLOT:
-			description = "Now choose a plot to plant on!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			foundClick = false;
-			fieldClicksDisabled = false;
-			break;
-		case WAIT_PLANT_PLOT:
-			description = "One of your workers has taken up the task!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			break;
-		case DESCRIBE_HARVEST:
-			description = "This is the harvesting\ntool which will harvest\ngrown plants.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .55);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case CLICK_HARVEST:
-			description = "Click the harvest tool!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .60);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			toolBarClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 3;
-			break;
-		case CLICK_HARVEST_PLOT:
-			// TODO: should make sure the harvested plot had a plant!
-			description = "Now click a plot to harvest it!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
-			foundClick = false;
-			irrigationMenuClicksDisabled = false;
-			fieldClicksDisabled = false;
-			break;
-		case WAIT_HARVEST_PLOT:
-			description = "One of your workers has taken up the task!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			break;
-		case DESCRIBE_INVENTORY:
-			description = "This is inventory\nand market button.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			break;
-		case CLICK_INVENTORY:
-			description = "Click the inventory\nand market button!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .85);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
-			toolBarClicksDisabled = false;
-			inventoryClicksDisabled = false;
-			foundClick = false;
-			waitingForX = 4;
-			break;
-		case DESCRIBE_INVENTORY_SCREEN:
-			description = "This is your inventory and market screen.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			break;
-		case DESCRIBE_QUANTITY:
-			description = "This is the quantity that you own of a certain item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .13);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
-			break;
-		case DESCRIBE_BUY_AND_SELL:
-			description = "You can use these buttons to\n" +
-					"purchase and sell items.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .7);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
-			break;
-		case DESCRIBE_END:
-			description = "Good job! Now try out a real farm!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
-			break;
-		case END:
-			gameOver = true;
-			break;
-		default:
-			description = "Ran out of states!";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
-			break;
+			case DESCRIBE_OBJECTIVE:
+				description = "Welcome to your first farm!\nYour objective is to make the most\n" +
+						"money before time runs out.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .27);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				break;
+			case DESCRIBE_FIELD:
+				description = "This is your field with plots and water.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				break;
+			case DESCRIBE_STATUS_BAR:
+				description = "This is the status bar which displays\n" +
+						"your money, time left, and total workers.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .25);
+				break;
+			case DESCRIBE_SEASONS:
+				description = "The color of the bar indicates the season. White for winter,\n" +
+						"orange for fall, green for spring, and tan for summer.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .2);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .25);
+				break;
+			case DESCRIBE_WORKER_BAR:
+				description = "This is your worker bar which displays your\n" +
+						"currently available workers.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .2);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .22);
+				break;
+			case DESCRIBE_TOOL_BAR:
+				description = "This is the tool bar which allows\n" +
+						"you to perform actions on the farm.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case DESCRIBE_PLOW:
+				description = "This is the plow\ntool which plows\n" +
+						"a plot of land.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * 0);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case CLICK_PLOW:
+				description = "Click a worker, then\n" +
+						"click the plow tool.";
+				toolBarClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 0;
+				break;
+			case CLICK_PLOW_PLOT:
+				description = "Now click a plot to plow it.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				doneWaiting = false;
+				fieldClicksDisabled = false;
+				break;
+			case WAIT_FOR_PLOW:
+				description = "Only one task can be performed on a plot at a time.\n" +
+						"Let's wait for your worker to finish...";
+				break;
+			case DESCRIBE_IRRIGATE:
+				description = "This is the irrigation\n" +
+						"tool which allows you\n" +
+						"to irrigate your plots.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .15);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case CLICK_IRRIGATE:
+				description = "Click a worker, then\n" +
+						"click the irrigation tool.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .18);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				toolBarClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 1;
+				break;
+			case CLICK_IRRIGATE_PLOT:
+				description = "Now click a plot to irrigate it.\n" +
+						"Try to get the irrigation\n" +
+						"to the plowed plot.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				doneWaiting = false;
+				irrigationMenuClicksDisabled = false;
+				fieldClicksDisabled = false;
+				break;
+			case DESCRIBE_PLANT:
+				description = "This is the planting\n" +
+						"tool which plants seeds.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case CLICK_PLANT:
+				description = "Click a worker, then\n" +
+						"click the plant tool.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .40);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				toolBarClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 2;
+				break;
+			case CLICK_CLICK_PLANT:
+				description = "Click the plant tool\n" +
+						"again to choose a plant.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .37);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				plantMenuClicksDisabled = false;
+				toolBarClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 2;
+				break;
+			case CLICK_PLANT_MENU:
+				description = "Now choose a type of seed.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				doneWaiting = false;
+				plantMenuClicksDisabled = false;
+				break;
+			case CLICK_PLANT_PLOT:
+				description = "Now choose a plot to plant on.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				doneWaiting = false;
+				fieldClicksDisabled = false;
+				break;
+			case WAIT_FOR_PLANT:
+				description = "Let's wait for your worker to finish...";
+				break;
+			case DESCRIBE_HARVEST:
+				description = "This is the harvesting\n" +
+						"tool which will harvest\n" +
+						"grown plants.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .55);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case CLICK_HARVEST:
+				description = "Click a worker, then\n" +
+						"click the harvest tool.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .60);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				toolBarClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 3;
+				break;
+			case CLICK_HARVEST_PLOT:
+				description = "Now click a plot to harvest it.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .35);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				doneWaiting = false;
+				irrigationMenuClicksDisabled = false;
+				fieldClicksDisabled = false;
+				break;
+			case WAIT_FOR_HARVEST:
+				description = "Let's wait for your worker to finish...";
+				break;
+			case DESCRIBE_INVENTORY:
+				description = "This is inventory\n" +
+						"and market button.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .85);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				break;
+			case CLICK_INVENTORY:
+				description = "Click the inventory\n" +
+						"and market button.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .85);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .13);
+				toolBarClicksDisabled = false;
+				inventoryClicksDisabled = false;
+				doneWaiting = false;
+				waitingForX = 4;
+				break;
+			case DESCRIBE_INVENTORY_SCREEN:
+				description = "This is your inventory and market screen.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				break;
+			case DESCRIBE_QUANTITY:
+				description = "This is the quantity that you own of a certain item.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .13);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				break;
+			case DESCRIBE_BUY_AND_SELL:
+				description = "You can use these buttons to\n" +
+						"purchase and sell items.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .7);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+				break;
+			case DESCRIBE_END:
+				description = "Good job! Now try out a real farm.";
+				descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+				descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+				break;
+			case END:
+				gameOver = true;
+				break;
+			default: ;
 		}
 	}
 
@@ -366,7 +407,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 	}
 
-	public boolean unwateredPlowedPlotExists() {
+	public boolean wateredPlowedPlotExists() {
 		//TODO probably want to move this logic to Farm
 		Field field = farm.getField();
 		for(int i = 0; i < Field.COLUMNS; i++) {
@@ -394,10 +435,11 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	 */
 	@Override
 	public void updateState(int x, int y) {
-		if (!foundClick) {
+		if (!doneWaiting) {
 			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
 				Plot plot = farm.getPlot(x, y - FIELD_STARTING_Y);
 				if (plot.isUsable()) {
+					//TODO probably not the best way to handle this.
 					boolean harvested = selection instanceof AbstractHarvestTool
 							&& plot.hasCrop();
 					boolean planted = selection instanceof AbstractPlantTool
@@ -405,23 +447,22 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 							&& plot.isIrrigated() && !plot.hasCrop();
 					boolean plowed = selection instanceof AbstractPlowTool
 							&& (plot.isGrass() || plot.isUnplowed());
-					//TODO probably not the best way to handle this.
 					if ((harvested && states[stateIndex] == State.CLICK_HARVEST_PLOT) 
 							|| (planted && states[stateIndex] == State.CLICK_PLANT_PLOT)
 							|| (plowed && states[stateIndex] == State.CLICK_PLOW_PLOT)) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					super.updateState(x, y);
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
 				super.updateState(x, y);
-				//TODO: hardcoded for now. Magic numbers are bad.
 				if(x == MARKET_X) {
 					if(states[stateIndex] == State.CLICK_INVENTORY) {
-						foundClick = true;
+						doneWaiting = true;
 					}
-				} else if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
-					foundClick = true;
+				} else if (selectedWorker != -1 && selection != null && 
+						selection.equals(farm.getTool(waitingForX, y))) {
+					doneWaiting = true;
 				}
 			}
 		} else {
@@ -472,7 +513,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 								farm.getInventory());
 					}
 					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					irrigationWindow.setVisible(false);
 					return true;
@@ -505,9 +546,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
+							PLANT_TOOL_Y)).setSeed(new CarrotSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					plantWindow.setVisible(false);
 					return true;
@@ -524,9 +565,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
+							PLANT_TOOL_Y)).setSeed(new BeetSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					plantWindow.setVisible(false);
 					return true;
@@ -543,9 +584,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
+							PLANT_TOOL_Y)).setSeed(new RiceSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					plantWindow.setVisible(false);
 					return true;
@@ -565,7 +606,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
 							PLANT_TOOL_Y)).setSeed(new BananaSeed());
 					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+						doneWaiting = true;
 					}
 					plantWindow.setVisible(false);
 					return true;

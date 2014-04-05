@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
-public class AbstractSeed extends AbstractItem{
+public abstract class AbstractSeed extends AbstractItem {
 
 	protected AbstractCrop crop = null;
 	protected String texture = null;

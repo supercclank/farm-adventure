@@ -3,7 +3,7 @@ package com.aa_software.farm_adventure.model.item.seed;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 
 
-public class BeetSeed extends AbstractSeed{
+public class BeetSeed extends AbstractSeed {
 
 	public static final int DEFAULT_COST = 20;
 	public static final int DEFAULT_VALUE = 10;

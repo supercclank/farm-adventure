@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.Inventory;
-import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
@@ -11,18 +10,15 @@ import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 
 public abstract class AbstractPlantTool extends AbstractTool {
-	protected AbstractSeed seed = null;
-	protected AbstractCrop crop = null;
+	protected AbstractSeed seed;
+
 
 	public AbstractSeed getSeed() {
 		return this.seed;
 	}
 
 	public void setSeed(AbstractSeed seed) {
-		// TODO: we'll have to decide if we're making a distinction between
-		// produce and seeds. If so, change crop to seed.
 		this.seed = seed;
-		this.crop = seed.getCrop();
 	}
 	
 	@Override
@@ -31,7 +27,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		
 		if(workerIndex<0 || ((AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex)).isBusy()) {
 			return;
-		}else{
+		} else {
 			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
 		}
 

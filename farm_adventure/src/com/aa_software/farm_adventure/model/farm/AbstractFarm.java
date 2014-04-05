@@ -120,15 +120,18 @@ public abstract class AbstractFarm {
 		return this.inventory;
 	}
 
-	public void checkSeasonTimer() {
+	public boolean checkSeasonTimer() {
+		boolean seasonChanged = false;
 		if (seasonStartTime == 0)
 			seasonStartTime = System.currentTimeMillis();
 		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS - System.currentTimeMillis();
 		if(timeLeft < 0) {
+			seasonChanged = true;
 			currentSeason++;
 			currentSeason %= seasons.length;
 			seasons[currentSeason].update(field);
 			seasonStartTime = System.currentTimeMillis();
 		}
+		return seasonChanged;
 	}
 }

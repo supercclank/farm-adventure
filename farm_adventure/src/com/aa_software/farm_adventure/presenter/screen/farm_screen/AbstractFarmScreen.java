@@ -19,10 +19,8 @@ import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
-import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
@@ -146,7 +144,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Stage workerStage;
 	protected Table workerQueue;
 	protected Table workerWindow;
-	public int selectedWorker = -1;
+	public int selectedWorker;
 
 	protected boolean irrigationMenuClicksDisabled;
 	protected boolean plantMenuClicksDisabled;
@@ -155,7 +153,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected boolean inventoryClicksDisabled;
 	protected boolean disableGameTime;
 	
-	private String info;
 	private Stage infoStage;
 	private Window infoWindow;
 
@@ -166,6 +163,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	}
 
 	public AbstractFarmScreen() {
+		selectedWorker = -1;
 		gameOver = false;
 		disableGameTime = false;
 		irrigationMenuClicksDisabled = false;
@@ -600,6 +598,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection)
 								.setTaskType(this.getTaskType());
+						selectedWorker = -1;
+						syncSelectTiles(-1);
+						selection = null;
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
@@ -645,6 +646,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				} else {
 					selectedWorker = -1;
 					syncSelectTiles(-1);
+					selection = null;
 					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
 					updateInventoryTable();
@@ -655,9 +657,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				inventoryWindow.setVisible(false);
 				Gdx.input.setInputProcessor(workerStage);
 				
-				
 				if (selection != null && selection.equals(farm.getTool(x, y))) {
-					if(selectedWorker >=0){
+					if(selectedWorker >= 0){
 						if (selection instanceof AbstractPlantTool) {
 							if (!plantMenuClicksDisabled) {
 								updatePlantWindow();
@@ -670,9 +671,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						sounds.playClick();
 					}
 				} else if (farm.getTool(x, y) instanceof AbstractTool) {
-					if(selectedWorker >=0){
+					if(selectedWorker >= 0){
 						selection = farm.getTool(x, y);
-						System.out.println("Sel. worker index: "+selectedWorker);
 						((AbstractTool)selection).setWorkerIndex(selectedWorker);
 						state = state.update((AbstractTool) selection);
 						syncSelectTiles(x);
@@ -716,9 +716,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				gameOver = true;
 			}
 			/* 1000 milliseconds = 1 second */
-			if (!(curTime < 1000)) {
-				farm.checkSeasonTimer();
+			boolean seasonHasChanged = farm.checkSeasonTimer();
+			if(seasonHasChanged) {
+				//DO STUFF.
 			}
+			
 			time = String.format("%02d:%02d",
 					TimeUnit.MILLISECONDS.toMinutes(curTime),
 					TimeUnit.MILLISECONDS.toSeconds(curTime)
@@ -767,8 +769,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		workerQueue.row();
 		for (int i=0; i<workerCount; i++){
 			if (!((AbstractWorker) invWorkers.get(i)).isBusy()){
-				Texture workerTexture = new Texture(Gdx.files.internal("textures/"+invWorkers.get(i).
-						getTextureName()+".png"));
+				Texture workerTexture = new Texture(Gdx.files.internal("textures/" + invWorkers.get(i).
+						getTextureName() + ".png"));
 				TextureRegion workerImage = new TextureRegion(workerTexture);
 				Button workerButton = new Button(new Image(workerImage), skin);
 				workerButton.padBottom(2);
@@ -921,12 +923,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							.width((float) (Gdx.graphics.getWidth() * .4)).left();
 					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
 				
-				}else if (j>2 && j<7){ //if there are tools then 
+				} else if (j > 2 && j < 7){ //if there are tools then 
 	
-					if (inventoryTypeCount>0){
+					if (inventoryTypeCount > 0) {
 						AbstractTool toolUpgrade= ((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getUpgrade();
 						
-						if (toolUpgrade!=null){   //check if upgrades apply
+						if (toolUpgrade != null) {   //check if upgrades apply
 							cost = toolUpgrade.getCost()-((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getCost();
 							String upgradeName = toolUpgrade.getName();
 							buyButton = new TextButton( upgradeName+" upgrade $"+cost,
@@ -943,7 +945,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 									.width((float) (Gdx.graphics.getWidth() * .4)).left();
 						}
 					
-					}else { //else buy or trade for the current tool
+					} else { //else buy or trade for the current tool
 						buyButton = new TextButton("BUY " + " $" + cost,
 									inventorySkin, "default");
 						buyButton.addListener(new BuyClickListener(marketItems.get(
@@ -977,23 +979,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private class WorkerClickListener extends ClickListener {
 	    int selectionIndex;
 	    
-	    /**
-	     * This button enables buying of the item and updating of the item quantity
-	     * @param workerButton 
-	     * @param workerButton 
-	     * @param item
-	     * @param itemInvCount
-	     */
 	    public WorkerClickListener(int workerIndex) {
 	        this.selectionIndex = workerIndex;  
 	    }
 	    
-	    /**
-	     * On button touch the item is bought and the item quantity is updated in the inventory
-	     */
 	    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 	    	selectedWorker = this.selectionIndex;
-	    	System.out.println("Worker selected: "+selectedWorker);
 	    	sounds.playClick();
             return true;
         }
