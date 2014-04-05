@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.presenter.screen.farm_screen;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Iterator;
 
@@ -35,6 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -50,11 +52,11 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, 
 		CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, 
 		DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, 
-		DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, CLICK_EXIT_INFO,
+		DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO,CLICK_EXIT_INFO,
 		BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
-	final int MARKET_X = 22;
+	final int MARKET_X = 4;
 	
 	/* Font setup */
 	final LabelStyle style2 = new LabelStyle(fontType, Color.WHITE);
@@ -131,8 +133,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			Gdx.input.setInputProcessor(workerStage);
 			if (selectedWorker>=0){
 				workerClicksDisabled = true;
-				foundClick = true;
-				
+				foundClick = true;		
 			}
 		}
 		
@@ -178,27 +179,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			foundClick = false;
 			workerClicksDisabled = false;
 			break;
-		case CLICK_IRRIGATE_WORKER:
-			description = "Select a worker to \nirrigate a plot.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
-			foundClick = false;
-			workerClicksDisabled = false;
-			break;
-		case CLICK_PLANT_WORKER:
-			description = "Select a worker to \nplant on a plot.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
-			foundClick = false;
-			workerClicksDisabled = false;
-			break;
-		case CLICK_HARVEST_WORKER:
-			description = "Select a worker to \nharvest a plot.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
-			foundClick = false;
-			workerClicksDisabled = false;
-			break;
+
 		case DESCRIBE_TOOL_BAR:
 			description = "This is the tool bar which allows\nyou to perform actions on the farm.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
@@ -225,6 +206,13 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		case WAIT_PLOW_PLOT:
 			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			break;
+		case CLICK_IRRIGATE_WORKER:
+			description = "Select a worker to \nirrigate a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
 			break;
 		case DESCRIBE_IRRIGATE:
 			description = "This is the irrigation\ntool which allows you\nto irrigate your plots.";
@@ -262,6 +250,14 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			description = "One of your workers has taken up the task!\nIf your plot is already beside water, no change\nto the plot's color is made.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
 			break;*/
+		case CLICK_PLANT_WORKER:
+			System.out.println(selectedWorker);
+			description = "Select a worker to \nplant on a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
+			break;
 		case DESCRIBE_PLANT:
 			description = "This is the planting\ntool which plants seeds.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
@@ -302,6 +298,13 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		case WAIT_PLANT_PLOT:
 			description = "One of your workers has taken up the task.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .25);
+			break;
+		case CLICK_HARVEST_WORKER:
+			description = "Select a worker to \nharvest a plot.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
+			foundClick = false;
+			workerClicksDisabled = false;
 			break;
 		case DESCRIBE_HARVEST:
 			description = "This is the harvesting\ntool which will harvest\ngrown plants.";
@@ -349,16 +352,44 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case DESCRIBE_QUANTITY:
-			description = "This is the quantity that you own of a certain item.";
+			description = "This is the quantity \nthat you own of a \ncertain item.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .13);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
 			break;
 		case DESCRIBE_BUY_AND_SELL:
-			description = "You can use these buttons to\n" +
-					"purchase and sell items.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .7);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+			description = "You can use these buttons to \npurchase or sell items \nand hire workers.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .4);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
+			
+		case CLICK_BUY_AND_SELL:
+			description = "Buy, sell, hire, \nor upgrade and item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_INFO:
+			description = "You can use these buttons to \nget info on an item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case CLICK_INFO:
+			description = "Click info button.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case DESCRIBE_EXIT_INFO:
+			description = "This exit button to \nleave market \nand return to farm view.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+		case CLICK_EXIT_INFO:
+			description = "Click EXIT button";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
+			break;
+
+			
+			
 		case BEFORE_LEAVING:
 			description = "Before leaving the tutorial\n" +
 					"you should know about seasons.";
@@ -517,6 +548,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 					}
 				} else if (selection != null && selection.equals(farm.getTool(waitingForX, y))) {
 					foundClick = true;
+					selectedWorker = UNSELECT;
 				}
 			}
 		} else {
@@ -578,103 +610,54 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 
 		irrigationWindow.pack();
 	}
-
 	
-
 	/**
 	 * Sets up the window to choose a seed to plant
 	 */
-	/**
 	@Override
 	public void updatePlantWindow() {
 		plantWindow.clear();
-		boolean inventoryHasCarrot = true;
-		boolean inventoryHasBeet = true;
-		boolean inventoryHasRice = true;
-		boolean inventoryHasBanana = true;
-
-		if (inventoryHasCarrot) {
-			Texture carrot = new Texture(
-					Gdx.files.internal("textures/carrotCrop.png"));
-			TextureRegion carrotImage = new TextureRegion(carrot);
-			Button carrotButton = new Button(new Image(carrotImage), skin);
-			plantWindow.add(carrotButton);
-			carrotButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
-					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+		if (farm.getInventory().getItems().get("SEEDS")!=null){	
+			ArrayList<AbstractSeed> seedKey = new ArrayList<AbstractSeed>();
+			AbstractSeed tempSeed;
+			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
+			for (int i= 0; i<seedNum; i++){
+				System.out.println("Seed Key: "+seedKey.size());
+				tempSeed = (AbstractSeed) farm.getInventory().getItems().get("SEEDS").get(i);
+				if (seedKey.size()==0){
+					seedKey.add(tempSeed);
+					addSeedButton(tempSeed);
+				} else {
+					Boolean inSeedKey = false;
+					for (int j = 0; j<seedKey.size(); j++){
+						if (seedKey.get(j).compareTo(tempSeed)==0){
+							inSeedKey = true;
+							j = seedKey.size();	
+						}
 					}
-					plantWindow.setVisible(false);
-					return true;
-				}
-			});
-		}
-
-		if (inventoryHasBeet) {
-			Texture beet = new Texture(Gdx.files.internal("textures/beetCrop.png"));
-			TextureRegion beetImage = new TextureRegion(beet);
-			Button beetButton = new Button(new Image(beetImage), skin);
-			plantWindow.add(beetButton);
-			beetButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
-					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
+					if (!inSeedKey){
+						seedKey.add(tempSeed);
+						addSeedButton(tempSeed);
 					}
-					plantWindow.setVisible(false);
-					return true;
 				}
-			});
+			}
 		}
-
-		if (inventoryHasRice) {
-			Texture rice = new Texture(Gdx.files.internal("textures/riceCrop.png"));
-			TextureRegion riceImage = new TextureRegion(rice);
-			Button riceButton = new Button(new Image(riceImage), skin);
-			plantWindow.add(riceButton);
-			riceButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new AbstractSeed());
-					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
-					}
-					plantWindow.setVisible(false);
-					return true;
-				}
-			});
-		}
-
-		if (inventoryHasBanana) {
-			Texture banana = new Texture(
-					Gdx.files.internal("textures/bananaCrop.png"));
-			TextureRegion bananaImage = new TextureRegion(banana);
-			Button bananaButton = new Button(new Image(bananaImage), skin);
-			plantWindow.add(bananaButton);
-			bananaButton.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					((AbstractPlantTool) farm.getTool(PLANT_TOOL_X,
-							PLANT_TOOL_Y)).setSeed(new BananaSeed());
-					if (states[stateIndex] == State.CLICK_PLANT_MENU) {
-						foundClick = true;
-					}
-					plantWindow.setVisible(false);
-					return true;
-				}
-			});
-		}
-		
-
 		plantWindow.pack();
 	}
-	*/
+	@Override
+	public void addSeedButton(AbstractSeed seed){
+		Table seedTable = new Table();
+		Texture seedTexture = new Texture(Gdx.files.internal("textures/"+seed.getTextureName()+".png"));
+		TextureRegion seedImage = new TextureRegion(seedTexture);						
+		seedTable.row();
+		seedTable.add(new Image(seedImage));
+		Label seedQuantity = new Label(""+farm.getInventory().getCount(seed),style1);
+		seedTable.row();
+		seedTable.add(seedQuantity);
+		Button seedButton = new Button(seedTable, skin);
+		plantWindow.add(seedButton);
+		seedButton.addListener(new SeedClickListener(seed));
+	}
 	
 	private class SeedClickListener extends ClickListener {
 		AbstractItem item;

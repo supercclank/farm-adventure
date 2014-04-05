@@ -26,6 +26,7 @@ import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigatio
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
@@ -71,7 +72,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 public abstract class AbstractFarmScreen extends AbstractScreen {
 
 	/* Game */
-	public static final long GAME_TIME_MILLIS = 120000;
+	public static final long GAME_TIME_MILLIS = 240000;
 	long gameStartTime;
 
 	/* Player */
@@ -724,14 +725,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				
 				
 				if (selection != null && selection.equals(farm.getTool(x, y))) {
-					if(selectedWorker >=0){
-						if (selection instanceof AbstractPlantTool) {
-							if (!plantMenuClicksDisabled) {
-								updatePlantWindow();
-								if (plantWindow.getChildren().size > 0) {
-									plantWindow.setVisible(true);
-									Gdx.input.setInputProcessor(plantMenuStage);
-								}
+					
+					if (selection instanceof AbstractPlantTool) {
+						if (!plantMenuClicksDisabled) {
+							updatePlantWindow();
+							if (plantWindow.getChildren().size > 0) {
+								plantWindow.setVisible(true);
+								Gdx.input.setInputProcessor(plantMenuStage);
 							}
 						}
 						sounds.playClick();
@@ -965,13 +965,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Button sellButton = null;
 				//if there are workers then add hire or layoff buttons
 				if (type.getText().toString().equals("WORKERS")) {
-					cost = ((AbstractWorker)marketItems.get(typeSet.get(j)).get(i)).getWage();
+					DefaultWorker tempWorker = new DefaultWorker();
+					cost = tempWorker.getWage();
 					buyButton = new TextButton("HIRE " + " $" + cost+"/season",
 							inventorySkin, "default");
 					//sellButton = new TextButton("LAYOFF ", inventorySkin, "default");
 					
-					buyButton.addListener(new BuyClickListener(marketItems.get(
-							typeSet.get(j)).get(i), itemInvCount, false));
+					buyButton.addListener(new BuyClickListener(tempWorker, itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
 							.width((float) (Gdx.graphics.getWidth() * .4)).left();
 					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
