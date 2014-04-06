@@ -22,7 +22,7 @@ public class TutorialFarm extends AbstractFarm {
 	public static final FarmType type = FarmType.TUTORIAL;
 	public static final SeasonType[] DEFAULT_SEASONS = { SeasonType.SPRING,
 			SeasonType.SPRING, SeasonType.SPRING, SeasonType.SPRING };
-	private final float WATER_PLOT_MOD = .10f;
+	private static final float WATER_PLOT_MOD = .10f;
 
 	/**
 	 * Constructs a farm with the correct seasons and field.
@@ -33,20 +33,8 @@ public class TutorialFarm extends AbstractFarm {
 		for (int i = 0; i < seasons.length; i++) {
 				seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
-		field = new Field(WATER_PLOT_MOD);
-
-		/*
-		 * startingCropCount.put(new BeetCrop(), 5); startingToolCount.put(new
-		 * BackhoeTool(), 1); startingSpellCount.put(new MolesSpell(), 1);
-		 * startingWorkerCount.put(new DefaultWorker(), 1);
-		 */
 		seasons[currentSeason].update(field);
-		startingCropCount.put(new CarrotCrop(), 5);
-		startingToolCount.put(new BackhoeTool(), 1);
-		startingToolCount.put(new TrowelTool(), 1);
-		startingToolCount.put(new HandPlowTool(), 1);
-		startingToolCount.put(new ScytheTool(), 1);
-		startingSpellCount.put(new MolesSpell(), 1);
-		startingWorkerCount.put(new DefaultWorker(), DEFAULT_NUMBER_OF_WORKERS);
+		
+		field = new Field(WATER_PLOT_MOD);
 	}
 }

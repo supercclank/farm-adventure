@@ -26,9 +26,6 @@ import com.aa_software.farm_adventure.model.season.Season;
  */
 public abstract class AbstractFarm {
 	public static final int DEFAULT_NUMBER_OF_SEASONS = 4;
-	/* the next two are arbitrary for now */
-	public static final int DEFAULT_NUMBER_OF_WORKERS = 5;
-	public static final int DEFAULT_STARTING_BANKROLL = 25;
 
 	protected Field field;
 	protected ToolBar toolBar;
@@ -42,17 +39,9 @@ public abstract class AbstractFarm {
 
 	protected long seasonStartTime;
 
-	/* each farm starts with a certain amount of seeds, workers, equipment */
-	protected Map<AbstractWorker, Integer> startingWorkerCount;
-	protected Map<AbstractCrop, Integer> startingCropCount;
-	protected Map<AbstractTool, Integer> startingToolCount;
-	protected Map<AbstractSpell, Integer> startingSpellCount;
+
 
 	public AbstractFarm() {
-		this.startingWorkerCount = new HashMap<AbstractWorker, Integer>();
-		this.startingCropCount = new HashMap<AbstractCrop, Integer>();
-		this.startingToolCount = new HashMap<AbstractTool, Integer>();
-		this.startingSpellCount = new HashMap<AbstractSpell, Integer>();
 		this.field = new Field();
 		this.timer = new Timer();
 		this.market = new Market();
