@@ -12,7 +12,7 @@ public class HandPlowTool extends AbstractPlowTool {
 	public HandPlowTool() {
 		super();
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = HANDPLOWTOOL_NAME;
 		this.upgrade = new TractorPlowTool();
@@ -28,6 +28,6 @@ public class HandPlowTool extends AbstractPlowTool {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

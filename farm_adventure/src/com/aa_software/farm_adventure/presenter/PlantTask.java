@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.presenter;
 
-import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -23,11 +22,11 @@ public class PlantTask extends Task {
 	}
 
 	@Override
-    public void run() {
-		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
-		if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
+	public void run() {
+		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
+				+ seed.getTextureName()));
+		if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
-			plot.setSeed(seed);
 			plot.setTaskTextureIndex(0);
 			worker.addExperience();
 			worker.setBusy(false);
@@ -35,5 +34,5 @@ public class PlantTask extends Task {
 			plot.incrementTaskTextureIndex();
 			Timer.schedule(this, delay);
 		}
-    }
+	}
 }

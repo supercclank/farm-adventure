@@ -1,12 +1,5 @@
 package com.aa_software.farm_adventure.model.farm;
 
-import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.spell.MolesSpell;
-import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
-import com.aa_software.farm_adventure.model.item.tool.irrigate.BackhoeTool;
-import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
-import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
-import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.model.season.SeasonType;
@@ -31,10 +24,10 @@ public class TutorialFarm extends AbstractFarm {
 		super();
 		seasons = new Season[DEFAULT_SEASONS.length];
 		for (int i = 0; i < seasons.length; i++) {
-				seasons[i] = new Season(DEFAULT_SEASONS[i]);
+			seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
 		seasons[currentSeason].update(field);
-		
+
 		field = new Field(WATER_PLOT_MOD);
 	}
 }

@@ -1,8 +1,6 @@
 package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
 
 public class SeederTool extends AbstractPlantTool {
 	public static final String SEEDERTOOL_NAME = "seederTool";
@@ -15,7 +13,7 @@ public class SeederTool extends AbstractPlantTool {
 	public SeederTool() {
 		super();
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.seed = null;
 		this.name = SEEDERTOOL_NAME;
@@ -31,7 +29,7 @@ public class SeederTool extends AbstractPlantTool {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

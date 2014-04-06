@@ -17,7 +17,7 @@ public class BeetCrop extends AbstractCrop {
 		this.value = DEFAULT_VALUE;
 		this.name = BEET_NAME;
 		this.description = "Beets that you can sell in the market place";
-		
+
 	}
 
 	public BeetCrop(int growthTime, int output, int cost, int value) {
@@ -43,6 +43,7 @@ public class BeetCrop extends AbstractCrop {
 		}
 	}
 
+	@Override
 	public String getSeedName() {
 		return SEED_NAME;
 	}

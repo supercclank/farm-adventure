@@ -1,12 +1,9 @@
 package com.aa_software.farm_adventure.presenter.state;
 
-
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.spell.AbstractSpell;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
-import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -40,7 +37,7 @@ public class ToolSelectionState extends AbstractSelectionState {
 	@Override
 	public ToolSelectionState update(AbstractWorker worker) {
 		return new ToolSelectionState((AbstractTool) selection);
-	}	
+	}
 
 	@Override
 	public ToolSelectionState update(Plot plot, Inventory inventory) {

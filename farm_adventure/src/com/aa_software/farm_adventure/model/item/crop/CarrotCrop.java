@@ -42,6 +42,7 @@ public class CarrotCrop extends AbstractCrop {
 		}
 	}
 
+	@Override
 	public String getSeedName() {
 		return SEED_NAME;
 	}

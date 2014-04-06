@@ -9,13 +9,14 @@ public class BriberyUpgrade extends AbstractUpgrade {
 	public static final float WORK_RATE_MOD = .5f;
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;
-	
+
 	public BriberyUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.name = BRIBERY_NAME;
 	}
-	
+
+	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
 	}

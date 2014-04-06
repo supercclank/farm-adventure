@@ -78,56 +78,54 @@ public class Season {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
-				if(field.getPlot(x,y).getPlotType() != PlotType.WATER)
+				if (field.getPlot(x, y).getPlotType() != PlotType.WATER)
 					field.getPlot(x, y).setUsable(true);
 				if (field.getPlot(x, y).getPlotType() == PlotType.LEAVES) {
 					field.getPlot(x, y).setPlotType(PlotType.GRASS);
 				}
 			}
 		}
-		switch(seasonType) {
-			case SPRING:
-				growthRateMod = SPRING_GROWTH_RATE_MOD;
-				break;
-			case SUMMER:
-			{
-				growthRateMod = SUMMER_GROWTH_RATE_MOD;
-				Random random = new Random();
-				int roll;
-				for (int x = 0; x < Field.COLUMNS; x++) {
-					for (int y = 0; y < Field.ROWS; y++) {
-						roll = random.nextInt(10);
-						if (roll < 10 * SUMMER_WATER_LEVEL_MOD) {
-							if (!field.getPlot(x, y).getIrrigation().isEmpty()) {
-								Plot plot = field.getPlot(x, y);
-								plot.setIrrigation(EnumSet.noneOf(Irrigation.class));
-								plot.setCrop(null);
-							}
-						}
-					}
-				}
-				break;
-			}
-			case FALL:
-			{
-				growthRateMod = FALL_GROWTH_RATE_MOD;
-				Random random = new Random();
-				int roll;
-				for (int x = 0; x < Field.COLUMNS; x++) {
-					for (int y = 0; y < Field.ROWS; y++) {
-						roll = random.nextInt(10);
-						if (roll < 10 * FALL_LEAF_COVER_MOD) {
+		switch (seasonType) {
+		case SPRING:
+			growthRateMod = SPRING_GROWTH_RATE_MOD;
+			break;
+		case SUMMER: {
+			growthRateMod = SUMMER_GROWTH_RATE_MOD;
+			Random random = new Random();
+			int roll;
+			for (int x = 0; x < Field.COLUMNS; x++) {
+				for (int y = 0; y < Field.ROWS; y++) {
+					roll = random.nextInt(10);
+					if (roll < 10 * SUMMER_WATER_LEVEL_MOD) {
+						if (!field.getPlot(x, y).getIrrigation().isEmpty()) {
 							Plot plot = field.getPlot(x, y);
-							plot.setPlotType(PlotType.LEAVES);
+							plot.setIrrigation(EnumSet.noneOf(Irrigation.class));
 							plot.setCrop(null);
-							plot.setUsable(false);
 						}
 					}
 				}
-				break;
 			}
-			case WINTER:
-				growthRateMod = WINTER_GROWTH_RATE_MOD;
+			break;
+		}
+		case FALL: {
+			growthRateMod = FALL_GROWTH_RATE_MOD;
+			Random random = new Random();
+			int roll;
+			for (int x = 0; x < Field.COLUMNS; x++) {
+				for (int y = 0; y < Field.ROWS; y++) {
+					roll = random.nextInt(10);
+					if (roll < 10 * FALL_LEAF_COVER_MOD) {
+						Plot plot = field.getPlot(x, y);
+						plot.setPlotType(PlotType.LEAVES);
+						plot.setCrop(null);
+						plot.setUsable(false);
+					}
+				}
+			}
+			break;
+		}
+		case WINTER:
+			growthRateMod = WINTER_GROWTH_RATE_MOD;
 		}
 	}
 }

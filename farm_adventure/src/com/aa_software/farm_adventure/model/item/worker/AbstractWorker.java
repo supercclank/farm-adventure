@@ -109,22 +109,19 @@ public abstract class AbstractWorker extends AbstractItem {
 		}
 	}
 
+	@Override
+	public String getItemType() {
+		return "WORKERS";
+	}
+
 	public int getLevel() {
 		return level;
 	}
 
+	@Override
 	public String getTextureName() {
 		return this.texture;
 	}
-	
-	public void setSelectTexture(){
-		this.texture = SELECTEDWORKER_TEXTURE;
-	}
-	
-	public void resetTexture(){
-		this.texture = UNSELECTEDWORKER_TEXTURE;
-	}
-	
 
 	public int getWage() {
 		wage = calculateWage();
@@ -135,16 +132,28 @@ public abstract class AbstractWorker extends AbstractItem {
 		return workRate;
 	}
 
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void resetTexture() {
+		this.texture = UNSELECTEDWORKER_TEXTURE;
+	}
+
+	public void setBusy(boolean isBusy) {
+		this.isBusy = isBusy;
+	}
+
+	public void setSelectTexture() {
+		this.texture = SELECTEDWORKER_TEXTURE;
+	}
+
 	public void setWage(int wage) {
 		this.wage = wage;
 	}
 
 	public void setWorkRate(float workRate) {
 		this.workRate = workRate;
-	}
-	
-	public String getItemType() {
-		return "WORKERS";
 	}
 
 	@Override
@@ -157,13 +166,5 @@ public abstract class AbstractWorker extends AbstractItem {
 	public void update(Plot plot, Inventory inventory) {
 		// TODO Auto-generated method stub
 
-	}
-
-	public boolean isBusy() {
-		return isBusy;
-	}
-
-	public void setBusy(boolean isBusy) {
-		this.isBusy = isBusy;
 	}
 }
