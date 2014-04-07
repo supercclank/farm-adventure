@@ -17,7 +17,6 @@ import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
-import com.aa_software.farm_adventure.presenter.IrrigationListener;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.badlogic.gdx.Gdx;
@@ -37,7 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TutorialFarmScreen extends AbstractFarmScreen {
-
+	
 	private class SeedClickListener extends ClickListener {
 		AbstractItem item;
 
