@@ -234,7 +234,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			fieldClicksDisabled = false;
 			break;
 		case CLICK_PLANT_WORKER:
-			System.out.println(selectedWorker);
 			description = "Select a worker to \nplant on a plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
@@ -590,7 +589,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			AbstractSeed tempSeed;
 			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
 			for (int i = 0; i < seedNum; i++) {
-				System.out.println("Seed Key: " + seedKey.size());
 				tempSeed = (AbstractSeed) farm.getInventory().getItems()
 						.get("SEEDS").get(i);
 				if (seedKey.size() == 0) {

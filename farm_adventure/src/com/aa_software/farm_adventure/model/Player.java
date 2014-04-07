@@ -35,10 +35,9 @@ public class Player {
 			itemCost = item.getCost();
 		}
 		if (this.bankroll < itemCost) {
-			System.out.println("You don't have enough funds");
+			//TODO: Let the player know they do not have the funds.
 			return false;
 		} else {
-			System.out.println("Buy: " + item.toString());
 			this.bankroll -= itemCost;
 			return true;
 		}
@@ -58,7 +57,6 @@ public class Player {
 
 	public void sellItem(AbstractItem item) {
 		int itemValue = item.getValue();
-		System.out.println("Sell: " + item.toString());
 		this.bankroll += itemValue;
 	}
 

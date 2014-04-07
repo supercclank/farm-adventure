@@ -91,7 +91,6 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 					.get(workerIndex);
 		}
 		if (plot.isUsable() || plot.isUnplowed()) {
-			System.out.println("Plot Type: " + plot.getPlotType());
 			worker.setBusy(true);
 			plot.setUsable(false);
 			plot.setTaskTexturePrefix(task);

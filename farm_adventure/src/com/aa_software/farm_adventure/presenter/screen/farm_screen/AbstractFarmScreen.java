@@ -94,22 +94,17 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
 			if (this.isUpgrade) {
-
 				AbstractTool preTool = ((AbstractTool) item).getPredecessor();
-				if (preTool == null) {
-					System.out.println("No predecessor");
-				} else {
-					int cost = item.getCost() - preTool.getCost();
-					item.setCost(cost);
-					if (PLAYER.buyItem(this.item)) {
-						farm.getInventory().addItem(item);
-						farm.getMarket().addItem(item);
-						farm.getInventory().removeItem(preTool);
-						farm.getMarket().removeItem(preTool);
-						((AbstractTool) item).setPredecessor(null);
-						updateInventoryTable();
-						farm.updateToolBar();
-					}
+				int cost = item.getCost() - preTool.getCost();
+				item.setCost(cost);
+				if (PLAYER.buyItem(this.item)) {
+					farm.getInventory().addItem(item);
+					farm.getMarket().addItem(item);
+					farm.getInventory().removeItem(preTool);
+					farm.getMarket().removeItem(preTool);
+					((AbstractTool) item).setPredecessor(null);
+					updateInventoryTable();
+					farm.updateToolBar();
 				}
 			} else if (PLAYER.buyItem(this.item)) {
 				if (item instanceof AbstractWorker)
@@ -161,7 +156,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			infoWindow.setVisible(true);
 			Gdx.input.setInputProcessor(infoStage);
 			sounds.playClick();
-			System.out.println("Info Window displayed");
 			return true;
 		}
 	}
@@ -285,7 +279,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			selectedWorker = this.selectionIndex;
 			this.worker.setSelectTexture();
 			sounds.playClick();
-			System.out.println("Worker selected: " + this.selectionIndex);
 			return true;
 		}
 	}
@@ -1106,7 +1099,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			AbstractSeed tempSeed;
 			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
 			for (int i = 0; i < seedNum; i++) {
-				System.out.println("Seed Key: " + seedKey.size());
 				tempSeed = (AbstractSeed) farm.getInventory().getItems()
 						.get("SEEDS").get(i);
 				if (seedKey.size() == 0) {
@@ -1199,8 +1191,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				} else if (farm.getTool(x, y) instanceof AbstractTool) {
 					if (selectedWorker >= 0) {
 						selection = farm.getTool(x, y);
-						System.out.println("Sel. worker index: "
-								+ selectedWorker);
 						((AbstractTool) selection)
 								.setWorkerIndex(selectedWorker);
 						state = state.update((AbstractTool) selection);

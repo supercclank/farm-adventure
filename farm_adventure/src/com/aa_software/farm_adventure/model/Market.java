@@ -122,14 +122,11 @@ public class Market {
 						del++;
 					}
 					if (del > 0) {
-						System.out.println(item.toString()
-								+ " was Removed from inventory");
 						return true;
 					}
 				}
 			}
 		}
-		System.out.println("You don't have more of this item to sell");
 		return false;
 	}
 }

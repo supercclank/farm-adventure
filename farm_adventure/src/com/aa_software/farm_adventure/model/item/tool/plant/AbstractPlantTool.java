@@ -33,6 +33,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 			if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 				plot.setUsable(true);
 				plot.setTaskTextureIndex(0);
+				plot.setCrop(seed.getCrop());
 				worker.addExperience();
 				worker.setBusy(false);
 			} else {
