@@ -3,11 +3,7 @@ package com.aa_software.farm_adventure.model.plot;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
-//TODO: change from checking if usable before setting. This will allow the plot
-// to asynchronously be updated even while a task is being completed.
-// This does raise other problems: consider a plot set to "leaves" right before
-// a task completes... it'll undo the leaves!
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
 public class Plot {
 	private AbstractCrop crop;

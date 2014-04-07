@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.presenter;
+package com.aa_software.farm_adventure.presenter.utility;
 
 import java.util.Arrays;
 import java.util.EnumSet;

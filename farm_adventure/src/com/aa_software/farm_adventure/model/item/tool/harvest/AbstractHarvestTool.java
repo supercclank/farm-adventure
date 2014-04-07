@@ -5,7 +5,7 @@ import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 

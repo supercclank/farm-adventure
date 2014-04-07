@@ -29,11 +29,11 @@ import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.ScoreScreen;
-import com.aa_software.farm_adventure.presenter.state.DefaultSelectionState;
-import com.aa_software.farm_adventure.presenter.state.ISelectionState;
+import com.aa_software.farm_adventure.presenter.selection_state.DefaultSelectionState;
+import com.aa_software.farm_adventure.presenter.selection_state.ISelectionState;
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
@@ -69,36 +69,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		BUY, SELL
 	}
 
-	protected class IrrigationListener extends InputListener {
-		private final int x;
-		private final int y;
-		private final Irrigation irrigation;
-		private final TaskType task;
-
-		public IrrigationListener(int x, int y, Irrigation irrigation, TaskType task) {
-			this.x = x;
-			this.y = y;
-			this.irrigation = irrigation;
-			this.task = task;
-		}
-
-		public Irrigation getIrrigation() {
-			return irrigation;
-		}
-
-		public TaskType getTaskType() {
-			return task;
-		}
-
-		public int getX() {
-			return x;
-		}
-
-		public int getY() {
-			return y;
-		}
-	}
-	
 	/**
 	 * 
 	 * @author FarmAdventure Devs
@@ -152,7 +122,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			return true;
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @author FarmAdventure Devs
@@ -193,6 +163,36 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			sounds.playClick();
 			System.out.println("Info Window displayed");
 			return true;
+		}
+	}
+
+	protected class IrrigationListener extends InputListener {
+		private final int x;
+		private final int y;
+		private final Irrigation irrigation;
+		private final TaskType task;
+
+		public IrrigationListener(int x, int y, Irrigation irrigation, TaskType task) {
+			this.x = x;
+			this.y = y;
+			this.irrigation = irrigation;
+			this.task = task;
+		}
+
+		public Irrigation getIrrigation() {
+			return irrigation;
+		}
+
+		public TaskType getTaskType() {
+			return task;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
 		}
 	}
 

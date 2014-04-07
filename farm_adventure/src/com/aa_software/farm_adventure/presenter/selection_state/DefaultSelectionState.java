@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.presenter.state;
+package com.aa_software.farm_adventure.presenter.selection_state;
 
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
@@ -8,15 +8,17 @@ import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
-public class ToolSelectionState extends AbstractSelectionState {
+public class DefaultSelectionState extends AbstractSelectionState {
+	public DefaultSelectionState() {
+	}
 
-	public ToolSelectionState(AbstractTool selection) {
-		this.selection = selection;
+	public DefaultSelectionState update() {
+		return new DefaultSelectionState();
 	}
 
 	@Override
-	public ToolSelectionState update(AbstractCrop crop) {
-		return new ToolSelectionState((AbstractTool) selection);
+	public DefaultSelectionState update(AbstractCrop crop) {
+		return new DefaultSelectionState();
 	}
 
 	@Override
@@ -35,14 +37,16 @@ public class ToolSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public ToolSelectionState update(AbstractWorker worker) {
-		return new ToolSelectionState((AbstractTool) selection);
+	public DefaultSelectionState update(AbstractWorker worker) {
+		return new DefaultSelectionState();
 	}
 
 	@Override
-	public ToolSelectionState update(Plot plot, Inventory inventory) {
-		selection.update(plot, inventory);
-		return new ToolSelectionState((AbstractTool) selection);
+	public DefaultSelectionState update(Plot plot, Inventory inventory) {
+		return new DefaultSelectionState();
 	}
 
+	public DefaultSelectionState update(Plot[] plot) {
+		return new DefaultSelectionState();
+	}
 }
