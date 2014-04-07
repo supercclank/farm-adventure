@@ -2,7 +2,6 @@ package com.aa_software.farm_adventure.model.item.crop;
 
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractCrop extends AbstractItem {
@@ -19,6 +18,11 @@ public abstract class AbstractCrop extends AbstractItem {
 		return growthTime;
 	}
 
+	@Override
+	public String getItemType() {
+		return "CROPS";
+	}
+
 	public int getOutput() {
 		return output;
 	}
@@ -27,8 +31,13 @@ public abstract class AbstractCrop extends AbstractItem {
 		return "crops";
 	}
 
+	@Override
 	public String getTextureName() {
 		return "texture";
+	}
+
+	public boolean isHarvestable() {
+		return isHarvestable;
 	}
 
 	public void setGrowthTime(float growthTime) {
@@ -38,21 +47,14 @@ public abstract class AbstractCrop extends AbstractItem {
 	public void setOutput(int output) {
 		this.output = output;
 	}
-	
-	public boolean isHarvestable() {
-		return isHarvestable;
-	}
-
-	@Override
-	public void update(Plot plot, Inventory inventory) {}
 
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	public String getItemType() {
-		return "CROPS";
+
+	@Override
+	public void update(Plot plot, Inventory inventory) {
 	}
 }

@@ -5,14 +5,14 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 public class HandPlowTool extends AbstractPlowTool {
 	public static final String TEXTURE_NAME = "handPlowTool";
 	public static final String HANDPLOWTOOL_NAME = "Hand Plow";
-	public static final int DEFAULT_COST = 10;
+	public static final int DEFAULT_COST = 0;
 	public static final int DEFAULT_VALUE = 0;
 	public static final int DEFAULT_WORK_TIME = 5;
 
 	public HandPlowTool() {
 		super();
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = HANDPLOWTOOL_NAME;
 		this.upgrade = new TractorPlowTool();
@@ -28,6 +28,6 @@ public class HandPlowTool extends AbstractPlowTool {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

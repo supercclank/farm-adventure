@@ -3,7 +3,6 @@ package com.aa_software.farm_adventure.model.plot;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
 //TODO: change from checking if usable before setting. This will allow the plot
 // to asynchronously be updated even while a task is being completed.
@@ -12,7 +11,6 @@ import com.aa_software.farm_adventure.presenter.TextureHelper;
 
 public class Plot {
 	private AbstractCrop crop;
-	private AbstractSeed seed;
 	private EnumSet<Irrigation> irrigation;
 	private PlotType plotType;
 	private boolean isUsable;
@@ -20,7 +18,7 @@ public class Plot {
 	private int taskTextureIndex;
 	public static final String[][] WORK_STATUS_TEXTURES = new String[][] {
 			{ null, "puw1", "puw2", "puw3", "puw4" },
-			{ null, "pw1", "pw2", "pw3", "pw4" } ,
+			{ null, "pw1", "pw2", "pw3", "pw4" },
 			{ null, "leftT1", "leftT2", "leftT3", "leftT4" },
 			{ null, "leftB1", "leftB2", "leftB3", "leftB4" },
 			{ null, "rightT1", "rightT2", "rightT3", "rightT4" },
@@ -38,14 +36,13 @@ public class Plot {
 			{ null, "ric1", "ric2", "ric3", "ric4" },
 			{ null, "ric4", "ric3", "ric2", "ric1" },
 			{ null, "bud1", "bud2", "bud3", "bud4" },
-			{ null, "bud4", "bud3", "bud2", "bud1" }
-	};
-	
+			{ null, "bud4", "bud3", "bud2", "bud1" } };
+
 	public Plot(PlotType plotType) {
 		this.crop = null;
 		this.irrigation = EnumSet.noneOf(Irrigation.class);
 		this.plotType = plotType;
-		this.taskTexturePrefix = TaskType.PLOW_UW; //default
+		this.taskTexturePrefix = TaskType.PLOW_UW; // default
 		if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
 			this.isUsable = false;
 		} else {
@@ -57,20 +54,12 @@ public class Plot {
 		this.crop = null;
 		this.irrigation = irrigation;
 		this.plotType = plotType;
-		this.taskTexturePrefix = TaskType.PLOW_UW; //default
+		this.taskTexturePrefix = TaskType.PLOW_UW; // default
 		if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
 			this.isUsable = false;
 		} else {
 			this.isUsable = true;
 		}
-	}
-
-	public AbstractCrop getCrop() {
-		return crop;
-	}
-
-	public EnumSet<Irrigation> getIrrigation() {
-		return irrigation;
 	}
 
 	public void addIrrigation(Irrigation irrigation) {
@@ -83,20 +72,12 @@ public class Plot {
 		}
 	}
 
-	public PlotType getPlotType() {
-		return plotType;
+	public AbstractCrop getCrop() {
+		return crop;
 	}
 
-	public String getTextureName() {
-		return plotType.toString().toLowerCase();
-	}
-
-	public String getTaskTextureName() {
-		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()][taskTextureIndex];
-	}
-
-	public int getWorkStatusTextureLength() {
-		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()].length;
+	public EnumSet<Irrigation> getIrrigation() {
+		return irrigation;
 	}
 
 	/**
@@ -107,6 +88,63 @@ public class Plot {
 	 */
 	public String getIrrigationTextureName() {
 		return TextureHelper.getIrrigationTextureName(irrigation);
+	}
+
+	public PlotType getPlotType() {
+		return plotType;
+	}
+
+	public int getTaskTextureIndex() {
+		return taskTextureIndex;
+	}
+
+	public String getTaskTextureName() {
+		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()][taskTextureIndex];
+	}
+
+	public TaskType getTaskTexturePrefix() {
+		return taskTexturePrefix;
+	}
+
+	public String getTextureName() {
+		return plotType.toString().toLowerCase();
+	}
+
+	public int getWorkStatusTextureLength() {
+		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()].length;
+	}
+
+	// TODO: This was added to allow the animation for harvest crop
+	// to work correctly. Might not be the best way to solve this problem
+	// and should be looked at.
+	public void harvestRemoveCrop(final AbstractCrop crop) {
+		this.crop = null;
+	}
+
+	public boolean hasCrop() {
+		if (crop == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public void incrementTaskTextureIndex() {
+		taskTextureIndex++;
+	}
+
+	public boolean isGrass() {
+		return plotType.toString().toLowerCase().startsWith("grass");
+	}
+
+	public boolean isIrrigated() {
+		if (irrigation.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isUnplowed() {
+		return plotType.toString().toLowerCase().startsWith("unplowed");
 	}
 
 	public boolean isUsable() {
@@ -121,23 +159,6 @@ public class Plot {
 			this.crop = crop;
 		}
 	}
-	
-	public void setSeed(final AbstractSeed seed) {
-		if (seed == null && isUsable) {
-			this.seed = null;
-		} else if (!isGrass() && !isUnplowed() && isIrrigated() && !hasCrop()
-				&& isUsable) {
-			this.seed = seed;
-			this.crop = seed.getCrop();
-		}
-	}
-	
-	//TODO: This was added to allow the animation for harvest crop
-	// to work correctly. Might not be the best way to solve this problem
-	// and should be looked at.
-	public void harvestRemoveCrop(final AbstractCrop crop) {
-		this.crop = null;
-	}
 
 	public void setIrrigation(EnumSet<Irrigation> irrigation) {
 		if (isUsable) {
@@ -150,6 +171,27 @@ public class Plot {
 				&& plotType.toString().toLowerCase().endsWith("unwatered")) {
 			waterPlot();
 		}
+	}
+
+	public void setPlotType(PlotType plotType) {
+		if (isUsable) {
+			if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+				this.isUsable = false;
+			}
+			this.plotType = plotType;
+		}
+	}
+
+	public void setTaskTextureIndex(int taskTextureIndex) {
+		this.taskTextureIndex = taskTextureIndex;
+	}
+
+	public void setTaskTexturePrefix(TaskType task) {
+		this.taskTexturePrefix = task;
+	}
+
+	public void setUsable(boolean isUsable) {
+		this.isUsable = isUsable;
 	}
 
 	/**
@@ -174,61 +216,6 @@ public class Plot {
 		} else if (plotType == PlotType.UNPLOWEDUNWATERED) {
 			plotType = PlotType.UNPLOWEDWATERED;
 		}
-	}
-
-	public void setPlotType(PlotType plotType) {
-		if (isUsable) {
-			if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
-				this.isUsable = false;
-			}
-			this.plotType = plotType;
-		}
-	}
-
-	public void setUsable(boolean isUsable) {
-		this.isUsable = isUsable;
-	}
-
-	public boolean isIrrigated() {
-		if (irrigation.isEmpty()) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean isUnplowed() {
-		return plotType.toString().toLowerCase().startsWith("unplowed");
-	}
-
-	public boolean isGrass() {
-		return plotType.toString().toLowerCase().startsWith("grass");
-	}
-
-	public boolean hasCrop() {
-		if (crop == null) {
-			return false;
-		}
-		return true;
-	}
-
-	public void incrementTaskTextureIndex() {
-		taskTextureIndex++;
-	}
-
-	public void setTaskTextureIndex(int taskTextureIndex) {
-		this.taskTextureIndex = taskTextureIndex;
-	}
-
-	public void setTaskTexturePrefix(TaskType task) {
-		this.taskTexturePrefix = task;
-	}
-
-	public int getTaskTextureIndex() {
-		return taskTextureIndex;
-	}
-
-	public TaskType getTaskTexturePrefix() {
-		return taskTexturePrefix;
 	}
 
 }

@@ -45,7 +45,7 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	public DefaultSelectionState update(Plot plot, Inventory inventory) {
 		return new DefaultSelectionState();
 	}
-	
+
 	public DefaultSelectionState update(Plot[] plot) {
 		return new DefaultSelectionState();
 	}

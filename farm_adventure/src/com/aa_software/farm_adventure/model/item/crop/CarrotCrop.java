@@ -6,15 +6,15 @@ public class CarrotCrop extends AbstractCrop {
 	public static final String CARROT_NAME = "Carrot";
 	public static final int DEFAULT_GROWTH_TIME = 60;
 	public static final int DEFAULT_OUTPUT = 500;
-	public static final int DEFAULT_COST = 20;
-	public static final int DEFAULT_VALUE = 10;
+	public static final int DEFAULT_COST = 60;
+	public static final int DEFAULT_VALUE = 60;
 
 	public CarrotCrop() {
 		super();
 		this.growthTime = DEFAULT_GROWTH_TIME;
 		this.output = DEFAULT_OUTPUT;
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = DEFAULT_VALUE;
 		this.name = CARROT_NAME;
 		this.description = "Carrots that you can sell in the market place";
 	}
@@ -42,6 +42,7 @@ public class CarrotCrop extends AbstractCrop {
 		}
 	}
 
+	@Override
 	public String getSeedName() {
 		return SEED_NAME;
 	}

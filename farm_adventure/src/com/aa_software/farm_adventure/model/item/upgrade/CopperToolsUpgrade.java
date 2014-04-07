@@ -8,13 +8,14 @@ public class CopperToolsUpgrade extends AbstractUpgrade {
 	public static final float WORK_RATE_MOD = .8f;
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;
-	
+
 	public CopperToolsUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.name = COPPERTOOL_NAME;
 	}
-	
+
+	@Override
 	public String getTextureName() {
 		return TEXTURE_NAME;
 	}

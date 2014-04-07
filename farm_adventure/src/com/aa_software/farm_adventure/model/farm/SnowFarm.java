@@ -24,7 +24,7 @@ public class SnowFarm extends AbstractFarm {
 		super();
 		seasons = new Season[DEFAULT_SEASONS.length];
 		for (int i = 0; i < seasons.length; i++) {
-				seasons[i] = new Season(DEFAULT_SEASONS[i]);
+			seasons[i] = new Season(DEFAULT_SEASONS[i]);
 		}
 		field = new Field(WATER_PLOT_MOD);
 		seasons[currentSeason].update(field);

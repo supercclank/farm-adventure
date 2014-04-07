@@ -21,11 +21,27 @@ public class Player {
 	private AbstractCampaign campaign;
 	private Preferences preferences;
 
-
 	private Player() {
 		this.bankroll = STARTING_BANKROLL;
 		// this.campaign = new TutorialCampaign();
 		this.preferences = new Preferences();
+	}
+
+	public Boolean buyItem(AbstractItem item) {
+		int itemCost;
+		if (item instanceof AbstractWorker) {
+			itemCost = ((AbstractWorker) item).getWage();
+		} else {
+			itemCost = item.getCost();
+		}
+		if (this.bankroll < itemCost) {
+			System.out.println("You don't have enough funds");
+			return false;
+		} else {
+			System.out.println("Buy: " + item.toString());
+			this.bankroll -= itemCost;
+			return true;
+		}
 	}
 
 	public int getBankroll() {
@@ -40,6 +56,12 @@ public class Player {
 		return preferences;
 	}
 
+	public void sellItem(AbstractItem item) {
+		int itemValue = item.getValue();
+		System.out.println("Sell: " + item.toString());
+		this.bankroll += itemValue;
+	}
+
 	public void setBankroll(int bankroll) {
 		this.bankroll = bankroll;
 	}
@@ -50,28 +72,5 @@ public class Player {
 
 	public void setPreferences(Preferences preferences) {
 		this.preferences = preferences;
-	}
-	
-	public Boolean buyItem(AbstractItem item){
-		int itemCost;
-		if (item instanceof AbstractWorker){
-			itemCost = ((AbstractWorker)item).getWage();
-		} else {
-			itemCost = item.getCost();
-		}
-    	if(this.bankroll<itemCost){
-    		System.out.println("You don't have enough funds");
-            return false;
-    	} else{
-            System.out.println("Buy: "+item.toString());
-            this.bankroll-=itemCost;
-    		return true;
-    	}
-	}
-	
-	public void sellItem(AbstractItem item){
-		int itemValue = item.getValue();
-	    System.out.println("Sell: "+item.toString());
-	    this.bankroll+=itemValue;
 	}
 }

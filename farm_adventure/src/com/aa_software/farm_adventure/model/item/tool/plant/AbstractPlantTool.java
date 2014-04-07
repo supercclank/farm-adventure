@@ -14,6 +14,11 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	protected AbstractSeed seed = null;
 	protected AbstractCrop crop = null;
 
+	@Override
+	public String getItemType() {
+		return "PLANT TOOLS";
+	}
+
 	public AbstractSeed getSeed() {
 		return this.seed;
 	}
@@ -24,33 +29,36 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		this.seed = seed;
 		this.crop = seed.getCrop();
 	}
-	
+
+	public void update(final Plot plot) {
+	}
+
 	@Override
 	public void update(final Plot plot, Inventory inventory) {
 		final AbstractWorker worker;
-		
-		if(workerIndex<0 || ((AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex)).isBusy()) {
+
+		if (workerIndex < 0
+				|| ((AbstractWorker) inventory.getItems().get("WORKERS")
+						.get(workerIndex)).isBusy()) {
 			return;
-		}else{
-			worker = (AbstractWorker)inventory.getItems().get("WORKERS").get(workerIndex);
+		} else {
+			worker = (AbstractWorker) inventory.getItems().get("WORKERS")
+					.get(workerIndex);
 		}
 
-		if(!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated() && 
-			!plot.hasCrop() && plot.isUsable() && this.seed!=null && inventory.removeItem(seed)) {		
-			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
+		if (!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated()
+				&& !plot.hasCrop() && plot.isUsable() && this.seed != null
+				&& inventory.removeItem(seed)) {
+			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
+					+ seed.getTextureName()));
 			worker.setBusy(true);
 			plot.setUsable(false);
-			float delay = workTime * worker.getWorkRate()/(plot.getWorkStatusTextureLength() - 1);
+			float delay = workTime * worker.getWorkRate()
+					/ (plot.getWorkStatusTextureLength() - 1);
 			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
 			sounds.playClick();
 			this.seed = null;
+			worker.resetTexture();
 		}
-	}
-	
-	public void update(final Plot plot) {
-	}
-	
-	public String getItemType() {
-		return "PLANT TOOLS";
 	}
 }

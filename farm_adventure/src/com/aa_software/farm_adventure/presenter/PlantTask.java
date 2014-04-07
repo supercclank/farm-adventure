@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.presenter;
 
-import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -14,20 +13,21 @@ public class PlantTask extends Task {
 	private AbstractWorker worker;
 	private float delay;
 
-	public PlantTask(Plot plot, AbstractSeed seed2, AbstractWorker worker,
+	public PlantTask(Plot plot, AbstractSeed seed, AbstractWorker worker,
 			float delay) {
 		this.plot = plot;
-		this.seed = seed2;
+		this.seed = seed;
 		this.worker = worker;
 		this.delay = delay;
 	}
 
 	@Override
-    public void run() {
-		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p" + seed.getTextureName()));
-		if(plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
+	public void run() {
+		plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
+				+ seed.getTextureName()));
+		if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
-			plot.setSeed(seed);
+			plot.setCrop(seed.getCrop());
 			plot.setTaskTextureIndex(0);
 			worker.addExperience();
 			worker.setBusy(false);
@@ -35,5 +35,5 @@ public class PlantTask extends Task {
 			plot.incrementTaskTextureIndex();
 			Timer.schedule(this, delay);
 		}
-    }
+	}
 }

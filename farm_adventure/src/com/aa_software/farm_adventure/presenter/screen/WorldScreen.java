@@ -35,7 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
  * 
  */
 public class WorldScreen extends AbstractScreen {
-	
+
 	/* Sound */
 	public static final Sounds sounds = Sounds.getInstance();
 
@@ -64,14 +64,95 @@ public class WorldScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Creates and displays the world map and buttons. Handles the on click for
-	 * the buttons - starting up a new farm.
+	 * Sets up the window to display the seasons for the currently selected farm
+	 * and a button to start the selected farm.
 	 */
-	@Override
-	public void show() {
-		super.show();
-		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		setupWorldMap();
+	public void setupSeasonMenu() {
+
+		// Gdx.input.setInputProcessor(plantMenuStage);
+
+		Texture spring = new Texture(Gdx.files.internal("textures/spring.png"));
+		Texture summer = new Texture(Gdx.files.internal("textures/summer.png"));
+		Texture fall = new Texture(Gdx.files.internal("textures/fall.png"));
+		Texture winter = new Texture(Gdx.files.internal("textures/winter.png"));
+
+		TextureRegion springImage = new TextureRegion(spring);
+		TextureRegion summerImage = new TextureRegion(summer);
+		TextureRegion fallImage = new TextureRegion(fall);
+		TextureRegion winterImage = new TextureRegion(winter);
+
+		TextButton playFarmButton = new TextButton("Play Farm", skin);
+
+		seasonWindow = new Window("Seasons for this farm", skin);
+		seasonWindow.setModal(false);
+		seasonWindow.setMovable(false);
+		seasonWindow.setVisible(false);
+		seasonWindow.setPosition(WINDOW_X, WINDOW_Y);
+		seasonWindow.defaults().spaceBottom(10);
+		seasonWindow.row().fill().expandX();
+
+		/* Decide the season order */
+		Button seasonButton;
+		for (SeasonType s : seasons) {
+			switch (s) {
+			case SPRING:
+				seasonButton = new Button(new Image(springImage), skin);
+				seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+				seasonWindow.add(seasonButton).size(75, 115);
+				break;
+			case SUMMER:
+				seasonButton = new Button(new Image(summerImage), skin);
+				seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+				seasonWindow.add(seasonButton).size(75, 115);
+				break;
+			case FALL:
+				seasonButton = new Button(new Image(fallImage), skin);
+				seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+				seasonWindow.add(seasonButton).size(75, 115);
+				break;
+			case WINTER:
+				seasonButton = new Button(new Image(winterImage), skin);
+				seasonButton.padBottom(0).padLeft(0).padRight(0).padTop(0);
+				seasonWindow.add(seasonButton).size(75, 115);
+				break;
+			default:
+				seasonWindow.add(new Button(new Image(springImage), skin))
+						.size(75, 115);
+				break;
+			}
+		}
+		seasonWindow.row();
+		seasonWindow.add(playFarmButton).colspan(4).width(200);
+		seasonWindow.pack();
+		super.addActor(seasonWindow);
+
+		playFarmButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				AbstractFarmScreen farmScreen;
+				switch (selectedFarm) {
+				case TUTORIAL:
+					farmScreen = new TutorialFarmScreen();
+					break;
+				case RAINFOREST:
+					farmScreen = new RainforestFarmScreen();
+					break;
+				case DESERT:
+					farmScreen = new DesertFarmScreen();
+					break;
+				case SNOW:
+					farmScreen = new SnowFarmScreen();
+					break;
+				default:
+					farmScreen = new TutorialFarmScreen();
+					break;
+				}
+				FarmAdventure.getInstance().setScreen(farmScreen);
+				sounds.playClick();
+				return true;
+			}
+		});
 	}
 
 	/**
@@ -132,6 +213,7 @@ public class WorldScreen extends AbstractScreen {
 		// This line of code will take the user to the farm on click or touch of
 		// the tutorial farm
 		tutorialFarmButton.addListener(new InputListener() {
+			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				seasons = TutorialFarm.DEFAULT_SEASONS;
@@ -146,6 +228,7 @@ public class WorldScreen extends AbstractScreen {
 		// This line of code will take the user to the farm on click or touch of
 		// the rainforest farm
 		rainforestFarmButton.addListener(new InputListener() {
+			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				seasons = RainforestFarm.DEFAULT_SEASONS;
@@ -175,6 +258,7 @@ public class WorldScreen extends AbstractScreen {
 		// This line of code will take the user to the farm on click or touch of
 		// the snow farm
 		snowFarmButton.addListener(new InputListener() {
+			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				seasons = SnowFarm.DEFAULT_SEASONS;
@@ -189,89 +273,14 @@ public class WorldScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Sets up the window to display the seasons for the currently selected farm
-	 * and a button to start the selected farm.
+	 * Creates and displays the world map and buttons. Handles the on click for
+	 * the buttons - starting up a new farm.
 	 */
-	public void setupSeasonMenu() {
-
-		// Gdx.input.setInputProcessor(plantMenuStage);
-
-		Texture spring = new Texture(Gdx.files.internal("textures/spring.png"));
-		Texture summer = new Texture(Gdx.files.internal("textures/summer.png"));
-		Texture fall = new Texture(Gdx.files.internal("textures/fall.png"));
-		Texture winter = new Texture(Gdx.files.internal("textures/winter.png"));
-
-		TextureRegion springImage = new TextureRegion(spring);
-		TextureRegion summerImage = new TextureRegion(summer);
-		TextureRegion fallImage = new TextureRegion(fall);
-		TextureRegion winterImage = new TextureRegion(winter);
-
-		TextButton playFarmButton = new TextButton("Play Farm", skin);
-
-		seasonWindow = new Window("Seasons for this farm", skin);
-		seasonWindow.setModal(false);
-		seasonWindow.setMovable(false);
-		seasonWindow.setVisible(false);
-		seasonWindow.setPosition(WINDOW_X, WINDOW_Y);
-		seasonWindow.defaults().spaceBottom(10);
-		seasonWindow.row().fill().expandX();
-
-		/* Decide the season order */
-		for (SeasonType s : seasons) {
-			switch (s) {
-			case SPRING:
-				seasonWindow.add(new Button(new Image(springImage), skin))
-						.size(75, 115);
-				break;
-			case SUMMER:
-				seasonWindow.add(new Button(new Image(summerImage), skin))
-						.size(75, 115);
-				break;
-			case FALL:
-				seasonWindow.add(new Button(new Image(fallImage), skin)).size(
-						75, 115);
-				break;
-			case WINTER:
-				seasonWindow.add(new Button(new Image(winterImage), skin))
-						.size(75, 115);
-				break;
-			default:
-				seasonWindow.add(new Button(new Image(springImage), skin))
-						.size(75, 115);
-				break;
-			}
-		}
-		seasonWindow.row();
-		seasonWindow.add(playFarmButton).colspan(4).width(200);
-		seasonWindow.pack();
-		super.addActor(seasonWindow);
-
-		playFarmButton.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				AbstractFarmScreen farmScreen;
-				switch (selectedFarm) {
-				case TUTORIAL:
-					farmScreen = new TutorialFarmScreen();
-					break;
-				case RAINFOREST:
-					farmScreen = new RainforestFarmScreen();
-					break;
-				case DESERT:
-					farmScreen = new DesertFarmScreen();
-					break;
-				case SNOW:
-					farmScreen = new SnowFarmScreen();
-					break;
-				default:
-					farmScreen = new TutorialFarmScreen();
-					break;
-				}
-				FarmAdventure.getInstance().setScreen(farmScreen);
-				sounds.playClick();
-				return true;
-			}
-		});
+	@Override
+	public void show() {
+		super.show();
+		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		setupWorldMap();
 	}
 
 }

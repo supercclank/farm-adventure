@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.GLTexture;
 public class FarmAdventure extends Game {
 
 	private static FarmAdventure Instance = null;
-	
+
 	// constant useful for logging
 	public static final String LOG = FarmAdventure.class.getSimpleName();
 
@@ -19,8 +19,6 @@ public class FarmAdventure extends Game {
 
 	// a libgdx helper class that logs the current FPS each second
 	private static FPSLogger FpsLogger;
-	
-	protected FarmAdventure() {}
 
 	public static FarmAdventure getInstance() {
 		if (Instance == null) {
@@ -28,7 +26,7 @@ public class FarmAdventure extends Game {
 		}
 		return Instance;
 	}
-	
+
 	/**
 	 * Whenever the game is in developer mode everything is logged in console or
 	 * logcat
@@ -47,6 +45,9 @@ public class FarmAdventure extends Game {
 	public static void logFPS() {
 		if (DEV_MODE)
 			FpsLogger.log();
+	}
+
+	protected FarmAdventure() {
 	}
 
 	@Override

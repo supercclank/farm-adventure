@@ -5,10 +5,10 @@ public class WindmillUpgrade extends AbstractUpgrade {
 	public static final String WINDMILL_NAME = "Windmill Upgrade";
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;
-	
+
 	public WindmillUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.name = WINDMILL_NAME;
 	}
 }
