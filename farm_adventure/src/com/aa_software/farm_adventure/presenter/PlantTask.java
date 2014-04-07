@@ -13,10 +13,10 @@ public class PlantTask extends Task {
 	private AbstractWorker worker;
 	private float delay;
 
-	public PlantTask(Plot plot, AbstractSeed seed2, AbstractWorker worker,
+	public PlantTask(Plot plot, AbstractSeed seed, AbstractWorker worker,
 			float delay) {
 		this.plot = plot;
-		this.seed = seed2;
+		this.seed = seed;
 		this.worker = worker;
 		this.delay = delay;
 	}
@@ -27,6 +27,7 @@ public class PlantTask extends Task {
 				+ seed.getTextureName()));
 		if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 			plot.setUsable(true);
+			plot.setCrop(seed.getCrop());
 			plot.setTaskTextureIndex(0);
 			worker.addExperience();
 			worker.setBusy(false);
