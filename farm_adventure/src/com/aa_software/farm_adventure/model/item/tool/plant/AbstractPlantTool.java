@@ -6,9 +6,9 @@ import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.presenter.PlantTask;
 import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public abstract class AbstractPlantTool extends AbstractTool {
 	protected AbstractSeed seed = null;
@@ -24,8 +24,6 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	}
 
 	public void setSeed(AbstractSeed seed) {
-		// TODO: we'll have to decide if we're making a distinction between
-		// produce and seeds. If so, change crop to seed.
 		this.seed = seed;
 		this.crop = seed.getCrop();
 	}
@@ -61,4 +59,37 @@ public abstract class AbstractPlantTool extends AbstractTool {
 			worker.resetTexture();
 		}
 	}
+	
+	private class PlantTask extends Task {
+
+		private Plot plot;
+		private AbstractSeed seed;
+		private AbstractWorker worker;
+		private float delay;
+
+		public PlantTask(Plot plot, AbstractSeed seed, AbstractWorker worker,
+				float delay) {
+			this.plot = plot;
+			this.seed = seed;
+			this.worker = worker;
+			this.delay = delay;
+		}
+
+		@Override
+		public void run() {
+			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
+					+ seed.getTextureName()));
+			if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
+				plot.setUsable(true);
+				plot.setTaskTextureIndex(0);
+				worker.addExperience();
+				worker.setBusy(false);
+			} else {
+				plot.incrementTaskTextureIndex();
+				Timer.schedule(this, delay);
+			}
+		}
+	}
 }
+
+
