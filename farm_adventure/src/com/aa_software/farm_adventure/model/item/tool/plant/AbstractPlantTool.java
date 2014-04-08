@@ -33,10 +33,8 @@ public abstract class AbstractPlantTool extends AbstractTool {
 					+ seed.getTextureName()));
 			if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 				plot.setUsable(true);
-				plot.setTaskTextureIndex(0);
-				for(int i = 0; i < seed.getOutput(); i++) {
-					plot.addCrop(seed.getCrop());
-				}
+				plot.setTaskTextureIndex(0);	
+				plot.setCrop(seed.getCrop());
 				worker.addExperience();
 				worker.setBusy(false);
 			} else {
@@ -80,7 +78,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}
 
 		if (!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated()
-				&& !plot.hasCrops() && plot.isUsable() && this.seed != null
+				&& !plot.hasCrop() && plot.isUsable() && this.seed != null
 				&& inventory.removeItem(seed)) {
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
 					+ seed.getTextureName()));

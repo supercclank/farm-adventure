@@ -718,10 +718,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				 * If there is a plant on the plot, get its texture for our cell
 				 * to use
 				 */
-				ArrayList<AbstractCrop> crops = farm.getPlot(x, y).getCrops();
-				if (crops != null &&
-						!crops.isEmpty()) {
-					tile = tileSet.getTile(tileMap.get(crops.get(0).getTextureName()));
+				AbstractCrop crop = farm.getPlot(x, y).getCrop();
+				if (crop != null) {
+					tile = tileSet.getTile(tileMap.get(crop.getTextureName()));
 				}
 				cell.setTile(tile);
 			}

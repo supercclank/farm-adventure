@@ -1,13 +1,11 @@
 package com.aa_software.farm_adventure.model.plot;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
 public class Plot {
-	private ArrayList<AbstractCrop> crops;
+	private AbstractCrop crop;
 	private EnumSet<Irrigation> irrigation;
 	private PlotType plotType;
 	private boolean isUsable;
@@ -36,7 +34,6 @@ public class Plot {
 			{ null, "bud4", "bud3", "bud2", "bud1" } };
 
 	public Plot(PlotType plotType) {
-		this.crops = new ArrayList<AbstractCrop>();
 		this.irrigation = EnumSet.noneOf(Irrigation.class);
 		this.plotType = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
@@ -48,7 +45,6 @@ public class Plot {
 	}
 
 	public Plot(PlotType plotType, EnumSet<Irrigation> irrigation) {
-		this.crops = new ArrayList<AbstractCrop>();
 		this.irrigation = irrigation;
 		this.plotType = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
@@ -69,8 +65,8 @@ public class Plot {
 		}
 	}
 
-	public ArrayList<AbstractCrop> getCrops() {
-		return crops;
+	public AbstractCrop getCrop() {
+		return crop;
 	}
 
 	public EnumSet<Irrigation> getIrrigation() {
@@ -114,12 +110,12 @@ public class Plot {
 	// TODO: This was added to allow the animation for harvest crop
 	// to work correctly. Might not be the best way to solve this problem
 	// and should be looked at.
-	public void removeCrops() {
-		crops.clear();
+	public void removeCrop() {
+		crop = null;
 	}
 
-	public boolean hasCrops() {
-		if (crops == null || crops.isEmpty()) {
+	public boolean hasCrop() {
+		if (crop == null) {
 			return false;
 		}
 		return true;
@@ -148,18 +144,12 @@ public class Plot {
 		return isUsable;
 	}
 
-	public void setCrop(final ArrayList<AbstractCrop> crops) {
-		if (crops == null || crops.isEmpty() && isUsable) {
-			this.crops.clear();
-		} else if (!isGrass() && !isUnplowed() && isIrrigated() && !hasCrops()
+	public void setCrop(final AbstractCrop crop) {
+		if (crop == null && isUsable) {
+			this.crop = null;
+		} else if (!isGrass() && !isUnplowed() && isIrrigated() && !hasCrop()
 				&& isUsable) {
-			this.crops.addAll(crops);
-		}
-	}
-	
-	public void addCrop(final AbstractCrop crop) {
-		if (!isGrass() && !isUnplowed() && isIrrigated() && isUsable) {
-			this.crops.add(crop);
+			this.crop = crop;
 		}
 	}
 

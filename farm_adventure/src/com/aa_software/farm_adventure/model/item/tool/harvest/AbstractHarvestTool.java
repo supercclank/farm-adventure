@@ -1,7 +1,5 @@
 package com.aa_software.farm_adventure.model.item.tool.harvest;
 
-import java.util.ArrayList;
-
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
@@ -21,7 +19,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
-		if (plot.isUsable() && plot.hasCrops()) {
+		if (plot.isUsable() && plot.hasCrop()) {
 			final AbstractWorker worker;
 			if (workerIndex < 0
 					|| ((AbstractWorker) inventory.getItems().get("WORKERS")
@@ -37,12 +35,11 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			// removing the crops, this
 			// had to happen. Need a better solution here!
 			// TODO: "h" is also magic numbery.
+			AbstractCrop crop = plot.getCrop();
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h"
-					+ plot.getCrops().get(0).getTextureName()));
+					+ crop.getTextureName()));
 			//TODO: We should be adding crops to the inventory AFTER the task is finished.
-			for(AbstractCrop crop : plot.getCrops()) {
-				inventory.addItem(crop);
-			}
+			inventory.addItem(crop);
 			Timer.schedule(
 				new Task() {
 					@Override
@@ -57,7 +54,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 							sounds.playClick();
 						} else {
 							plot.incrementTaskTextureIndex();
-							plot.removeCrops();
+							plot.removeCrop();
 							Timer.schedule(
 									this,
 									(workTime * worker.getWorkRate())

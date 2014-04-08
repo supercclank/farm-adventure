@@ -631,10 +631,10 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				Plot plot = farm.getPlot(x, y - FIELD_STARTING_Y);
 				if (plot.isUsable()) {
 					boolean harvested = selection instanceof AbstractHarvestTool
-							&& plot.hasCrops();
+							&& plot.hasCrop();
 					boolean planted = selection instanceof AbstractPlantTool
 							&& !plot.isGrass() && !plot.isUnplowed()
-							&& plot.isIrrigated() && !plot.hasCrops();
+							&& plot.isIrrigated() && !plot.hasCrop();
 					boolean plowed = selection instanceof AbstractPlowTool
 							&& (plot.isGrass() || plot.isUnplowed());
 					if ((harvested && states[stateIndex] == State.CLICK_HARVEST_PLOT)
