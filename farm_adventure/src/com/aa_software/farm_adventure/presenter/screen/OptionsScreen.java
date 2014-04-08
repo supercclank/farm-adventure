@@ -57,6 +57,7 @@ public class OptionsScreen extends AbstractScreen {
 						* (musicVolume.getValue() / 100));
 				sounds.setSoundVolume((masterVolume.getValue() / 100)
 						* (gameVolume.getValue() / 100));
+				sounds.playClick();
 			}
 		});
 		table.add(masterVolume);
@@ -79,6 +80,7 @@ public class OptionsScreen extends AbstractScreen {
 				gameValue.setText("" + (int) gameVolume.getValue() + "%");
 				sounds.setSoundVolume((masterVolume.getValue() / 100)
 						* (gameVolume.getValue() / 100));
+				sounds.playClick();
 			}
 		});
 		table.add(gameVolume);
@@ -99,6 +101,7 @@ public class OptionsScreen extends AbstractScreen {
 				musicValue.setText("" + (int) musicVolume.getValue() + "%");
 				sounds.setMusicVolume((masterVolume.getValue() / 100)
 						* (musicVolume.getValue() / 100));
+				sounds.playClick();
 			}
 		});
 		table.add(musicVolume);
@@ -113,6 +116,7 @@ public class OptionsScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				sounds.playClick();
 				FarmAdventure.getInstance().setScreen(new MainMenuScreen());
 				return true;
 			}

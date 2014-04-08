@@ -334,12 +334,12 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case DESCRIBE_QUANTITY:
 			description = "This is the quantity \nthat you own of a \ncertain item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .13);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .20);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
 			break;
 		case DESCRIBE_BUY_AND_SELL:
 			description = "You can use these buttons to\npurchase or sell items\nand hire workers.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .4);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .45);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 
@@ -349,9 +349,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
 			break;
 		case DESCRIBE_INFO:
-			description = "You can use these buttons to\nget info on an item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
+			description = "You can use\nthese buttons to\nget info on an item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .75);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case CLICK_INFO:
 			description = "Click the info button.";
@@ -360,8 +360,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			break;
 		case DESCRIBE_EXIT_INFO:
 			description = "This is the exit button to\nleave the market and\nreturn to farm view.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .6);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .8);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .82);
 			break;
 		case CLICK_EXIT_INFO:
 			description = "Click EXIT button";
@@ -510,6 +510,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
+					sounds.playClick();
 					transitionState();
 					return true;
 				}
@@ -557,6 +558,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
+						sounds.playClick();
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection).setTaskType(this

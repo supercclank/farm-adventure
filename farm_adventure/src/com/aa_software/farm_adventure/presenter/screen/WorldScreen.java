@@ -83,7 +83,7 @@ public class WorldScreen extends AbstractScreen {
 
 		TextButton playFarmButton = new TextButton("Play Farm", skin);
 
-		seasonWindow = new Window("Seasons for this farm", skin);
+		seasonWindow = new Window("Season cycle for this farm", skin);
 		seasonWindow.setModal(false);
 		seasonWindow.setMovable(false);
 		seasonWindow.setVisible(false);
