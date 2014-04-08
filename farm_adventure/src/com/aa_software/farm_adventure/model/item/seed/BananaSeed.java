@@ -14,16 +14,13 @@ public class BananaSeed extends AbstractSeed {
 	private static final String CROP_TEXTURE_NAME = "bananaCrop";
 	private static final String SEED_TEXTURE_NAME = "bananaSeed";
 	private static final String DESCRIPTION = "Plant this seed and it will produce Bananas over time.";
-	
+
 	public BananaSeed() {
 		super();
+		this.crop = new BananaCrop();
 		this.texture = CROP_TEXTURE_NAME;
 		this.name = NAME;
 		this.description = DESCRIPTION;
-	}
-	
-	public AbstractCrop getCrop() {
-		return new BananaCrop();
 	}
 
 	@Override

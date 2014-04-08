@@ -13,6 +13,7 @@ public abstract class AbstractSeed extends AbstractItem {
 	
 	protected float growthRateMod;
 	protected String texture = null;
+	protected AbstractCrop crop;
 
 	public AbstractSeed() {
 		this.cost = DEFAULT_COST;
@@ -20,7 +21,9 @@ public abstract class AbstractSeed extends AbstractItem {
 		this.growthRateMod = 1;
 	}
 	
-	public abstract AbstractCrop getCrop();
+	public AbstractCrop getCrop() {
+		return crop;
+	}
 
 	@Override
 	public String getItemType() {

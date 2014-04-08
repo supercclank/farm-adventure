@@ -10,6 +10,7 @@ public class BeetSeed extends AbstractSeed {
 
 	public BeetSeed() {
 		super();
+		this.crop = new BeetCrop();
 		this.texture = "beetCrop";
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;

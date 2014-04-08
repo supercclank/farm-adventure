@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.item.seed;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
+import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 
 public class CarrotSeed extends AbstractSeed {
@@ -10,6 +11,7 @@ public class CarrotSeed extends AbstractSeed {
 
 	public CarrotSeed() {
 		super();
+		this.crop = new CarrotCrop();
 		this.texture = "carrotCrop";
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
