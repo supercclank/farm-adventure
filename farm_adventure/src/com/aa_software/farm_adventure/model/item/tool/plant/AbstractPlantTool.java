@@ -28,12 +28,15 @@ public abstract class AbstractPlantTool extends AbstractTool {
 
 		@Override
 		public void run() {
+			//TODO "p" is kind of magic numbery and out of place here.
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
 					+ seed.getTextureName()));
 			if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 				plot.setUsable(true);
 				plot.setTaskTextureIndex(0);
-				plot.setCrop(seed.getCrop());
+				for(int i = 0; i < seed.getOutput(); i++) {
+					plot.addCrop(seed.getCrop());
+				}
 				worker.addExperience();
 				worker.setBusy(false);
 			} else {
@@ -64,7 +67,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	}
 	
 	@Override
-	public void update(final Plot plot, Inventory inventory) {
+	public void update(final Plot plot, final Inventory inventory) {
 		final AbstractWorker worker;
 
 		if (workerIndex < 0
@@ -77,13 +80,13 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}
 
 		if (!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated()
-				&& !plot.hasCrop() && plot.isUsable() && this.seed != null
+				&& !plot.hasCrops() && plot.isUsable() && this.seed != null
 				&& inventory.removeItem(seed)) {
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
 					+ seed.getTextureName()));
 			worker.setBusy(true);
 			plot.setUsable(false);
-			float delay = workTime * worker.getWorkRate()
+			float delay = (workTime * worker.getWorkRate() + seed.getGrowthTime())
 					/ (plot.getWorkStatusTextureLength() - 1);
 			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
 			sounds.playClick();

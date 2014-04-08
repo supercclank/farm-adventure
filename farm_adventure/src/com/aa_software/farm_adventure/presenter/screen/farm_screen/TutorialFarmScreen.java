@@ -163,12 +163,12 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .25);
 			break;
 		case DESCRIBE_PLOW_WORKER:
-			description = "These are \navailable farmers \nthat can labor \na plot.";
+			description = "These are\navailable farmers\nthat can labor \na plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
 			break;
 		case CLICK_PLOW_WORKER:
-			description = "Select a worker to \nplow a plot.";
+			description = "Select a worker to\nplow a plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
 			foundClick = false;
@@ -181,7 +181,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case DESCRIBE_PLOW:
-			description = "This is the plow\ntool which plows \n a plot of land.";
+			description = "This is the plow\ntool which plows\n a plot of land.";
 			descriptionX = Gdx.graphics.getWidth() * 0;
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
@@ -459,7 +459,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		// similar to the
 		// "click" set that transition on a given condition.
 		if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-			if (unwateredPlowedPlotExists() && foundClick) {
+			if (wateredPlowedPlotExists() && foundClick) {
 				transitionState();
 			}
 		} else if (states[stateIndex].toString().toLowerCase()
@@ -485,7 +485,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 	}
 
-	public boolean unwateredPlowedPlotExists() {
+	public boolean wateredPlowedPlotExists() {
 		// TODO probably want to move this logic to Farm
 		Field field = farm.getField();
 		for (int i = 0; i < Field.COLUMNS; i++) {
@@ -631,10 +631,10 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				Plot plot = farm.getPlot(x, y - FIELD_STARTING_Y);
 				if (plot.isUsable()) {
 					boolean harvested = selection instanceof AbstractHarvestTool
-							&& plot.hasCrop();
+							&& plot.hasCrops();
 					boolean planted = selection instanceof AbstractPlantTool
 							&& !plot.isGrass() && !plot.isUnplowed()
-							&& plot.isIrrigated() && !plot.hasCrop();
+							&& plot.isIrrigated() && !plot.hasCrops();
 					boolean plowed = selection instanceof AbstractPlowTool
 							&& (plot.isGrass() || plot.isUnplowed());
 					if ((harvested && states[stateIndex] == State.CLICK_HARVEST_PLOT)

@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.farm;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,6 +10,8 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.Market;
 import com.aa_software.farm_adventure.model.ToolBar;
+import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -116,6 +119,17 @@ public abstract class AbstractFarm {
 				.toMillis((long) seasons[currentSeason].getCycleTime()));
 	}
 
+	/** 
+	 * Applies seasonal effects which constantly need to be updated. 
+	 * */
+	public void applySeasonalEffects() {
+		// Updates inventory's seeds to be affected by the growth rate modifier
+		ArrayList<AbstractItem> seeds = inventory.getItems().get("SEEDS");
+		for(AbstractItem seed : seeds) {
+			((AbstractSeed)seed).setGrowthRateMod(seasons[currentSeason].getGrowthRateMod());
+		}
+	}
+	
 	public void updateToolBar() {
 		this.toolBar.updateTools(this.inventory);
 	}

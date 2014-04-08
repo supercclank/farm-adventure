@@ -16,6 +16,7 @@ import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.AbstractFarm;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
 import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
@@ -359,14 +360,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Table workerQueue;
 	protected Table workerWindow;
 	public int selectedWorker = UNSELECT;
+	
 	protected boolean workerClicksDisabled;
-
 	protected boolean toolBarClicksDisabled;
 	protected boolean irrigationMenuClicksDisabled;
 	protected boolean plantMenuClicksDisabled;
-
 	protected boolean fieldClicksDisabled;
-
 	protected boolean inventoryClicksDisabled;
 
 	protected boolean disableGameTime;
@@ -382,12 +381,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public AbstractFarmScreen() {
 		gameOver = false;
 		disableGameTime = false;
-		workerClicksDisabled = false;
-		irrigationMenuClicksDisabled = false;
-		plantMenuClicksDisabled = false;
-		toolBarClicksDisabled = false;
-		fieldClicksDisabled = false;
-		inventoryClicksDisabled = false;
+		
+		setAllGameClicksDisabled(false);
 
 		this.selection = null;
 		this.state = new DefaultSelectionState();
@@ -542,6 +537,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 			checkTouch();
 			farm.getField().syncAllIrrigation();
+			farm.applySeasonalEffects();
 			syncWaterTiles();
 			syncPlantTiles();
 			syncGroundTiles();
@@ -722,9 +718,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				 * If there is a plant on the plot, get its texture for our cell
 				 * to use
 				 */
-				if (farm.getPlot(x, y).getCrop() != null) {
-					tile = tileSet.getTile(tileMap.get(farm.getPlot(x, y)
-							.getCrop().getTextureName()));
+				ArrayList<AbstractCrop> crops = farm.getPlot(x, y).getCrops();
+				if (crops != null &&
+						!crops.isEmpty()) {
+					tile = tileSet.getTile(tileMap.get(crops.get(0).getTextureName()));
 				}
 				cell.setTile(tile);
 			}
@@ -1069,13 +1066,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 						if (selectedWorker >= 0) {
-							((AbstractWorker) farm.getInventory()
-									.getAllWorkers().get(selectedWorker))
-									.resetTexture();
+							((AbstractWorker) farm.getInventory().getAllWorkers()
+									.get(selectedWorker)).resetTexture();
 							selectedWorker = UNSELECT;
 						}
-						selection = null;
 						syncSelectTiles(UNSELECT);
+						selection = null;
 						sounds.playClick();
 					}
 					irrigationWindow.setVisible(false);
@@ -1146,28 +1142,18 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							irrigationWindow.setVisible(true);
 							Gdx.input.setInputProcessor(irrigationMenuStage);
 							sounds.playClick();
-						} else {
-							if (selectedWorker >= 0) {
-								((AbstractWorker) farm.getInventory()
-										.getAllWorkers().get(selectedWorker))
-										.resetTexture();
-								selectedWorker = UNSELECT;
-								syncSelectTiles(UNSELECT);
-							}
 						}
 					}
 				} else {
+					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
+							farm.getInventory());
 					if (selectedWorker >= 0) {
 						((AbstractWorker) farm.getInventory().getAllWorkers()
 								.get(selectedWorker)).resetTexture();
 						selectedWorker = UNSELECT;
 					}
 					syncSelectTiles(UNSELECT);
-					if (!(selection instanceof AbstractIrrigationTool)) {
-						selection = null;
-					}
-					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
-							farm.getInventory());
+					selection = null;
 					updateInventoryTable();
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
@@ -1177,7 +1163,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Gdx.input.setInputProcessor(workerStage);
 
 				if (selection != null && selection.equals(farm.getTool(x, y))) {
-
 					if (selection instanceof AbstractPlantTool) {
 						if (!plantMenuClicksDisabled) {
 							updatePlantWindow();

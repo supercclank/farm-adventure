@@ -1,6 +1,9 @@
 package com.aa_software.farm_adventure.model.item.tool.harvest;
 
+import java.util.ArrayList;
+
 import com.aa_software.farm_adventure.model.Inventory;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -18,7 +21,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
-		if (plot.isUsable() && plot.hasCrop()) {
+		if (plot.isUsable() && plot.hasCrops()) {
 			final AbstractWorker worker;
 			if (workerIndex < 0
 					|| ((AbstractWorker) inventory.getItems().get("WORKERS")
@@ -33,35 +36,38 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			// TODO: not the best way to do this, but to get the animation for
 			// removing the crops, this
 			// had to happen. Need a better solution here!
+			// TODO: "h" is also magic numbery.
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h"
-					+ plot.getCrop().getTextureName()));
-			inventory.addItem(plot.getCrop());
+					+ plot.getCrops().get(0).getTextureName()));
+			//TODO: We should be adding crops to the inventory AFTER the task is finished.
+			for(AbstractCrop crop : plot.getCrops()) {
+				inventory.addItem(crop);
+			}
 			Timer.schedule(
-					new Task() {
-						@Override
-						public void run() {
-							if (plot.getTaskTextureIndex() == plot
-									.getWorkStatusTextureLength() - 1) {
-								plot.setUsable(true);
-								plot.setCrop(null);
-								plot.setPlotType(PlotType.UNPLOWEDWATERED);
-								plot.setTaskTextureIndex(0);
-								worker.addExperience();
-								worker.setBusy(false);
-								sounds.playClick();
-							} else {
-								plot.incrementTaskTextureIndex();
-								plot.harvestRemoveCrop(plot.getCrop());
-								Timer.schedule(
-										this,
-										(workTime * worker.getWorkRate())
-												/ (plot.getWorkStatusTextureLength() - 1));
-								worker.resetTexture();
-							}
+				new Task() {
+					@Override
+					public void run() {
+						if (plot.getTaskTextureIndex() == plot
+								.getWorkStatusTextureLength() - 1) {
+							plot.setUsable(true);
+							plot.setPlotType(PlotType.UNPLOWEDWATERED);
+							plot.setTaskTextureIndex(0);
+							worker.addExperience();
+							worker.setBusy(false);
+							sounds.playClick();
+						} else {
+							plot.incrementTaskTextureIndex();
+							plot.removeCrops();
+							Timer.schedule(
+									this,
+									(workTime * worker.getWorkRate())
+											/ (plot.getWorkStatusTextureLength() - 1));
+							worker.resetTexture();
 						}
-					},
-					(workTime * worker.getWorkRate())
-							/ (plot.getWorkStatusTextureLength() - 1));
+					}
+				},
+				(workTime * worker.getWorkRate())
+						/ (plot.getWorkStatusTextureLength() - 1));
 		}
 	}
 }

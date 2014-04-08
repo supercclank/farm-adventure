@@ -54,6 +54,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			}
 		}
 	}
+	
 	private Irrigation irrigationChoice;
 
 	private TaskType task;
@@ -80,7 +81,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	}
 	
 	@Override
-	public void update(Plot plot, Inventory inventory) {
+	public void update(final Plot plot, final Inventory inventory) {
 		final AbstractWorker worker;
 		if (workerIndex < 0
 				|| ((AbstractWorker) inventory.getItems().get("WORKERS")
@@ -90,7 +91,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			worker = (AbstractWorker) inventory.getItems().get("WORKERS")
 					.get(workerIndex);
 		}
-		if (plot.isUsable() || plot.isUnplowed()) {
+		if (plot.isUsable()) {
 			worker.setBusy(true);
 			plot.setUsable(false);
 			plot.setTaskTexturePrefix(task);

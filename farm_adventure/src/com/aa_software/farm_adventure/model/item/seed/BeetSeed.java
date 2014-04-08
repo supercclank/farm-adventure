@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.item.seed;
 
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 
 public class BeetSeed extends AbstractSeed {
@@ -9,7 +10,6 @@ public class BeetSeed extends AbstractSeed {
 
 	public BeetSeed() {
 		super();
-		this.crop = new BeetCrop();
 		this.texture = "beetCrop";
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
@@ -17,6 +17,10 @@ public class BeetSeed extends AbstractSeed {
 		this.description = "Plant this seed and it will produce Beets over time.";
 	}
 
+	public AbstractCrop getCrop() {
+		return new BeetCrop();
+	}
+	
 	@Override
 	public String getSeedName() {
 		return "beetSeed";
