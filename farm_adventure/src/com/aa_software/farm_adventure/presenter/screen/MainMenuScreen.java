@@ -5,13 +5,14 @@ import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuScreen extends AbstractScreen {
 
 	public static final Sounds sounds = Sounds.getInstance();
-
+	private Skin skin;
 	public MainMenuScreen() {
 		super();
 	}
@@ -19,9 +20,10 @@ public class MainMenuScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-
+		skin = super.getSkin();
+		
 		// Create table
-		Table table = new Table(super.getSkin());
+		Table table = new Table(skin);
 		table.setFillParent(true);
 
 		super.addActor(table);
@@ -31,8 +33,7 @@ public class MainMenuScreen extends AbstractScreen {
 		table.row();
 
 		// register the button "start game"
-		TextButton startGameButton = new TextButton("Start game",
-				super.getSkin());
+		TextButton startGameButton = new TextButton("Start game",skin);
 
 		// Start Music
 		sounds.playMusic();
@@ -52,7 +53,7 @@ public class MainMenuScreen extends AbstractScreen {
 		table.row();
 
 		// register tutorial button
-		TextButton tutorialButton = new TextButton("Tutorial", super.getSkin());
+		TextButton tutorialButton = new TextButton("Tutorial", skin);
 
 		// Listener to send to tutorial game
 		tutorialButton.addListener(new InputListener() {
@@ -67,7 +68,7 @@ public class MainMenuScreen extends AbstractScreen {
 		table.row();
 
 		// register tutorial button
-		TextButton optionsButton = new TextButton("Settings", super.getSkin());
+		TextButton optionsButton = new TextButton("Settings", skin);
 
 		// Listener to send to tutorial game
 		optionsButton.addListener(new InputListener() {
