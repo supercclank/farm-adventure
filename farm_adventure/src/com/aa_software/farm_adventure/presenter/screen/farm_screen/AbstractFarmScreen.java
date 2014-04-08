@@ -57,7 +57,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -313,7 +312,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			IRRIGATION_TOOL_X = 1, IRRIGATION_TOOL_Y = 0, STATUS_BAR_Y = 1,
 			FIELD_STARTING_Y = 2, UNSELECT = -1;
 	/* Stage */
-	public static final float FONT_SCALE = 1;
+	public static final float FONT_SCALE = 1.5f;
 
 	public static final float BANK_LABEL_X = (float) (SCREEN_WIDTH * .03),
 			BANK_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
@@ -324,7 +323,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WINDOW_X = (float) (SCREEN_WIDTH * .25),
 			WINDOW_Y = (float) (SCREEN_HEIGHT * .13),
 			INVENTORY_HEIGHT = SCREEN_HEIGHT - 15 * (TILE_SIZE / 10),
-			WORKER_HEIGHT = 70,
+			//WORKER_HEIGHT = 70,
 			INFO_X = (float) (SCREEN_WIDTH * .25),
 			INFO_Y = (float) (SCREEN_HEIGHT * .5),
 			INFO_WIDGTH = (float) (SCREEN_WIDTH * .25);
@@ -413,8 +412,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				height, true);
 		irrigationMenuStage = new Stage(width,
 				height, true);
-		statusBarStage = new Stage(width,
-				height, true);
+		statusBarStage = new Stage(SCREEN_WIDTH,
+				SCREEN_HEIGHT, true);
 		inventoryStage = new Stage(width,
 				height, true);
 		workerStage = new Stage();
@@ -578,6 +577,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
+		workerStage.setViewport(STAGE_WIDTH, STAGE_HEIGHT, true);
 		//plantMenuStage.setViewport(width, height);
 		//irrigationMenuStage.setViewport(width, height);
 	}
