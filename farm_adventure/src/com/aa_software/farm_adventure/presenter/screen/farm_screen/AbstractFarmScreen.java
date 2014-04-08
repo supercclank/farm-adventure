@@ -57,6 +57,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -300,7 +301,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	private static final int TILE_SIZE = 128;
 	/* Skin */
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
-
+	
 	/* Layer */
 	/*
 	 * For each layer, please provide a method of syncing the model with the
@@ -314,19 +315,19 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	/* Stage */
 	public static final float FONT_SCALE = 1;
 
-	public static final float BANK_LABEL_X = (float) (Gdx.graphics.getWidth() * .03),
-			BANK_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
-			TIME_LABEL_X = (float) (Gdx.graphics.getWidth() * .38),
-			TIME_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
-			WORKER_LABEL_X = (float) (Gdx.graphics.getWidth() * .78),
-			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
-			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
-			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
-			INVENTORY_HEIGHT = Gdx.graphics.getHeight() - 15 * (TILE_SIZE / 10),
+	public static final float BANK_LABEL_X = (float) (SCREEN_WIDTH * .03),
+			BANK_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
+			TIME_LABEL_X = (float) (SCREEN_WIDTH * .35),
+			TIME_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
+			WORKER_LABEL_X = (float) (SCREEN_WIDTH * .78),
+			WORKER_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
+			WINDOW_X = (float) (SCREEN_WIDTH * .25),
+			WINDOW_Y = (float) (SCREEN_HEIGHT * .13),
+			INVENTORY_HEIGHT = SCREEN_HEIGHT - 15 * (TILE_SIZE / 10),
 			WORKER_HEIGHT = 70,
-			INFO_X = (float) (Gdx.graphics.getWidth() * .25),
-			INFO_Y = (float) (Gdx.graphics.getHeight() * .5),
-			INFO_WIDGTH = (float) (Gdx.graphics.getWidth() * .25);
+			INFO_X = (float) (SCREEN_WIDTH * .25),
+			INFO_Y = (float) (SCREEN_HEIGHT * .5),
+			INFO_WIDGTH = (float) (SCREEN_WIDTH * .25);
 	/* Font setup */
 	BitmapFont fontType = new BitmapFont();
 	LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
@@ -380,6 +381,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	protected Stats stats;
 
 	public AbstractFarmScreen() {
+		float width = STAGE_WIDTH;
+		float height = STAGE_HEIGHT;
 		gameOver = false;
 		disableGameTime = false;
 		workerClicksDisabled = false;
@@ -406,15 +409,15 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		}
 
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
-		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		irrigationMenuStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		statusBarStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		inventoryStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		workerStage = new Stage(Gdx.graphics.getWidth(), WORKER_HEIGHT, true);
+		plantMenuStage = new Stage(width,
+				height, true);
+		irrigationMenuStage = new Stage(width,
+				height, true);
+		statusBarStage = new Stage(width,
+				height, true);
+		inventoryStage = new Stage(width,
+				height, true);
+		workerStage = new Stage();
 
 		marketMultiplexer = new InputMultiplexer();
 		marketMultiplexer.addProcessor(inventoryStage);
@@ -442,8 +445,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 
 		plantMenuStage.addActor(plantWindow);
 
-		infoStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
+		infoStage = new Stage(width,
+				height, true);
 		infoWindow = new Window("Information", skin);
 		infoWindow.setModal(false);
 		infoWindow.setMovable(false);
@@ -575,8 +578,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		plantMenuStage.setViewport(width, height);
-		irrigationMenuStage.setViewport(width, height);
+		//plantMenuStage.setViewport(width, height);
+		//irrigationMenuStage.setViewport(width, height);
 	}
 
 	public void setAllGameClicksDisabled(boolean bool) {
@@ -592,6 +595,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * Sets up the window to view inventory and market
 	 */
 	public void setupInventoryWindow() {
+		float width = STAGE_WIDTH;
+		float height = STAGE_HEIGHT;
 		inventorySkin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
 		Table marketTable = new Table();
 		marketTable.layout();
@@ -601,9 +606,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				inventorySkin);
 		marketTable.row();
 		marketTable.add(new Label("INVENTORY", inventorySkin))
-				.padLeft((float) (Gdx.graphics.getWidth() * .4))
-				.padRight((float) (Gdx.graphics.getWidth() * .15))
-				.width((float) (Gdx.graphics.getWidth() * .35));
+				.padLeft((float) (width * .4))
+				.padRight((float) (width * .15))
+				.width((float) (width * .33));
 		TextButton exitButton = new TextButton("EXIT", inventorySkin, "default");
 		exitButton.setColor(Color.RED);
 		exitButton.addListener(new InputListener() {
@@ -618,10 +623,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			}
 		});
 		marketTable.add(exitButton).width(
-				(float) (Gdx.graphics.getWidth() * .1));
+				(float) (width * .1));
 		marketTable.row();
 		marketTable.add(inventorySP).colspan(2)
-				.width((Gdx.graphics.getWidth()));
+				.width(width);
 		marketTable.pack();
 		marketTable.layout();
 		inventoryWindow = new Window("", inventorySkin);
@@ -629,12 +634,12 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		inventoryWindow.setMovable(false);
 		inventoryWindow.setVisible(false);
 		inventoryOpen = false;
-		inventoryWindow.setSize(Gdx.graphics.getWidth(), INVENTORY_HEIGHT);
-		inventoryWindow.setPosition(0, Gdx.graphics.getHeight());
+		inventoryWindow.setSize(width, INVENTORY_HEIGHT);
+		inventoryWindow.setPosition(0, height);
 		inventoryWindow.defaults().spaceBottom(10);
 		inventoryWindow.row().fill().expandX();
 		inventoryWindow.add(marketTable).fill().expand().colspan(4)
-				.maxHeight(INVENTORY_HEIGHT);
+				.maxHeight(height);
 		inventoryStage.addActor(inventoryWindow);
 	}
 
@@ -643,16 +648,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	 * for a task
 	 */
 	public final void setupWorkersWindow() {
+		float width = STAGE_WIDTH;
+		float height = STAGE_HEIGHT;
 		updateWorkerQueue();
 		workerQueue.pack();
-		ScrollPane availableWorkers = new ScrollPane(workerQueue, skin);
-
 		workerWindow = new Table();
-		workerWindow.layout();
-		workerWindow.size(Gdx.graphics.getWidth(), WORKER_HEIGHT);
-		workerWindow.setPosition(0,
-				(float) (Gdx.graphics.getHeight() * .13) - 4);
-		workerWindow.add(availableWorkers).expand().left().fill();
+		workerWindow.add(workerQueue).fill().expandX();
+		workerWindow.setPosition( (float) (width *.46),
+				(float) (height * .14));
 		workerStage.addActor(workerWindow);
 	}
 
@@ -867,6 +870,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public void updateInventoryTable() {
 		inventoryScrollTable.clear();
 		inventoryScrollTable.layout();
+		float width = STAGE_WIDTH;
 
 		// inventory Stuff
 		Map<String, ArrayList<AbstractItem>> marketItems = this.farm
@@ -907,11 +911,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Label itemName = new Label(marketItems.get(typeSet.get(j))
 						.get(i).toString(), inventorySkin);
 				inventoryScrollTable.add(itemName)
-						.width((float) (Gdx.graphics.getWidth() * .2)).left();
+						.width((float) (width * .2)).left();
 				Label itemInvCount = new Label(
 						Integer.toString(inventoryTypeCount), inventorySkin);
 				inventoryScrollTable.add(itemInvCount)
-						.width((float) (Gdx.graphics.getWidth() * .1)).left();
+						.width((float) (width * .1)).left();
 
 				Texture info = new Texture(
 						Gdx.files.internal("textures/info.png"));
@@ -939,20 +943,20 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					buyButton.addListener(new BuyClickListener(tempWorker,
 							itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
-							.width((float) (Gdx.graphics.getWidth() * .4))
+							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (Gdx.graphics.getWidth() * .05));
+							.padLeft((float) (width * .05));
 				} else if (type.getText().toString().equals("SEEDS")) {
 					buyButton = new TextButton("BUY " + " $" + cost,
 							inventorySkin, "default");
 					buyButton.addListener(new BuyClickListener(marketItems.get(
 							typeSet.get(j)).get(i), itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
-							.width((float) (Gdx.graphics.getWidth() * .4))
+							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (Gdx.graphics.getWidth() * .05));
+							.padLeft((float) (width * .05));
 
 				} else if (j > 2 && j < 7) { // if there are tools then
 
@@ -973,20 +977,20 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 									toolUpgrade, itemInvCount, true));
 							inventoryScrollTable
 									.add(buyButton)
-									.width((float) (Gdx.graphics.getWidth() * .4))
+									.width((float) (width * .4))
 									.left();
 							inventoryScrollTable
 									.add(infoButton)
 									.left()
 									.padLeft(
-											(float) (Gdx.graphics.getWidth() * .05));
+											(float) (width * .05));
 
 						} else {
 							Label noUpgrade = new Label("No Upgrade",
 									inventorySkin);
 							inventoryScrollTable
 									.add(noUpgrade)
-									.width((float) (Gdx.graphics.getWidth() * .4))
+									.width((float) (width * .4))
 									.left();
 						}
 
@@ -997,13 +1001,13 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								.get(typeSet.get(j)).get(i), itemInvCount,
 								false));
 						inventoryScrollTable.add(buyButton)
-								.width((float) (Gdx.graphics.getWidth() * .4))
+								.width((float) (width * .4))
 								.left();
 						inventoryScrollTable
 								.add(infoButton)
 								.left()
 								.padLeft(
-										(float) (Gdx.graphics.getWidth() * .05));
+										(float) (width * .05));
 
 					}
 
@@ -1013,10 +1017,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					sellButton.addListener(new SellClickListener(marketItems
 							.get(typeSet.get(j)).get(i), itemInvCount));
 					inventoryScrollTable.add(sellButton)
-							.width((float) (Gdx.graphics.getWidth() * .4))
+							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (Gdx.graphics.getWidth() * .05));
+							.padLeft((float) (width * .05));
 
 				}
 

@@ -40,11 +40,11 @@ public class WorldScreen extends AbstractScreen {
 	public static final Sounds sounds = Sounds.getInstance();
 
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
-	public static final float WINDOW_X = (float) (Gdx.graphics.getWidth() * .25);
-	public static final float WINDOW_Y = (float) (Gdx.graphics.getHeight() * .40);
+	public static final float WINDOW_X = (float) (STAGE_WIDTH * .32);
+	public static final float WINDOW_Y = (float) (STAGE_HEIGHT * .40);
 
-	protected float screenWidth = Gdx.graphics.getWidth();
-	protected float screenHeight = Gdx.graphics.getHeight();
+	protected float screenWidth = STAGE_WIDTH;
+	protected float screenHeight = STAGE_HEIGHT;
 
 	protected Skin skin;
 	protected Stage plantMenuStage;

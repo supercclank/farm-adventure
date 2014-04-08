@@ -16,13 +16,10 @@ public class MainMenuScreen extends AbstractScreen {
 
 	public static final Sounds sounds = Sounds.getInstance();
 	private Skin skin;
-	private static final float FONT_SCALE = 1;
-	BitmapFont fontType = new BitmapFont();
-	LabelStyle style1 = new LabelStyle(fontType, Color.WHITE);
-	private static final int BUTTON_WIDTH = 600;
-	private static final int BUTTON_HEIGHT = 120;
-	private static final int TITLE_SPACE = 100;
-	private static final int BUTTON_SPACE = 20;
+	private static final int BUTTON_WIDTH = 300;
+	private static final int BUTTON_HEIGHT = 60;
+	private static final int TITLE_SPACE = 50;
+	private static final int BUTTON_SPACE = 10;
 	
 	public MainMenuScreen() {
 		super();
@@ -32,7 +29,6 @@ public class MainMenuScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		skin = super.getSkin();
-		skin.getFont("default-font").scale(2);
 		// Create table
 		Table table = new Table(skin);
 		table.setFillParent(true);
