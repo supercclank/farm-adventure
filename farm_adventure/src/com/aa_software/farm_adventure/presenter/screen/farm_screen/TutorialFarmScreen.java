@@ -510,6 +510,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 
 	public void updateDescription() {
 		Label description = new Label(this.description, style2);
+		description.setColor(Color.ORANGE);
 		descriptionWindow.add(description);
 
 		if (!states[stateIndex].toString().toLowerCase().contains("click")) {
@@ -522,6 +523,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 					return true;
 				}
 			});
+			nextButton.setColor(Color.ORANGE);
 			descriptionWindow.add(nextButton);
 		}
 

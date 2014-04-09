@@ -140,6 +140,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				int pointer, int button) {
 			infoWindow.clear();
 			Label description = new Label(this.item.getDescription(), skin);
+			description.setColor(Color.ORANGE);
 			infoWindow.add(description);
 			TextButton closeButton = new TextButton("CLOSE", skin);
 			closeButton.setColor(Color.ORANGE);
@@ -908,7 +909,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						Integer.toString(inventoryTypeCount), inventorySkin);
 				inventoryScrollTable.add(itemInvCount)
 						.width((float) (Gdx.graphics.getWidth() * .1)).left();
-
 				Texture info = new Texture(
 						Gdx.files.internal("textures/info.png"));
 				TextureRegion infoReg = new TextureRegion(info);
@@ -927,9 +927,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					cost = tempWorker.getWage();
 					buyButton = new TextButton("HIRE " + " $" + cost
 							+ "/season", inventorySkin, "default");
-					// sellButton = new TextButton("LAYOFF ", inventorySkin,
-					// "default");
-
 					buyButton.addListener(new BuyClickListener(tempWorker,
 							itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
@@ -986,7 +983,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 									.width((float) (Gdx.graphics.getWidth() * .4))
 									.left();
 						}
-
 					} else { // else buy or trade for the current tool
 						buyButton = new TextButton("BUY " + " $" + cost,
 								inventorySkin, "default");
@@ -1003,9 +999,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								.left()
 								.padLeft(
 										(float) (Gdx.graphics.getWidth() * .05));
-
 					}
-
 				} else {
 					sellButton = new TextButton("SELL " + " $" + value,
 							inventorySkin, "default");
@@ -1143,6 +1137,14 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							irrigationWindow.setVisible(true);
 							Gdx.input.setInputProcessor(irrigationMenuStage);
 							sounds.playClick();
+						} else {
+							if (selectedWorker >= 0) {
+								((AbstractWorker) farm.getInventory().getAllWorkers()
+										.get(selectedWorker)).resetTexture();
+								selectedWorker = UNSELECT;
+							}
+							syncSelectTiles(UNSELECT);
+							selection = null;
 						}
 					}
 				} else {
