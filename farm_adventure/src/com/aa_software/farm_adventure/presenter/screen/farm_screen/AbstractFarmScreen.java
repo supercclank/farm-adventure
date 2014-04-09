@@ -110,7 +110,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
-			INVENTORY_HEIGHT = Gdx.graphics.getHeight() - 15 * (TILE_SIZE / 10),
+			INVENTORY_HEIGHT = (float) (Gdx.graphics.getHeight() * .75),
 			WORKER_HEIGHT = 70,
 			INFO_X = (float) (Gdx.graphics.getWidth() * .25), 
 			INFO_Y = (float) (Gdx.graphics.getHeight() * .5),
@@ -957,8 +957,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				TextureRegion infoReg = new TextureRegion(info);
 				Button infoButton = new Button(new Image(infoReg),
 						inventorySkin);
-				infoButton.addListener(new InfoClickListener(marketItems.get(
-						typeSet.get(j)).get(i)));
 				infoButton.padBottom(2);
 				infoButton.padLeft(2);
 				infoButton.padRight(2);
@@ -977,7 +975,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					buyButton.addListener(new BuyClickListener(tempWorker, itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
 							.width((float) (Gdx.graphics.getWidth() * .4)).left();
-					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));
+					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));	
 				} else if (type.getText().toString().equals("SEEDS")){
 					buyButton = new TextButton("BUY " + " $" + cost,
 							inventorySkin, "default");
@@ -985,30 +985,28 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							typeSet.get(j)).get(i), itemInvCount, false));
 					inventoryScrollTable.add(buyButton)
 							.width((float) (Gdx.graphics.getWidth() * .4)).left();
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));	
 					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
-				
 				}else if (j>2 && j<7){ //if there are tools then 
 	
 					if (inventoryTypeCount>0){
-						AbstractTool toolUpgrade= ((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getUpgrade();
-						
+						AbstractTool toolUpgrade= ((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getUpgrade();			
 						if (toolUpgrade!=null){   //check if upgrades apply
 							cost = toolUpgrade.getCost()-((AbstractTool)marketItems.get(typeSet.get(j)).get(i)).getCost();
 							String upgradeName = toolUpgrade.getName();
 							buyButton = new TextButton( upgradeName+" upgrade $"+cost,
-										inventorySkin, "default");
-							
+										inventorySkin, "default");				
 							buyButton.addListener(new BuyClickListener(toolUpgrade, itemInvCount, true));
 							inventoryScrollTable.add(buyButton)
 									.width((float) (Gdx.graphics.getWidth() * .4)).left();
+							infoButton.addListener(new InfoClickListener(toolUpgrade));
 							inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
-							
 						} else {
 							Label noUpgrade = new Label("No Upgrade", inventorySkin);
 							inventoryScrollTable.add(noUpgrade)
 									.width((float) (Gdx.graphics.getWidth() * .4)).left();
-						}
-					
+						}		
 					}else { //else buy or trade for the current tool
 						buyButton = new TextButton("BUY " + " $" + cost,
 									inventorySkin, "default");
@@ -1016,8 +1014,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								typeSet.get(j)).get(i), itemInvCount, false));
 						inventoryScrollTable.add(buyButton)
 								.width((float) (Gdx.graphics.getWidth() * .4)).left();
+						infoButton.addListener(new InfoClickListener(marketItems.get(
+								typeSet.get(j)).get(i)));	
 						inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
-
 					}
 					
 				} else {
@@ -1027,10 +1026,10 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							typeSet.get(j)).get(i), itemInvCount));
 					inventoryScrollTable.add(sellButton)
 							.width((float) (Gdx.graphics.getWidth() * .4)).left();
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));	
 					inventoryScrollTable.add(infoButton).left().padLeft((float) (Gdx.graphics.getWidth()*.05));
-
-				}
-				
+				}			
 			}			
 		}
 	}
@@ -1196,6 +1195,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				int pointer, int button) {
 			infoWindow.clear();
 			Label description = new Label(this.item.getDescription(), skin);
+			description.setColor(Color.ORANGE);
 			infoWindow.add(description);
 			TextButton closeButton = new TextButton("CLOSE", skin);
 			closeButton.setColor(Color.ORANGE);

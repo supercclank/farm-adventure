@@ -29,7 +29,7 @@ public class Market {
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(Arrays.asList(new AbstractItem[]{ 
 			new BananaCrop(), new BeetCrop(), new CarrotCrop(), new RiceCrop(), new HandPlowTool(), 
 			new ShovelTool(), new TrowelTool(), new ScytheTool(),  
-			new DefaultWorker(), new BananaSeed(), new CarrotSeed(), new RiceSeed(), new BeetSeed()
+			new DefaultWorker(), new BananaSeed(), new BeetSeed(), new CarrotSeed(), new RiceSeed()
 	}));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();

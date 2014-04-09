@@ -18,6 +18,7 @@ public class CombineTool extends AbstractHarvestTool {
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = COMBINETOOL_NAME;
 		this.upgrade = null;
+		this.description = "The combine tool will allow to harvest your crops faster.";
 	}
 
 	@Override
