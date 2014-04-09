@@ -1038,9 +1038,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationWindow.clear();
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y)
 				.iterator();
-		// TODO: do we need these unselects?
-		selectedWorker = UNSELECT;
-		syncSelectTiles(UNSELECT);
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
 			TaskType task = farm.getTaskType(x, y, irrigation);
