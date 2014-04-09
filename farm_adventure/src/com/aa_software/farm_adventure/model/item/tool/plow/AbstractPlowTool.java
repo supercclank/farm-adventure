@@ -17,7 +17,7 @@ public abstract class AbstractPlowTool extends AbstractTool {
 	}
 
 	@Override
-	public void update(final Plot plot, Inventory inventory) {
+	public void update(final Plot plot, final Inventory inventory) {
 		final AbstractWorker worker;
 		if (workerIndex < 0
 				|| ((AbstractWorker) inventory.getItems().get("WORKERS")

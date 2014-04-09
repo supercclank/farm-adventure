@@ -10,36 +10,41 @@ import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Season {
 
+	public enum Type {
+		FALL, WINTER, SPRING, SUMMER
+	}
+
 	/**
 	 * Each season affects the growth rate of plants.
 	 */
-	public static final float SPRING_GROWTH_RATE_MOD = .5f;
-	public static final float SUMMER_GROWTH_RATE_MOD = 1;
-	public static final float FALL_GROWTH_RATE_MOD = 1;
-	public static final float WINTER_GROWTH_RATE_MOD = 2;
+	private static final float SPRING_GROWTH_RATE_MOD = .5f;
+	private static final float SUMMER_GROWTH_RATE_MOD = 1;
+	private static final float FALL_GROWTH_RATE_MOD = 1;
+	private static final float WINTER_GROWTH_RATE_MOD = 2;
 
 	/**
 	 * Summer and Fall apply a random chance for a plot to lose irrigation or
 	 * become covered in leaves (resetting the plot, aside from the irrigation).
 	 * These values are the percent chances of those events.
 	 */
-	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
-	public static final float FALL_LEAF_COVER_MOD = .2f;
+	private static final float SUMMER_WATER_LEVEL_MOD = .2f;
+	private static final float FALL_LEAF_COVER_MOD = .2f;
 
 	public static final int CYCLE_TIME_MILLIS = 60000;
 
 	private float cycleTime;
-	private SeasonType seasonType;
-	private float growthRateMod = 1;
+	private Type type;
+	private float growthRateMod;
 
-	public Season(SeasonType seasonType) {
+	public Season(Type type) {
 		this.cycleTime = CYCLE_TIME_MILLIS;
-		this.seasonType = seasonType;
+		this.type = type;
+		this.growthRateMod = 1;
 	}
 
-	public Season(SeasonType seasonType, float cycleTime) {
+	public Season(Type type, float cycleTime) {
 		this.cycleTime = cycleTime;
-		this.seasonType = seasonType;
+		this.type = type;
 	}
 
 	public float getCycleTime() {
@@ -50,8 +55,8 @@ public class Season {
 		return growthRateMod;
 	}
 
-	public SeasonType getSeasonType() {
-		return seasonType;
+	public Type getType() {
+		return type;
 	}
 
 	public void setCycleTime(int cycleTime) {
@@ -62,8 +67,8 @@ public class Season {
 		this.growthRateMod = growthRateMod;
 	}
 
-	public void setSeasonType(SeasonType seasonType) {
-		this.seasonType = seasonType;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	/**
@@ -85,7 +90,7 @@ public class Season {
 				}
 			}
 		}
-		switch (seasonType) {
+		switch (type) {
 		case SPRING:
 			growthRateMod = SPRING_GROWTH_RATE_MOD;
 			break;
@@ -126,6 +131,8 @@ public class Season {
 		}
 		case WINTER:
 			growthRateMod = WINTER_GROWTH_RATE_MOD;
+			break;
+		default:
 		}
 	}
 }

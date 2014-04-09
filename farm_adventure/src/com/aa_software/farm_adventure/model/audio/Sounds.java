@@ -12,9 +12,9 @@ import com.badlogic.gdx.audio.Sound;
  * 
  */
 public class Sounds {
-	protected Sound click;
-	protected Sound money;
-	protected Music mainMusic;
+	protected final Sound click;
+	protected final Sound money;
+	protected final Music mainMusic;
 	protected float soundVolume;
 	protected float masterVolume;
 

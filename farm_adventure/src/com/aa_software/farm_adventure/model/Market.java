@@ -21,12 +21,13 @@ import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 public class Market {
+
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
-			Arrays.asList(new AbstractItem[] { new BananaCrop(),
-					new BeetCrop(), new CarrotCrop(), new RiceCrop(),
-					new HandPlowTool(), new ShovelTool(), new TrowelTool(),
-					new ScytheTool(), new DefaultWorker(), new BananaSeed(),
-					new CarrotSeed(), new RiceSeed(), new BeetSeed() }));
+			Arrays.asList(new AbstractItem[] { new DefaultWorker(),
+					new BananaCrop(), new BeetCrop(), new CarrotCrop(),
+					new RiceCrop(), new HandPlowTool(), new ShovelTool(),
+					new TrowelTool(), new ScytheTool(), new BananaSeed(),
+					new BeetSeed(), new CarrotSeed(), new RiceSeed() }));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
 
@@ -122,14 +123,11 @@ public class Market {
 						del++;
 					}
 					if (del > 0) {
-						System.out.println(item.toString()
-								+ " was Removed from inventory");
 						return true;
 					}
 				}
 			}
 		}
-		System.out.println("You don't have more of this item to sell");
 		return false;
 	}
 }

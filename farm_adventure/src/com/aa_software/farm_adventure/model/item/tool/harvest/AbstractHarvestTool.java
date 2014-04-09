@@ -1,11 +1,12 @@
 package com.aa_software.farm_adventure.model.item.tool.harvest;
 
 import com.aa_software.farm_adventure.model.Inventory;
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.PlotType;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
@@ -33,9 +34,13 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			// TODO: not the best way to do this, but to get the animation for
 			// removing the crops, this
 			// had to happen. Need a better solution here!
+			// TODO: "h" is also magic numbery.
+			AbstractCrop crop = plot.getCrop();
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h"
-					+ plot.getCrop().getTextureName()));
-			inventory.addItem(plot.getCrop());
+					+ crop.getTextureName()));
+			// TODO: We should be adding crops to the inventory AFTER the task
+			// is finished.
+			inventory.addItem(crop);
 			Timer.schedule(
 					new Task() {
 						@Override
@@ -43,7 +48,6 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 							if (plot.getTaskTextureIndex() == plot
 									.getWorkStatusTextureLength() - 1) {
 								plot.setUsable(true);
-								plot.setCrop(null);
 								plot.setPlotType(PlotType.UNPLOWEDWATERED);
 								plot.setTaskTextureIndex(0);
 								worker.addExperience();
@@ -51,7 +55,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 								sounds.playClick();
 							} else {
 								plot.incrementTaskTextureIndex();
-								plot.harvestRemoveCrop(plot.getCrop());
+								plot.removeCrop();
 								Timer.schedule(
 										this,
 										(workTime * worker.getWorkRate())

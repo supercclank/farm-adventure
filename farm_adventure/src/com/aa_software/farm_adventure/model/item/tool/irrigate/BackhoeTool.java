@@ -17,6 +17,7 @@ public class BackhoeTool extends AbstractIrrigationTool {
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = BACKHOE_NAME;
 		this.upgrade = null;
+		this.description = "The backhoe tool will allow you to irrigate your plot faster.";
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.aa_software.farm_adventure.model.item.seed;
 
+import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 
 public class BeetSeed extends AbstractSeed {
@@ -15,6 +16,11 @@ public class BeetSeed extends AbstractSeed {
 		this.value = DEFAULT_VALUE;
 		this.name = "Beet Seed";
 		this.description = "Plant this seed and it will produce Beets over time.";
+	}
+
+	@Override
+	public AbstractCrop getCrop() {
+		return new BeetCrop();
 	}
 
 	@Override

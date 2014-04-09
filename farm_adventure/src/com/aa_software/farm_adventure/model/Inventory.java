@@ -100,7 +100,6 @@ public class Inventory {
 			if (inventoryItems.containsKey(itemType)) {
 				ArrayList<AbstractItem> typeList = inventoryItems.get(itemType);
 				int typeCount = typeList.size();
-				System.out.println("Type Count: " + typeCount);
 				int itemCount = 0;
 				for (int i = 0; i < typeCount; i++) {
 					if (typeList.get(i).compareTo(item) == 0) {
@@ -190,14 +189,11 @@ public class Inventory {
 						del++;
 					}
 					if (del > 0) {
-						System.out.println(item.toString()
-								+ " was Removed from inventory");
 						return true;
 					}
 				}
 			}
 		}
-		System.out.println("You don't have more of this item to sell");
 		return false;
 	}
 }

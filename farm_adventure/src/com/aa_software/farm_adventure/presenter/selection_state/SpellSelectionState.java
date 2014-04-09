@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.presenter.state;
+package com.aa_software.farm_adventure.presenter.selection_state;
 
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
@@ -8,17 +8,15 @@ import com.aa_software.farm_adventure.model.item.upgrade.AbstractUpgrade;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
-public class DefaultSelectionState extends AbstractSelectionState {
-	public DefaultSelectionState() {
-	}
-
-	public DefaultSelectionState update() {
-		return new DefaultSelectionState();
+public class SpellSelectionState extends AbstractSelectionState {
+	public SpellSelectionState(AbstractSpell selection) {
+		this.selection = selection;
 	}
 
 	@Override
-	public DefaultSelectionState update(AbstractCrop crop) {
-		return new DefaultSelectionState();
+	public SpellSelectionState update(AbstractCrop crop) {
+		selection.update(crop);
+		return new SpellSelectionState((AbstractSpell) selection);
 	}
 
 	@Override
@@ -37,16 +35,15 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	}
 
 	@Override
-	public DefaultSelectionState update(AbstractWorker worker) {
-		return new DefaultSelectionState();
+	public SpellSelectionState update(AbstractWorker worker) {
+		selection.update(worker);
+		return new SpellSelectionState((AbstractSpell) selection);
 	}
 
 	@Override
-	public DefaultSelectionState update(Plot plot, Inventory inventory) {
-		return new DefaultSelectionState();
+	public SpellSelectionState update(Plot plot, Inventory inventory) {
+		selection.update(plot, inventory);
+		return new SpellSelectionState((AbstractSpell) selection);
 	}
 
-	public DefaultSelectionState update(Plot[] plot) {
-		return new DefaultSelectionState();
-	}
 }

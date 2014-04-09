@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model;
 
 import com.aa_software.farm_adventure.model.audio.Sounds;
-import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.badlogic.gdx.Gdx;
@@ -20,7 +19,6 @@ public class Player {
 	}
 
 	private int bankroll;
-	private AbstractCampaign campaign;
 	private Preferences preferences;
 
 	private Player() {
@@ -37,10 +35,9 @@ public class Player {
 			itemCost = item.getCost();
 		}
 		if (this.bankroll < itemCost) {
-			System.out.println("You don't have enough funds");
+			// TODO: Let the player know they do not have the funds.
 			return false;
 		} else {
-			System.out.println("Buy: " + item.toString());
 			this.bankroll -= itemCost;
 			return true;
 		}
@@ -50,26 +47,17 @@ public class Player {
 		return bankroll;
 	}
 
-	public AbstractCampaign getCampaign() {
-		return campaign;
-	}
-
 	public Preferences getPreferences() {
 		return preferences;
 	}
 
 	public void sellItem(AbstractItem item) {
 		int itemValue = item.getValue();
-		System.out.println("Sell: " + item.toString());
 		this.bankroll += itemValue;
 	}
 
 	public void setBankroll(int bankroll) {
 		this.bankroll = bankroll;
-	}
-
-	public void setCampaign(AbstractCampaign campaign) {
-		this.campaign = campaign;
 	}
 
 	public void setPreferences(Preferences preferences) {

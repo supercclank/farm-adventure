@@ -62,8 +62,6 @@ public class FarmAdventure extends Game {
 		Sounds.getInstance();
 		Player player = Player.getInstance();
 		player.loadData();
-		
-		
 		MainMenuScreen mms = new MainMenuScreen();
 		super.setScreen(mms);
 	}

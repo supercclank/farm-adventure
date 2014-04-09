@@ -3,11 +3,7 @@ package com.aa_software.farm_adventure.model.plot;
 import java.util.EnumSet;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
-//TODO: change from checking if usable before setting. This will allow the plot
-// to asynchronously be updated even while a task is being completed.
-// This does raise other problems: consider a plot set to "leaves" right before
-// a task completes... it'll undo the leaves!
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
 public class Plot {
 	private AbstractCrop crop;
@@ -39,7 +35,6 @@ public class Plot {
 			{ null, "bud4", "bud3", "bud2", "bud1" } };
 
 	public Plot(PlotType plotType) {
-		this.crop = null;
 		this.irrigation = EnumSet.noneOf(Irrigation.class);
 		this.plotType = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
@@ -51,7 +46,6 @@ public class Plot {
 	}
 
 	public Plot(PlotType plotType, EnumSet<Irrigation> irrigation) {
-		this.crop = null;
 		this.irrigation = irrigation;
 		this.plotType = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
@@ -114,13 +108,6 @@ public class Plot {
 		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()].length;
 	}
 
-	// TODO: This was added to allow the animation for harvest crop
-	// to work correctly. Might not be the best way to solve this problem
-	// and should be looked at.
-	public void harvestRemoveCrop(final AbstractCrop crop) {
-		this.crop = null;
-	}
-
 	public boolean hasCrop() {
 		if (crop == null) {
 			return false;
@@ -149,6 +136,13 @@ public class Plot {
 
 	public boolean isUsable() {
 		return isUsable;
+	}
+
+	// TODO: This was added to allow the animation for harvest crop
+	// to work correctly. Might not be the best way to solve this problem
+	// and should be looked at.
+	public void removeCrop() {
+		crop = null;
 	}
 
 	public void setCrop(final AbstractCrop crop) {

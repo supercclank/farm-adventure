@@ -5,13 +5,28 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
-public class AbstractSeed extends AbstractItem {
+public abstract class AbstractSeed extends AbstractItem {
 
-	protected AbstractCrop crop = null;
+	public static final int DEFAULT_COST = 20;
+	public static final int DEFAULT_VALUE = 10;
+	public static final float DEFAULT_GROWTH_TIME = 5;
+
+	protected float growthRateMod;
 	protected String texture = null;
+	protected AbstractCrop crop;
+
+	public AbstractSeed() {
+		this.cost = DEFAULT_COST;
+		this.value = DEFAULT_VALUE;
+		this.growthRateMod = 1;
+	}
 
 	public AbstractCrop getCrop() {
 		return crop;
+	}
+
+	public float getGrowthTime() {
+		return DEFAULT_GROWTH_TIME * growthRateMod;
 	}
 
 	@Override
@@ -28,6 +43,10 @@ public class AbstractSeed extends AbstractItem {
 		return texture;
 	}
 
+	public void setGrowthRateMod(float growthRateMod) {
+		this.growthRateMod = growthRateMod;
+	}
+
 	@Override
 	public void update(AbstractItem item) {
 	}
@@ -35,5 +54,4 @@ public class AbstractSeed extends AbstractItem {
 	@Override
 	public void update(Plot plot, Inventory inventory) {
 	}
-
 }

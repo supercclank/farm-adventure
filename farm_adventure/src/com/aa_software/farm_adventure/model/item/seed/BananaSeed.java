@@ -7,18 +7,24 @@ public class BananaSeed extends AbstractSeed {
 	public static final int DEFAULT_COST = 20;
 	public static final int DEFAULT_VALUE = 10;
 
+	private static final String NAME = "Banana Seed";
+	// TODO: Move these sort of calls into the TextureHelper. Seed doesn't need
+	// to know
+	// the crop's texture name.
+	private static final String CROP_TEXTURE_NAME = "bananaCrop";
+	private static final String SEED_TEXTURE_NAME = "bananaSeed";
+	private static final String DESCRIPTION = "Plant this seed and it will produce Bananas over time.";
+
 	public BananaSeed() {
 		super();
 		this.crop = new BananaCrop();
-		this.texture = "bananaCrop";
-		this.cost = DEFAULT_COST;
-		this.value = DEFAULT_VALUE;
-		this.name = "Banana Seed";
-		this.description = "Plant this seed and it will produce Bananas over time.";
+		this.texture = CROP_TEXTURE_NAME;
+		this.name = NAME;
+		this.description = DESCRIPTION;
 	}
 
 	@Override
 	public String getSeedName() {
-		return "bananaSeed";
+		return SEED_TEXTURE_NAME;
 	}
 }

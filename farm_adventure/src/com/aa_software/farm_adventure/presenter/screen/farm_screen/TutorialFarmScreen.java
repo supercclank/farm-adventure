@@ -5,21 +5,21 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import com.aa_software.farm_adventure.model.Field;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
+import com.aa_software.farm_adventure.model.farm.Biome;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.AbstractPlowTool;
+import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
-import com.aa_software.farm_adventure.presenter.IrrigationListener;
-import com.aa_software.farm_adventure.presenter.TextureHelper;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
+import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,7 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class TutorialFarmScreen extends AbstractFarmScreen {
+public class TutorialFarmScreen extends FarmScreen {
 
 	private class SeedClickListener extends ClickListener {
 		AbstractItem item;
@@ -87,9 +87,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	 * Constructs a farm screen using the specifications of TutorialFarm.
 	 */
 	public TutorialFarmScreen() {
-		super();
-		farm = new TutorialFarm();
-
+		super(Biome.Type.GRASSLAND);
 		states = State.values();
 
 		descriptionStage = new Stage(Gdx.graphics.getWidth(),
@@ -164,12 +162,12 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .25);
 			break;
 		case DESCRIBE_PLOW_WORKER:
-			description = "These are \navailable farmers \nthat can labor \na plot.";
+			description = "These are\navailable farmers\nthat can labor \na plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
 			break;
 		case CLICK_PLOW_WORKER:
-			description = "Select a worker to \nplow a plot.";
+			description = "Select a worker to\nplow a plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
 			foundClick = false;
@@ -182,7 +180,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
 		case DESCRIBE_PLOW:
-			description = "This is the plow\ntool which plows \n a plot of land.";
+			description = "This is the plow\ntool which plows\n a plot of land.";
 			descriptionX = Gdx.graphics.getWidth() * 0;
 			descriptionY = (float) (Gdx.graphics.getHeight() * .13);
 			break;
@@ -235,7 +233,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			fieldClicksDisabled = false;
 			break;
 		case CLICK_PLANT_WORKER:
-			System.out.println(selectedWorker);
 			description = "Select a worker to \nplant on a plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .65);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .15);
@@ -461,7 +458,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		// similar to the
 		// "click" set that transition on a given condition.
 		if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-			if (unwateredPlowedPlotExists() && foundClick) {
+			if (wateredPlowedPlotExists() && foundClick) {
 				transitionState();
 			}
 		} else if (states[stateIndex].toString().toLowerCase()
@@ -487,23 +484,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 	}
 
-	public boolean unwateredPlowedPlotExists() {
-		// TODO probably want to move this logic to Farm
-		Field field = farm.getField();
-		for (int i = 0; i < Field.COLUMNS; i++) {
-			for (int j = 0; j < Field.ROWS; j++) {
-				Plot plot = field.getPlot(i, j);
-				if (!(plot.isUnplowed() || plot.isGrass())
-						&& plot.isIrrigated()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public void updateDescription() {
 		Label description = new Label(this.description, style2);
+		description.setColor(Color.ORANGE);
 		descriptionWindow.add(description);
 
 		if (!states[stateIndex].toString().toLowerCase().contains("click")) {
@@ -516,6 +499,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 					return true;
 				}
 			});
+			nextButton.setColor(Color.ORANGE);
 			descriptionWindow.add(nextButton);
 		}
 
@@ -566,11 +550,21 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
+						if (selectedWorker >= 0) {
+							((AbstractWorker) farm.getInventory()
+									.getAllWorkers().get(selectedWorker))
+									.resetTexture();
+							selectedWorker = UNSELECT;
+						}
+						syncSelectTiles(UNSELECT);
+						selection = null;
+						sounds.playClick();
 					}
 					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
 						foundClick = true;
 					}
 					irrigationWindow.setVisible(false);
+					Gdx.input.setInputProcessor(workerStage);
 					return true;
 				}
 			});
@@ -591,7 +585,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			AbstractSeed tempSeed;
 			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
 			for (int i = 0; i < seedNum; i++) {
-				System.out.println("Seed Key: " + seedKey.size());
 				tempSeed = (AbstractSeed) farm.getInventory().getItems()
 						.get("SEEDS").get(i);
 				if (seedKey.size() == 0) {
@@ -656,5 +649,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		} else {
 			super.updateState(x, y);
 		}
+	}
+
+	public boolean wateredPlowedPlotExists() {
+		// TODO probably want to move this logic to Farm
+		Field field = farm.getField();
+		for (int i = 0; i < Field.COLUMNS; i++) {
+			for (int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if (!(plot.isUnplowed() || plot.isGrass())
+						&& plot.isIrrigated()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
