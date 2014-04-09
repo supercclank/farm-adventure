@@ -10,14 +10,8 @@ import com.badlogic.gdx.graphics.GLTexture;
 public class FarmAdventure extends Game {
 
 	private static FarmAdventure Instance = null;
-
-	// constant useful for logging
 	public static final String LOG = FarmAdventure.class.getSimpleName();
-
-	// whether we are in development mode
 	public static final boolean DEV_MODE = false;
-
-	// a libgdx helper class that logs the current FPS each second
 	private static FPSLogger FpsLogger;
 
 	public static FarmAdventure getInstance() {

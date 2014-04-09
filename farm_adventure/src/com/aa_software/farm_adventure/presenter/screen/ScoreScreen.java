@@ -3,6 +3,8 @@ package com.aa_software.farm_adventure.presenter.screen;
 import com.aa_software.farm_adventure.model.Stats;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,6 +18,25 @@ public class ScoreScreen extends AbstractScreen {
 	public ScoreScreen(Stats stats) {
 		super();
 		this.stats = stats;
+	}
+	
+	@Override
+	public void dispose() {
+		
+	}
+	
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+		checkBackButton();
+	}
+	
+	private void checkBackButton(){
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			Gdx.input.setCatchBackKey(true);
+			FarmAdventure.getInstance().setScreen(new WorldScreen());
+			dispose();
+		}
 	}
 
 	@Override
@@ -49,7 +70,5 @@ public class ScoreScreen extends AbstractScreen {
 		table.row();
 
 	}
-
-	// CALL DISPOSE
 
 }

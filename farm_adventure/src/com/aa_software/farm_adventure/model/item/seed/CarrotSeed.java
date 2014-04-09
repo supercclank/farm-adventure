@@ -13,7 +13,7 @@ public class CarrotSeed extends AbstractSeed {
 		this.texture = "carrotCrop";
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
-		this.name = "Carrot Seed";
+		this.name = "Carrot";
 		this.description = "Plant this seed and it will produce Carrots over time.";
 	}
 

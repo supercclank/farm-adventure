@@ -19,7 +19,7 @@ public abstract class AbstractScreen implements Screen {
 	public static final int SCREEN_WIDTH = 640;
 	public static final int SCREEN_HEIGHT = 1024;
 
-	protected final Stage statusBarStage;
+	protected final Stage mainStage;
 
 	protected OrthographicCamera camera;
 	protected OrthogonalTiledMapRenderer renderer;
@@ -28,7 +28,7 @@ public abstract class AbstractScreen implements Screen {
 	public AbstractScreen() {
 		// TODO: initiate cameras and maps
 
-		this.statusBarStage = new Stage(STAGE_WIDTH,
+		this.mainStage = new Stage(STAGE_WIDTH,
 				STAGE_HEIGHT, true);
 	}
 
@@ -42,12 +42,14 @@ public abstract class AbstractScreen implements Screen {
 	 *            The component that is intended to be drawn
 	 */
 	protected void addActor(Actor actor) {
-		statusBarStage.addActor(actor);
+		mainStage.addActor(actor);
 	}
 
 	@Override
 	public void dispose() {
-
+		mainStage.dispose();
+		renderer.dispose();
+		Gdx.app.exit();
 	}
 
 	protected String getName() {
@@ -78,28 +80,20 @@ public abstract class AbstractScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// (1) process the game logic
-
-		// update the actors
-		statusBarStage.act(delta);
-
-		// (2) draw the result
-		// the following code clears the screen with the given RGB color (black)
+		
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		mainStage.act(delta);
+		mainStage.draw();
 
-		// draw the actors
-		statusBarStage.draw();
-
-		// draw the table debug lines, will do nothing if not in debug mode
-		Table.drawDebug(statusBarStage);
+		Table.drawDebug(mainStage);
 	}
 
 	/* Getters/Setters for resources */
 
 	@Override
 	public void resize(int width, int height) {
-		//statusBarStage.setViewport(width, height);
+
 	}
 
 	@Override
@@ -116,7 +110,6 @@ public abstract class AbstractScreen implements Screen {
 
 		FarmAdventure.log("Showing screen: " + getName());
 
-		// Responsible for all touch and click events
-		Gdx.input.setInputProcessor(statusBarStage);
+		Gdx.input.setInputProcessor(mainStage);
 	}
 }

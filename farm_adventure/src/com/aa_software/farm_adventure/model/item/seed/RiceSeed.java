@@ -13,7 +13,7 @@ public class RiceSeed extends AbstractSeed {
 		this.texture = "riceCrop";
 		this.cost = DEFAULT_COST;
 		this.value = DEFAULT_VALUE;
-		this.name = "Rice Seed";
+		this.name = "Rice";
 		this.description = "Plant this seed and it will produce rice over time.";
 	}
 

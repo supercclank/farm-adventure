@@ -55,6 +55,12 @@ public class Sounds {
 	public float getSoundVolume() {
 		return soundVolume;
 	}
+	
+	public void dispose(){
+		click.dispose();
+		money.dispose();
+		mainMusic.dispose();
+	}
 
 	/**
 	 * Pauses the music.

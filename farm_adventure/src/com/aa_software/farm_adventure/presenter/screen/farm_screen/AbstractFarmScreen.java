@@ -36,6 +36,7 @@ import com.aa_software.farm_adventure.presenter.selection_state.ISelectionState;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
@@ -315,11 +316,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 	public static final float FONT_SCALE = 1.5f;
 
 	public static final float BANK_LABEL_X = (float) (SCREEN_WIDTH * .03),
-			BANK_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
-			TIME_LABEL_X = (float) (SCREEN_WIDTH * .35),
-			TIME_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
-			WORKER_LABEL_X = (float) (SCREEN_WIDTH * .78),
-			WORKER_LABEL_Y = (float) (SCREEN_HEIGHT * .17),
+			BANK_LABEL_Y = (float) (SCREEN_HEIGHT * .22),
+			TIME_LABEL_X = (float) (SCREEN_WIDTH * .33),
+			TIME_LABEL_Y = (float) (SCREEN_HEIGHT * .245),
+			WORKER_LABEL_X = (float) (SCREEN_WIDTH * .80),
+			WORKER_LABEL_Y = (float) (SCREEN_HEIGHT * .22),
 			WINDOW_X = (float) (SCREEN_WIDTH * .25),
 			WINDOW_Y = (float) (SCREEN_HEIGHT * .13),
 			INVENTORY_HEIGHT = SCREEN_HEIGHT - 15 * (TILE_SIZE / 10),
@@ -488,6 +489,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		score = score - BananaSeed.DEFAULT_VALUE - BeetSeed.DEFAULT_VALUE
 				- CarrotSeed.DEFAULT_VALUE - RiceSeed.DEFAULT_VALUE;
 		score = score - Player.STARTING_BANKROLL;
+		if(score < 0){
+			score = 0;
+		}
 
 		return score;
 	}
@@ -508,6 +512,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			int xCell = (int) (touchPos.x / TILE_SIZE);
 			int yCell = (int) (touchPos.y / TILE_SIZE);
 			updateState(xCell, yCell);
+		}
+		if (Gdx.input.isKeyPressed(Keys.BACK)){
+			Gdx.input.setCatchBackKey(true);
+			//TODO add a pop up asking if they want to quit
+			gameOver = true;
 		}
 	}
 
@@ -654,8 +663,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		workerQueue.pack();
 		workerWindow = new Table();
 		workerWindow.add(workerQueue).fill().expandX();
-		workerWindow.setPosition( (float) (width *.46),
-				(float) (height * .14));
+		workerWindow.setPosition( (float) (width *.495),
+				(float) (height * .19));
 		workerStage.addActor(workerWindow);
 	}
 
@@ -915,7 +924,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				Label itemInvCount = new Label(
 						Integer.toString(inventoryTypeCount), inventorySkin);
 				inventoryScrollTable.add(itemInvCount)
-						.width((float) (width * .1)).left();
+						.width((float) (width * .05)).left().padLeft(1);
+						
 
 				Texture info = new Texture(
 						Gdx.files.internal("textures/info.png"));
@@ -926,7 +936,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						typeSet.get(j)).get(i)));
 				infoButton.padBottom(2);
 				infoButton.padLeft(2);
-				infoButton.padRight(2);
+				infoButton.padRight(4);
 				infoButton.padTop(2);
 
 				Button buyButton = null;
@@ -946,7 +956,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (width * .05));
+							.padLeft((float) (width * .04));
 				} else if (type.getText().toString().equals("SEEDS")) {
 					buyButton = new TextButton("BUY " + " $" + cost,
 							inventorySkin, "default");
@@ -956,7 +966,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (width * .05));
+							.padLeft((float) (width * .04));
 
 				} else if (j > 2 && j < 7) { // if there are tools then
 
@@ -983,7 +993,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 									.add(infoButton)
 									.left()
 									.padLeft(
-											(float) (width * .05));
+											(float) (width * .04));
 
 						} else {
 							Label noUpgrade = new Label("No Upgrade",
@@ -1007,7 +1017,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 								.add(infoButton)
 								.left()
 								.padLeft(
-										(float) (width * .05));
+										(float) (width * .04));
 
 					}
 
@@ -1020,7 +1030,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 							.width((float) (width * .4))
 							.left();
 					inventoryScrollTable.add(infoButton).left()
-							.padLeft((float) (width * .05));
+							.padLeft((float) (width * .04));
 
 				}
 
@@ -1232,7 +1242,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		statusBarStage.clear();
 
 		/* Bankroll label setup */
-		Label bankBalance = new Label("Bank Balance: $" + PLAYER.getBankroll(),
+		Label bankBalance = new Label("Bank Balance: \n       $" + PLAYER.getBankroll(),
 				style1);
 		bankBalance.setPosition(BANK_LABEL_X, BANK_LABEL_Y);
 
@@ -1259,7 +1269,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		timeRemaining.setPosition(TIME_LABEL_X, TIME_LABEL_Y);
 
 		/* Worker label setup */
-		Label workers = new Label("Workers: "
+		Label workers = new Label("Workers: \n       "
 				+ farm.getInventory().getWorkerCount(), style1);
 		workers.setPosition(WORKER_LABEL_X, WORKER_LABEL_Y);
 

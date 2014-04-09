@@ -2,6 +2,8 @@ package com.aa_software.farm_adventure.presenter.screen;
 
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -29,95 +31,116 @@ public class OptionsScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-
+		setupOptionsMenu();
+	}
+	
+	@Override
+	public void dispose() {
+		
+	}
+	
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+		checkBackButton();
+	}
+	
+	private void checkBackButton(){
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			Gdx.input.setCatchBackKey(true);
+			FarmAdventure.getInstance().setScreen(new MainMenuScreen());
+		}
+	}
+	
+	private void setupOptionsMenu(){
 		// Create table
-		Table table = new Table(super.getSkin());
-		table.setFillParent(true);
+				Table table = new Table(super.getSkin());
+				table.setFillParent(true);
 
-		// Register table
-		super.addActor(table);
+				// Register table
+				super.addActor(table);
 
-		// Add label to table
-		table.add("Option Screen").spaceBottom(50).colspan(3);
-		table.row();
+				// Add label to table
+				table.add("Option Screen").spaceBottom(50).colspan(3);
+				table.row();
 
-		table.row().spaceBottom(50);
+				table.row().spaceBottom(50);
 
-		// Create masterVolume label
-		table.add("Master Volume: ");
-		masterVolume = new Slider(0, 100, 5, false, super.getSkin());
-		masterVolume.setValue(100 * sounds.getMasterVolume());
+				// Create masterVolume label
+				table.add("Master Volume: ");
+				masterVolume = new Slider(0, 100, 5, false, super.getSkin());
+				masterVolume.setValue(100 * sounds.getMasterVolume());
 
-		// Add listener
-		masterVolume.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				masterValue.setText("" + (int) masterVolume.getValue() + "%");
-				sounds.setMusicVolume((masterVolume.getValue() / 100)
-						* (musicVolume.getValue() / 100));
-				sounds.setSoundVolume((masterVolume.getValue() / 100)
-						* (gameVolume.getValue() / 100));
-			}
-		});
-		table.add(masterVolume);
-		masterValue = new Label("" + (int) masterVolume.getValue() + "%",
-				super.getSkin());
-		table.add(masterValue);
-		table.row();
+				// Add listener
+				masterVolume.addListener(new ChangeListener() {
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						masterValue.setText("" + (int) masterVolume.getValue() + "%");
+						sounds.setMusicVolume((masterVolume.getValue() / 100)
+								* (musicVolume.getValue() / 100));
+						sounds.setSoundVolume((masterVolume.getValue() / 100)
+								* (gameVolume.getValue() / 100));
+					}
+				});
+				table.add(masterVolume);
+				masterValue = new Label("" + (int) masterVolume.getValue() + "%",
+						super.getSkin());
+				table.add(masterValue);
+				table.row();
 
-		table.row().spaceBottom(50);
+				table.row().spaceBottom(50);
 
-		// Create gameVolume label
-		table.add("Game Volume: ");
-		gameVolume = new Slider(0, 100, 5, false, super.getSkin());
-		gameVolume.setValue(100 * sounds.getSoundVolume());
+				// Create gameVolume label
+				table.add("Game Volume: ");
+				gameVolume = new Slider(0, 100, 5, false, super.getSkin());
+				gameVolume.setValue(100 * sounds.getSoundVolume());
 
-		// Add listener
-		gameVolume.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				gameValue.setText("" + (int) gameVolume.getValue() + "%");
-				sounds.setSoundVolume((masterVolume.getValue() / 100)
-						* (gameVolume.getValue() / 100));
-			}
-		});
-		table.add(gameVolume);
-		gameValue = new Label("" + (int) gameVolume.getValue() + "%",
-				super.getSkin());
-		table.add(gameValue);
-		table.row();
+				// Add listener
+				gameVolume.addListener(new ChangeListener() {
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						gameValue.setText("" + (int) gameVolume.getValue() + "%");
+						sounds.setSoundVolume((masterVolume.getValue() / 100)
+								* (gameVolume.getValue() / 100));
+					}
+				});
+				table.add(gameVolume);
+				gameValue = new Label("" + (int) gameVolume.getValue() + "%",
+						super.getSkin());
+				table.add(gameValue);
+				table.row();
 
-		// Create musicVolume label
-		table.add("Music Volume: ");
-		musicVolume = new Slider(0, 100, 5, false, super.getSkin());
-		musicVolume.setValue(100 * sounds.getMusicVolume());
+				// Create musicVolume label
+				table.add("Music Volume: ");
+				musicVolume = new Slider(0, 100, 5, false, super.getSkin());
+				musicVolume.setValue(100 * sounds.getMusicVolume());
 
-		// Add listener
-		musicVolume.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				musicValue.setText("" + (int) musicVolume.getValue() + "%");
-				sounds.setMusicVolume((masterVolume.getValue() / 100)
-						* (musicVolume.getValue() / 100));
-			}
-		});
-		table.add(musicVolume);
-		musicValue = new Label("" + (int) musicVolume.getValue() + "%",
-				super.getSkin());
-		table.add(musicValue);
-		table.row();
+				// Add listener
+				musicVolume.addListener(new ChangeListener() {
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						musicValue.setText("" + (int) musicVolume.getValue() + "%");
+						sounds.setMusicVolume((masterVolume.getValue() / 100)
+								* (musicVolume.getValue() / 100));
+					}
+				});
+				table.add(musicVolume);
+				musicValue = new Label("" + (int) musicVolume.getValue() + "%",
+						super.getSkin());
+				table.add(musicValue);
+				table.row();
 
-		// back button
-		TextButton backButton = new TextButton("Back", super.getSkin());
-		backButton.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				FarmAdventure.getInstance().setScreen(new MainMenuScreen());
-				return true;
-			}
-		});
-		table.add(backButton).spaceTop(200).colspan(3).width(300);
+				// back button
+				TextButton backButton = new TextButton("Back", super.getSkin());
+				backButton.addListener(new InputListener() {
+					@Override
+					public boolean touchDown(InputEvent event, float x, float y,
+							int pointer, int button) {
+						FarmAdventure.getInstance().setScreen(new MainMenuScreen());
+						return true;
+					}
+				});
+				table.add(backButton).spaceTop(200).colspan(3).width(300);
 	}
 
 }

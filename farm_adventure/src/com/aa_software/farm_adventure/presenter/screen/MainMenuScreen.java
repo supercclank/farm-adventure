@@ -3,14 +3,13 @@ package com.aa_software.farm_adventure.presenter.screen;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -20,6 +19,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private static final int BUTTON_HEIGHT = 60;
 	private static final int TITLE_SPACE = 50;
 	private static final int BUTTON_SPACE = 10;
+	private Table table;
 	
 	public MainMenuScreen() {
 		super();
@@ -28,9 +28,25 @@ public class MainMenuScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
+		setupMainMenu();
+	}
+	
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+		checkBackButton();
+	}
+	
+	protected void checkBackButton(){
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			Gdx.input.setCatchBackKey(true);
+		}
+	}
+	
+	private void setupMainMenu(){
 		skin = super.getSkin();
 		// Create table
-		Table table = new Table(skin);
+		table = new Table(skin);
 		table.setFillParent(true);
 
 		super.addActor(table);
