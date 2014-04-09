@@ -17,6 +17,7 @@ public class TractorPlowTool extends AbstractPlowTool {
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = TRACTOR_PLOW_TOOL_NAME;
 		this.upgrade = null;
+		this.description = "The tractor will allow you to plow faster.";
 	}
 
 	@Override

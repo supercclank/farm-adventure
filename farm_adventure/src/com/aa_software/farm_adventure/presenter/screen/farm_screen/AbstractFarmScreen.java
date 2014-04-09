@@ -323,7 +323,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
-			INVENTORY_HEIGHT = Gdx.graphics.getHeight() - 15 * (TILE_SIZE / 10),
+			INVENTORY_HEIGHT = (float) (Gdx.graphics.getHeight() * .75),
 			WORKER_HEIGHT = 70,
 			INFO_X = (float) (Gdx.graphics.getWidth() * .25),
 			INFO_Y = (float) (Gdx.graphics.getHeight() * .5),
@@ -914,8 +914,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 				TextureRegion infoReg = new TextureRegion(info);
 				Button infoButton = new Button(new Image(infoReg),
 						inventorySkin);
-				infoButton.addListener(new InfoClickListener(marketItems.get(
-						typeSet.get(j)).get(i)));
 				infoButton.padBottom(2);
 				infoButton.padLeft(2);
 				infoButton.padRight(2);
@@ -937,6 +935,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					inventoryScrollTable.add(buyButton)
 							.width((float) (Gdx.graphics.getWidth() * .4))
 							.left();
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));
 					inventoryScrollTable.add(infoButton).left()
 							.padLeft((float) (Gdx.graphics.getWidth() * .05));
 				} else if (type.getText().toString().equals("SEEDS")) {
@@ -947,11 +947,11 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					inventoryScrollTable.add(buyButton)
 							.width((float) (Gdx.graphics.getWidth() * .4))
 							.left();
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));
 					inventoryScrollTable.add(infoButton).left()
 							.padLeft((float) (Gdx.graphics.getWidth() * .05));
-
 				} else if (j > 2 && j < 7) { // if there are tools then
-
 					if (inventoryTypeCount > 0) {
 						AbstractTool toolUpgrade = ((AbstractTool) marketItems
 								.get(typeSet.get(j)).get(i)).getUpgrade();
@@ -971,6 +971,7 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 									.add(buyButton)
 									.width((float) (Gdx.graphics.getWidth() * .4))
 									.left();
+							infoButton.addListener(new InfoClickListener(toolUpgrade));
 							inventoryScrollTable
 									.add(infoButton)
 									.left()
@@ -995,6 +996,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						inventoryScrollTable.add(buyButton)
 								.width((float) (Gdx.graphics.getWidth() * .4))
 								.left();
+						infoButton.addListener(new InfoClickListener(marketItems.get(
+								typeSet.get(j)).get(i)));
 						inventoryScrollTable
 								.add(infoButton)
 								.left()
@@ -1011,6 +1014,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 					inventoryScrollTable.add(sellButton)
 							.width((float) (Gdx.graphics.getWidth() * .4))
 							.left();
+					infoButton.addListener(new InfoClickListener(marketItems.get(
+							typeSet.get(j)).get(i)));
 					inventoryScrollTable.add(infoButton).left()
 							.padLeft((float) (Gdx.graphics.getWidth() * .05));
 
@@ -1033,9 +1038,6 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		irrigationWindow.clear();
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y)
 				.iterator();
-		// TODO: do we need these unselects?
-		selectedWorker = UNSELECT;
-		syncSelectTiles(UNSELECT);
 		for (; iterator.hasNext();) {
 			Irrigation irrigation = iterator.next();
 			TaskType task = farm.getTaskType(x, y, irrigation);
@@ -1249,6 +1251,9 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 		statusBarStage.addActor(workers);
 	}
 
+	/**
+	 * Clears the worker window and fills it out with the
+	 */
 	public void updateWorkerQueue() {
 		workerQueue.clear();
 		workerQueue.layout();
@@ -1270,6 +1275,8 @@ public abstract class AbstractFarmScreen extends AbstractScreen {
 						workerButton, (AbstractWorker) invWorkers.get(i)));
 				workerQueue.add(workerButton).left().padLeft(3);
 			}
-		}
+
+		}	
 	}
 }
+
