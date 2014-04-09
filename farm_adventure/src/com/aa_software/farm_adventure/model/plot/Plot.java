@@ -1,6 +1,7 @@
 package com.aa_software.farm_adventure.model.plot;
 
 import java.util.EnumSet;
+
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
@@ -107,13 +108,6 @@ public class Plot {
 		return WORK_STATUS_TEXTURES[taskTexturePrefix.ordinal()].length;
 	}
 
-	// TODO: This was added to allow the animation for harvest crop
-	// to work correctly. Might not be the best way to solve this problem
-	// and should be looked at.
-	public void removeCrop() {
-		crop = null;
-	}
-
 	public boolean hasCrop() {
 		if (crop == null) {
 			return false;
@@ -142,6 +136,13 @@ public class Plot {
 
 	public boolean isUsable() {
 		return isUsable;
+	}
+
+	// TODO: This was added to allow the animation for harvest crop
+	// to work correctly. Might not be the best way to solve this problem
+	// and should be looked at.
+	public void removeCrop() {
+		crop = null;
 	}
 
 	public void setCrop(final AbstractCrop crop) {

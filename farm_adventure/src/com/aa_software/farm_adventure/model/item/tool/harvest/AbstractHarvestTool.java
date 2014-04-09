@@ -38,33 +38,34 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 			AbstractCrop crop = plot.getCrop();
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h"
 					+ crop.getTextureName()));
-			//TODO: We should be adding crops to the inventory AFTER the task is finished.
+			// TODO: We should be adding crops to the inventory AFTER the task
+			// is finished.
 			inventory.addItem(crop);
 			Timer.schedule(
-				new Task() {
-					@Override
-					public void run() {
-						if (plot.getTaskTextureIndex() == plot
-								.getWorkStatusTextureLength() - 1) {
-							plot.setUsable(true);
-							plot.setPlotType(PlotType.UNPLOWEDWATERED);
-							plot.setTaskTextureIndex(0);
-							worker.addExperience();
-							worker.setBusy(false);
-							sounds.playClick();
-						} else {
-							plot.incrementTaskTextureIndex();
-							plot.removeCrop();
-							Timer.schedule(
-									this,
-									(workTime * worker.getWorkRate())
-											/ (plot.getWorkStatusTextureLength() - 1));
-							worker.resetTexture();
+					new Task() {
+						@Override
+						public void run() {
+							if (plot.getTaskTextureIndex() == plot
+									.getWorkStatusTextureLength() - 1) {
+								plot.setUsable(true);
+								plot.setPlotType(PlotType.UNPLOWEDWATERED);
+								plot.setTaskTextureIndex(0);
+								worker.addExperience();
+								worker.setBusy(false);
+								sounds.playClick();
+							} else {
+								plot.incrementTaskTextureIndex();
+								plot.removeCrop();
+								Timer.schedule(
+										this,
+										(workTime * worker.getWorkRate())
+												/ (plot.getWorkStatusTextureLength() - 1));
+								worker.resetTexture();
+							}
 						}
-					}
-				},
-				(workTime * worker.getWorkRate())
-						/ (plot.getWorkStatusTextureLength() - 1));
+					},
+					(workTime * worker.getWorkRate())
+							/ (plot.getWorkStatusTextureLength() - 1));
 		}
 	}
 }

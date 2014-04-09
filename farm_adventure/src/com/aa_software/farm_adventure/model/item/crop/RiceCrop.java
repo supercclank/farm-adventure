@@ -3,13 +3,13 @@ package com.aa_software.farm_adventure.model.item.crop;
 public class RiceCrop extends AbstractCrop {
 	public static final String TEXTURE_NAME = "riceCrop";
 	public static final String SEED_NAME = "riceSeed";
-	public static final String RICE_NAME = "Rice";
-	public static final int DEFAULT_VALUE = 80;
+	public static final String NAME = "Rice";
+	public static final int VALUE = 80;
 
 	public RiceCrop() {
 		super();
-		this.value = DEFAULT_VALUE;
-		this.name = RICE_NAME;
+		this.value = VALUE;
+		this.name = NAME;
 		this.description = "Rice that you can sell in the market place";
 	}
 
@@ -17,7 +17,7 @@ public class RiceCrop extends AbstractCrop {
 		if (value != 0) {
 			this.value = value;
 		} else {
-			this.value = DEFAULT_VALUE;
+			this.value = VALUE;
 		}
 	}
 
@@ -30,4 +30,5 @@ public class RiceCrop extends AbstractCrop {
 	public String getTextureName() {
 		return TEXTURE_NAME;
 	}
+
 }

@@ -6,23 +6,23 @@ import com.aa_software.farm_adventure.model.plot.Plot;
 
 public abstract class AbstractCrop extends AbstractItem {
 
+	protected static final String TYPE = "CROPS";
+
 	@Override
 	public String getItemType() {
-		return "CROPS";
+		return TYPE;
 	}
+	
+	public abstract String getSeedName();
 
-	public String getSeedName() {
-		return "crops";
+	public abstract String getTextureName();
+
+	@Override
+	public void update(AbstractItem item) {
 	}
 
 	@Override
-	public String getTextureName() {
-		return "texture";
+	public void update(Plot plot, Inventory inventory) {
 	}
 
-	@Override
-	public void update(AbstractItem item) {};
-
-	@Override
-	public void update(Plot plot, Inventory inventory) {};
 }

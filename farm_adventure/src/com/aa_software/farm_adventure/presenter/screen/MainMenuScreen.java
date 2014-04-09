@@ -13,6 +13,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 	public static final Sounds sounds = Sounds.getInstance();
 	private Skin skin;
+
 	public MainMenuScreen() {
 		super();
 	}
@@ -21,7 +22,7 @@ public class MainMenuScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		skin = super.getSkin();
-		
+
 		// Create table
 		Table table = new Table(skin);
 		table.setFillParent(true);
@@ -33,7 +34,7 @@ public class MainMenuScreen extends AbstractScreen {
 		table.row();
 
 		// register the button "start game"
-		TextButton startGameButton = new TextButton("Start game",skin);
+		TextButton startGameButton = new TextButton("Start game", skin);
 
 		// Start Music
 		sounds.playMusic();

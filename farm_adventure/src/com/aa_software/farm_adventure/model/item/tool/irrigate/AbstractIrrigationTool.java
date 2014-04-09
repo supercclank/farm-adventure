@@ -54,7 +54,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			}
 		}
 	}
-	
+
 	private Irrigation irrigationChoice;
 
 	private TaskType task;
@@ -79,7 +79,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	public void setTaskType(TaskType task) {
 		this.task = task;
 	}
-	
+
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		final AbstractWorker worker;
@@ -102,5 +102,5 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			worker.resetTexture();
 		}
 	}
-	
+
 }

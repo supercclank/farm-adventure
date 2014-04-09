@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import com.aa_software.farm_adventure.model.Field;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
+import com.aa_software.farm_adventure.model.farm.Biome;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
@@ -36,8 +36,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class TutorialFarmScreen extends AbstractFarmScreen {
-	
+public class TutorialFarmScreen extends FarmScreen {
+
 	private class SeedClickListener extends ClickListener {
 		AbstractItem item;
 
@@ -66,14 +66,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	}
 
 	enum State {
-		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, 
-		DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, 
-		CLICK_IRRIGATE_WORKER, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, 
-		CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, 
-		CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, 
-		DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, 
-		CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO, CLICK_EXIT_INFO, 
-		BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
+		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, CLICK_IRRIGATE_WORKER, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO, CLICK_EXIT_INFO, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
 	final int MARKET_X = 4;
@@ -94,9 +87,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	 * Constructs a farm screen using the specifications of TutorialFarm.
 	 */
 	public TutorialFarmScreen() {
-		super();
-		farm = new TutorialFarm();
-
+		super(Biome.Type.GRASSLAND);
 		states = State.values();
 
 		descriptionStage = new Stage(Gdx.graphics.getWidth(),
@@ -493,21 +484,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 	}
 
-	public boolean wateredPlowedPlotExists() {
-		// TODO probably want to move this logic to Farm
-		Field field = farm.getField();
-		for (int i = 0; i < Field.COLUMNS; i++) {
-			for (int j = 0; j < Field.ROWS; j++) {
-				Plot plot = field.getPlot(i, j);
-				if (!(plot.isUnplowed() || plot.isGrass())
-						&& plot.isIrrigated()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public void updateDescription() {
 		Label description = new Label(this.description, style2);
 		description.setColor(Color.ORANGE);
@@ -575,8 +551,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 						if (selectedWorker >= 0) {
-							((AbstractWorker) farm.getInventory().getAllWorkers()
-									.get(selectedWorker)).resetTexture();
+							((AbstractWorker) farm.getInventory()
+									.getAllWorkers().get(selectedWorker))
+									.resetTexture();
 							selectedWorker = UNSELECT;
 						}
 						syncSelectTiles(UNSELECT);
@@ -672,5 +649,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		} else {
 			super.updateState(x, y);
 		}
+	}
+
+	public boolean wateredPlowedPlotExists() {
+		// TODO probably want to move this logic to Farm
+		Field field = farm.getField();
+		for (int i = 0; i < Field.COLUMNS; i++) {
+			for (int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if (!(plot.isUnplowed() || plot.isGrass())
+						&& plot.isIrrigated()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

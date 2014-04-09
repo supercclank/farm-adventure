@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure.model.item.seed;
 
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
-import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
 
 public class CarrotSeed extends AbstractSeed {
@@ -18,7 +17,8 @@ public class CarrotSeed extends AbstractSeed {
 		this.name = "Carrot Seed";
 		this.description = "Plant this seed and it will produce Carrots over time.";
 	}
-	
+
+	@Override
 	public AbstractCrop getCrop() {
 		return new CarrotCrop();
 	}

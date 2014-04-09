@@ -11,7 +11,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	protected int cost;
 	protected int value;
 	protected String name = "N/A";
-	protected String description = "No description available";
+	protected String description = "No description is available";
 
 	/**
 	 * Compare items based on their name
@@ -47,7 +47,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 		return this.name;
 	}
 
-	abstract public String getTextureName();
+	public abstract String getTextureName();
 
 	/**
 	 * Return the item's selling value
@@ -84,12 +84,12 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 		return this.name;
 	}
 
-	abstract public void update(AbstractItem item);
+	public abstract void update(AbstractItem item);
 
 	/**
 	 * Changes the status of the given plot and inventory
 	 * 
 	 * @param plot
 	 */
-	abstract public void update(Plot plot, Inventory inventory);
+	public abstract void update(Plot plot, Inventory inventory);
 }

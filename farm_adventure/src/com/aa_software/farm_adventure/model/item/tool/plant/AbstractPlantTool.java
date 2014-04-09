@@ -28,12 +28,12 @@ public abstract class AbstractPlantTool extends AbstractTool {
 
 		@Override
 		public void run() {
-			//TODO "p" is kind of magic numbery and out of place here.
+			// TODO "p" is kind of magic numbery and out of place here.
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("p"
 					+ seed.getTextureName()));
 			if (plot.getTaskTextureIndex() == plot.getWorkStatusTextureLength() - 1) {
 				plot.setUsable(true);
-				plot.setTaskTextureIndex(0);	
+				plot.setTaskTextureIndex(0);
 				plot.setCrop(seed.getCrop());
 				worker.addExperience();
 				worker.setBusy(false);
@@ -43,6 +43,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 			}
 		}
 	}
+
 	protected AbstractSeed seed = null;
 
 	protected AbstractCrop crop = null;
@@ -63,7 +64,7 @@ public abstract class AbstractPlantTool extends AbstractTool {
 
 	public void update(final Plot plot) {
 	}
-	
+
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		final AbstractWorker worker;
@@ -84,8 +85,8 @@ public abstract class AbstractPlantTool extends AbstractTool {
 					+ seed.getTextureName()));
 			worker.setBusy(true);
 			plot.setUsable(false);
-			float delay = (workTime * worker.getWorkRate() + seed.getGrowthTime())
-					/ (plot.getWorkStatusTextureLength() - 1);
+			float delay = (workTime * worker.getWorkRate() + seed
+					.getGrowthTime()) / (plot.getWorkStatusTextureLength() - 1);
 			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
 			sounds.playClick();
 			this.seed = null;
@@ -93,5 +94,3 @@ public abstract class AbstractPlantTool extends AbstractTool {
 		}
 	}
 }
-
-

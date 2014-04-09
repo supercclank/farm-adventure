@@ -18,10 +18,11 @@ public class BeetSeed extends AbstractSeed {
 		this.description = "Plant this seed and it will produce Beets over time.";
 	}
 
+	@Override
 	public AbstractCrop getCrop() {
 		return new BeetCrop();
 	}
-	
+
 	@Override
 	public String getSeedName() {
 		return "beetSeed";

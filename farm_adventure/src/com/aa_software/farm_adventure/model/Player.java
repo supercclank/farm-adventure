@@ -1,6 +1,5 @@
 package com.aa_software.farm_adventure.model;
 
-import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 
@@ -18,7 +17,6 @@ public class Player {
 	}
 
 	private int bankroll;
-	private AbstractCampaign campaign;
 	private Preferences preferences;
 
 	private Player() {
@@ -35,7 +33,7 @@ public class Player {
 			itemCost = item.getCost();
 		}
 		if (this.bankroll < itemCost) {
-			//TODO: Let the player know they do not have the funds.
+			// TODO: Let the player know they do not have the funds.
 			return false;
 		} else {
 			this.bankroll -= itemCost;
@@ -45,10 +43,6 @@ public class Player {
 
 	public int getBankroll() {
 		return bankroll;
-	}
-
-	public AbstractCampaign getCampaign() {
-		return campaign;
 	}
 
 	public Preferences getPreferences() {
@@ -62,10 +56,6 @@ public class Player {
 
 	public void setBankroll(int bankroll) {
 		this.bankroll = bankroll;
-	}
-
-	public void setCampaign(AbstractCampaign campaign) {
-		this.campaign = campaign;
 	}
 
 	public void setPreferences(Preferences preferences) {

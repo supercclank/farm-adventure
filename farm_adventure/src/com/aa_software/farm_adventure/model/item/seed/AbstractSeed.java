@@ -10,7 +10,7 @@ public abstract class AbstractSeed extends AbstractItem {
 	public static final int DEFAULT_COST = 20;
 	public static final int DEFAULT_VALUE = 10;
 	public static final float DEFAULT_GROWTH_TIME = 5;
-	
+
 	protected float growthRateMod;
 	protected String texture = null;
 	protected AbstractCrop crop;
@@ -20,9 +20,13 @@ public abstract class AbstractSeed extends AbstractItem {
 		this.value = DEFAULT_VALUE;
 		this.growthRateMod = 1;
 	}
-	
+
 	public AbstractCrop getCrop() {
 		return crop;
+	}
+
+	public float getGrowthTime() {
+		return DEFAULT_GROWTH_TIME * growthRateMod;
 	}
 
 	@Override
@@ -39,17 +43,15 @@ public abstract class AbstractSeed extends AbstractItem {
 		return texture;
 	}
 
-	@Override
-	public void update(AbstractItem item) {}
-
-	@Override
-	public void update(Plot plot, Inventory inventory) {}
-	
 	public void setGrowthRateMod(float growthRateMod) {
 		this.growthRateMod = growthRateMod;
 	}
-	
-	public float getGrowthTime() {
-		return DEFAULT_GROWTH_TIME * growthRateMod;
+
+	@Override
+	public void update(AbstractItem item) {
+	}
+
+	@Override
+	public void update(Plot plot, Inventory inventory) {
 	}
 }
