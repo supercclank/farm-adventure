@@ -1,8 +1,6 @@
 package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
 
 public class TrowelTool extends AbstractPlantTool {
 	public static final String TEXTURE_NAME = "trowelTool";
@@ -15,7 +13,7 @@ public class TrowelTool extends AbstractPlantTool {
 	public TrowelTool() {
 		super();
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.seed = null;
 		this.name = TROWELTOOL_NAME;
@@ -31,6 +29,6 @@ public class TrowelTool extends AbstractPlantTool {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

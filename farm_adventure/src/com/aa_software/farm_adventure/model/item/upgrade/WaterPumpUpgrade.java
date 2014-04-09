@@ -5,10 +5,10 @@ public class WaterPumpUpgrade extends AbstractUpgrade {
 	public static final String WATERPUMP_NAME = "Water Pump Upgrade";
 	public static int DEFAULT_COST = 30;
 	public static int DEFAULT_VALUE = 15;
-	
+
 	public WaterPumpUpgrade() {
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.name = WATERPUMP_NAME;
 	}
 }

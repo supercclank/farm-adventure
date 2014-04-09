@@ -13,7 +13,7 @@ public class TractorPlowTool extends AbstractPlowTool {
 	public TractorPlowTool() {
 		super();
 		this.cost = DEFAULT_COST;
-		this.value = this.cost/2;
+		this.value = this.cost / 2;
 		this.workTime = DEFAULT_WORK_TIME;
 		this.name = TRACTOR_PLOW_TOOL_NAME;
 		this.upgrade = null;
@@ -28,7 +28,7 @@ public class TractorPlowTool extends AbstractPlowTool {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

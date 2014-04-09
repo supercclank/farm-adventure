@@ -13,28 +13,29 @@ public class Season {
 	/**
 	 * Each season affects the growth rate of plants.
 	 */
-	public static final float SPRING_GROWTH_RATE_MOD = .5f;
-	public static final float SUMMER_GROWTH_RATE_MOD = 1;
-	public static final float FALL_GROWTH_RATE_MOD = 1;
-	public static final float WINTER_GROWTH_RATE_MOD = 2;
+	private static final float SPRING_GROWTH_RATE_MOD = .5f;
+	private static final float SUMMER_GROWTH_RATE_MOD = 1;
+	private static final float FALL_GROWTH_RATE_MOD = 1;
+	private static final float WINTER_GROWTH_RATE_MOD = 2;
 
 	/**
 	 * Summer and Fall apply a random chance for a plot to lose irrigation or
 	 * become covered in leaves (resetting the plot, aside from the irrigation).
 	 * These values are the percent chances of those events.
 	 */
-	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
-	public static final float FALL_LEAF_COVER_MOD = .2f;
+	private static final float SUMMER_WATER_LEVEL_MOD = .2f;
+	private static final float FALL_LEAF_COVER_MOD = .2f;
 
 	public static final int CYCLE_TIME_MILLIS = 60000;
 
 	private float cycleTime;
 	private SeasonType seasonType;
-	private float growthRateMod = 1;
+	private float growthRateMod;
 
 	public Season(SeasonType seasonType) {
 		this.cycleTime = CYCLE_TIME_MILLIS;
 		this.seasonType = seasonType;
+		this.growthRateMod = 1;
 	}
 
 	public Season(SeasonType seasonType, float cycleTime) {
@@ -78,19 +79,18 @@ public class Season {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
-				if(field.getPlot(x,y).getPlotType() != PlotType.WATER)
+				if (field.getPlot(x, y).getPlotType() != PlotType.WATER)
 					field.getPlot(x, y).setUsable(true);
 				if (field.getPlot(x, y).getPlotType() == PlotType.LEAVES) {
 					field.getPlot(x, y).setPlotType(PlotType.GRASS);
 				}
 			}
 		}
-		switch(seasonType) {
+		switch (seasonType) {
 			case SPRING:
 				growthRateMod = SPRING_GROWTH_RATE_MOD;
 				break;
-			case SUMMER:
-			{
+			case SUMMER: {
 				growthRateMod = SUMMER_GROWTH_RATE_MOD;
 				Random random = new Random();
 				int roll;
@@ -108,8 +108,7 @@ public class Season {
 				}
 				break;
 			}
-			case FALL:
-			{
+			case FALL: {
 				growthRateMod = FALL_GROWTH_RATE_MOD;
 				Random random = new Random();
 				int roll;
@@ -128,6 +127,8 @@ public class Season {
 			}
 			case WINTER:
 				growthRateMod = WINTER_GROWTH_RATE_MOD;
+				break;
+			default:
 		}
 	}
 }

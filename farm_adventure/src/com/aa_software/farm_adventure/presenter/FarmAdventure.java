@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.GLTexture;
 public class FarmAdventure extends Game {
 
 	private static FarmAdventure Instance = null;
-	
+
 	// constant useful for logging
 	public static final String LOG = FarmAdventure.class.getSimpleName();
 
@@ -19,8 +19,6 @@ public class FarmAdventure extends Game {
 
 	// a libgdx helper class that logs the current FPS each second
 	private static FPSLogger FpsLogger;
-	
-	protected FarmAdventure() {}
 
 	public static FarmAdventure getInstance() {
 		if (Instance == null) {
@@ -28,7 +26,7 @@ public class FarmAdventure extends Game {
 		}
 		return Instance;
 	}
-	
+
 	/**
 	 * Whenever the game is in developer mode everything is logged in console or
 	 * logcat
@@ -49,15 +47,15 @@ public class FarmAdventure extends Game {
 			FpsLogger.log();
 	}
 
+	protected FarmAdventure() {
+	}
+
 	@Override
 	public void create() {
 		GLTexture.setEnforcePotImages(false);
-		// here is where we need to render the start screen
-		// setScreen(new TutorialFarmScreen());
-
 		log("Creating game");
 		FpsLogger = new FPSLogger();
-		// setScreen(new MainMenuScreen(this));
+
 		MainMenuScreen mms = new MainMenuScreen();
 		super.setScreen(mms);
 	}

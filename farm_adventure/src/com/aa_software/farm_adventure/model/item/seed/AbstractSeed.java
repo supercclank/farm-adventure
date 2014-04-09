@@ -5,32 +5,51 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
-public class AbstractSeed extends AbstractItem{
+public abstract class AbstractSeed extends AbstractItem {
 
-	protected AbstractCrop crop = null;
-	protected String texture = null;
+	public static final int DEFAULT_COST = 20;
+	public static final int DEFAULT_VALUE = 10;
+	public static final float DEFAULT_GROWTH_TIME = 5;
 	
-	public AbstractCrop getCrop(){
-		return crop;
+	protected float growthRateMod;
+	protected String texture = null;
+	protected AbstractCrop crop;
+
+	public AbstractSeed() {
+		this.cost = DEFAULT_COST;
+		this.value = DEFAULT_VALUE;
+		this.growthRateMod = 1;
 	}
 	
+	public AbstractCrop getCrop() {
+		return crop;
+	}
+
+	@Override
+	public String getItemType() {
+		return "SEEDS";
+	}
+
+	public String getSeedName() {
+		return "seed";
+	}
+
 	@Override
 	public String getTextureName() {
 		return texture;
 	}
-	
-	public String getItemType() {
-		return "SEEDS";
-	}
-	
-	public String getSeedName() {
-		return "seed";
-	}
-	
-	@Override
-	public void update(Plot plot, Inventory inventory) {}
 
 	@Override
 	public void update(AbstractItem item) {}
 
+	@Override
+	public void update(Plot plot, Inventory inventory) {}
+	
+	public void setGrowthRateMod(float growthRateMod) {
+		this.growthRateMod = growthRateMod;
+	}
+	
+	public float getGrowthTime() {
+		return DEFAULT_GROWTH_TIME * growthRateMod;
+	}
 }

@@ -9,6 +9,7 @@ import com.aa_software.farm_adventure.model.plot.Plot;
  */
 public abstract class AbstractUpgrade extends AbstractItem {
 
+	@Override
 	public String getTextureName() {
 		return "arbitrary";
 		// TODO: change
@@ -17,10 +18,11 @@ public abstract class AbstractUpgrade extends AbstractItem {
 	@Override
 	public void update(AbstractItem item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void update(Plot plot, Inventory inventory) {}
-	
+	public void update(Plot plot, Inventory inventory) {
+	}
+
 }
