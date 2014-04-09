@@ -104,7 +104,7 @@ public class Sounds {
 	 *            the highest.
 	 */
 	public void setMusicVolume(float vol) {
-		mainMusic.setVolume(vol);
+		mainMusic.setVolume(masterVolume *vol);
 	}
 
 	/**
@@ -115,6 +115,6 @@ public class Sounds {
 	 *            the highest.
 	 */
 	public void setSoundVolume(float vol) {
-		soundVolume = vol;
+		soundVolume = masterVolume*vol;
 	}
 }

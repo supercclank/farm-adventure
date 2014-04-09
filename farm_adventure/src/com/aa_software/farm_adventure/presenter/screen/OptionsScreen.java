@@ -53,10 +53,9 @@ public class OptionsScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				masterValue.setText("" + (int) masterVolume.getValue() + "%");
-				sounds.setMusicVolume((masterVolume.getValue() / 100)
-						* (musicVolume.getValue() / 100));
-				sounds.setSoundVolume((masterVolume.getValue() / 100)
-						* (gameVolume.getValue() / 100));
+				sounds.setMasterVolume(masterVolume.getValue()/100);
+				sounds.setMusicVolume(musicVolume.getValue() / 100);
+				sounds.setSoundVolume(gameVolume.getValue() / 100);
 			}
 		});
 		table.add(masterVolume);
@@ -77,8 +76,7 @@ public class OptionsScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				gameValue.setText("" + (int) gameVolume.getValue() + "%");
-				sounds.setSoundVolume((masterVolume.getValue() / 100)
-						* (gameVolume.getValue() / 100));
+				sounds.setSoundVolume(gameVolume.getValue() / 100);
 			}
 		});
 		table.add(gameVolume);
@@ -97,8 +95,7 @@ public class OptionsScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				musicValue.setText("" + (int) musicVolume.getValue() + "%");
-				sounds.setMusicVolume((masterVolume.getValue() / 100)
-						* (musicVolume.getValue() / 100));
+				sounds.setMusicVolume(musicVolume.getValue() / 100);
 			}
 		});
 		table.add(musicVolume);

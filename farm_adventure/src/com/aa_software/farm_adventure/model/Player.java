@@ -1,8 +1,10 @@
 package com.aa_software.farm_adventure.model;
 
+import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.campaign.AbstractCampaign;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.badlogic.gdx.Gdx;
 
 public class Player {
 
@@ -72,5 +74,35 @@ public class Player {
 
 	public void setPreferences(Preferences preferences) {
 		this.preferences = preferences;
+	}
+	
+	public void saveData() {
+		com.badlogic.gdx.Preferences prefs = Gdx.app.getPreferences("FarmAdventure.Player.Preferences");
+		Sounds s = Sounds.getInstance();
+		
+		prefs.putInteger("BANKROLL", bankroll);
+		prefs.putFloat("MASTERVOLUME", s.getMasterVolume());
+		prefs.putFloat("GAMEVOLUME", s.getMusicVolume());
+		prefs.putFloat("SOUNDVOLUME", s.getSoundVolume());
+		
+		// bulk update your preferences
+		prefs.flush();
+	}
+	
+	public void loadData() {
+		com.badlogic.gdx.Preferences prefs = Gdx.app.getPreferences("FarmAdventure.Player.Preferences");
+		Sounds s = Sounds.getInstance();
+		
+		if(prefs.contains("BANKROLL")) {
+			prefs.getInteger("BANKROLL");
+			s.setMasterVolume(prefs.getFloat("MASTERVOLUME"));
+			s.setMusicVolume(prefs.getFloat("GAMEVOLUME"));
+			s.setSoundVolume(prefs.getFloat("SOUNDVOLUME"));
+		}
+		else {
+			s.setMasterVolume(1.0f);
+			s.setMusicVolume(1.0f);
+			s.setSoundVolume(1.0f);
+		}
 	}
 }
