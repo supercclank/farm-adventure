@@ -4,6 +4,12 @@ import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
+/**
+ * Represents the basis of a crop.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractCrop extends AbstractItem {
 
 	private String texture;

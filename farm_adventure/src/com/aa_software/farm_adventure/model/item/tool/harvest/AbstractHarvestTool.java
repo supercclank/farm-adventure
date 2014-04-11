@@ -9,6 +9,12 @@ import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of a harvesting tool.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractHarvestTool extends AbstractTool {
 
 	public final static String TYPE = "HARVEST TOOLS";

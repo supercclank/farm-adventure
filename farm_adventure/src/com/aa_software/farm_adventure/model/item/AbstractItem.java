@@ -4,6 +4,12 @@ import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
+/**
+ * Represents the basis of an individual item.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractItem implements Comparable<AbstractItem> {
 
 	/* Sound */

@@ -9,6 +9,12 @@ import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of an irrigation tool.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractIrrigationTool extends AbstractTool {
 
 	/**

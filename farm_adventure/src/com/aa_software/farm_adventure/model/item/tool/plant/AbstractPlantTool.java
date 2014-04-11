@@ -10,6 +10,12 @@ import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of a planting tool.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractPlantTool extends AbstractTool {
 
 	/**

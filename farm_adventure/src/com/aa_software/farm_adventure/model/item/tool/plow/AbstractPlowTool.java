@@ -8,6 +8,12 @@ import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of a plowing tool.
+ * 
+ * @author Bebop
+ *
+ */
 public abstract class AbstractPlowTool extends AbstractTool {
 
 	public static final String TYPE = "PLOW TOOLS";

@@ -5,6 +5,12 @@ import java.util.EnumSet;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
+/**
+ * Represents an individual plot, holding irrigation and crops.
+ * 
+ * @author Bebop
+ *
+ */
 public class Plot {
 
 	public enum Type {

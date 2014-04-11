@@ -18,8 +18,8 @@ import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 //import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 
-/*
- * Inventory: the items that the farm has on hand.
+/**
+ * Represents the items that the farm has on hand.
  */
 public class Inventory {
 

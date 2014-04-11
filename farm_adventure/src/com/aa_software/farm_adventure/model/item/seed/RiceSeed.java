@@ -2,6 +2,12 @@ package com.aa_software.farm_adventure.model.item.seed;
 
 import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
 
+/**
+ * Represents rice seeds, which will grow into a basket of rice.
+ * 
+ * @author Bebop
+ *
+ */
 public class RiceSeed extends AbstractSeed {
 
 	public static final int COST = 20;

@@ -2,6 +2,12 @@ package com.aa_software.farm_adventure.model.player;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
+/**
+ * Represents the player, with his preferences and stats. This is a singleton class.
+ * 
+ * @author Bebop
+ *
+ */
 public class Player {
 
 	public static final int STARTING_BANKROLL = 100;

@@ -2,6 +2,12 @@ package com.aa_software.farm_adventure.model.item.seed;
 
 import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 
+/**
+ * Represents banana seeds, which will grow into a bundle of bananas.
+ * 
+ * @author Bebop
+ *
+ */
 public class BananaSeed extends AbstractSeed {
 
 	public static final int COST = 20;
