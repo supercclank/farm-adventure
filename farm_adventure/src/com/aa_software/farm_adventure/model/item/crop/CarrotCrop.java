@@ -5,30 +5,10 @@ public class CarrotCrop extends AbstractCrop {
 	public static final String SEED_NAME = "carrotSeed";
 	public static final String NAME = "Carrot";
 	public static final int VALUE = 60;
+	public static final int COST = 0;
+	public static final String DESCRIPTION = "Carrots that you can sell in the market place";
 
 	public CarrotCrop() {
-		super();
-		this.value = VALUE;
-		this.name = NAME;
-		this.description = "Carrots that you can sell in the market place";
+		super(COST, VALUE, NAME, DESCRIPTION, TEXTURE_NAME);
 	}
-
-	public CarrotCrop(int growthTime, int output, int cost, int value) {
-		if (value != 0) {
-			this.value = value;
-		} else {
-			this.value = VALUE;
-		}
-	}
-
-	@Override
-	public String getSeedName() {
-		return SEED_NAME;
-	}
-
-	@Override
-	public String getTextureName() {
-		return TEXTURE_NAME;
-	}
-
 }

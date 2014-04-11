@@ -10,15 +10,22 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	public static final Sounds sounds = Sounds.getInstance();
 	protected int cost;
 	protected int value;
-	protected String name = "N/A";
-	protected String description = "No description is available";
+	protected String name;
+	protected String description;
+
+	public AbstractItem(int cost, int value, String name, String description) {
+		this.cost = cost;
+		this.value = value;
+		this.name = name;
+		this.description = description;
+	}
 
 	/**
 	 * Compare items based on their name
 	 */
 	@Override
 	public int compareTo(AbstractItem item) {
-		return this.name.compareTo(item.getName());
+		return getName().compareTo(item.getName());
 	}
 
 	/**
@@ -27,11 +34,11 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 * @return cost
 	 */
 	public int getCost() {
-		return this.cost;
+		return cost;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	/**
@@ -39,12 +46,10 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 * 
 	 * @return
 	 */
-	public String getItemType() {
-		return "";
-	}
+	public abstract String getItemType();
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public abstract String getTextureName();
@@ -81,7 +86,7 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 */
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 
 	public abstract void update(AbstractItem item);

@@ -14,7 +14,6 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 //import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
@@ -113,11 +112,11 @@ public class Inventory {
 		}
 	}
 
-	public AbstractWorker getFreeWorker() {
+	public DefaultWorker getFreeWorker() {
 		String itemType = "WORKERS";
 		if (inventoryItems.containsKey(itemType)) {
 			for (int i = 0; i < getWorkerCount(); i++) {
-				AbstractWorker worker = (AbstractWorker) inventoryItems.get(
+				DefaultWorker worker = (DefaultWorker) inventoryItems.get(
 						itemType).get(i);
 				if (!worker.isBusy()) {
 					return worker;

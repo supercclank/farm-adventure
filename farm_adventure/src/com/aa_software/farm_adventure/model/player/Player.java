@@ -14,29 +14,30 @@ public class Player {
 		}
 		return Instance;
 	}
+	private Stats stats;
 
-	private int bankroll;
 	private Preferences preferences;
 
 	private Player() {
-		this.bankroll = STARTING_BANKROLL;
+		stats = new Stats();
+		this.stats.setScore(STARTING_BANKROLL);
 		// this.campaign = new TutorialCampaign();
 		this.preferences = new Preferences();
 	}
 
 	public Boolean buyItem(AbstractItem item) {
 		int itemCost = item.getCost();
-		if (this.bankroll < itemCost) {
+		if (this.stats.getScore() < itemCost) {
 			// TODO: Let the player know they do not have the funds.
 			return false;
 		} else {
-			this.bankroll -= itemCost;
+			this.stats.setScore(this.stats.getScore() - itemCost);
 			return true;
 		}
 	}
 
 	public int getBankroll() {
-		return bankroll;
+		return this.stats.getScore();
 	}
 
 	public Preferences getPreferences() {
@@ -44,12 +45,11 @@ public class Player {
 	}
 
 	public void sellItem(AbstractItem item) {
-		int itemValue = item.getValue();
-		this.bankroll += itemValue;
+		this.stats.setScore(this.stats.getScore() + item.getValue());
 	}
 
 	public void setBankroll(int bankroll) {
-		this.bankroll = bankroll;
+		this.stats.setScore(bankroll);
 	}
 
 	public void setPreferences(Preferences preferences) {

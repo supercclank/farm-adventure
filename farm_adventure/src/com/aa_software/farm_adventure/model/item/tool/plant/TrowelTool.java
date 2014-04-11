@@ -2,23 +2,23 @@ package com.aa_software.farm_adventure.model.item.tool.plant;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
+/**
+ * The lowest level of planting tool.
+ * 
+ * @author Bebop
+ *
+ */
 public class TrowelTool extends AbstractPlantTool {
 	public static final String TEXTURE_NAME = "trowelTool";
-	public static final String TROWELTOOL_NAME = "Trowel";
-	public static int DEFAULT_COST = 0;
-	public static int DEFAULT_VALUE = 0;
+	public static final String NAME = "Trowel";
+	public static int COST = 0;
+	public static int VALUE = 0;
 	/* measured in seconds */
-	public static final int DEFAULT_WORK_TIME = 5;
+	public static final int WORK_TIME = 5;
+	public static final String DESCRIPTION = "The trowel tool will allow you to plant seeds at an average pace.";
 
 	public TrowelTool() {
-		super();
-		this.cost = DEFAULT_COST;
-		this.value = this.cost / 2;
-		this.workTime = DEFAULT_WORK_TIME;
-		this.seed = null;
-		this.name = TROWELTOOL_NAME;
-		this.upgrade = new SeederTool();
-		this.upgrade.setPredecessor(this);
+		super(COST, VALUE, NAME, DESCRIPTION, WORK_TIME, new SeederTool());
 	}
 
 	@Override

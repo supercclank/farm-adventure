@@ -18,9 +18,8 @@ import com.aa_software.farm_adventure.model.plot.Plot;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.model.season.Season;
 
-/*
- * A farm holds the state of the game in progress. The seasons and the 
- * plants, equipment, and spells available.
+/**
+ * A farm holds the state of the game in progress.
  */
 public class Farm {
 
@@ -29,12 +28,21 @@ public class Farm {
 	protected final Market market;
 	protected final Inventory inventory;
 	protected final Biome.Type biome;
+
+	/**
+	 * Represents the current season, as determined by the biome.
+	 */
 	protected final List<Season> seasons;
 	protected int currentSeason;
 
+	/**
+	 * Changes the current season after a period of time determined by the
+	 * Season class.
+	 * 
+	 * @see Season.java
+	 */
 	protected final Timer timer;
 	protected TimerTask seasonTimer;
-
 	protected long seasonStartTime;
 
 	public Farm(Biome.Type biome) {
@@ -52,16 +60,21 @@ public class Farm {
 
 	/**
 	 * Applies seasonal effects which constantly need to be updated.
-	 * */
+	 */
 	public void applySeasonalEffects() {
 		// Updates inventory's seeds to be affected by the growth rate modifier
-		ArrayList<AbstractItem> seeds = inventory.getItems().get("SEEDS");
+		ArrayList<AbstractItem> seeds = inventory.getItems().get(
+				AbstractSeed.TYPE);
 		for (AbstractItem seed : seeds) {
 			((AbstractSeed) seed).setGrowthRateMod(seasons.get(currentSeason)
 					.getGrowthRateMod());
 		}
 	}
 
+	/**
+	 * Checks the season timer to see if the current season needs to be
+	 * incremented.
+	 */
 	public void checkSeasonTimer() {
 		if (seasonStartTime == 0)
 			seasonStartTime = System.currentTimeMillis();

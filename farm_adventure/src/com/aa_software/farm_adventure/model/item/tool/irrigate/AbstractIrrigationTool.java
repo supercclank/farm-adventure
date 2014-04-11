@@ -2,26 +2,31 @@ package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public abstract class AbstractIrrigationTool extends AbstractTool {
 
+	/**
+	 * Runs for a fraction of the total time it takes to irrigate, then sets another task to run. The last task completes the irrigation.
+	 * 
+	 * @author Bebop
+	 *
+	 */
 	private class IrrigationTask extends Task {
 
 		private Irrigation irrigationChoice;
 		private TaskType task;
 		private Plot plot;
-		private AbstractWorker worker;
+		private DefaultWorker worker;
 		private float delay;
 
 		public IrrigationTask(Plot plot, Irrigation irrigationChoice,
-				TaskType task, AbstractWorker worker, float delay) {
+				TaskType task, DefaultWorker worker, float delay) {
 			this.irrigationChoice = irrigationChoice;
 			this.task = task;
 			this.plot = plot;
@@ -36,10 +41,10 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 				plot.setUsable(true);
 				switch (plot.getPlotType()) {
 				case PLOWEDUNWATERED:
-					plot.setPlotType(PlotType.PLOWEDWATERED);
+					plot.setPlotType(Plot.Type.PLOWEDWATERED);
 					break;
 				case UNPLOWEDUNWATERED:
-					plot.setPlotType(PlotType.UNPLOWEDWATERED);
+					plot.setPlotType(Plot.Type.UNPLOWEDWATERED);
 					break;
 				default:
 					break;
@@ -56,8 +61,13 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	}
 
 	private Irrigation irrigationChoice;
-
 	private TaskType task;
+	public final static String TYPE = "IRRIGATION TOOLS";
+
+	public AbstractIrrigationTool(int cost, int value, String name,
+			String description, float workTime, AbstractTool upgrade) {
+		super(cost, value, name, description, workTime, upgrade);
+	}
 
 	public Irrigation getIrrigationChoice() {
 		return irrigationChoice;
@@ -69,7 +79,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 
 	@Override
 	public String getItemType() {
-		return "IRRIGATION TOOLS";
+		return TYPE;
 	}
 
 	public void setIrrigationChoice(Irrigation irrigationChoice) {
@@ -80,16 +90,22 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 		this.task = task;
 	}
 
+	/**
+	 * Checks whether there is an available worker and if the plot is available for irrigation. If so, begins an Irrigation Task, which will end in a successfully irrigated plot.
+	 * 
+	 * @author Bebop
+	 *
+	 */
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
-		final AbstractWorker worker;
+		final DefaultWorker worker;
 		if (workerIndex < 0
-				|| ((AbstractWorker) inventory.getItems().get("WORKERS")
-						.get(workerIndex)).isBusy()) {
+				|| ((DefaultWorker) inventory.getItems()
+						.get(DefaultWorker.TYPE).get(workerIndex)).isBusy()) {
 			return;
 		} else {
-			worker = (AbstractWorker) inventory.getItems().get("WORKERS")
-					.get(workerIndex);
+			worker = (DefaultWorker) inventory.getItems()
+					.get(DefaultWorker.TYPE).get(workerIndex);
 		}
 		if (plot.isUsable()) {
 			worker.setBusy(true);

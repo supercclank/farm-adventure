@@ -9,7 +9,17 @@ public abstract class AbstractTool extends AbstractItem {
 	protected float workTime;
 	protected int workerIndex;
 	protected AbstractTool upgrade;
-	protected AbstractTool predecessor = null;
+	protected AbstractTool predecessor;
+
+	public AbstractTool(int cost, int value, String name, String description,
+			float workTime, AbstractTool upgrade) {
+		super(cost, value, name, description);
+		this.workTime = workTime;
+		this.upgrade = upgrade;
+		if (upgrade != null) {
+			upgrade.setPredecessor(this);
+		}
+	}
 
 	public AbstractTool getPredecessor() {
 		return this.predecessor;

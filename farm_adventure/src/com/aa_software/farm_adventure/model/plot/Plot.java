@@ -6,9 +6,14 @@ import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 
 public class Plot {
+
+	public enum Type {
+		GRASS, UNPLOWEDUNWATERED, UNPLOWEDWATERED, PLOWEDUNWATERED, PLOWEDWATERED, WATER, LEAVES
+	}
+
 	private AbstractCrop crop;
 	private EnumSet<Irrigation> irrigation;
-	private PlotType plotType;
+	private Type type;
 	private boolean isUsable;
 	private TaskType taskTexturePrefix;
 	private int taskTextureIndex;
@@ -34,34 +39,38 @@ public class Plot {
 			{ null, "bud1", "bud2", "bud3", "bud4" },
 			{ null, "bud4", "bud3", "bud2", "bud1" } };
 
-	public Plot(PlotType plotType) {
+	public Plot(Type plotType) {
 		this.irrigation = EnumSet.noneOf(Irrigation.class);
-		this.plotType = plotType;
+		this.type = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
-		if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+		if (plotType == Type.LEAVES || plotType == Type.WATER) {
 			this.isUsable = false;
 		} else {
 			this.isUsable = true;
 		}
 	}
 
-	public Plot(PlotType plotType, EnumSet<Irrigation> irrigation) {
+	public Plot(Type plotType, EnumSet<Irrigation> irrigation) {
 		this.irrigation = irrigation;
-		this.plotType = plotType;
+		this.type = plotType;
 		this.taskTexturePrefix = TaskType.PLOW_UW; // default
-		if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+		if (plotType == Type.LEAVES || plotType == Type.WATER) {
 			this.isUsable = false;
 		} else {
 			this.isUsable = true;
 		}
 	}
 
+	/**
+	 * Adds irrigation to the plot if it is usable (and doesn't already contain
+	 * said irrigation). Then it waters the plot if it is unwatered.
+	 */
 	public void addIrrigation(Irrigation irrigation) {
 		if (!this.irrigation.contains(irrigation) && isUsable) {
 			this.irrigation.add(irrigation);
 		}
 		if (!this.irrigation.isEmpty()
-				&& plotType.toString().toLowerCase().endsWith("unwatered")) {
+				&& type.toString().toLowerCase().endsWith("unwatered")) {
 			waterPlot();
 		}
 	}
@@ -84,8 +93,8 @@ public class Plot {
 		return TextureHelper.getIrrigationTextureName(irrigation);
 	}
 
-	public PlotType getPlotType() {
-		return plotType;
+	public Type getPlotType() {
+		return type;
 	}
 
 	public int getTaskTextureIndex() {
@@ -101,7 +110,7 @@ public class Plot {
 	}
 
 	public String getTextureName() {
-		return plotType.toString().toLowerCase();
+		return type.toString().toLowerCase();
 	}
 
 	public int getWorkStatusTextureLength() {
@@ -119,8 +128,11 @@ public class Plot {
 		taskTextureIndex++;
 	}
 
+	/**
+	 * Checks if the plot's type is one of the grass types.
+	 */
 	public boolean isGrass() {
-		return plotType.toString().toLowerCase().startsWith("grass");
+		return (type == Type.GRASS);
 	}
 
 	public boolean isIrrigated() {
@@ -130,8 +142,11 @@ public class Plot {
 		return true;
 	}
 
+	/**
+	 * Checks if the plot's type is one of the unplowed types.
+	 */
 	public boolean isUnplowed() {
-		return plotType.toString().toLowerCase().startsWith("unplowed");
+		return (type == Type.UNPLOWEDUNWATERED || type == Type.UNPLOWEDWATERED);
 	}
 
 	public boolean isUsable() {
@@ -155,24 +170,22 @@ public class Plot {
 	}
 
 	public void setIrrigation(EnumSet<Irrigation> irrigation) {
+		if (irrigation.isEmpty() && !this.irrigation.isEmpty()) {
+			unwaterPlot();
+		} else if (!irrigation.isEmpty() && this.irrigation.isEmpty()) {
+			waterPlot();
+		}
 		if (isUsable) {
 			this.irrigation = irrigation;
 		}
-		if (irrigation.isEmpty()
-				&& !plotType.toString().toLowerCase().endsWith("unwatered")) {
-			unwaterPlot();
-		} else if (!irrigation.isEmpty()
-				&& plotType.toString().toLowerCase().endsWith("unwatered")) {
-			waterPlot();
-		}
 	}
 
-	public void setPlotType(PlotType plotType) {
+	public void setPlotType(Type plotType) {
 		if (isUsable) {
-			if (plotType == PlotType.LEAVES || plotType == PlotType.WATER) {
+			if (plotType == Type.LEAVES || plotType == Type.WATER) {
 				this.isUsable = false;
 			}
-			this.plotType = plotType;
+			this.type = plotType;
 		}
 	}
 
@@ -193,10 +206,10 @@ public class Plot {
 	 * will affect the texture used to render the plot.
 	 */
 	public void unwaterPlot() {
-		if (plotType == PlotType.PLOWEDWATERED) {
-			plotType = PlotType.PLOWEDUNWATERED;
-		} else if (plotType == PlotType.UNPLOWEDWATERED) {
-			plotType = PlotType.UNPLOWEDUNWATERED;
+		if (type == Type.PLOWEDWATERED) {
+			type = Type.PLOWEDUNWATERED;
+		} else if (type == Type.UNPLOWEDWATERED) {
+			type = Type.UNPLOWEDUNWATERED;
 		}
 	}
 
@@ -205,10 +218,10 @@ public class Plot {
 	 * will affect the texture used to render the plot.
 	 */
 	public void waterPlot() {
-		if (plotType == PlotType.PLOWEDUNWATERED) {
-			plotType = PlotType.PLOWEDWATERED;
-		} else if (plotType == PlotType.UNPLOWEDUNWATERED) {
-			plotType = PlotType.UNPLOWEDWATERED;
+		if (type == Type.PLOWEDUNWATERED) {
+			type = Type.PLOWEDWATERED;
+		} else if (type == Type.UNPLOWEDUNWATERED) {
+			type = Type.UNPLOWEDWATERED;
 		}
 	}
 

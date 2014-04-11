@@ -12,7 +12,6 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestToo
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.AbstractPlowTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -551,7 +550,7 @@ public class TutorialFarmScreen extends FarmScreen {
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 						if (selectedWorker >= 0) {
-							((AbstractWorker) farm.getInventory()
+							((DefaultWorker) farm.getInventory()
 									.getAllWorkers().get(selectedWorker))
 									.resetTexture();
 							selectedWorker = UNSELECT;

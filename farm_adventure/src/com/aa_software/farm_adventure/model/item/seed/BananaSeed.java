@@ -4,27 +4,16 @@ import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
 
 public class BananaSeed extends AbstractSeed {
 
-	public static final int DEFAULT_COST = 20;
-	public static final int DEFAULT_VALUE = 10;
-
-	private static final String NAME = "Banana Seed";
-	// TODO: Move these sort of calls into the TextureHelper. Seed doesn't need
-	// to know
-	// the crop's texture name.
-	private static final String CROP_TEXTURE_NAME = "bananaCrop";
-	private static final String SEED_TEXTURE_NAME = "bananaSeed";
-	private static final String DESCRIPTION = "Plant this seed and it will produce Bananas over time.";
+	public static final int COST = 20;
+	public static final int VALUE = 10;
+	public static final int GROWTH_RATE = 5;
+	public static final String NAME = "Banana Seed";
+	public static final String CROP_TEXTURE_NAME = "bananaCrop";
+	public static final String SEED_TEXTURE_NAME = "bananaSeed";
+	public static final String DESCRIPTION = "Plant this seed and it will produce bananas over time.";
 
 	public BananaSeed() {
-		super();
-		this.crop = new BananaCrop();
-		this.texture = CROP_TEXTURE_NAME;
-		this.name = NAME;
-		this.description = DESCRIPTION;
-	}
-
-	@Override
-	public String getSeedName() {
-		return SEED_TEXTURE_NAME;
+		super(COST, VALUE, NAME, DESCRIPTION, GROWTH_RATE, 1, new BananaCrop(),
+				SEED_TEXTURE_NAME);
 	}
 }

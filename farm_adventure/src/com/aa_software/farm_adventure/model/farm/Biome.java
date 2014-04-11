@@ -4,6 +4,14 @@ import com.aa_software.farm_adventure.model.season.Season;
 
 public class Biome {
 
+	/**
+	 * Represents a particular type of biome. A biome represents a particular
+	 * set of seasons and a water modifier which determines how much water will
+	 * appear.
+	 * 
+	 * @author Bebop
+	 * 
+	 */
 	public enum Type {
 		TROPICAL, BOREAL, GRASSLAND, TEMPERATE
 	};
@@ -23,8 +31,8 @@ public class Biome {
 			Season.Type.WINTER, Season.Type.FALL, Season.Type.WINTER };
 
 	/**
-	 * Each biome has a water modifier which determines how much water is placed
-	 * on the farm.
+	 * Each biome has a water modifier which determines how much water will
+	 * appear.
 	 */
 	private static final float TEMPERATE_WATER_MOD = .02f,
 			TROPICAL_WATER_MOD = .3f, GRASSLAND_WATER_MOD = .1f,

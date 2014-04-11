@@ -5,30 +5,10 @@ public class RiceCrop extends AbstractCrop {
 	public static final String SEED_NAME = "riceSeed";
 	public static final String NAME = "Rice";
 	public static final int VALUE = 80;
+	public static final int COST = 0;
+	public static final String DESCRIPTION = "Rice that you can sell in the market place";
 
 	public RiceCrop() {
-		super();
-		this.value = VALUE;
-		this.name = NAME;
-		this.description = "Rice that you can sell in the market place";
+		super(COST, VALUE, NAME, DESCRIPTION, TEXTURE_NAME);
 	}
-
-	public RiceCrop(int growthTime, int output, int cost, int value) {
-		if (value != 0) {
-			this.value = value;
-		} else {
-			this.value = VALUE;
-		}
-	}
-
-	@Override
-	public String getSeedName() {
-		return SEED_NAME;
-	}
-
-	@Override
-	public String getTextureName() {
-		return TEXTURE_NAME;
-	}
-
 }
