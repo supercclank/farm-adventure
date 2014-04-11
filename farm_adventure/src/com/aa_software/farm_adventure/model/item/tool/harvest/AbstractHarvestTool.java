@@ -38,6 +38,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		if (plot.isUsable() && plot.hasCrop()) {
+			sounds.playClick();
 			final DefaultWorker worker;
 			if (workerIndex < 0
 					|| ((DefaultWorker) inventory.getItems()
