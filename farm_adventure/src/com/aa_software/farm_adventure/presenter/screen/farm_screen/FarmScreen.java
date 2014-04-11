@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.aa_software.farm_adventure.model.Field;
-import com.aa_software.farm_adventure.model.Player;
-import com.aa_software.farm_adventure.model.Stats;
 import com.aa_software.farm_adventure.model.ToolBar;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.farm.Biome;
@@ -28,6 +26,8 @@ import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigatio
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
+import com.aa_software.farm_adventure.model.player.Player;
+import com.aa_software.farm_adventure.model.player.Stats;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
@@ -288,42 +288,44 @@ public class FarmScreen extends AbstractScreen {
 	}
 
 	/* Game */
-	public static final long GAME_TIME_MILLIS = 240000;
+	protected static final long GAME_TIME_MILLIS = 240000;
 
-	long gameStartTime;
+	protected long gameStartTime;
 
 	/* Player */
-	public static final Player PLAYER = Player.getInstance();
+	protected static final Player PLAYER = Player.getInstance();
+
 	/* Sound */
-	public static final Sounds sounds = Sounds.getInstance();
+	protected static final Sounds sounds = Sounds.getInstance();
 
 	/* Tile */
-	public static final String TILE_MAP_NAME = "tilemap/tileMap128.tmx";
-	public static final String TILE_SET_NAME = "tileSet128";
+	protected static final String TILE_MAP_NAME = "tilemap/tileMap128.tmx";
+	protected static final String TILE_SET_NAME = "tileSet128";
 
-	private static final int TILE_SIZE = 128;
+	protected static final int TILE_SIZE = 128;
 	/* Skin */
-	public static final String SKIN_JSON_UI = "skin/uiskin.json";
+	protected static final String SKIN_JSON_UI = "skin/uiskin.json";
 
 	/* Layer */
 	/*
 	 * For each layer, please provide a method of syncing the model with the
 	 * presenter
 	 */
-	private final String[] allLayers = { "ground", "water", "plant", "tool",
+	protected final String[] allLayers = { "ground", "water", "plant", "tool",
 			"seed", "status", "select", "transparent", "task" };
-	public static final int PLANT_TOOL_X = 2, PLANT_TOOL_Y = 0,
+	protected static final int PLANT_TOOL_X = 2, PLANT_TOOL_Y = 0,
 			IRRIGATION_TOOL_X = 1, IRRIGATION_TOOL_Y = 0, STATUS_BAR_Y = 1,
-			FIELD_STARTING_Y = 2, UNSELECT = -1;
+			FIELD_STARTING_Y = 2, MARKET_X = 4, UNSELECT = -1;
 	/* Stage */
-	public static final float FONT_SCALE = 1;
+	protected static final float FONT_SCALE = 1;
 
-	public static final float BANK_LABEL_X = (float) (Gdx.graphics.getWidth() * .03),
-			BANK_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
-			TIME_LABEL_X = (float) (Gdx.graphics.getWidth() * .38),
-			TIME_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
-			WORKER_LABEL_X = (float) (Gdx.graphics.getWidth() * .78),
-			WORKER_LABEL_Y = (float) (Gdx.graphics.getHeight() * .22),
+	protected static final float BANK_LABEL_X = (float) (Gdx.graphics
+			.getWidth() * .03), BANK_LABEL_Y = (float) (Gdx.graphics
+			.getHeight() * .22), TIME_LABEL_X = (float) (Gdx.graphics
+			.getWidth() * .38), TIME_LABEL_Y = (float) (Gdx.graphics
+			.getHeight() * .22), WORKER_LABEL_X = (float) (Gdx.graphics
+			.getWidth() * .78), WORKER_LABEL_Y = (float) (Gdx.graphics
+			.getHeight() * .22),
 			WINDOW_X = (float) (Gdx.graphics.getWidth() * .25),
 			WINDOW_Y = (float) (Gdx.graphics.getHeight() * .13),
 			INVENTORY_HEIGHT = (float) (Gdx.graphics.getHeight() * .75),
@@ -331,9 +333,14 @@ public class FarmScreen extends AbstractScreen {
 			INFO_X = (float) (Gdx.graphics.getWidth() * .25),
 			INFO_Y = (float) (Gdx.graphics.getHeight() * .5),
 			INFO_WIDGTH = (float) (Gdx.graphics.getWidth() * .25);
+
+	protected static final String IRRIGATION_WINDOW_TEXT = " Pick a side to irrigate: ";
+	protected static final String PLANT_WINDOW_TEXT = " Pick a type of seed: ";
+
 	/* Font setup */
-	BitmapFont fontType = new BitmapFont();
-	LabelStyle style1 = new LabelStyle(fontType, Color.BLACK);
+	protected static final BitmapFont fontType = new BitmapFont();
+	protected static final LabelStyle style1 = new LabelStyle(fontType,
+			Color.BLACK);
 
 	protected AbstractItem selection;
 
@@ -422,7 +429,7 @@ public class FarmScreen extends AbstractScreen {
 
 		stats = new Stats();
 
-		irrigationWindow = new Window("Pick a Side to Irrigate", skin);
+		irrigationWindow = new Window(IRRIGATION_WINDOW_TEXT, skin);
 		irrigationWindow.setModal(false);
 		irrigationWindow.setMovable(false);
 		irrigationWindow.setVisible(false);
@@ -432,7 +439,7 @@ public class FarmScreen extends AbstractScreen {
 
 		irrigationMenuStage.addActor(irrigationWindow);
 
-		plantWindow = new Window("Pick a Type of Seed", skin);
+		plantWindow = new Window(PLANT_WINDOW_TEXT, skin);
 		plantWindow.setModal(false);
 		plantWindow.setMovable(false);
 		plantWindow.setVisible(false);
@@ -1182,7 +1189,7 @@ public class FarmScreen extends AbstractScreen {
 						}
 						sounds.playClick();
 					}
-				} else if (farm.getTool(x, y) instanceof AbstractTool) {
+				} else if (x != MARKET_X) {
 					if (selectedWorker >= 0) {
 						selection = farm.getTool(x, y);
 						((AbstractTool) selection)

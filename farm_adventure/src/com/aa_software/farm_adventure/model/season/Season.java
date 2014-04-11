@@ -90,6 +90,7 @@ public class Season {
 				}
 			}
 		}
+
 		switch (type) {
 		case SPRING:
 			growthRateMod = SPRING_GROWTH_RATE_MOD;

@@ -12,9 +12,10 @@ public abstract class AbstractCrop extends AbstractItem {
 	public String getItemType() {
 		return TYPE;
 	}
-	
+
 	public abstract String getSeedName();
 
+	@Override
 	public abstract String getTextureName();
 
 	@Override

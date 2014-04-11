@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.model;
+package com.aa_software.farm_adventure.model.player;
 
 public class Stats {
 

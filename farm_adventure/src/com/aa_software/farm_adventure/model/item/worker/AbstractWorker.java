@@ -55,6 +55,14 @@ public abstract class AbstractWorker extends AbstractItem {
 		}
 	}
 
+	/**
+	 * The initial cost of the Worker is his wage.
+	 */
+	@Override
+	public int getCost() {
+		return getWage();
+	}
+
 	public final void addExperience(int experience) {
 		if (level != MAX_LEVEL) {
 			this.experience += experience;

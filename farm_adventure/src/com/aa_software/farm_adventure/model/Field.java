@@ -56,14 +56,6 @@ public class Field {
 	 *            - the number of plots high the field should be
 	 */
 	public Field(int columns, int rows) {
-
-		/*
-		 * public void createTutorialField() { for (int i = 0; i <
-		 * plots2D.length; i++) { for (int j = 0; j < plots2D[i].length; j++) {
-		 * if (i == 2) { plots2D[i][j] = new Plot(PlotType.WATER);
-		 * plots2D[i][j].setUsable(false); } else { plots2D[i][j] = new
-		 * Plot(PlotType.GRASS); } } } syncAllIrrigation(); }
-		 */
 		initializePlots(columns, rows, DEFAULT_WATER_PLOT_MOD);
 	}
 
@@ -144,33 +136,6 @@ public class Field {
 
 		return canIrrigateLeft;
 	}
-
-	// Old way to create fields
-	/*
-	 * public void createTutorialField() { plots2D = new Plot[COLUMNS][ROWS];
-	 * for (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (i == 2) { plots2D[i][j] = new
-	 * Plot(PlotType.WATER); } else { plots2D[i][j] = new Plot(PlotType.GRASS);
-	 * } } } }
-	 * 
-	 * public void createRainforestField() { plots2D = new Plot[COLUMNS][ROWS];
-	 * for (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (((i + j) % 3) == 0) { plots2D[i][j] = new
-	 * Plot(PlotType.WATER); } else { plots2D[i][j] = new Plot(PlotType.GRASS);
-	 * } } } }
-	 * 
-	 * public void createDesertField() { plots2D = new Plot[COLUMNS][ROWS]; for
-	 * (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (i == COLUMNS - 1 && j == 0) { plots2D[i][j]
-	 * = new Plot(PlotType.WATER); } else { plots2D[i][j] = new
-	 * Plot(PlotType.GRASS); } } } }
-	 * 
-	 * public void createSnowField() { plots2D = new Plot[COLUMNS][ROWS]; for
-	 * (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (j == 2 && (i == 1 || i ==2 || i ==3)) {
-	 * plots2D[i][j] = new Plot(PlotType.WATER); } else { plots2D[i][j] = new
-	 * Plot(PlotType.GRASS); } } } }
-	 */
 
 	/**
 	 * Checks whether the right of a particular plot is open to irrigation by

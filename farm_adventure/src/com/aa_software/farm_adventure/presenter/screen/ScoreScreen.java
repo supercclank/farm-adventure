@@ -1,7 +1,7 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
-import com.aa_software.farm_adventure.model.Stats;
 import com.aa_software.farm_adventure.model.audio.Sounds;
+import com.aa_software.farm_adventure.model.player.Stats;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;

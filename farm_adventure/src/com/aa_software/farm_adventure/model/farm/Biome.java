@@ -23,7 +23,8 @@ public class Biome {
 			Season.Type.WINTER, Season.Type.FALL, Season.Type.WINTER };
 
 	/**
-	 * Each biome has a water modifier which determines how much water is placed on the farm.
+	 * Each biome has a water modifier which determines how much water is placed
+	 * on the farm.
 	 */
 	private static final float TEMPERATE_WATER_MOD = .02f,
 			TROPICAL_WATER_MOD = .3f, GRASSLAND_WATER_MOD = .1f,

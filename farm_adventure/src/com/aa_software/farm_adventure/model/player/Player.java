@@ -1,7 +1,6 @@
-package com.aa_software.farm_adventure.model;
+package com.aa_software.farm_adventure.model.player;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 
 public class Player {
 
@@ -26,12 +25,7 @@ public class Player {
 	}
 
 	public Boolean buyItem(AbstractItem item) {
-		int itemCost;
-		if (item instanceof AbstractWorker) {
-			itemCost = ((AbstractWorker) item).getWage();
-		} else {
-			itemCost = item.getCost();
-		}
+		int itemCost = item.getCost();
 		if (this.bankroll < itemCost) {
 			// TODO: Let the player know they do not have the funds.
 			return false;

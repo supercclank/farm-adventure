@@ -1,4 +1,4 @@
-package com.aa_software.farm_adventure.model;
+package com.aa_software.farm_adventure.model.player;
 
 public class Preferences {
 	private boolean muted;
@@ -10,5 +10,4 @@ public class Preferences {
 	public void setMuted(boolean muted) {
 		this.muted = muted;
 	}
-
 }
