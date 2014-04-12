@@ -82,7 +82,7 @@ public class Player {
 		Sounds s = Sounds.getInstance();
 		
 		if(prefs.contains("BANKROLL")) {
-			prefs.getInteger("BANKROLL");
+			this.bankroll = prefs.getInteger("BANKROLL");
 			s.setMasterVolume(prefs.getFloat("MASTERVOLUME"));
 			s.setMusicVolume(prefs.getFloat("GAMEVOLUME"));
 			s.setSoundVolume(prefs.getFloat("SOUNDVOLUME"));
