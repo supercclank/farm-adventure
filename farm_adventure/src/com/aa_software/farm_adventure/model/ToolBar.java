@@ -36,11 +36,14 @@ public class ToolBar {
 
 	public final void updateTools(Inventory inventory) {
 		AbstractTool[] tools = {
-				(AbstractTool) inventory.getItems().get(AbstractPlowTool.TYPE).get(0),
-				(AbstractTool) inventory.getItems().get(AbstractIrrigationTool.TYPE)
+				(AbstractTool) inventory.getItems().get(AbstractPlowTool.TYPE)
 						.get(0),
-				(AbstractTool) inventory.getItems().get(AbstractPlantTool.TYPE).get(0),
-				(AbstractTool) inventory.getItems().get(AbstractHarvestTool.TYPE).get(0) };
+				(AbstractTool) inventory.getItems()
+						.get(AbstractIrrigationTool.TYPE).get(0),
+				(AbstractTool) inventory.getItems().get(AbstractPlantTool.TYPE)
+						.get(0),
+				(AbstractTool) inventory.getItems()
+						.get(AbstractHarvestTool.TYPE).get(0) };
 
 		for (int i = 0; i < COLUMNS - 1; i++) {
 			if (tools2D[i][0] == null

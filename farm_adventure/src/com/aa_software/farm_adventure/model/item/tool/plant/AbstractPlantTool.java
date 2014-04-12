@@ -14,15 +14,16 @@ import com.badlogic.gdx.utils.Timer.Task;
  * Represents the basis of a planting tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractPlantTool extends AbstractTool {
 
 	/**
-	 * Runs for a fraction of the total time it takes to plant, then sets another task to run. The last task completes the planting.
+	 * Runs for a fraction of the total time it takes to plant, then sets
+	 * another task to run. The last task completes the planting.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
 	private class PlantTask extends Task {
 
@@ -85,13 +86,15 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	public void update(final Plot plot) {
 	}
 
-	
 	/**
-	 * Checks whether there is an available worker and if the plot is available for planting. If so, begins a Plant Task, which will end in a successfully grown crop waiting to be harvested.
+	 * Checks whether there is an available worker and if the plot is available
+	 * for planting. If so, begins a Plant Task, which will end in a
+	 * successfully grown crop waiting to be harvested.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		final DefaultWorker worker;
@@ -114,8 +117,8 @@ public abstract class AbstractPlantTool extends AbstractTool {
 			plot.setUsable(false);
 			float delay = (workTime * worker.getWorkRate() + seed
 					.getGrowthTime()) / (plot.getWorkStatusTextureLength() - 1);
-			Timer.schedule(new PlantTask(plot, seed, worker, delay), delay);
-			sounds.playClick();
+			TIMER.schedule(new PlantTask(plot, seed, worker, delay), delay);
+			SOUNDS.playClick();
 			this.seed = null;
 			worker.resetTexture();
 		}

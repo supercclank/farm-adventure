@@ -4,7 +4,7 @@ package com.aa_software.farm_adventure.model.item.crop;
  * Represents a bundle of harvested beets.
  * 
  * @author Bebop
- *
+ * 
  */
 public class BeetCrop extends AbstractCrop {
 	public static final String TEXTURE_NAME = "beetCrop";

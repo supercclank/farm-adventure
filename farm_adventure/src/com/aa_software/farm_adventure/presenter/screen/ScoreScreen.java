@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class ScoreScreen extends AbstractScreen {
 
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 	public Stats stats;
 
 	public ScoreScreen(Stats stats) {
@@ -41,7 +41,7 @@ public class ScoreScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				FarmAdventure.getInstance().setScreen(new WorldScreen());
-				sounds.playClick();
+				SOUNDS.playClick();
 				return true;
 			}
 		});

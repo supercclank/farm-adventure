@@ -3,15 +3,17 @@ package com.aa_software.farm_adventure.model.item.tool;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.plot.Plot;
+import com.badlogic.gdx.utils.Timer;
 
 /**
  * Represents the basis of a tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractTool extends AbstractItem {
 
+	public static final Timer TIMER = new Timer();
 	protected float workTime;
 	protected int workerIndex;
 	protected AbstractTool upgrade;

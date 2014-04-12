@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Timer.Task;
  * Represents the basis of a harvesting tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractHarvestTool extends AbstractTool {
 
@@ -30,15 +30,18 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	}
 
 	/**
-	 * Checks whether there is an available worker and if the plot is available for harvesting. If so, begins a Task, which will end in a successfully harvested crop.
+	 * Checks whether there is an available worker and if the plot is available
+	 * for harvesting. If so, begins a Task, which will end in a successfully
+	 * harvested crop.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		if (plot.isUsable() && plot.hasCrop()) {
-			sounds.playClick();
+			SOUNDS.playClick();
 			final DefaultWorker worker;
 			if (workerIndex < 0
 					|| ((DefaultWorker) inventory.getItems()
@@ -59,8 +62,9 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 					+ crop.getTextureName()));
 			// TODO: We should be adding crops to the inventory AFTER the task
 			// is finished.
+
 			inventory.addItem(crop);
-			Timer.schedule(
+			TIMER.schedule(
 					new Task() {
 						@Override
 						public void run() {
@@ -71,7 +75,7 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 								plot.setTaskTextureIndex(0);
 								worker.addExperience();
 								worker.setBusy(false);
-								sounds.playClick();
+								SOUNDS.playClick();
 							} else {
 								plot.incrementTaskTextureIndex();
 								plot.removeCrop();

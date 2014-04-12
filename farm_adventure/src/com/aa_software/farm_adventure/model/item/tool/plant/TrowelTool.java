@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * The lowest level of planting tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class TrowelTool extends AbstractPlantTool {
 	public static final String TEXTURE_NAME = "trowelTool";

@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * A direct upgrade to the shovel tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class BackhoeTool extends AbstractIrrigationTool {
 	public static final String TEXTURE_NAME = "backhoeTool";

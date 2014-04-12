@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
@@ -23,7 +24,7 @@ import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
  */
 public class Inventory {
 
-	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
+	private List<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
 			Arrays.asList(new AbstractItem[] { new BananaSeed(),
 					new BeetSeed(), new CarrotSeed(), new RiceSeed(),
 					new HandPlowTool(), new ShovelTool(), new TrowelTool(),
@@ -48,7 +49,7 @@ public class Inventory {
 	 * 
 	 * @param items
 	 */
-	public Inventory(ArrayList<AbstractItem> items) {
+	public Inventory(List<AbstractItem> items) {
 		int itemCount = items.size();
 		for (int i = 0; i < itemCount; i++) {
 			addItem(items.get(i));

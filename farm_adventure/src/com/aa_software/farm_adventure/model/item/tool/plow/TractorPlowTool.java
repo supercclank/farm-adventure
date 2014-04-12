@@ -6,9 +6,10 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * A direct upgrade to the hand plow tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class TractorPlowTool extends AbstractPlowTool {
+
 	public static final String TEXTURE_NAME = "tractorPlowTool";
 	public static final String NAME = "Tractor Plow";
 	public static int COST = 30;

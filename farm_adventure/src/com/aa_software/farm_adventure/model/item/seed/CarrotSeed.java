@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
  * Represents carrot seeds, which will grow into a bundle of carrots.
  * 
  * @author Bebop
- *
+ * 
  */
 public class CarrotSeed extends AbstractSeed {
 

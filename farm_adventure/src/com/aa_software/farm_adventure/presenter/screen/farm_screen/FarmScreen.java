@@ -109,7 +109,7 @@ public class FarmScreen extends AbstractScreen {
 				farm.getInventory().addItem(item);
 				itemInvCount.setText(Integer.toString(farm.getInventory()
 						.getCount(this.item)));
-				sounds.playMoney();
+				SOUNDS.playMoney();
 			}
 			return true;
 		}
@@ -153,7 +153,7 @@ public class FarmScreen extends AbstractScreen {
 			infoWindow.pack();
 			infoWindow.setVisible(true);
 			Gdx.input.setInputProcessor(infoStage);
-			sounds.playClick();
+			SOUNDS.playClick();
 			return true;
 		}
 	}
@@ -212,7 +212,7 @@ public class FarmScreen extends AbstractScreen {
 			plantWindow.setVisible(false);
 			((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
 					.setSeed(((AbstractSeed) this.item));
-			sounds.playClick();
+			SOUNDS.playClick();
 			Gdx.input.setInputProcessor(workerStage);
 			return true;
 		}
@@ -243,7 +243,7 @@ public class FarmScreen extends AbstractScreen {
 				PLAYER.sellItem(this.item);
 				itemInvCount.setText(Integer.toString(farm.getInventory()
 						.getCount(this.item)));
-				sounds.playMoney();
+				SOUNDS.playMoney();
 			}
 			return true;
 		}
@@ -277,7 +277,7 @@ public class FarmScreen extends AbstractScreen {
 			}
 			selectedWorker = this.selectionIndex;
 			this.worker.setSelectTexture();
-			sounds.playClick();
+			SOUNDS.playClick();
 			return true;
 		}
 	}
@@ -291,7 +291,7 @@ public class FarmScreen extends AbstractScreen {
 	protected static final Player PLAYER = Player.getInstance();
 
 	/* Sound */
-	protected static final Sounds sounds = Sounds.getInstance();
+	protected static final Sounds SOUNDS = Sounds.getInstance();
 
 	/* Tile */
 	protected static final String TILE_MAP_NAME = "tilemap/tileMap128.tmx";
@@ -333,8 +333,8 @@ public class FarmScreen extends AbstractScreen {
 	protected static final String PLANT_WINDOW_TEXT = " Pick a type of seed: ";
 
 	/* Font setup */
-	protected static final BitmapFont fontType = new BitmapFont();
-	protected static final LabelStyle style1 = new LabelStyle(fontType,
+	protected static final BitmapFont FONT = new BitmapFont();
+	protected static final LabelStyle LABEL_STYLE = new LabelStyle(FONT,
 			Color.BLACK);
 
 	protected AbstractItem selection;
@@ -460,7 +460,8 @@ public class FarmScreen extends AbstractScreen {
 	/**
 	 * Adds a button to the plantWindow which matches the given seed.
 	 * 
-	 * @param seed	The button will be made to reference this seed.
+	 * @param seed
+	 *            The button will be made to reference this seed.
 	 */
 	public void addSeedButton(AbstractSeed seed) {
 		Table seedTable = new Table();
@@ -470,7 +471,7 @@ public class FarmScreen extends AbstractScreen {
 		seedTable.row();
 		seedTable.add(new Image(seedImage));
 		Label seedQuantity = new Label("" + farm.getInventory().getCount(seed),
-				style1);
+				LABEL_STYLE);
 		seedTable.row();
 		seedTable.add(seedQuantity);
 		Button seedButton = new Button(seedTable, skin);
@@ -479,9 +480,11 @@ public class FarmScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Calculates the score of the player based off of the items in his/her inventory.
+	 * Calculates the score of the player based off of the items in his/her
+	 * inventory.
 	 * 
-	 * @return The calculated score based off the items in the player's inventory.
+	 * @return The calculated score based off the items in the player's
+	 *         inventory.
 	 */
 	public int calculateScore() {
 		// TODO: When the player comes to the farm, he should be deducted for
@@ -529,6 +532,7 @@ public class FarmScreen extends AbstractScreen {
 	public void dispose() {
 		stats.setScore(PLAYER.getBankroll() + calculateScore());
 		PLAYER.setBankroll(PLAYER.getBankroll() + calculateScore());
+		farm.disposeOfTimers();
 		map.dispose();
 		renderer.dispose();
 		FarmAdventure.getInstance().setScreen(new ScoreScreen(stats));
@@ -550,7 +554,7 @@ public class FarmScreen extends AbstractScreen {
 			Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-			fontType.setScale(FONT_SCALE);
+			FONT.setScale(FONT_SCALE);
 
 			checkTouch();
 			farm.getField().syncAllIrrigation();
@@ -595,7 +599,8 @@ public class FarmScreen extends AbstractScreen {
 	/**
 	 * Sets game clicks on or off.
 	 * 
-	 * @param bool	True will set the game clicks off, False will set them on.
+	 * @param bool
+	 *            True will set the game clicks off, False will set them on.
 	 */
 	public void setAllGameClicksDisabled(boolean bool) {
 		workerClicksDisabled = bool;
@@ -631,7 +636,7 @@ public class FarmScreen extends AbstractScreen {
 				inventoryWindow.setVisible(false);
 				inventoryOpen = false;
 				Gdx.input.setInputProcessor(workerStage);
-				sounds.playClick();
+				SOUNDS.playClick();
 				return true;
 			}
 		});
@@ -1092,7 +1097,7 @@ public class FarmScreen extends AbstractScreen {
 						}
 						syncSelectTiles(UNSELECT);
 						selection = null;
-						sounds.playClick();
+						SOUNDS.playClick();
 					}
 					irrigationWindow.setVisible(false);
 					Gdx.input.setInputProcessor(workerStage);
@@ -1161,7 +1166,7 @@ public class FarmScreen extends AbstractScreen {
 						if (irrigationWindow.getChildren().size > 0) {
 							irrigationWindow.setVisible(true);
 							Gdx.input.setInputProcessor(irrigationMenuStage);
-							sounds.playClick();
+							SOUNDS.playClick();
 						} else {
 							if (selectedWorker >= 0) {
 								((DefaultWorker) farm.getInventory()
@@ -1200,7 +1205,7 @@ public class FarmScreen extends AbstractScreen {
 								Gdx.input.setInputProcessor(plantMenuStage);
 							}
 						}
-						sounds.playClick();
+						SOUNDS.playClick();
 					}
 				} else if (x != MARKET_X) {
 					if (selectedWorker >= 0) {
@@ -1209,7 +1214,7 @@ public class FarmScreen extends AbstractScreen {
 								.setWorkerIndex(selectedWorker);
 						state = state.update((AbstractTool) selection);
 						syncSelectTiles(x);
-						sounds.playClick();
+						SOUNDS.playClick();
 					}
 				} else {
 					if (!inventoryClicksDisabled) {
@@ -1225,7 +1230,7 @@ public class FarmScreen extends AbstractScreen {
 						}
 						inventoryOpen = true;
 						Gdx.input.setInputProcessor(marketMultiplexer);
-						sounds.playClick();
+						SOUNDS.playClick();
 					}
 				}
 			}
@@ -1243,7 +1248,7 @@ public class FarmScreen extends AbstractScreen {
 
 		/* Bankroll label setup */
 		Label bankBalance = new Label("Bank Balance: $" + PLAYER.getBankroll(),
-				style1);
+				LABEL_STYLE);
 		bankBalance.setPosition(BANK_LABEL_X, BANK_LABEL_Y);
 
 		/* Time label setup */
@@ -1265,12 +1270,12 @@ public class FarmScreen extends AbstractScreen {
 		} else {
 			time = "INFINITE!";
 		}
-		Label timeRemaining = new Label("Time Remaining: " + time, style1);
+		Label timeRemaining = new Label("Time Remaining: " + time, LABEL_STYLE);
 		timeRemaining.setPosition(TIME_LABEL_X, TIME_LABEL_Y);
 
 		/* Worker label setup */
 		Label workers = new Label("Workers: "
-				+ farm.getInventory().getWorkerCount(), style1);
+				+ farm.getInventory().getWorkerCount(), LABEL_STYLE);
 		workers.setPosition(WORKER_LABEL_X, WORKER_LABEL_Y);
 
 		/* Stage setup */

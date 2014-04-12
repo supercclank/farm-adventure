@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
  * Represents beet seeds, which will grow into a bundle of beets.
  * 
  * @author Bebop
- *
+ * 
  */
 public class BeetSeed extends AbstractSeed {
 

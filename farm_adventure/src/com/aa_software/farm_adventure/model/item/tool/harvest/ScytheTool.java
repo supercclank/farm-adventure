@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * The lowest level of harvesting tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class ScytheTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "scytheTool";
@@ -15,7 +15,7 @@ public class ScytheTool extends AbstractHarvestTool {
 	public static int VALUE = 0;
 	/* measured in seconds */
 	public static final int WORK_TIME = 5;
-	protected static final String DESCRIPTION = "A tool that allows you to harvest at an average pace";
+	protected static final String DESCRIPTION = "A tool that allows you to harvest at an average pace.";
 
 	public ScytheTool() {
 		super(COST, VALUE, NAME, DESCRIPTION, WORK_TIME, new CombineTool());

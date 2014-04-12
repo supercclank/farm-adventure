@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Timer.Task;
  * Represents the basis of a plowing tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractPlowTool extends AbstractTool {
 
@@ -29,11 +29,14 @@ public abstract class AbstractPlowTool extends AbstractTool {
 	}
 
 	/**
-	 * Checks whether there is an available worker and if the plot is available for plowing. If so, begins a Task, which will end in a successfully plowed plot.
+	 * Checks whether there is an available worker and if the plot is available
+	 * for plowing. If so, begins a Task, which will end in a successfully
+	 * plowed plot.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		final DefaultWorker worker;
@@ -48,8 +51,8 @@ public abstract class AbstractPlowTool extends AbstractTool {
 		if (plot.isUsable() && (plot.isGrass() || plot.isUnplowed())) {
 			worker.setBusy(true);
 			plot.setUsable(false);
-			sounds.playClick();
-			Timer.schedule(
+			SOUNDS.playClick();
+			TIMER.schedule(
 					new Task() {
 						@Override
 						public void run() {

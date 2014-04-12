@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * A direct upgrade to the scythe tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class CombineTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "combineTool";

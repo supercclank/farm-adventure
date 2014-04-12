@@ -1,8 +1,8 @@
 package com.aa_software.farm_adventure.model.farm;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,8 +63,7 @@ public class Farm {
 	 */
 	public void applySeasonalEffects() {
 		// Updates inventory's seeds to be affected by the growth rate modifier
-		ArrayList<AbstractItem> seeds = inventory.getItems().get(
-				AbstractSeed.TYPE);
+		List<AbstractItem> seeds = inventory.getItems().get(AbstractSeed.TYPE);
 		for (AbstractItem seed : seeds) {
 			((AbstractSeed) seed).setGrowthRateMod(seasons.get(currentSeason)
 					.getGrowthRateMod());
@@ -88,6 +87,14 @@ public class Farm {
 		}
 	}
 
+	/**
+	 * Disposes of all active timers.
+	 */
+	public void disposeOfTimers() {
+		timer.cancel();
+		AbstractTool.TIMER.clear();
+	}
+
 	public Season getCurrentSeason() {
 		return this.seasons.get(currentSeason);
 	}
@@ -105,7 +112,7 @@ public class Farm {
 		return this.inventory;
 	}
 
-	public EnumSet<Irrigation> getIrrigationChoices(int x, int y) {
+	public Set<Irrigation> getIrrigationChoices(int x, int y) {
 		return field.getIrrigationChoices(x, y);
 	}
 

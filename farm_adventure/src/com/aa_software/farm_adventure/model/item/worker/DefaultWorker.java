@@ -8,7 +8,7 @@ import com.aa_software.farm_adventure.model.plot.Plot;
  * Represents the default worker.
  * 
  * @author Bebop
- *
+ * 
  */
 public class DefaultWorker extends AbstractItem {
 	/**
@@ -20,13 +20,13 @@ public class DefaultWorker extends AbstractItem {
 	public static final float WORK_RATE = 1;
 	public static final int LEVEL_UP_EXPERIENCE_THRESH = 5;
 	public static final int MAX_LEVEL = 2;
-	
+
 	/**
 	 * Level up modifiers
 	 */
 	public static final float LEVEL_COST_MOD = .5f;
 	public static final float LEVEL_WORK_RATE_MOD = .7f;
-	
+
 	public static final String NAME = "Worker";
 	public static final String DESCRIPTION = "A worker who will help you work the land.";
 	public static final String UNSELECTEDWORKER_TEXTURE = "worker";

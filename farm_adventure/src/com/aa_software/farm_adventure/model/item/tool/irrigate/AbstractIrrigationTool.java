@@ -13,15 +13,16 @@ import com.badlogic.gdx.utils.Timer.Task;
  * Represents the basis of an irrigation tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractIrrigationTool extends AbstractTool {
 
 	/**
-	 * Runs for a fraction of the total time it takes to irrigate, then sets another task to run. The last task completes the irrigation.
+	 * Runs for a fraction of the total time it takes to irrigate, then sets
+	 * another task to run. The last task completes the irrigation.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
 	private class IrrigationTask extends Task {
 
@@ -97,11 +98,14 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 	}
 
 	/**
-	 * Checks whether there is an available worker and if the plot is available for irrigation. If so, begins an Irrigation Task, which will end in a successfully irrigated plot.
+	 * Checks whether there is an available worker and if the plot is available
+	 * for irrigation. If so, begins an Irrigation Task, which will end in a
+	 * successfully irrigated plot.
 	 * 
 	 * @author Bebop
-	 *
+	 * 
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		final DefaultWorker worker;
@@ -119,7 +123,7 @@ public abstract class AbstractIrrigationTool extends AbstractTool {
 			plot.setTaskTexturePrefix(task);
 			float delay = workTime * worker.getWorkRate()
 					/ (plot.getWorkStatusTextureLength() - 1);
-			Timer.schedule(new IrrigationTask(plot, irrigationChoice, task,
+			TIMER.schedule(new IrrigationTask(plot, irrigationChoice, task,
 					worker, delay), delay);
 			worker.resetTexture();
 		}

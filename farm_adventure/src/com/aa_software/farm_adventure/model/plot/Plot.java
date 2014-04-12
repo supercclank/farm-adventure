@@ -9,7 +9,7 @@ import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
  * Represents an individual plot, holding irrigation and crops.
  * 
  * @author Bebop
- *
+ * 
  */
 public class Plot {
 

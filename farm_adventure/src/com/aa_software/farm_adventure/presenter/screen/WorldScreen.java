@@ -32,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 public class WorldScreen extends AbstractScreen {
 
 	/* Sound */
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 
 	public static final String SKIN_JSON_UI = "skin/uiskin.json";
 	public static final float WINDOW_X = (float) (Gdx.graphics.getWidth() * .25);
@@ -126,7 +126,7 @@ public class WorldScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				FarmAdventure.getInstance().setScreen(new FarmScreen(biome));
-				sounds.playClick();
+				SOUNDS.playClick();
 				return true;
 			}
 		});
@@ -178,7 +178,7 @@ public class WorldScreen extends AbstractScreen {
 						int pointer, int button) {
 					setupSeasonMenu(biome);
 					seasonWindow.setVisible(true);
-					sounds.playClick();
+					SOUNDS.playClick();
 					return true;
 				}
 			});

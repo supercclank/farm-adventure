@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * The lowest level of plowing tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class HandPlowTool extends AbstractPlowTool {
 	public static final String TEXTURE_NAME = "handPlowTool";

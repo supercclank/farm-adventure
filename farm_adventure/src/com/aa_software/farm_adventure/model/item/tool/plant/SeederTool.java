@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * A direct upgrade to the seeder tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class SeederTool extends AbstractPlantTool {
 	public static final String NAME = "Seeder";

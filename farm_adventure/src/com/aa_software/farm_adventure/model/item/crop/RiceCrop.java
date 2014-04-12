@@ -4,7 +4,7 @@ package com.aa_software.farm_adventure.model.item.crop;
  * Represents a basket of harvested rice.
  * 
  * @author Bebop
- *
+ * 
  */
 public class RiceCrop extends AbstractCrop {
 	public static final String TEXTURE_NAME = "riceCrop";

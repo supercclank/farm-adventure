@@ -6,7 +6,7 @@ import com.aa_software.farm_adventure.model.item.AbstractItem;
  * The lowest level of irrigation tool.
  * 
  * @author Bebop
- *
+ * 
  */
 public class ShovelTool extends AbstractIrrigationTool {
 	public static final String TEXTURE_NAME = "shovelTool";

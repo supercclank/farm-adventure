@@ -8,12 +8,12 @@ import com.aa_software.farm_adventure.model.plot.Plot;
  * Represents the basis of an individual item.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractItem implements Comparable<AbstractItem> {
 
 	/* Sound */
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 	protected int cost;
 	protected int value;
 	protected String name;

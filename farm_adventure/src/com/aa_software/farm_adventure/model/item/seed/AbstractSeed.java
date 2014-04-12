@@ -9,7 +9,7 @@ import com.aa_software.farm_adventure.model.plot.Plot;
  * Represents the basis of a seed.
  * 
  * @author Bebop
- *
+ * 
  */
 public abstract class AbstractSeed extends AbstractItem {
 

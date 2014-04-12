@@ -4,7 +4,7 @@ package com.aa_software.farm_adventure.model.item.crop;
  * Represents a bundle of harvested bananas.
  * 
  * @author Bebop
- *
+ * 
  */
 public class BananaCrop extends AbstractCrop {
 	public static final String TEXTURE_NAME = "bananaCrop";
