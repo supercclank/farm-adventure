@@ -6,8 +6,23 @@ import java.util.EnumSet;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 
+/**
+ * Helpers to determine which texture to use based on a given set of data (or
+ * vice-versa).
+ * 
+ * @author Bebop
+ * 
+ */
 public class TextureHelper {
 
+	/**
+	 * Helps to determine the correct irrigation set to use depending on the
+	 * texture name.
+	 * 
+	 * @param textureName
+	 *            The texture name corresponding to some irrigation set.
+	 * @return The irrigation set corresponding to the given texture name.
+	 */
 	public static EnumSet<Irrigation> getIrrigationSet(String textureName) {
 		EnumSet<Irrigation> irrigation = EnumSet.noneOf(Irrigation.class);
 		if (textureName.equals("TOP_LEFT_RIGHT_BOTTOM")) {

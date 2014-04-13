@@ -1,6 +1,6 @@
 package com.aa_software.farm_adventure.presenter;
 
-import com.aa_software.farm_adventure.model.Player;
+import com.aa_software.farm_adventure.model.player.Player;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.badlogic.gdx.Game;

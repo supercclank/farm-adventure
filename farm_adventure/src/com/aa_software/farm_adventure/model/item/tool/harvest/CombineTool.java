@@ -2,22 +2,23 @@ package com.aa_software.farm_adventure.model.item.tool.harvest;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
+/**
+ * A direct upgrade to the scythe tool.
+ * 
+ * @author Bebop
+ * 
+ */
 public class CombineTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "combineTool";
-	public static final String COMBINETOOL_NAME = "Combine";
-	public static int DEFAULT_COST = 30;
-	public static int DEFAULT_VALUE = 10;
+	public static final String NAME = "Combine";
+	public static int COST = 30;
+	public static int VALUE = 0;
 	/* measured in seconds */
-	public static final int DEFAULT_WORK_TIME = 3;
+	public static final int WORK_TIME = 3;
+	protected static final String DESCRIPTION = "The combine tool will allow to harvest your crops faster.";
 
 	public CombineTool() {
-		super();
-		this.cost = DEFAULT_COST;
-		this.value = this.cost / 2;
-		this.workTime = DEFAULT_WORK_TIME;
-		this.name = COMBINETOOL_NAME;
-		this.upgrade = null;
-		this.description = "The combine tool will allow to harvest your crops faster.";
+		super(COST, VALUE, NAME, DESCRIPTION, WORK_TIME, null);
 	}
 
 	@Override

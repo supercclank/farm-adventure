@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 
 /**
@@ -21,18 +20,8 @@ public class Field {
 	public static final int COLUMNS = 5;
 	/** The number of plots in the y direction. */
 	public static final int ROWS = 6;
-	/** The modifier which determines if a plot is to be a water plot. */
-	private static final float DEFAULT_WATER_PLOT_MOD = .15f;
 	/** The array containing the plots of this field. */
 	private Plot[][] plots2D;
-
-	/**
-	 * Constructs a field with the default columns, rows, and water plot
-	 * modifier.
-	 */
-	public Field() {
-		initializePlots(COLUMNS, ROWS, DEFAULT_WATER_PLOT_MOD);
-	}
 
 	/**
 	 * Constructs a field with the given water plot modifier and the default
@@ -44,27 +33,6 @@ public class Field {
 	 */
 	public Field(float waterPlotMod) {
 		initializePlots(COLUMNS, ROWS, waterPlotMod);
-	}
-
-	/**
-	 * Constructs a field with the given dimensions and the default water plot
-	 * modifier.
-	 * 
-	 * @param columns
-	 *            - the number of plots wide the field should be
-	 * @param rows
-	 *            - the number of plots high the field should be
-	 */
-	public Field(int columns, int rows) {
-
-		/*
-		 * public void createTutorialField() { for (int i = 0; i <
-		 * plots2D.length; i++) { for (int j = 0; j < plots2D[i].length; j++) {
-		 * if (i == 2) { plots2D[i][j] = new Plot(PlotType.WATER);
-		 * plots2D[i][j].setUsable(false); } else { plots2D[i][j] = new
-		 * Plot(PlotType.GRASS); } } } syncAllIrrigation(); }
-		 */
-		initializePlots(columns, rows, DEFAULT_WATER_PLOT_MOD);
 	}
 
 	/**
@@ -144,33 +112,6 @@ public class Field {
 
 		return canIrrigateLeft;
 	}
-
-	// Old way to create fields
-	/*
-	 * public void createTutorialField() { plots2D = new Plot[COLUMNS][ROWS];
-	 * for (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (i == 2) { plots2D[i][j] = new
-	 * Plot(PlotType.WATER); } else { plots2D[i][j] = new Plot(PlotType.GRASS);
-	 * } } } }
-	 * 
-	 * public void createRainforestField() { plots2D = new Plot[COLUMNS][ROWS];
-	 * for (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (((i + j) % 3) == 0) { plots2D[i][j] = new
-	 * Plot(PlotType.WATER); } else { plots2D[i][j] = new Plot(PlotType.GRASS);
-	 * } } } }
-	 * 
-	 * public void createDesertField() { plots2D = new Plot[COLUMNS][ROWS]; for
-	 * (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (i == COLUMNS - 1 && j == 0) { plots2D[i][j]
-	 * = new Plot(PlotType.WATER); } else { plots2D[i][j] = new
-	 * Plot(PlotType.GRASS); } } } }
-	 * 
-	 * public void createSnowField() { plots2D = new Plot[COLUMNS][ROWS]; for
-	 * (int i = 0; i < plots2D.length; i++) { for (int j = 0; j <
-	 * plots2D[i].length; j++) { if (j == 2 && (i == 1 || i ==2 || i ==3)) {
-	 * plots2D[i][j] = new Plot(PlotType.WATER); } else { plots2D[i][j] = new
-	 * Plot(PlotType.GRASS); } } } }
-	 */
 
 	/**
 	 * Checks whether the right of a particular plot is open to irrigation by
@@ -391,10 +332,10 @@ public class Field {
 		for (int i = 0; i < plots2D.length; i++) {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				if (j == 2 && (i == 1 || i == 2 || i == 3)) {
-					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j] = new Plot(Plot.Type.WATER);
 					plots2D[i][j].setUsable(false);
 				} else {
-					plots2D[i][j] = new Plot(PlotType.GRASS);
+					plots2D[i][j] = new Plot(Plot.Type.GRASS);
 				}
 			}
 		}
@@ -513,7 +454,6 @@ public class Field {
 		default:
 			return TaskType.PLOW_UW; // for debug
 		}
-
 	}
 
 	/**
@@ -537,18 +477,18 @@ public class Field {
 			for (int j = 0; j < plots2D[i].length; j++) {
 				roll = random.nextFloat();
 				if (roll < waterPlotMod) {
-					plots2D[i][j] = new Plot(PlotType.WATER);
+					plots2D[i][j] = new Plot(Plot.Type.WATER);
 					plots2D[i][j].setUsable(false);
 					waterCount++;
 				} else {
-					plots2D[i][j] = new Plot(PlotType.GRASS);
+					plots2D[i][j] = new Plot(Plot.Type.GRASS);
 				}
 			}
 		}
 		if (waterCount == 0) {
-			int c = random.nextInt(columns);
-			int r = random.nextInt(rows);
-			plots2D[c][r] = new Plot(PlotType.WATER);
+			int column = random.nextInt(columns);
+			int row = random.nextInt(rows);
+			plots2D[column][row] = new Plot(Plot.Type.WATER);
 		}
 		syncAllIrrigation();
 	}
@@ -566,7 +506,7 @@ public class Field {
 	public void syncAllIrrigation() {
 		for (int i = 0; i < plots2D.length; i++) {
 			for (int j = 0; j < plots2D[i].length; j++) {
-				if (plots2D[i][j].getPlotType() == PlotType.WATER
+				if (plots2D[i][j].getPlotType() == Plot.Type.WATER
 						|| plots2D[i][j].isIrrigated()) {
 					syncNeighborIrrigation(i, j);
 				}
@@ -587,31 +527,31 @@ public class Field {
 	 * 
 	 */
 	public void syncNeighborIrrigation(int x, int y) {
-		if (plots2D[x][y].getPlotType() == PlotType.WATER) {
+		if (plots2D[x][y].getPlotType() == Plot.Type.WATER) {
 			/* if neighbor does not have right */
 			if (x - 1 >= 0
-					&& !(plots2D[x - 1][y].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x - 1][y].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x - 1][y].getIrrigation().contains(
 							Irrigation.RIGHT)) {
 				plots2D[x - 1][y].addIrrigation(Irrigation.RIGHT);
 			}
 			/* if neighbor does not have left */
 			if (x + 1 < Field.COLUMNS
-					&& !(plots2D[x + 1][y].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x + 1][y].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x + 1][y].getIrrigation().contains(
 							Irrigation.LEFT)) {
 				plots2D[x + 1][y].addIrrigation(Irrigation.LEFT);
 			}
 			/* if neighbor does not have top */
 			if (y + 1 < Field.ROWS
-					&& !(plots2D[x][y + 1].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x][y + 1].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x][y + 1].getIrrigation().contains(
 							Irrigation.BOTTOM)) {
 				plots2D[x][y + 1].addIrrigation(Irrigation.BOTTOM);
 			}
 			/* if neighbor does not have bottom */
 			if (y - 1 >= 0
-					&& !(plots2D[x][y - 1].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x][y - 1].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x][y - 1].getIrrigation().contains(
 							Irrigation.TOP)) {
 				plots2D[x][y - 1].addIrrigation(Irrigation.TOP);
@@ -620,7 +560,7 @@ public class Field {
 			/* if selected has left and neighbor does not have right */
 			if (plots2D[x][y].getIrrigation().contains(Irrigation.LEFT)
 					&& x - 1 >= 0
-					&& !(plots2D[x - 1][y].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x - 1][y].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x - 1][y].getIrrigation().contains(
 							Irrigation.RIGHT)) {
 				plots2D[x - 1][y].addIrrigation(Irrigation.RIGHT);
@@ -628,7 +568,7 @@ public class Field {
 			/* if selected has right and neighbor does not have left */
 			if (plots2D[x][y].getIrrigation().contains(Irrigation.RIGHT)
 					&& x + 1 < Field.COLUMNS
-					&& !(plots2D[x + 1][y].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x + 1][y].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x + 1][y].getIrrigation().contains(
 							Irrigation.LEFT)) {
 				plots2D[x + 1][y].addIrrigation(Irrigation.LEFT);
@@ -636,7 +576,7 @@ public class Field {
 			/* if selected has top and neighbor does not have top */
 			if (plots2D[x][y].getIrrigation().contains(Irrigation.TOP)
 					&& y + 1 < Field.ROWS
-					&& !(plots2D[x][y + 1].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x][y + 1].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x][y + 1].getIrrigation().contains(
 							Irrigation.BOTTOM)) {
 				plots2D[x][y + 1].addIrrigation(Irrigation.BOTTOM);
@@ -644,7 +584,7 @@ public class Field {
 			/* if selected has bottom and neighbor does not have bottom */
 			if (plots2D[x][y].getIrrigation().contains(Irrigation.BOTTOM)
 					&& y - 1 >= 0
-					&& !(plots2D[x][y - 1].getPlotType() == PlotType.WATER)
+					&& !(plots2D[x][y - 1].getPlotType() == Plot.Type.WATER)
 					&& !plots2D[x][y - 1].getIrrigation().contains(
 							Irrigation.TOP)) {
 				plots2D[x][y - 1].addIrrigation(Irrigation.TOP);

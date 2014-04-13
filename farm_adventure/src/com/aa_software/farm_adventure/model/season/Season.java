@@ -6,7 +6,6 @@ import java.util.Random;
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Season {
 
@@ -17,18 +16,18 @@ public class Season {
 	/**
 	 * Each season affects the growth rate of plants.
 	 */
-	private static final float SPRING_GROWTH_RATE_MOD = .5f;
-	private static final float SUMMER_GROWTH_RATE_MOD = 1;
-	private static final float FALL_GROWTH_RATE_MOD = 1;
-	private static final float WINTER_GROWTH_RATE_MOD = 2;
+	public static final float SPRING_GROWTH_RATE_MOD = .5f;
+	public static final float SUMMER_GROWTH_RATE_MOD = 1;
+	public static final float FALL_GROWTH_RATE_MOD = 1;
+	public static final float WINTER_GROWTH_RATE_MOD = 2;
 
 	/**
 	 * Summer and Fall apply a random chance for a plot to lose irrigation or
 	 * become covered in leaves (resetting the plot, aside from the irrigation).
 	 * These values are the percent chances of those events.
 	 */
-	private static final float SUMMER_WATER_LEVEL_MOD = .2f;
-	private static final float FALL_LEAF_COVER_MOD = .2f;
+	public static final float SUMMER_WATER_LEVEL_MOD = .2f;
+	public static final float FALL_LEAF_COVER_MOD = .2f;
 
 	public static final int CYCLE_TIME_MILLIS = 60000;
 
@@ -83,13 +82,14 @@ public class Season {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
-				if (field.getPlot(x, y).getPlotType() != PlotType.WATER)
+				if (field.getPlot(x, y).getPlotType() != Plot.Type.WATER)
 					field.getPlot(x, y).setUsable(true);
-				if (field.getPlot(x, y).getPlotType() == PlotType.LEAVES) {
-					field.getPlot(x, y).setPlotType(PlotType.GRASS);
+				if (field.getPlot(x, y).getPlotType() == Plot.Type.LEAVES) {
+					field.getPlot(x, y).setPlotType(Plot.Type.GRASS);
 				}
 			}
 		}
+
 		switch (type) {
 		case SPRING:
 			growthRateMod = SPRING_GROWTH_RATE_MOD;
@@ -121,7 +121,7 @@ public class Season {
 					roll = random.nextInt(10);
 					if (roll < 10 * FALL_LEAF_COVER_MOD) {
 						Plot plot = field.getPlot(x, y);
-						plot.setPlotType(PlotType.LEAVES);
+						plot.setPlotType(Plot.Type.LEAVES);
 						plot.setCrop(null);
 						plot.setUsable(false);
 					}

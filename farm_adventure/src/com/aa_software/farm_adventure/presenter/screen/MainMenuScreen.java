@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuScreen extends AbstractScreen {
 
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 	private Skin skin;
 
 	public MainMenuScreen() {
@@ -37,7 +37,7 @@ public class MainMenuScreen extends AbstractScreen {
 		TextButton startGameButton = new TextButton("Start game", skin);
 
 		// Start Music
-		sounds.playMusic();
+		SOUNDS.playMusic();
 
 		// This line of code will take the user to the world screen on click or
 		// touch
@@ -45,8 +45,8 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new WorldScreen());
-				sounds.playClick();
 				return true;
 			}
 		});
@@ -61,6 +61,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new TutorialFarmScreen());
 				return true;
 			}
@@ -76,6 +77,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new OptionsScreen());
 				return true;
 			}

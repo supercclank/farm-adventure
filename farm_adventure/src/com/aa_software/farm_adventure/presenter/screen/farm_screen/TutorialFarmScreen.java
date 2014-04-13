@@ -12,7 +12,6 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestToo
 import com.aa_software.farm_adventure.model.item.tool.irrigate.AbstractIrrigationTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.AbstractPlantTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.AbstractPlowTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
@@ -59,20 +58,20 @@ public class TutorialFarmScreen extends FarmScreen {
 			if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 				foundClick = true;
 			}
-			sounds.playClick();
+			SOUNDS.playClick();
 			Gdx.input.setInputProcessor(workerStage);
 			return true;
 		}
 	}
 
-	enum State {
+	public enum State {
 		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, CLICK_IRRIGATE_WORKER, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO, CLICK_EXIT_INFO, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
-	final int MARKET_X = 4;
+	public final static int MARKET_X = 4;
 
 	/* Font setup */
-	final LabelStyle style2 = new LabelStyle(fontType, Color.WHITE);
+	public final static LabelStyle STYLE2 = new LabelStyle(FONT, Color.WHITE);
 	private String description;
 	private Stage descriptionStage;
 	private Window descriptionWindow;
@@ -123,7 +122,7 @@ public class TutorialFarmScreen extends FarmScreen {
 		seedTable.row();
 		seedTable.add(new Image(seedImage));
 		Label seedQuantity = new Label("" + farm.getInventory().getCount(seed),
-				style1);
+				LABEL_STYLE);
 		seedTable.row();
 		seedTable.add(seedQuantity);
 		Button seedButton = new Button(seedTable, skin);
@@ -138,6 +137,7 @@ public class TutorialFarmScreen extends FarmScreen {
 	@Override
 	public void dispose() {
 		setAllGameClicksDisabled(false);
+		farm.disposeOfTimers();
 		map.dispose();
 		renderer.dispose();
 		descriptionStage.dispose();
@@ -333,12 +333,12 @@ public class TutorialFarmScreen extends FarmScreen {
 			break;
 		case DESCRIBE_QUANTITY:
 			description = "This is the quantity \nthat you own of a \ncertain item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .13);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .20);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
 			break;
 		case DESCRIBE_BUY_AND_SELL:
 			description = "You can use these buttons to\npurchase or sell items\nand hire workers.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .4);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .45);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 
@@ -348,9 +348,9 @@ public class TutorialFarmScreen extends FarmScreen {
 			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
 			break;
 		case DESCRIBE_INFO:
-			description = "You can use these buttons to\nget info on an item.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .5);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .8);
+			description = "You can use\nthese buttons to\nget info on an item.";
+			descriptionX = (float) (Gdx.graphics.getWidth() * .75);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .7);
 			break;
 		case CLICK_INFO:
 			description = "Click the info button.";
@@ -359,8 +359,8 @@ public class TutorialFarmScreen extends FarmScreen {
 			break;
 		case DESCRIBE_EXIT_INFO:
 			description = "This is the exit button to\nleave the market and\nreturn to farm view.";
-			descriptionX = (float) (Gdx.graphics.getWidth() * .6);
-			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+			descriptionX = (float) (Gdx.graphics.getWidth() * .8);
+			descriptionY = (float) (Gdx.graphics.getHeight() * .82);
 			break;
 		case CLICK_EXIT_INFO:
 			description = "Click EXIT button";
@@ -485,7 +485,7 @@ public class TutorialFarmScreen extends FarmScreen {
 	}
 
 	public void updateDescription() {
-		Label description = new Label(this.description, style2);
+		Label description = new Label(this.description, STYLE2);
 		description.setColor(Color.ORANGE);
 		descriptionWindow.add(description);
 
@@ -495,6 +495,7 @@ public class TutorialFarmScreen extends FarmScreen {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
+					SOUNDS.playClick();
 					transitionState();
 					return true;
 				}
@@ -543,6 +544,7 @@ public class TutorialFarmScreen extends FarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
+						SOUNDS.playClick();
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection).setTaskType(this
@@ -551,14 +553,14 @@ public class TutorialFarmScreen extends FarmScreen {
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 						if (selectedWorker >= 0) {
-							((AbstractWorker) farm.getInventory()
+							((DefaultWorker) farm.getInventory()
 									.getAllWorkers().get(selectedWorker))
 									.resetTexture();
 							selectedWorker = UNSELECT;
 						}
 						syncSelectTiles(UNSELECT);
 						selection = null;
-						sounds.playClick();
+						SOUNDS.playClick();
 					}
 					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
 						foundClick = true;

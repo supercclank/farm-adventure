@@ -2,23 +2,23 @@ package com.aa_software.farm_adventure.model.item.tool.harvest;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
+/**
+ * The lowest level of harvesting tool.
+ * 
+ * @author Bebop
+ * 
+ */
 public class ScytheTool extends AbstractHarvestTool {
 	public static final String TEXTURE_NAME = "scytheTool";
-	public static final String SYTHETOOL_NAME = "Scythe";
-	public static int DEFAULT_COST = 0;
-	public static int DEFAULT_VALUE = 0;
+	public static final String NAME = "Scythe";
+	public static int COST = 0;
+	public static int VALUE = 0;
 	/* measured in seconds */
-	public static final int DEFAULT_WORK_TIME = 5;
+	public static final int WORK_TIME = 5;
+	protected static final String DESCRIPTION = "A tool that allows you to harvest at an average pace.";
 
 	public ScytheTool() {
-		super();
-		this.cost = DEFAULT_COST;
-		this.value = this.cost / 2;
-		this.workTime = DEFAULT_WORK_TIME;
-		this.name = SYTHETOOL_NAME;
-		this.upgrade = new CombineTool();
-		this.upgrade.setPredecessor(this);
-		this.description = "A tool that allows you to harvest at an average pace";
+		super(COST, VALUE, NAME, DESCRIPTION, WORK_TIME, new CombineTool());
 	}
 
 	@Override

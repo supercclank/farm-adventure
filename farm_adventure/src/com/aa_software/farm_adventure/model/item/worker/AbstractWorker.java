@@ -172,13 +172,4 @@ public abstract class AbstractWorker extends AbstractItem {
 
 	}
 
-	
-	public void setWorkingStatus(boolean b) {
-		this.isWorking = b;
-	}
-	
-	public boolean isWorking() {
-		return this.isWorking;
-	}
-
 }

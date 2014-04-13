@@ -3,6 +3,7 @@ package com.aa_software.farm_adventure.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
@@ -14,17 +15,16 @@ import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
 import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
 //import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 
-/*
- * Inventory: the items that the farm has on hand.
+/**
+ * Represents the items that the farm has on hand.
  */
 public class Inventory {
 
-	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
+	private List<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
 			Arrays.asList(new AbstractItem[] { new BananaSeed(),
 					new BeetSeed(), new CarrotSeed(), new RiceSeed(),
 					new HandPlowTool(), new ShovelTool(), new TrowelTool(),
@@ -49,7 +49,7 @@ public class Inventory {
 	 * 
 	 * @param items
 	 */
-	public Inventory(ArrayList<AbstractItem> items) {
+	public Inventory(List<AbstractItem> items) {
 		int itemCount = items.size();
 		for (int i = 0; i < itemCount; i++) {
 			addItem(items.get(i));
@@ -113,11 +113,11 @@ public class Inventory {
 		}
 	}
 
-	public AbstractWorker getFreeWorker() {
+	public DefaultWorker getFreeWorker() {
 		String itemType = "WORKERS";
 		if (inventoryItems.containsKey(itemType)) {
 			for (int i = 0; i < getWorkerCount(); i++) {
-				AbstractWorker worker = (AbstractWorker) inventoryItems.get(
+				DefaultWorker worker = (DefaultWorker) inventoryItems.get(
 						itemType).get(i);
 				if (!worker.isBusy()) {
 					return worker;

@@ -20,6 +20,12 @@ import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
+/**
+ * Represents a market, where the player can buy, sell, and upgrade items.
+ * 
+ * @author Bebop
+ * 
+ */
 public class Market {
 
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(

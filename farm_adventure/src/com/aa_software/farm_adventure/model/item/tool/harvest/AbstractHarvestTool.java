@@ -3,31 +3,53 @@ package com.aa_software.farm_adventure.model.item.tool.harvest;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.crop.AbstractCrop;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of a harvesting tool.
+ * 
+ * @author Bebop
+ * 
+ */
 public abstract class AbstractHarvestTool extends AbstractTool {
 
-	@Override
-	public String getItemType() {
-		return "HARVEST TOOLS";
+	public final static String TYPE = "HARVEST TOOLS";
+
+	public AbstractHarvestTool(int cost, int value, String name,
+			String description, float workTime, AbstractTool upgrade) {
+		super(cost, value, name, description, workTime, upgrade);
 	}
 
 	@Override
+	public String getItemType() {
+		return TYPE;
+	}
+
+	/**
+	 * Checks whether there is an available worker and if the plot is available
+	 * for harvesting. If so, begins a Task, which will end in a successfully
+	 * harvested crop.
+	 * 
+	 * @author Bebop
+	 * 
+	 */
+	@SuppressWarnings("static-access")
+	@Override
 	public void update(final Plot plot, final Inventory inventory) {
 		if (plot.isUsable() && plot.hasCrop()) {
-			final AbstractWorker worker;
+			SOUNDS.playClick();
+			final DefaultWorker worker;
 			if (workerIndex < 0
-					|| ((AbstractWorker) inventory.getItems().get("WORKERS")
-							.get(workerIndex)).isBusy()) {
+					|| ((DefaultWorker) inventory.getItems()
+							.get(DefaultWorker.TYPE).get(workerIndex)).isBusy()) {
 				return;
 			} else {
-				worker = (AbstractWorker) inventory.getItems().get("WORKERS")
-						.get(workerIndex);
+				worker = (DefaultWorker) inventory.getItems()
+						.get(DefaultWorker.TYPE).get(workerIndex);
 			}
 			worker.setBusy(true);
 			plot.setUsable(false);
@@ -40,19 +62,20 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 					+ crop.getTextureName()));
 			// TODO: We should be adding crops to the inventory AFTER the task
 			// is finished.
+
 			inventory.addItem(crop);
-			Timer.schedule(
+			TIMER.schedule(
 					new Task() {
 						@Override
 						public void run() {
 							if (plot.getTaskTextureIndex() == plot
 									.getWorkStatusTextureLength() - 1) {
 								plot.setUsable(true);
-								plot.setPlotType(PlotType.UNPLOWEDWATERED);
+								plot.setPlotType(Plot.Type.UNPLOWEDWATERED);
 								plot.setTaskTextureIndex(0);
 								worker.addExperience();
 								worker.setBusy(false);
-								sounds.playClick();
+								SOUNDS.playClick();
 							} else {
 								plot.incrementTaskTextureIndex();
 								plot.removeCrop();

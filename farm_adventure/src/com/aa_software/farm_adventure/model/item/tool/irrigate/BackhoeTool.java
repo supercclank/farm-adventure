@@ -2,22 +2,23 @@ package com.aa_software.farm_adventure.model.item.tool.irrigate;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 
+/**
+ * A direct upgrade to the shovel tool.
+ * 
+ * @author Bebop
+ * 
+ */
 public class BackhoeTool extends AbstractIrrigationTool {
 	public static final String TEXTURE_NAME = "backhoeTool";
-	public static final String BACKHOE_NAME = "Backhoe";
-	public static int DEFAULT_COST = 30;
-	public static int DEFAULT_VALUE = 10;
+	public static final String NAME = "Backhoe";
+	public static int COST = 30;
+	public static int VALUE = 0;
 	/* measured in seconds */
-	public static final int DEFAULT_WORK_TIME = 5;
+	public static final int WORK_TIME = 5;
+	protected static final String DESCRIPTION = "The backhoe tool will allow you to irrigate your plot faster.";
 
 	public BackhoeTool() {
-		super();
-		this.cost = DEFAULT_COST;
-		this.value = this.cost / 2;
-		this.workTime = DEFAULT_WORK_TIME;
-		this.name = BACKHOE_NAME;
-		this.upgrade = null;
-		this.description = "The backhoe tool will allow you to irrigate your plot faster.";
+		super(COST, VALUE, NAME, DESCRIPTION, WORK_TIME, null);
 	}
 
 	@Override

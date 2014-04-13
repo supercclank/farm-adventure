@@ -1,5 +1,12 @@
-package com.aa_software.farm_adventure.model;
+package com.aa_software.farm_adventure.model.player;
 
+/**
+ * 
+ * Holds the player's preferences from the option menu.
+ * 
+ * @author Bebop
+ * 
+ */
 public class Preferences {
 	private static boolean isMuted = false;
 	private float soundVolume;
@@ -37,5 +44,4 @@ public class Preferences {
 	public void setGameVolume(float gameVolume) {
 		this.gameVolume = gameVolume;
 	}
-
 }

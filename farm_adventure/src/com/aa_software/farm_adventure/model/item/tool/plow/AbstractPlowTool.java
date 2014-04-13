@@ -2,36 +2,57 @@ package com.aa_software.farm_adventure.model.item.tool.plow;
 
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
+import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+/**
+ * Represents the basis of a plowing tool.
+ * 
+ * @author Bebop
+ * 
+ */
 public abstract class AbstractPlowTool extends AbstractTool {
 
-	@Override
-	public String getItemType() {
-		return "PLOW TOOLS";
+	public static final String TYPE = "PLOW TOOLS";
+
+	public AbstractPlowTool(int cost, int value, String name,
+			String description, float workTime, AbstractTool upgrade) {
+		super(cost, value, name, description, workTime, upgrade);
 	}
 
 	@Override
+	public String getItemType() {
+		return TYPE;
+	}
+
+	/**
+	 * Checks whether there is an available worker and if the plot is available
+	 * for plowing. If so, begins a Task, which will end in a successfully
+	 * plowed plot.
+	 * 
+	 * @author Bebop
+	 * 
+	 */
+	@SuppressWarnings("static-access")
+	@Override
 	public void update(final Plot plot, final Inventory inventory) {
-		final AbstractWorker worker;
+		final DefaultWorker worker;
 		if (workerIndex < 0
-				|| ((AbstractWorker) inventory.getItems().get("WORKERS")
-						.get(workerIndex)).isBusy()) {
+				|| ((DefaultWorker) inventory.getItems()
+						.get(DefaultWorker.TYPE).get(workerIndex)).isBusy()) {
 			return;
 		} else {
-			worker = (AbstractWorker) inventory.getItems().get("WORKERS")
-					.get(workerIndex);
+			worker = (DefaultWorker) inventory.getItems()
+					.get(DefaultWorker.TYPE).get(workerIndex);
 		}
 		if (plot.isUsable() && (plot.isGrass() || plot.isUnplowed())) {
 			worker.setBusy(true);
 			plot.setUsable(false);
-			sounds.playClick();
-			Timer.schedule(
+			SOUNDS.playClick();
+			TIMER.schedule(
 					new Task() {
 						@Override
 						public void run() {
@@ -44,9 +65,9 @@ public abstract class AbstractPlowTool extends AbstractTool {
 									.getWorkStatusTextureLength() - 1) {
 								plot.setUsable(true);
 								if (plot.isIrrigated()) {
-									plot.setPlotType(PlotType.PLOWEDWATERED);
+									plot.setPlotType(Plot.Type.PLOWEDWATERED);
 								} else {
-									plot.setPlotType(PlotType.PLOWEDUNWATERED);
+									plot.setPlotType(Plot.Type.PLOWEDUNWATERED);
 								}
 								plot.setTaskTextureIndex(0);
 								worker.addExperience();
