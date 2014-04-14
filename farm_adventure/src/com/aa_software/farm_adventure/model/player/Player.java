@@ -30,8 +30,6 @@ public class Player {
 
 	private Preferences preferences;
 
-	private int bankroll;
-
 	private Player() {
 		stats = new Stats();
 		this.stats.setScore(STARTING_BANKROLL);
@@ -74,7 +72,7 @@ public class Player {
 		com.badlogic.gdx.Preferences prefs = Gdx.app.getPreferences("FarmAdventure.Player.Preferences");
 		Sounds s = Sounds.getInstance();
 		
-		prefs.putInteger("BANKROLL", getBankroll());
+		prefs.putInteger("BANKROLL", stats.getScore());
 		prefs.putFloat("MASTERVOLUME", s.getMasterVolume());
 		prefs.putFloat("GAMEVOLUME", s.getMusicVolume());
 		prefs.putFloat("SOUNDVOLUME", s.getSoundVolume());
@@ -88,7 +86,7 @@ public class Player {
 		Sounds s = Sounds.getInstance();
 		
 		if(prefs.contains("BANKROLL")) {
-			this.bankroll = prefs.getInteger("BANKROLL");
+			stats.setScore(prefs.getInteger("BANKROLL"));
 			s.setMasterVolume(prefs.getFloat("MASTERVOLUME"));
 			s.setMusicVolume(prefs.getFloat("GAMEVOLUME"));
 			s.setSoundVolume(prefs.getFloat("SOUNDVOLUME"));
