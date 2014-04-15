@@ -389,7 +389,7 @@ public class FarmScreen extends AbstractScreen {
 		farm = new Farm(biome);
 
 		gameOver = false;
-		disableGameTime = false;
+		disableGameTime = true;
 
 		setAllGameClicksDisabled(false);
 
