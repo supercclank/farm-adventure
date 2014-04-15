@@ -170,6 +170,22 @@ public class Inventory {
 			return 0;
 		}
 	}
+	
+	/**
+	 * Searches through the inventory to get and return the count of
+	 * AbstractWorkers It first searches for the key of type "WORKERS" that
+	 * returns the number of items in the mapped list
+	 * 
+	 * @return
+	 */
+	public ArrayList<AbstractItem> getWorkers() {
+		String itemType = "WORKERS";
+		ArrayList<AbstractItem> workers = null;
+		if (inventoryItems.containsKey(itemType)) {
+			workers = inventoryItems.get(itemType);
+		}
+		return workers;
+	}
 
 	/**
 	 * Removes item from the inventory

@@ -74,7 +74,7 @@ public class Farm {
 	 * Checks the season timer to see if the current season needs to be
 	 * incremented.
 	 */
-	public void checkSeasonTimer() {
+	public boolean checkSeasonTimer() {
 		if (seasonStartTime == 0) {
 			startSeason();
 		}
@@ -84,7 +84,9 @@ public class Farm {
 			currentSeason++;
 			currentSeason %= seasons.size();
 			seasonStartTime = 0;
+			return true;
 		}
+		return false;
 	}
 
 	public void startSeason() {

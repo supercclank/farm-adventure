@@ -683,6 +683,18 @@ public class FarmScreen extends AbstractScreen {
 		workerStage.addActor(workerWindow);
 	}
 
+	public void payWorker() {
+		int totalWorkerCost = 0;
+		ArrayList<AbstractItem> workers = farm.getInventory().getWorkers();
+		if (workers != null) {
+			for (AbstractItem w : workers) {
+				totalWorkerCost += w.getCost();
+			}
+		}
+		
+		PLAYER.setBankroll(PLAYER.getBankroll() - totalWorkerCost);
+	}
+	
 	/**
 	 * Called when the FarmScreen is first rendered.
 	 */
@@ -1283,7 +1295,10 @@ public class FarmScreen extends AbstractScreen {
 			}
 			/* 1000 milliseconds = 1 second */
 			if (!(curTime < 1000)) {
-				farm.checkSeasonTimer();
+				boolean seasonHasChanged = farm.checkSeasonTimer();
+				if (seasonHasChanged) {
+					payWorker();
+				}
 			}
 			time = String.format("%02d:%02d",
 					TimeUnit.MILLISECONDS.toMinutes(curTime),
