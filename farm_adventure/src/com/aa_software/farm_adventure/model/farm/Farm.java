@@ -75,18 +75,23 @@ public class Farm {
 	 * incremented.
 	 */
 	public void checkSeasonTimer() {
-		if (seasonStartTime == 0)
-			seasonStartTime = System.currentTimeMillis();
+		if (seasonStartTime == 0) {
+			startSeason();
+		}
 		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS
 				- System.currentTimeMillis();
 		if (timeLeft < 0) {
 			currentSeason++;
 			currentSeason %= seasons.size();
-			seasons.get(currentSeason).update(field);
-			seasonStartTime = System.currentTimeMillis();
+			seasonStartTime = 0;
 		}
 	}
 
+	public void startSeason() {
+		seasons.get(currentSeason).update(field);
+		seasonStartTime = System.currentTimeMillis();
+	}
+	
 	/**
 	 * Disposes of all active timers.
 	 */

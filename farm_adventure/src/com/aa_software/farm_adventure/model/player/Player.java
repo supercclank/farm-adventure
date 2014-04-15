@@ -2,7 +2,6 @@ package com.aa_software.farm_adventure.model.player;
 
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.worker.AbstractWorker;
 import com.badlogic.gdx.Gdx;
 
 
