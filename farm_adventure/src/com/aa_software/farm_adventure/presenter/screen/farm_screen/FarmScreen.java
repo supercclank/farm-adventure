@@ -28,8 +28,8 @@ import com.aa_software.farm_adventure.model.plot.TaskType;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.aa_software.farm_adventure.presenter.screen.AbstractScreen;
 import com.aa_software.farm_adventure.presenter.screen.ScoreScreen;
+import com.aa_software.farm_adventure.presenter.selection_state.AbstractSelectionState;
 import com.aa_software.farm_adventure.presenter.selection_state.DefaultSelectionState;
-import com.aa_software.farm_adventure.presenter.selection_state.ISelectionState;
 import com.aa_software.farm_adventure.presenter.utility.TextureHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -201,19 +201,13 @@ public class FarmScreen extends AbstractScreen {
 			this.item = item;
 		}
 
-		/**
-		 * On button touch the item is bought and the item quantity is updated
-		 * in the inventory
-		 */
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
-
 			plantWindow.setVisible(false);
 			((AbstractPlantTool) farm.getTool(PLANT_TOOL_X, PLANT_TOOL_Y))
 					.setSeed(((AbstractSeed) this.item));
 			SOUNDS.playClick();
-			Gdx.input.setInputProcessor(workerStage);
 			return true;
 		}
 	}
@@ -340,7 +334,7 @@ public class FarmScreen extends AbstractScreen {
 
 	protected AbstractItem selection;
 
-	protected ISelectionState state;
+	protected AbstractSelectionState state;
 	protected Farm farm;
 	protected TiledMap map;
 
@@ -361,11 +355,11 @@ public class FarmScreen extends AbstractScreen {
 	protected final Stage irrigationMenuStage;
 	protected final Stage statusBarStage;
 
-	protected final Window irrigationWindow;
+	protected Window irrigationWindow;
 	InputMultiplexer marketMultiplexer;
 	protected Stage workerStage;
 	protected Table workerQueue;
-	protected Table workerWindow;
+	protected Table workerTable;
 	public int selectedWorker = UNSELECT;
 
 	protected boolean workerClicksDisabled;
@@ -390,11 +384,10 @@ public class FarmScreen extends AbstractScreen {
 
 		gameOver = false;
 		disableGameTime = false;
-
 		setAllGameClicksDisabled(false);
-
-		this.selection = null;
-		this.state = new DefaultSelectionState();
+		
+		selection = null;
+		state = new DefaultSelectionState();
 
 		map = new TmxMapLoader().load(TILE_MAP_NAME);
 		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
@@ -410,6 +403,7 @@ public class FarmScreen extends AbstractScreen {
 		}
 
 		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+		
 		plantMenuStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		irrigationMenuStage = new Stage(Gdx.graphics.getWidth(),
@@ -419,6 +413,8 @@ public class FarmScreen extends AbstractScreen {
 		inventoryStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		workerStage = new Stage(Gdx.graphics.getWidth(), WORKER_HEIGHT, true);
+		infoStage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
 
 		marketMultiplexer = new InputMultiplexer();
 		marketMultiplexer.addProcessor(inventoryStage);
@@ -426,37 +422,30 @@ public class FarmScreen extends AbstractScreen {
 
 		stats = new Stats();
 
-		irrigationWindow = new Window(IRRIGATION_WINDOW_TEXT, skin);
-		irrigationWindow.setModal(false);
-		irrigationWindow.setMovable(false);
-		irrigationWindow.setVisible(false);
-		irrigationWindow.setPosition(WINDOW_X, WINDOW_Y);
-		irrigationWindow.defaults().spaceBottom(10);
-		irrigationWindow.row().fill().expandX();
-
+		irrigationWindow = setupWindow(IRRIGATION_WINDOW_TEXT, WINDOW_X, WINDOW_Y);
 		irrigationMenuStage.addActor(irrigationWindow);
 
-		plantWindow = new Window(PLANT_WINDOW_TEXT, skin);
-		plantWindow.setModal(false);
-		plantWindow.setMovable(false);
-		plantWindow.setVisible(false);
-		plantWindow.setPosition(WINDOW_X, WINDOW_Y);
-		plantWindow.defaults().spaceBottom(10);
-		plantWindow.row().fill().expandX();
-
+		plantWindow = setupWindow(PLANT_WINDOW_TEXT, WINDOW_X, WINDOW_Y);
 		plantMenuStage.addActor(plantWindow);
 
-		infoStage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
-		infoWindow = new Window("Information", skin);
-		infoWindow.setModal(false);
-		infoWindow.setMovable(false);
-		infoWindow.setVisible(false);
-		infoWindow.setPosition(INFO_X, INFO_Y);
-		infoWindow.defaults().spaceBottom(10);
-		infoWindow.row().fill().expandX();
+		infoWindow = setupWindow("Information", INFO_X, INFO_Y);
 		infoStage.addActor(infoWindow);
-
+		
+		workerQueue = new Table();
+		setupWorkerTable();
+		inventoryScrollTable = new Table();
+		setupInventoryWindow();
+	}
+	
+	protected Window setupWindow(String text, float x, float y) {
+		Window window = new Window(text, skin);
+		window.setModal(false);
+		window.setMovable(false);
+		window.setVisible(false);
+		window.setPosition(x, y);
+		window.defaults().spaceBottom(10);
+		window.row().fill().expandX();
+		return window;
 	}
 
 	/**
@@ -558,6 +547,10 @@ public class FarmScreen extends AbstractScreen {
 
 			FONT.setScale(FONT_SCALE);
 
+			if(hasVisibleWindow() == false) {
+				Gdx.input.setInputProcessor(workerStage);
+			}
+			
 			checkTouch();
 			farm.getField().syncAllIrrigation();
 			farm.applySeasonalEffects();
@@ -592,6 +585,15 @@ public class FarmScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Checks if there is a window visible OTHER THAN worker window (which is always visible).
+	 */
+	public boolean hasVisibleWindow() {
+		if(plantWindow.isVisible() || infoWindow.isVisible() || irrigationWindow.isVisible() || inventoryWindow.isVisible()) {
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void resize(int width, int height) {
@@ -639,7 +641,6 @@ public class FarmScreen extends AbstractScreen {
 					int pointer, int button) {
 				inventoryWindow.setVisible(false);
 				inventoryOpen = false;
-				Gdx.input.setInputProcessor(workerStage);
 				SOUNDS.playClick();
 				return true;
 			}
@@ -666,21 +667,17 @@ public class FarmScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Sets up the window to display available workers and choose who to assign
-	 * for a task
+	 * Sets up the table to display available workers
 	 */
-	public final void setupWorkersWindow() {
-		updateWorkerQueue();
-		workerQueue.pack();
-		ScrollPane availableWorkers = new ScrollPane(workerQueue, skin);
-
-		workerWindow = new Table();
-		workerWindow.layout();
-		workerWindow.size(Gdx.graphics.getWidth(), WORKER_HEIGHT);
-		workerWindow.setPosition(0,
+	public final void setupWorkerTable() {
+		workerTable = new Table();
+		workerTable.layout();
+		workerTable.size(Gdx.graphics.getWidth(), WORKER_HEIGHT);
+		workerTable.setPosition(0,
 				(float) (Gdx.graphics.getHeight() * .13) - 4);
-		workerWindow.add(availableWorkers).expand().left().fill();
-		workerStage.addActor(workerWindow);
+		ScrollPane availableWorkers = new ScrollPane(workerQueue, skin);
+		workerTable.add(availableWorkers).expand().left().fill();
+		workerStage.addActor(workerTable);
 	}
 
 	public void payWorker() {
@@ -705,9 +702,6 @@ public class FarmScreen extends AbstractScreen {
 
 		gameStartTime = System.currentTimeMillis();
 
-		this.selection = null;
-		this.state = new DefaultSelectionState();
-
 		/* Push all of the tiles for each layer into the tile map */
 		Iterator<TiledMapTile> tileIterator;
 		tileMap = new HashMap<String, Integer>();
@@ -718,12 +712,6 @@ public class FarmScreen extends AbstractScreen {
 						.get(allLayers[i], String.class), tile.getId());
 			}
 		}
-
-		workerQueue = new Table();
-		setupWorkersWindow();
-		Gdx.input.setInputProcessor(workerStage);
-		inventoryScrollTable = new Table();
-		setupInventoryWindow();
 	}
 
 	/**
@@ -746,23 +734,6 @@ public class FarmScreen extends AbstractScreen {
 			}
 		}
 	}
-	
-	/**
-	 *  Syncs money of workers for each task performed.
-	 */
-	/*private void syncMoney() {
-		Map<String, ArrayList<AbstractItem>> inventoryItems = this.farm.getInventory().getItems();
-		ArrayList<AbstractItem> invWorkers = inventoryItems.get("WORKERS");
-		for(int i = 0; i< invWorkers.size(); ++i) {
-			DefaultWorker worker = (DefaultWorker)invWorkers.get(i);
-			
-			if(worker.isWorking()) {
-				PLAYER.setBankroll(PLAYER.getBankroll()-worker.calculateWage());
-				worker.setWorkingStatus(false);
-			}
-				
-		}
-	}*/
 
 	/**
 	 * Syncs each cell's plant tile with the field.
@@ -1094,10 +1065,8 @@ public class FarmScreen extends AbstractScreen {
 		irrigationWindow.clear();
 		Iterator<Irrigation> iterator = farm.getIrrigationChoices(x, y)
 				.iterator();
-		for (; iterator.hasNext();) {
+		while (iterator.hasNext()) {
 			Irrigation irrigation = iterator.next();
-			selectedWorker = UNSELECT;
-			syncSelectTiles(UNSELECT);
 			TaskType task = farm.getTaskType(x, y, irrigation);
 			Texture irrigationTexture = new Texture(
 					Gdx.files.internal(TextureHelper
@@ -1124,18 +1093,10 @@ public class FarmScreen extends AbstractScreen {
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
-						if (selectedWorker >= 0) {
-							((DefaultWorker) farm.getInventory()
-									.getAllWorkers().get(selectedWorker))
-									.resetTexture();
-							selectedWorker = UNSELECT;
-						}
-						syncSelectTiles(UNSELECT);
-						selection = null;
+						unselect();
 						SOUNDS.playClick();
 					}
 					irrigationWindow.setVisible(false);
-					Gdx.input.setInputProcessor(workerStage);
 					return true;
 				}
 			});
@@ -1143,6 +1104,20 @@ public class FarmScreen extends AbstractScreen {
 		}
 
 		irrigationWindow.pack();
+	}
+	
+	/**
+	 * Unselects the current worker and selection.
+	 */
+	protected void unselect() {
+		if (selectedWorker >= 0) {
+			((DefaultWorker) farm.getInventory()
+					.getAllWorkers().get(selectedWorker))
+					.resetTexture();
+			selectedWorker = UNSELECT;
+		}
+		syncSelectTiles(UNSELECT);
+		selection = null;
 	}
 
 	/**
@@ -1193,6 +1168,9 @@ public class FarmScreen extends AbstractScreen {
 	public void updateState(int x, int y) {
 		if (!inventoryOpen) {
 			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
+				/*
+				 * Player clicked the field.
+				 */
 				plantWindow.setVisible(false);
 				irrigationWindow.setVisible(false);
 				if (selection instanceof AbstractIrrigationTool) {
@@ -1203,35 +1181,27 @@ public class FarmScreen extends AbstractScreen {
 							Gdx.input.setInputProcessor(irrigationMenuStage);
 							SOUNDS.playClick();
 						} else {
-							if (selectedWorker >= 0) {
-								((DefaultWorker) farm.getInventory()
-										.getAllWorkers().get(selectedWorker))
-										.resetTexture();
-								selectedWorker = UNSELECT;
-							}
-							syncSelectTiles(UNSELECT);
-							selection = null;
+							unselect();
 						}
 					}
 				} else {
 					state = state.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
-					if (selectedWorker >= 0) {
-						((DefaultWorker) farm.getInventory().getAllWorkers()
-								.get(selectedWorker)).resetTexture();
-						selectedWorker = UNSELECT;
-					}
-					syncSelectTiles(UNSELECT);
-					selection = null;
+					unselect();
 					updateInventoryTable();
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
+				/*
+				 * Player clicked the tool bar.
+				 */
 				plantWindow.setVisible(false);
 				irrigationWindow.setVisible(false);
 				inventoryWindow.setVisible(false);
-				Gdx.input.setInputProcessor(workerStage);
 
 				if (selection != null && selection.equals(farm.getTool(x, y))) {
+					/*
+					 * Player double clicked his selection
+					 */
 					if (selection instanceof AbstractPlantTool) {
 						if (!plantMenuClicksDisabled) {
 							updatePlantWindow();
@@ -1243,6 +1213,9 @@ public class FarmScreen extends AbstractScreen {
 						SOUNDS.playClick();
 					}
 				} else if (x != MARKET_X) {
+					/*
+					 * Player clicked a tool other than the market/inventory.
+					 */
 					if (selectedWorker >= 0) {
 						selection = farm.getTool(x, y);
 						((AbstractTool) selection).setWorkerIndex(selectedWorker);
@@ -1251,17 +1224,14 @@ public class FarmScreen extends AbstractScreen {
 						SOUNDS.playClick();
 					}
 				} else {
+					/*
+					 * Player clicked the market/inventory.
+					 */
 					if (!inventoryClicksDisabled) {
-						selection = null;
 						state = new DefaultSelectionState();
+						unselect();
 						syncSelectTiles(x);
 						inventoryWindow.setVisible(true);
-						if (selectedWorker >= 0) {
-							((DefaultWorker) farm.getInventory()
-									.getAllWorkers().get(selectedWorker))
-									.resetTexture();
-							selectedWorker = UNSELECT;
-						}
 						inventoryOpen = true;
 						Gdx.input.setInputProcessor(marketMultiplexer);
 						SOUNDS.playClick();

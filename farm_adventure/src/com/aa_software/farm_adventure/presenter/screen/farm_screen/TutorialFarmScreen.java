@@ -44,10 +44,6 @@ public class TutorialFarmScreen extends FarmScreen {
 			this.item = item;
 		}
 
-		/**
-		 * On button touch the item is bought and the item quantity is updated
-		 * in the inventory
-		 */
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
@@ -59,7 +55,6 @@ public class TutorialFarmScreen extends FarmScreen {
 				foundClick = true;
 			}
 			SOUNDS.playClick();
-			Gdx.input.setInputProcessor(workerStage);
 			return true;
 		}
 	}
@@ -92,13 +87,8 @@ public class TutorialFarmScreen extends FarmScreen {
 		descriptionStage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 
-		descriptionWindow = new Window("Tutorial Guide:", skin);
-		descriptionWindow.setModal(false);
-		descriptionWindow.setMovable(false);
-		descriptionWindow.defaults().spaceBottom(10);
-		descriptionWindow.row().fill().expandX();
+		descriptionWindow = setupWindow("Tutorial Guide:", 0, 0);
 		descriptionWindow.setVisible(true);
-
 		descriptionStage.addActor(descriptionWindow);
 		getDescription();
 		updateDescription();
@@ -106,8 +96,6 @@ public class TutorialFarmScreen extends FarmScreen {
 		disableGameTime = true;
 		foundClick = true;
 
-		// TODO: Maybe there is a better way to stop the deficient worker
-		// deadlock.
 		for (int i = 0; i < 2; i++) {
 			farm.getInventory().addItem(new DefaultWorker());
 		}
@@ -222,13 +210,14 @@ public class TutorialFarmScreen extends FarmScreen {
 			waitingForX = 1;
 			break;
 		case CLICK_IRRIGATE_PLOT:
-			// TODO: Make sure that it only goes forward if you click a plot
-			// open to irrigation!
-			description = "Now click a plot to irrigate it.\nTry to get the irrigation\n"
+			// TODO: Still not quite what we want. Right now the player can also plow... not too bad, but...
+			description = "Now click a plot to irrigate it.\nGet the irrigation\n"
 					+ "to the plowed plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
 			descriptionY = (float) (Gdx.graphics.getHeight() * .9);
+			toolBarClicksDisabled = false;
 			foundClick = false;
+			waitingForX = 1;
 			irrigationMenuClicksDisabled = false;
 			fieldClicksDisabled = false;
 			break;
@@ -447,7 +436,6 @@ public class TutorialFarmScreen extends FarmScreen {
 				&& (states[stateIndex] == State.CLICK_PLOW_WORKER || states[stateIndex] == State.CLICK_IRRIGATE_WORKER)
 				|| states[stateIndex] == State.CLICK_PLANT_WORKER
 				|| states[stateIndex] == State.CLICK_HARVEST_WORKER) {
-			Gdx.input.setInputProcessor(workerStage);
 			if (selectedWorker >= 0) {
 				workerClicksDisabled = true;
 				foundClick = true;
@@ -552,21 +540,13 @@ public class TutorialFarmScreen extends FarmScreen {
 						state = state.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
-						if (selectedWorker >= 0) {
-							((DefaultWorker) farm.getInventory()
-									.getAllWorkers().get(selectedWorker))
-									.resetTexture();
-							selectedWorker = UNSELECT;
-						}
-						syncSelectTiles(UNSELECT);
-						selection = null;
+						unselect();
 						SOUNDS.playClick();
 					}
 					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
 						foundClick = true;
 					}
 					irrigationWindow.setVisible(false);
-					Gdx.input.setInputProcessor(workerStage);
 					return true;
 				}
 			});

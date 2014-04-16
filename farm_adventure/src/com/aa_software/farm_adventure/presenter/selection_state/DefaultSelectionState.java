@@ -13,12 +13,12 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	public DefaultSelectionState update() {
 		return new DefaultSelectionState();
 	}
-
+/*
 	@Override
 	public DefaultSelectionState update(AbstractCrop crop) {
 		return new DefaultSelectionState();
 	}
-
+*/
 	/*
 	 * @Override public SpellSelectionState update(AbstractSpell spell) { return
 	 * new SpellSelectionState(spell); }
@@ -32,11 +32,12 @@ public class DefaultSelectionState extends AbstractSelectionState {
 	 * @Override public UpgradeSelectionState update(AbstractUpgrade upgrade) {
 	 * return new UpgradeSelectionState(upgrade); }
 	 */
+/*
 	@Override
 	public DefaultSelectionState update(DefaultWorker worker) {
 		return new DefaultSelectionState();
 	}
-
+*/
 	@Override
 	public DefaultSelectionState update(Plot plot, Inventory inventory) {
 		return new DefaultSelectionState();

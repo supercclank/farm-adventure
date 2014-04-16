@@ -11,12 +11,12 @@ public class ToolSelectionState extends AbstractSelectionState {
 	public ToolSelectionState(AbstractTool selection) {
 		this.selection = selection;
 	}
-
+	/*
 	@Override
 	public ToolSelectionState update(AbstractCrop crop) {
 		return new ToolSelectionState((AbstractTool) selection);
 	}
-
+*/
 	/*
 	 * @Override public SpellSelectionState update(AbstractSpell spell) { return
 	 * new SpellSelectionState(spell); }
@@ -30,11 +30,12 @@ public class ToolSelectionState extends AbstractSelectionState {
 	 * @Override public UpgradeSelectionState update(AbstractUpgrade upgrade) {
 	 * return new UpgradeSelectionState(upgrade); }
 	 */
+	/*
 	@Override
 	public ToolSelectionState update(DefaultWorker worker) {
 		return new ToolSelectionState((AbstractTool) selection);
 	}
-
+*/
 	@Override
 	public ToolSelectionState update(Plot plot, Inventory inventory) {
 		selection.update(plot, inventory);
