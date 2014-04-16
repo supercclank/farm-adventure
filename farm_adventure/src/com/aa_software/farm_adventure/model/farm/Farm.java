@@ -89,11 +89,6 @@ public class Farm {
 		return false;
 	}
 
-	public void startSeason() {
-		seasons.get(currentSeason).update(field);
-		seasonStartTime = System.currentTimeMillis();
-	}
-	
 	/**
 	 * Disposes of all active timers.
 	 */
@@ -137,6 +132,11 @@ public class Farm {
 
 	public AbstractTool getTool(int x, int y) {
 		return this.toolBar.getTool(x, y);
+	}
+
+	public void startSeason() {
+		seasons.get(currentSeason).update(field);
+		seasonStartTime = System.currentTimeMillis();
 	}
 
 	public void updateToolBar() {

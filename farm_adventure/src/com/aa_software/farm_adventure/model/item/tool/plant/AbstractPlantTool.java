@@ -97,15 +97,10 @@ public abstract class AbstractPlantTool extends AbstractTool {
 	@SuppressWarnings("static-access")
 	@Override
 	public void update(final Plot plot, final Inventory inventory) {
-		final DefaultWorker worker;
-
-		if (workerIndex < 0
-				|| ((DefaultWorker) inventory.getItems()
-						.get(DefaultWorker.TYPE).get(workerIndex)).isBusy()) {
+		final DefaultWorker worker = (DefaultWorker) inventory.getItems()
+				.get(DefaultWorker.TYPE).get(workerIndex);
+		if (worker == null || worker.isBusy()) {
 			return;
-		} else {
-			worker = (DefaultWorker) inventory.getItems()
-					.get(DefaultWorker.TYPE).get(workerIndex);
 		}
 
 		if (!plot.isGrass() && !plot.isUnplowed() && plot.isIrrigated()

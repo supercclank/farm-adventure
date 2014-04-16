@@ -192,6 +192,10 @@ public class DefaultWorker extends AbstractItem {
 		return isBusy;
 	}
 
+	public boolean isWorking() {
+		return this.isWorking;
+	}
+
 	public void resetTexture() {
 		this.texture = UNSELECTEDWORKER_TEXTURE;
 	}
@@ -209,6 +213,10 @@ public class DefaultWorker extends AbstractItem {
 		this.texture = SELECTEDWORKER_TEXTURE;
 	}
 
+	public void setWorkingStatus(boolean b) {
+		this.isWorking = b;
+	}
+
 	public void setWorkRate(float workRate) {
 		this.workRate = workRate;
 	}
@@ -223,13 +231,5 @@ public class DefaultWorker extends AbstractItem {
 	public void update(Plot plot, Inventory inventory) {
 		// TODO Auto-generated method stub
 
-	}
-	
-	public void setWorkingStatus(boolean b) {
-		this.isWorking = b;
-	}
-	
-	public boolean isWorking() {
-		return this.isWorking;
 	}
 }

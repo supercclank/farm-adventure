@@ -37,7 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TutorialFarmScreen extends FarmScreen {
 
-	private class SeedClickListener extends ClickListener {
+	protected class SeedClickListener extends ClickListener {
 		AbstractItem item;
 
 		public SeedClickListener(AbstractItem item) {
@@ -63,10 +63,9 @@ public class TutorialFarmScreen extends FarmScreen {
 		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, CLICK_IRRIGATE_WORKER, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO, CLICK_EXIT_INFO, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
-	public final static int MARKET_X = 4;
-
 	/* Font setup */
 	public final static LabelStyle STYLE2 = new LabelStyle(FONT, Color.WHITE);
+
 	private String description;
 	private Stage descriptionStage;
 	private Window descriptionWindow;
@@ -74,7 +73,6 @@ public class TutorialFarmScreen extends FarmScreen {
 	private State[] states;
 	private int stateIndex;
 	private boolean foundClick;
-
 	private int waitingForX;
 
 	/**
@@ -101,8 +99,14 @@ public class TutorialFarmScreen extends FarmScreen {
 		}
 	}
 
+	/**
+	 * Adds a button to the plantWindow which matches the given seed.
+	 * 
+	 * @param seed
+	 *            The button will be made to reference this seed.
+	 */
 	@Override
-	public void addSeedButton(AbstractSeed seed) {
+	protected void addSeedButton(AbstractSeed seed) {
 		Table seedTable = new Table();
 		Texture seedTexture = new Texture(Gdx.files.internal("textures/"
 				+ seed.getTextureName() + ".png"));
@@ -210,7 +214,8 @@ public class TutorialFarmScreen extends FarmScreen {
 			waitingForX = 1;
 			break;
 		case CLICK_IRRIGATE_PLOT:
-			// TODO: Still not quite what we want. Right now the player can also plow... not too bad, but...
+			// TODO: Still not quite what we want. Right now the player can also
+			// plow... not too bad, but...
 			description = "Now click a plot to irrigate it.\nGet the irrigation\n"
 					+ "to the plowed plot.";
 			descriptionX = (float) (Gdx.graphics.getWidth() * .35);
@@ -537,7 +542,7 @@ public class TutorialFarmScreen extends FarmScreen {
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection).setTaskType(this
 								.getTaskType());
-						state = state.update(
+						selection.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
 						unselect();
@@ -605,7 +610,8 @@ public class TutorialFarmScreen extends FarmScreen {
 	@Override
 	public void updateState(int x, int y) {
 		if (!foundClick) {
-			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
+			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled
+					&& selection != null) {
 				Plot plot = farm.getPlot(x, y - FIELD_STARTING_Y);
 				if (plot.isUsable()) {
 					boolean harvested = selection instanceof AbstractHarvestTool

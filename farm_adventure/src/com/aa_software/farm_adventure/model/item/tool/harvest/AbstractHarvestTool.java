@@ -42,21 +42,16 @@ public abstract class AbstractHarvestTool extends AbstractTool {
 	public void update(final Plot plot, final Inventory inventory) {
 		if (plot.isUsable() && plot.hasCrop()) {
 			SOUNDS.playClick();
-			final DefaultWorker worker;
-			if (workerIndex < 0
-					|| ((DefaultWorker) inventory.getItems()
-							.get(DefaultWorker.TYPE).get(workerIndex)).isBusy()) {
+			final DefaultWorker worker = (DefaultWorker) inventory.getItems()
+					.get(DefaultWorker.TYPE).get(workerIndex);
+			if (worker == null || worker.isBusy()) {
 				return;
-			} else {
-				worker = (DefaultWorker) inventory.getItems()
-						.get(DefaultWorker.TYPE).get(workerIndex);
 			}
 			worker.setBusy(true);
 			plot.setUsable(false);
 			// TODO: not the best way to do this, but to get the animation for
 			// removing the crops, this
 			// had to happen. Need a better solution here!
-			// TODO: "h" is also magic numbery.
 			AbstractCrop crop = plot.getCrop();
 			plot.setTaskTexturePrefix(TextureHelper.getTaskTypeValue("h"
 					+ crop.getTextureName()));

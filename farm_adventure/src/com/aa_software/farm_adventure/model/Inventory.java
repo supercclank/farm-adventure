@@ -170,7 +170,7 @@ public class Inventory {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Searches through the inventory to get and return the count of
 	 * AbstractWorkers It first searches for the key of type "WORKERS" that

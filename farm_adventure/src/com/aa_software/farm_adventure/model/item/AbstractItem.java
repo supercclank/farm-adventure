@@ -20,9 +20,9 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	protected String description;
 
 	public AbstractItem() {
-		
+
 	}
-	
+
 	public AbstractItem(int cost, int value, String name, String description) {
 		this.cost = cost;
 		this.value = value;

@@ -53,7 +53,7 @@ public class OptionsScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				masterValue.setText("" + (int) masterVolume.getValue() + "%");
-				sounds.setMasterVolume(masterVolume.getValue()/100);
+				sounds.setMasterVolume(masterVolume.getValue() / 100);
 				sounds.setMusicVolume(musicVolume.getValue() / 100);
 				sounds.setSoundVolume(gameVolume.getValue() / 100);
 			}
