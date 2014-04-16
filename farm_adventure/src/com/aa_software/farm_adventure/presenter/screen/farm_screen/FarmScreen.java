@@ -1154,16 +1154,22 @@ public class FarmScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Takes in an x, and y value (cell-based) that represents user input, as
-	 * well as the type of cell that was clicked. The options for this is ground
-	 * or tool bar. If the user clicked on the tool bar, that tool is selected
-	 * and the state updates. If a plot is clicked, the tool bar that was
-	 * previously selected will affect the status of the plot and the state will
-	 * update.
+	 * Takes in an x, and y value (cell-based) that represents user input.
+	 * Determines the what type of action should be taken based on this x and y.
+	 * 
+	 * If the player clicked the field, it should check if the player has
+	 * previously selected an item, and if so it should send the clicked plot to
+	 * visit the previous selection.
+	 * 
+	 * If the player clicked the tool bar, it should update their current
+	 * selection or bring up the market place, depending on the X coordinate of
+	 * their click.
 	 * 
 	 * @param x
-	 * @param y
-	 * @param property
+	 *            the tile/cell-based x coordinate clicked by the player.
+	 * @param ythe
+	 *            tile/cell-based y coordinate clicked by the player.
+	 * 
 	 */
 	public void updateState(int x, int y) {
 		if (!inventoryOpen) {
