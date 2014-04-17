@@ -26,7 +26,7 @@ public class Sounds {
 	 * Represents the music played throughout the game.
 	 */
 	public final Music mainMusic = Gdx.audio.newMusic(Gdx.files
-			.internal("sounds/music.mp3"));
+			.internal("sounds/musicTrack1.mp3"));
 	/**
 	 * Represents the volume level of game sounds, such as "click" and "money".
 	 */
