@@ -16,12 +16,12 @@ public class Sounds {
 	 * Represents the sound made when clicking on any button in the game.
 	 */
 	public final Sound click = Gdx.audio.newSound(Gdx.files
-			.internal("sounds/drop.wav"));
+			.internal("sounds/click2.mp3"));
 	/**
 	 * Represents the sound made when buying or selling an item in the market.
 	 */
 	public final Sound money = Gdx.audio.newSound(Gdx.files
-			.internal("sounds/money.mp3"));
+			.internal("sounds/coinClink.mp3"));
 	/**
 	 * Represents the music played throughout the game.
 	 */
