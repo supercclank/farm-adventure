@@ -527,14 +527,27 @@ public class FarmScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Removes the cost of each worker from the player's bankroll.
+	 * Removes the cost of each worker from the player's bankroll. If paying a
+	 * worker causes the players' bankroll to drop into the negatives, the
+	 * worker is fired.
 	 */
 	public void payWorker() {
 		int totalWorkerCost = 0;
 		ArrayList<AbstractItem> workers = farm.getInventory().getWorkers();
 		if (workers != null) {
+			int workersToFire = 0;
 			for (AbstractItem w : workers) {
 				totalWorkerCost += w.getCost();
+				if (PLAYER.getBankroll() - totalWorkerCost < 0) {
+					// TODO: Create a methond to remove a specific worker,
+					// instead of a random one, when workers can have different
+					// stats. Also, add a notification when workers are fired.
+					workersToFire++;
+
+				}
+			}
+			for (int i = 0; i < workersToFire; i++) {
+				farm.getInventory().removeItem((DefaultWorker) workers.get(0));
 			}
 		}
 
