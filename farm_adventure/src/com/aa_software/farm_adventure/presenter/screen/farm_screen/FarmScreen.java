@@ -587,6 +587,7 @@ public class FarmScreen extends AbstractScreen {
 
 			plantMenuStage.draw();
 
+			updateInventoryTable();
 			inventoryStage.draw();
 			inventoryStage.act();
 
@@ -631,7 +632,7 @@ public class FarmScreen extends AbstractScreen {
 		ScrollPane inventorySP = new ScrollPane(inventoryScrollTable,
 				inventorySkin);
 		marketTable.row();
-		marketTable.add(new Label("INVENTORY", inventorySkin))
+		marketTable.add(new Label("MARKETPLACE", inventorySkin))
 				.padLeft((float) (Gdx.graphics.getWidth() * .4))
 				.padRight((float) (Gdx.graphics.getWidth() * .15))
 				.width((float) (Gdx.graphics.getWidth() * .35));
