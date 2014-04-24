@@ -16,17 +16,17 @@ public class Sounds {
 	 * Represents the sound made when clicking on any button in the game.
 	 */
 	public final Sound click = Gdx.audio.newSound(Gdx.files
-			.internal("sounds/drop.wav"));
+			.internal("sounds/click.mp3"));
 	/**
 	 * Represents the sound made when buying or selling an item in the market.
 	 */
 	public final Sound money = Gdx.audio.newSound(Gdx.files
-			.internal("sounds/money.mp3"));
+			.internal("sounds/coinClink.mp3"));
 	/**
 	 * Represents the music played throughout the game.
 	 */
 	public final Music mainMusic = Gdx.audio.newMusic(Gdx.files
-			.internal("sounds/music.mp3"));
+			.internal("sounds/musicTrack1.mp3"));
 	/**
 	 * Represents the volume level of game sounds, such as "click" and "money".
 	 */
