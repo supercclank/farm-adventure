@@ -5,17 +5,36 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 /**
- * A Singleton class. Contains all the functions neccessary for a method to
+ * A Singleton class. Contains all the functions necessary for a method to
  * access sound effects and music. Plays the sounds and music through libGDX.
  * 
  * @author AA Software
  * 
  */
 public class Sounds {
-	protected Sound click;
-	protected Sound money;
-	protected Music mainMusic;
+	/**
+	 * Represents the sound made when clicking on any button in the game.
+	 */
+	public final Sound click = Gdx.audio.newSound(Gdx.files
+			.internal("sounds/click.mp3"));
+	/**
+	 * Represents the sound made when buying or selling an item in the market.
+	 */
+	public final Sound money = Gdx.audio.newSound(Gdx.files
+			.internal("sounds/coinClink.mp3"));
+	/**
+	 * Represents the music played throughout the game.
+	 */
+	public final Music mainMusic = Gdx.audio.newMusic(Gdx.files
+			.internal("sounds/musicTrack1.mp3"));
+	/**
+	 * Represents the volume level of game sounds, such as "click" and "money".
+	 */
 	protected float soundVolume;
+
+	/**
+	 * Scales the volume of the game.
+	 */
 	protected float masterVolume;
 
 	private static Sounds Instance;
@@ -37,13 +56,15 @@ public class Sounds {
 	 * Constructs a Sounds object with the appropriate sounds and music.
 	 */
 	private Sounds() {
-		click = Gdx.audio.newSound(Gdx.files.internal("sounds/drop.wav"));
-		money = Gdx.audio.newSound(Gdx.files.internal("sounds/money.mp3"));
-		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
 		soundVolume = 1;
 		masterVolume = 1;
 	}
 
+	/**
+	 * Returns the master volume of the game.
+	 * 
+	 * @return masterVolume
+	 */
 	public float getMasterVolume() {
 		return masterVolume;
 	}
@@ -52,6 +73,11 @@ public class Sounds {
 		return mainMusic.getVolume();
 	}
 
+	/**
+	 * Returns the volume of sounds within the game.
+	 * 
+	 * @return soundVolume
+	 */
 	public float getSoundVolume() {
 		return soundVolume;
 	}
@@ -110,7 +136,7 @@ public class Sounds {
 	 *            the highest.
 	 */
 	public void setMusicVolume(float vol) {
-		mainMusic.setVolume(vol);
+		mainMusic.setVolume(masterVolume * vol);
 	}
 
 	/**
@@ -121,6 +147,6 @@ public class Sounds {
 	 *            the highest.
 	 */
 	public void setSoundVolume(float vol) {
-		soundVolume = vol;
+		soundVolume = masterVolume * vol;
 	}
 }

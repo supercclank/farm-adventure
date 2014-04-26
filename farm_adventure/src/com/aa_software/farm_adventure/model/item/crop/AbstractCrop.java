@@ -4,57 +4,39 @@ import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
+/**
+ * Represents the basis of a crop.
+ * 
+ * @author Bebop
+ * 
+ */
 public abstract class AbstractCrop extends AbstractItem {
-	public static final float DEFAULT_GROWTH_TIME = 5;
-	protected float growthTime;
-	protected int output;
-	protected boolean isHarvestable;
 
-	public AbstractCrop() {
-		isHarvestable = false;
-	}
+	private String texture;
+	public static final String TYPE = "CROPS";
 
-	public float getGrowthTime() {
-		return growthTime;
+	public AbstractCrop(int cost, int value, String name, String description,
+			String texture) {
+		super(cost, value, name, description);
+		this.texture = texture;
 	}
 
 	@Override
 	public String getItemType() {
-		return "CROPS";
-	}
-
-	public int getOutput() {
-		return output;
-	}
-
-	public String getSeedName() {
-		return "crops";
+		return TYPE;
 	}
 
 	@Override
 	public String getTextureName() {
-		return "texture";
-	}
-
-	public boolean isHarvestable() {
-		return isHarvestable;
-	}
-
-	public void setGrowthTime(float growthTime) {
-		this.growthTime = growthTime;
-	}
-
-	public void setOutput(int output) {
-		this.output = output;
+		return texture;
 	}
 
 	@Override
 	public void update(AbstractItem item) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void update(Plot plot, Inventory inventory) {
 	}
+
 }

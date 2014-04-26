@@ -1,7 +1,6 @@
 package com.aa_software.farm_adventure;
 
 import android.os.Bundle;
-
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;

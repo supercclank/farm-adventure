@@ -1,18 +1,13 @@
 package com.aa_software.farm_adventure.presenter.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.aa_software.farm_adventure.model.audio.Sounds;
-import com.aa_software.farm_adventure.model.farm.DesertFarm;
-import com.aa_software.farm_adventure.model.farm.FarmType;
-import com.aa_software.farm_adventure.model.farm.RainforestFarm;
-import com.aa_software.farm_adventure.model.farm.SnowFarm;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
-import com.aa_software.farm_adventure.model.season.SeasonType;
+import com.aa_software.farm_adventure.model.farm.Biome;
+import com.aa_software.farm_adventure.model.season.Season;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.AbstractFarmScreen;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.DesertFarmScreen;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.RainforestFarmScreen;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.SnowFarmScreen;
-import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
+import com.aa_software.farm_adventure.presenter.screen.farm_screen.FarmScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,7 +32,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
  */
 public class WorldScreen extends AbstractScreen {
 
-	public static final Sounds sounds = Sounds.getInstance();
+	/* Sound */
+	public static final Sounds SOUNDS = Sounds.getInstance();
+
 	public static final float WINDOW_X = (float) (STAGE_WIDTH * .32);
 	public static final float WINDOW_Y = (float) (STAGE_HEIGHT * .40);
 
@@ -48,8 +45,8 @@ public class WorldScreen extends AbstractScreen {
 	protected Stage farmMenuStage;
 	protected Window seasonWindow;
 
-	protected SeasonType[] seasons;
-	protected FarmType selectedFarm;
+	protected static final Biome.Type[] BIOMES = { Biome.Type.GRASSLAND,
+			Biome.Type.TROPICAL, Biome.Type.TEMPERATE, Biome.Type.BOREAL };
 
 	/**
 	 * Constructs a WorldScreen based on the current game.
@@ -91,126 +88,10 @@ public class WorldScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Sets up the world map screen with a background map and farm buttons. When
-	 * a farm button is selected, the type of farm selected is saved, and
-	 * setupSeasonMenu is called.
-	 */
-	public void setupWorldMap() {
-		// Create background and table
-		Image background = new Image(new Texture(
-				Gdx.files.internal("world/WorldMap.png")));
-		Table table = new Table();
-		background.setFillParent(true);
-		// if(FarmAdventure.DEV_MODE)
-		// table.debug();
-		super.addActor(background);
-		super.addActor(table);
-		table.setFillParent(true);
-
-		// Set up the texture for the button
-		final Texture tutorialTex = new Texture(
-				Gdx.files.internal("world/TutorialFarm.png"));
-		final Texture rainforestTex = new Texture(
-				Gdx.files.internal("world/RainforestFarm.png"));
-		final Texture desertTex = new Texture(
-				Gdx.files.internal("world/DesertFarm.png"));
-		final Texture snowTex = new Texture(
-				Gdx.files.internal("world/SnowFarm.png"));
-
-		// Create buttons
-		Button tutorialFarmButton = new Button(new Image(tutorialTex), skin);
-		Button rainforestFarmButton = new Button(new Image(rainforestTex), skin);
-		Button desertFarmButton = new Button(new Image(desertTex), skin);
-		Button snowFarmButton = new Button(new Image(snowTex), skin);
-
-		// Add buttons to the correct position
-		super.addActor(tutorialFarmButton);
-		table.add(tutorialFarmButton).size(100, 100).top().left()
-				.padTop((float) (.05 * screenHeight))
-				.padLeft((float) (.15 * screenWidth));
-		table.row();
-		super.addActor(rainforestFarmButton);
-		table.add(rainforestFarmButton).size(100, 100).expand().top().right()
-				.padTop((float) (.20 * screenHeight))
-				.padRight((float) (.10 * screenWidth));
-		table.row();
-		super.addActor(desertFarmButton);
-		table.add(desertFarmButton).size(100, 100).expand().bottom().left()
-				.padBottom((float) (.05 * screenHeight))
-				.padLeft((float) (.07 * screenWidth));
-		table.row();
-		super.addActor(snowFarmButton);
-		table.add(snowFarmButton).size(100, 100).expand().bottom().right()
-				.padBottom((float) (.10 * screenHeight))
-				.padRight((float) (.15 * screenWidth));
-		table.row();
-
-		// This line of code will take the user to the farm on click or touch of
-		// the tutorial farm
-		tutorialFarmButton.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				seasons = TutorialFarm.DEFAULT_SEASONS;
-				selectedFarm = FarmType.TUTORIAL;
-				setupSeasonMenu();
-				seasonWindow.setVisible(true);
-				sounds.playClick();
-				return true;
-			}
-		});
-
-		// This line of code will take the user to the farm on click or touch of
-		// the rainforest farm
-		rainforestFarmButton.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				seasons = RainforestFarm.DEFAULT_SEASONS;
-				selectedFarm = FarmType.RAINFOREST;
-				setupSeasonMenu();
-				seasonWindow.setVisible(true);
-				sounds.playClick();
-				return true;
-			}
-		});
-
-		// This line of code will take the user to the farm on click or touch of
-		// the desert farm
-		desertFarmButton.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				seasons = DesertFarm.DEFAULT_SEASONS;
-				selectedFarm = FarmType.DESERT;
-				setupSeasonMenu();
-				seasonWindow.setVisible(true);
-				sounds.playClick();
-				return true;
-			}
-		});
-
-		// This line of code will take the user to the farm on click or touch of
-		// the snow farm
-		snowFarmButton.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				seasons = SnowFarm.DEFAULT_SEASONS;
-				selectedFarm = FarmType.SNOW;
-				setupSeasonMenu();
-				seasonWindow.setVisible(true);
-				sounds.playClick();
-				return true;
-			}
-		});
-	}
-	
-	/**
 	 * Sets up the window to display the seasons for the currently selected farm
 	 * and a button to start the selected farm.
 	 */
-	public void setupSeasonMenu() {
+	public void setupSeasonMenu(final Biome.Type biome) {
 
 		// Gdx.input.setInputProcessor(plantMenuStage);
 
@@ -226,7 +107,7 @@ public class WorldScreen extends AbstractScreen {
 
 		TextButton playFarmButton = new TextButton("Play Farm", skin);
 
-		seasonWindow = new Window("Seasons for this farm", skin);
+		seasonWindow = new Window("Season cycle for this farm", skin);
 		seasonWindow.setModal(false);
 		seasonWindow.setMovable(false);
 		seasonWindow.setVisible(false);
@@ -236,7 +117,7 @@ public class WorldScreen extends AbstractScreen {
 
 		/* Decide the season order */
 		Button seasonButton;
-		for (SeasonType s : seasons) {
+		for (Season.Type s : Biome.getSeasons(biome)) {
 			switch (s) {
 			case SPRING:
 				seasonButton = new Button(new Image(springImage), skin);
@@ -273,28 +154,83 @@ public class WorldScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				AbstractFarmScreen farmScreen;
-				switch (selectedFarm) {
-				case TUTORIAL:
-					farmScreen = new TutorialFarmScreen();
-					break;
-				case RAINFOREST:
-					farmScreen = new RainforestFarmScreen();
-					break;
-				case DESERT:
-					farmScreen = new DesertFarmScreen();
-					break;
-				case SNOW:
-					farmScreen = new SnowFarmScreen();
-					break;
-				default:
-					farmScreen = new TutorialFarmScreen();
-					break;
-				}
-				FarmAdventure.getInstance().setScreen(farmScreen);
-				sounds.playClick();
+				FarmAdventure.getInstance().setScreen(new FarmScreen(biome));
+				SOUNDS.playClick();
 				return true;
 			}
 		});
 	}
+
+	/**
+	 * Sets up the world map screen with a background map and farm buttons. When
+	 * a farm button is selected, the type of farm selected is saved, and
+	 * setupSeasonMenu is called.
+	 */
+	public void setupWorldMap() {
+		// Create background and table
+		Image background = new Image(new Texture(
+				Gdx.files.internal("world/WorldMap.png")));
+		Table table = new Table();
+		background.setFillParent(true);
+		// if(FarmAdventure.DEV_MODE)
+		// table.debug();
+		super.addActor(background);
+		super.addActor(table);
+		table.setFillParent(true);
+
+		// Set up the texture for the button
+		final Texture tutorialTex = new Texture(
+				Gdx.files.internal("world/TutorialFarm.png"));
+		final Texture rainforestTex = new Texture(
+				Gdx.files.internal("world/RainforestFarm.png"));
+		final Texture desertTex = new Texture(
+				Gdx.files.internal("world/DesertFarm.png"));
+		final Texture snowTex = new Texture(
+				Gdx.files.internal("world/SnowFarm.png"));
+
+		// Create buttons
+		List<Button> farmButtons = new ArrayList<Button>();
+		Button grasslandFarmButton = new Button(new Image(tutorialTex), skin);
+		farmButtons.add(grasslandFarmButton);
+		Button tropicalFarmButton = new Button(new Image(rainforestTex), skin);
+		farmButtons.add(tropicalFarmButton);
+		Button temperateFarmButton = new Button(new Image(desertTex), skin);
+		farmButtons.add(temperateFarmButton);
+		Button borealFarmButton = new Button(new Image(snowTex), skin);
+		farmButtons.add(borealFarmButton);
+
+		int index = 0;
+		for (final Biome.Type biome : BIOMES) {
+			farmButtons.get(index).addListener(new InputListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
+					setupSeasonMenu(biome);
+					seasonWindow.setVisible(true);
+					SOUNDS.playClick();
+					return true;
+				}
+			});
+			index++;
+		}
+		// Add buttons to the correct position
+		table.add(grasslandFarmButton).size(100, 100).top().left()
+				.padTop((float) (.05 * screenHeight))
+				.padLeft((float) (.15 * screenWidth));
+		table.row();
+		table.add(tropicalFarmButton).size(100, 100).expand().top().right()
+				.padTop((float) (.20 * screenHeight))
+				.padRight((float) (.10 * screenWidth));
+		table.row();
+		table.add(temperateFarmButton).size(100, 100).expand().bottom().left()
+				.padBottom((float) (.05 * screenHeight))
+				.padLeft((float) (.07 * screenWidth));
+		table.row();
+		table.add(borealFarmButton).size(100, 100).expand().bottom().right()
+				.padBottom((float) (.10 * screenHeight))
+				.padRight((float) (.15 * screenWidth));
+		table.row();
+	}
+	
+	
 }

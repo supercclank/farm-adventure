@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuScreen extends AbstractScreen {
 
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 	private Skin skin;
 	private static final int BUTTON_WIDTH = 300;
 	private static final int BUTTON_HEIGHT = 60;
@@ -57,10 +57,10 @@ public class MainMenuScreen extends AbstractScreen {
 		table.row();
 
 		// register the button "start game"
-		TextButton startGameButton = new TextButton("Start game",skin);
+		TextButton startGameButton = new TextButton("Start game", skin);
 
 		// Start Music
-		sounds.playMusic();
+		SOUNDS.playMusic();
 
 		// This line of code will take the user to the world screen on click or
 		// touch
@@ -68,8 +68,8 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new WorldScreen());
-				sounds.playClick();
 				return true;
 			}
 		});
@@ -85,6 +85,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new TutorialFarmScreen());
 				return true;
 			}
@@ -101,6 +102,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				SOUNDS.playClick();
 				FarmAdventure.getInstance().setScreen(new OptionsScreen());
 				return true;
 			}

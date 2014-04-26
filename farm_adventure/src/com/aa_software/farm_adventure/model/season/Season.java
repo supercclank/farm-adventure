@@ -6,9 +6,12 @@ import java.util.Random;
 import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.plot.Irrigation;
 import com.aa_software.farm_adventure.model.plot.Plot;
-import com.aa_software.farm_adventure.model.plot.PlotType;
 
 public class Season {
+
+	public enum Type {
+		FALL, WINTER, SPRING, SUMMER
+	}
 
 	/**
 	 * Each season affects the growth rate of plants.
@@ -29,17 +32,18 @@ public class Season {
 	public static final int CYCLE_TIME_MILLIS = 60000;
 
 	private float cycleTime;
-	private SeasonType seasonType;
-	private float growthRateMod = 1;
+	private Type type;
+	private float growthRateMod;
 
-	public Season(SeasonType seasonType) {
+	public Season(Type type) {
 		this.cycleTime = CYCLE_TIME_MILLIS;
-		this.seasonType = seasonType;
+		this.type = type;
+		this.growthRateMod = 1;
 	}
 
-	public Season(SeasonType seasonType, float cycleTime) {
+	public Season(Type type, float cycleTime) {
 		this.cycleTime = cycleTime;
-		this.seasonType = seasonType;
+		this.type = type;
 	}
 
 	public float getCycleTime() {
@@ -50,8 +54,8 @@ public class Season {
 		return growthRateMod;
 	}
 
-	public SeasonType getSeasonType() {
-		return seasonType;
+	public Type getType() {
+		return type;
 	}
 
 	public void setCycleTime(int cycleTime) {
@@ -62,8 +66,8 @@ public class Season {
 		this.growthRateMod = growthRateMod;
 	}
 
-	public void setSeasonType(SeasonType seasonType) {
-		this.seasonType = seasonType;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	/**
@@ -78,14 +82,15 @@ public class Season {
 		/* Reset the field, incase it has previously been affected */
 		for (int x = 0; x < Field.COLUMNS; x++) {
 			for (int y = 0; y < Field.ROWS; y++) {
-				if (field.getPlot(x, y).getPlotType() != PlotType.WATER)
+				if (field.getPlot(x, y).getPlotType() != Plot.Type.WATER)
 					field.getPlot(x, y).setUsable(true);
-				if (field.getPlot(x, y).getPlotType() == PlotType.LEAVES) {
-					field.getPlot(x, y).setPlotType(PlotType.GRASS);
+				if (field.getPlot(x, y).getPlotType() == Plot.Type.LEAVES) {
+					field.getPlot(x, y).setPlotType(Plot.Type.GRASS);
 				}
 			}
 		}
-		switch (seasonType) {
+
+		switch (type) {
 		case SPRING:
 			growthRateMod = SPRING_GROWTH_RATE_MOD;
 			break;
@@ -116,7 +121,7 @@ public class Season {
 					roll = random.nextInt(10);
 					if (roll < 10 * FALL_LEAF_COVER_MOD) {
 						Plot plot = field.getPlot(x, y);
-						plot.setPlotType(PlotType.LEAVES);
+						plot.setPlotType(Plot.Type.LEAVES);
 						plot.setCrop(null);
 						plot.setUsable(false);
 					}
@@ -126,6 +131,8 @@ public class Season {
 		}
 		case WINTER:
 			growthRateMod = WINTER_GROWTH_RATE_MOD;
+			break;
+		default:
 		}
 	}
 }

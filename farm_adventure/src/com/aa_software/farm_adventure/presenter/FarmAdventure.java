@@ -1,5 +1,7 @@
 package com.aa_software.farm_adventure.presenter;
 
+import com.aa_software.farm_adventure.model.audio.Sounds;
+import com.aa_software.farm_adventure.model.player.Player;
 import com.aa_software.farm_adventure.presenter.screen.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -47,9 +49,13 @@ public class FarmAdventure extends Game {
 	@Override
 	public void create() {
 		GLTexture.setEnforcePotImages(false);
+
 		log("Creating game");
 		FpsLogger = new FPSLogger();
 
+		Sounds.getInstance();
+		Player player = Player.getInstance();
+		player.loadData();
 		MainMenuScreen mms = new MainMenuScreen();
 		super.setScreen(mms);
 	}
@@ -57,7 +63,8 @@ public class FarmAdventure extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
-
+		Player player = Player.getInstance();
+		player.saveData();
 		log("Disposing Game");
 	}
 

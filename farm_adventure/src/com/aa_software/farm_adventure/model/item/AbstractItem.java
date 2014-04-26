@@ -4,21 +4,38 @@ import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.model.plot.Plot;
 
+/**
+ * Represents the basis of an individual item.
+ * 
+ * @author Bebop
+ * 
+ */
 public abstract class AbstractItem implements Comparable<AbstractItem> {
 
 	/* Sound */
-	public static final Sounds sounds = Sounds.getInstance();
+	public static final Sounds SOUNDS = Sounds.getInstance();
 	protected int cost;
 	protected int value;
-	protected String name = "N/A";
-	protected String description = "No description available";
+	protected String name;
+	protected String description;
+
+	public AbstractItem() {
+
+	}
+
+	public AbstractItem(int cost, int value, String name, String description) {
+		this.cost = cost;
+		this.value = value;
+		this.name = name;
+		this.description = description;
+	}
 
 	/**
 	 * Compare items based on their name
 	 */
 	@Override
 	public int compareTo(AbstractItem item) {
-		return this.name.compareTo(item.getName());
+		return getName().compareTo(item.getName());
 	}
 
 	/**
@@ -27,11 +44,11 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 * @return cost
 	 */
 	public int getCost() {
-		return this.cost;
+		return cost;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	/**
@@ -39,15 +56,13 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 * 
 	 * @return
 	 */
-	public String getItemType() {
-		return "";
-	}
+	public abstract String getItemType();
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
-	abstract public String getTextureName();
+	public abstract String getTextureName();
 
 	/**
 	 * Return the item's selling value
@@ -81,15 +96,15 @@ public abstract class AbstractItem implements Comparable<AbstractItem> {
 	 */
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 
-	abstract public void update(AbstractItem item);
+	public abstract void update(AbstractItem item);
 
 	/**
 	 * Changes the status of the given plot and inventory
 	 * 
 	 * @param plot
 	 */
-	abstract public void update(Plot plot, Inventory inventory);
+	public abstract void update(Plot plot, Inventory inventory);
 }

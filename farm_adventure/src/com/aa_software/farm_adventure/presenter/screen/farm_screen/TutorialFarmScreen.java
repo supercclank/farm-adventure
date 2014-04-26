@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import com.aa_software.farm_adventure.model.Field;
-import com.aa_software.farm_adventure.model.farm.TutorialFarm;
+import com.aa_software.farm_adventure.model.farm.Biome;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.AbstractHarvestTool;
@@ -35,19 +35,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class TutorialFarmScreen extends AbstractFarmScreen {
-	
-	private class SeedClickListener extends ClickListener {
+public class TutorialFarmScreen extends FarmScreen {
+
+	protected class SeedClickListener extends ClickListener {
 		AbstractItem item;
 
 		public SeedClickListener(AbstractItem item) {
 			this.item = item;
 		}
 
-		/**
-		 * On button touch the item is bought and the item quantity is updated
-		 * in the inventory
-		 */
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y,
 				int pointer, int button) {
@@ -58,20 +54,18 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			if (states[stateIndex] == State.CLICK_PLANT_MENU) {
 				foundClick = true;
 			}
-			sounds.playClick();
-			Gdx.input.setInputProcessor(workerStage);
+			SOUNDS.playClick();
 			return true;
 		}
 	}
 
-	enum State {
+	public enum State {
 		DESCRIBE_OBJECTIVE, DESCRIBE_FIELD, DESCRIBE_STATUS_BAR, DESCRIBE_PLOW_WORKER, CLICK_PLOW_WORKER, DESCRIBE_TOOL_BAR, DESCRIBE_PLOW, CLICK_PLOW, CLICK_PLOW_PLOT, WAIT_PLOW_PLOT, CLICK_IRRIGATE_WORKER, DESCRIBE_IRRIGATE, CLICK_IRRIGATE, CLICK_IRRIGATE_PLOT, CLICK_PLANT_WORKER, DESCRIBE_PLANT, CLICK_PLANT, CLICK_CLICK_PLANT, CLICK_PLANT_MENU, CLICK_PLANT_PLOT, WAIT_PLANT_PLOT, CLICK_HARVEST_WORKER, DESCRIBE_HARVEST, CLICK_HARVEST, CLICK_HARVEST_PLOT, WAIT_HARVEST_PLOT, DESCRIBE_INVENTORY, CLICK_INVENTORY, DESCRIBE_INVENTORY_SCREEN, DESCRIBE_QUANTITY, DESCRIBE_BUY_AND_SELL, CLICK_BUY_AND_SELL, DESCRIBE_INFO, CLICK_INFO, DESCRIBE_EXIT_INFO, CLICK_EXIT_INFO, BEFORE_LEAVING, DESCRIBE_SEASONS, DESCRIBE_SPRING, DESCRIBE_SUMMER, DESCRIBE_FALL, DESCRIBE_WINTER, DESCRIBE_END, END
 	}
 
-	final int MARKET_X = 4;
-
 	/* Font setup */
-	final LabelStyle style2 = new LabelStyle(fontType, Color.WHITE);
+	public final static LabelStyle STYLE2 = new LabelStyle(FONT, Color.WHITE);
+
 	private String description;
 	private Stage descriptionStage;
 	private Window descriptionWindow;
@@ -79,28 +73,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	private State[] states;
 	private int stateIndex;
 	private boolean foundClick;
-
 	private int waitingForX;
 
 	/**
 	 * Constructs a farm screen using the specifications of TutorialFarm.
 	 */
 	public TutorialFarmScreen() {
-		super();
-		farm = new TutorialFarm();
-
+		super(Biome.Type.GRASSLAND);
 		states = State.values();
 
 		descriptionStage = new Stage(STAGE_WIDTH,
 				STAGE_HEIGHT, true);
 
-		descriptionWindow = new Window("Tutorial Guide:", skin);
-		descriptionWindow.setModal(false);
-		descriptionWindow.setMovable(false);
-		descriptionWindow.defaults().spaceBottom(10);
-		descriptionWindow.row().fill().expandX();
+		descriptionWindow = setupWindow("Tutorial Guide:", 0, 0);
 		descriptionWindow.setVisible(true);
-
 		descriptionStage.addActor(descriptionWindow);
 		getDescription();
 		updateDescription();
@@ -108,15 +94,19 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		disableGameTime = true;
 		foundClick = true;
 
-		// TODO: Maybe there is a better way to stop the deficient worker
-		// deadlock.
 		for (int i = 0; i < 2; i++) {
 			farm.getInventory().addItem(new DefaultWorker());
 		}
 	}
 
+	/**
+	 * Adds a button to the plantWindow which matches the given seed.
+	 * 
+	 * @param seed
+	 *            The button will be made to reference this seed.
+	 */
 	@Override
-	public void addSeedButton(AbstractSeed seed) {
+	protected void addSeedButton(AbstractSeed seed) {
 		Table seedTable = new Table();
 		Texture seedTexture = new Texture(Gdx.files.internal("textures/"
 				+ seed.getTextureName() + ".png"));
@@ -124,7 +114,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		seedTable.row();
 		seedTable.add(new Image(seedImage));
 		Label seedQuantity = new Label("" + farm.getInventory().getCount(seed),
-				style1);
+				LABEL_STYLE);
 		seedTable.row();
 		seedTable.add(seedQuantity);
 		Button seedButton = new Button(seedTable, skin);
@@ -139,6 +129,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	@Override
 	public void dispose() {
 		setAllGameClicksDisabled(false);
+		farm.disposeOfTimers();
 		map.dispose();
 		renderer.dispose();
 		descriptionStage.dispose();
@@ -225,13 +216,15 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 			waitingForX = 1;
 			break;
 		case CLICK_IRRIGATE_PLOT:
-			// TODO: Make sure that it only goes forward if you click a plot
-			// open to irrigation!
-			description = "Now click a plot to irrigate it.\nTry to get the irrigation\n"
+			// TODO: Still not quite what we want. Right now the player can also
+			// plow... not too bad, but...
+			description = "Now click a plot to irrigate it.\nGet the irrigation\n"
 					+ "to the plowed plot.";
 			descriptionX = (float) (width  * .35);
 			descriptionY = (float) (height * .9);
+			toolBarClicksDisabled = false;
 			foundClick = false;
+			waitingForX = 1;
 			irrigationMenuClicksDisabled = false;
 			fieldClicksDisabled = false;
 			break;
@@ -450,7 +443,6 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				&& (states[stateIndex] == State.CLICK_PLOW_WORKER || states[stateIndex] == State.CLICK_IRRIGATE_WORKER)
 				|| states[stateIndex] == State.CLICK_PLANT_WORKER
 				|| states[stateIndex] == State.CLICK_HARVEST_WORKER) {
-			Gdx.input.setInputProcessor(workerStage);
 			if (selectedWorker >= 0) {
 				workerClicksDisabled = true;
 				foundClick = true;
@@ -461,7 +453,7 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		// similar to the
 		// "click" set that transition on a given condition.
 		if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
-			if (unwateredPlowedPlotExists() && foundClick) {
+			if (wateredPlowedPlotExists() && foundClick) {
 				transitionState();
 			}
 		} else if (states[stateIndex].toString().toLowerCase()
@@ -487,23 +479,9 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		updateDescription();
 	}
 
-	public boolean unwateredPlowedPlotExists() {
-		// TODO probably want to move this logic to Farm
-		Field field = farm.getField();
-		for (int i = 0; i < Field.COLUMNS; i++) {
-			for (int j = 0; j < Field.ROWS; j++) {
-				Plot plot = field.getPlot(i, j);
-				if (!(plot.isUnplowed() || plot.isGrass())
-						&& plot.isIrrigated()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public void updateDescription() {
-		Label description = new Label(this.description, style2);
+		Label description = new Label(this.description, STYLE2);
+		description.setColor(Color.ORANGE);
 		descriptionWindow.add(description);
 
 		if (!states[stateIndex].toString().toLowerCase().contains("click")) {
@@ -512,10 +490,12 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
+					SOUNDS.playClick();
 					transitionState();
 					return true;
 				}
 			});
+			nextButton.setColor(Color.ORANGE);
 			descriptionWindow.add(nextButton);
 		}
 
@@ -559,13 +539,16 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
 					if (selection instanceof AbstractIrrigationTool) {
+						SOUNDS.playClick();
 						((AbstractIrrigationTool) selection)
 								.setIrrigationChoice(this.getIrrigation());
 						((AbstractIrrigationTool) selection).setTaskType(this
 								.getTaskType());
-						state = state.update(
+						selection.update(
 								farm.getPlot(this.getX(), this.getY()),
 								farm.getInventory());
+						unselect();
+						SOUNDS.playClick();
 					}
 					if (states[stateIndex] == State.CLICK_IRRIGATE_PLOT) {
 						foundClick = true;
@@ -629,7 +612,8 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 	@Override
 	public void updateState(int x, int y) {
 		if (!foundClick) {
-			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled) {
+			if (y >= FIELD_STARTING_Y && !fieldClicksDisabled
+					&& selection != null) {
 				Plot plot = farm.getPlot(x, y - FIELD_STARTING_Y);
 				if (plot.isUsable()) {
 					boolean harvested = selection instanceof AbstractHarvestTool
@@ -655,5 +639,20 @@ public class TutorialFarmScreen extends AbstractFarmScreen {
 		} else {
 			super.updateState(x, y);
 		}
+	}
+
+	public boolean wateredPlowedPlotExists() {
+		// TODO probably want to move this logic to Farm
+		Field field = farm.getField();
+		for (int i = 0; i < Field.COLUMNS; i++) {
+			for (int j = 0; j < Field.ROWS; j++) {
+				Plot plot = field.getPlot(i, j);
+				if (!(plot.isUnplowed() || plot.isGrass())
+						&& plot.isIrrigated()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
