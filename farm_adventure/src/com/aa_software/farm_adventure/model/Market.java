@@ -6,17 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.aa_software.farm_adventure.model.item.AbstractItem;
-import com.aa_software.farm_adventure.model.item.crop.BananaCrop;
+import com.aa_software.farm_adventure.model.item.crop.PotatoCrop;
 import com.aa_software.farm_adventure.model.item.crop.BeetCrop;
 import com.aa_software.farm_adventure.model.item.crop.CarrotCrop;
-import com.aa_software.farm_adventure.model.item.crop.RiceCrop;
-import com.aa_software.farm_adventure.model.item.seed.BananaSeed;
+import com.aa_software.farm_adventure.model.item.crop.CabbageCrop;
+import com.aa_software.farm_adventure.model.item.seed.PotatoSeed;
 import com.aa_software.farm_adventure.model.item.seed.BeetSeed;
 import com.aa_software.farm_adventure.model.item.seed.CarrotSeed;
-import com.aa_software.farm_adventure.model.item.seed.RiceSeed;
+import com.aa_software.farm_adventure.model.item.seed.CabbageSeed;
 import com.aa_software.farm_adventure.model.item.tool.harvest.ScytheTool;
 import com.aa_software.farm_adventure.model.item.tool.irrigate.ShovelTool;
-import com.aa_software.farm_adventure.model.item.tool.plant.TrowelTool;
+import com.aa_software.farm_adventure.model.item.tool.plant.SeedPackTool;
 import com.aa_software.farm_adventure.model.item.tool.plow.HandPlowTool;
 import com.aa_software.farm_adventure.model.item.worker.DefaultWorker;
 
@@ -30,10 +30,10 @@ public class Market {
 
 	private ArrayList<AbstractItem> defaultItems = new ArrayList<AbstractItem>(
 			Arrays.asList(new AbstractItem[] { new DefaultWorker(),
-					new BananaCrop(), new BeetCrop(), new CarrotCrop(),
-					new RiceCrop(), new HandPlowTool(), new ShovelTool(),
-					new TrowelTool(), new ScytheTool(), new BananaSeed(),
-					new BeetSeed(), new CarrotSeed(), new RiceSeed() }));
+					new PotatoCrop(), new BeetCrop(), new CarrotCrop(),
+					new CabbageCrop(), new HandPlowTool(), new ShovelTool(),
+					new SeedPackTool(), new ScytheTool(), new PotatoSeed(),
+					new BeetSeed(), new CarrotSeed(), new CabbageSeed() }));
 
 	private Map<String, ArrayList<AbstractItem>> marketItems = new HashMap<String, ArrayList<AbstractItem>>();
 

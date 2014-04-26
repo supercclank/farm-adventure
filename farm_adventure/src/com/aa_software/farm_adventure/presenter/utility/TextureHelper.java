@@ -164,10 +164,10 @@ public class TextureHelper {
 			type = TaskType.PLOW_UW;
 		} else if (textureName.equals("plowedwatered")) {
 			type = TaskType.PLOW_W;
-		} else if (textureName.equals("pbananaCrop")) {
-			type = TaskType.PBAN;
-		} else if (textureName.equals("hbananaCrop")) {
-			type = TaskType.HBAN;
+		} else if (textureName.equals("ppotatoCrop")) {
+			type = TaskType.PPOT;
+		} else if (textureName.equals("hpotatoCrop")) {
+			type = TaskType.HPOT;
 		} else if (textureName.equals("pbeetCrop")) {
 			type = TaskType.PBEET;
 		} else if (textureName.equals("hbeetCrop")) {
@@ -176,10 +176,10 @@ public class TextureHelper {
 			type = TaskType.PCAR;
 		} else if (textureName.equals("hcarrotCrop")) {
 			type = TaskType.HCAR;
-		} else if (textureName.equals("priceCrop")) {
-			type = TaskType.PRIC;
-		} else if (textureName.equals("hriceCrop")) {
-			type = TaskType.HRIC;
+		} else if (textureName.equals("pcabbageCrop")) {
+			type = TaskType.PCAB;
+		} else if (textureName.equals("hcabbageCrop")) {
+			type = TaskType.HCAB;
 		} else if (textureName.equals("pbuddingCrop")) {
 			type = TaskType.PBUD;
 		} else if (textureName.equals("hbuddingCrop")) {

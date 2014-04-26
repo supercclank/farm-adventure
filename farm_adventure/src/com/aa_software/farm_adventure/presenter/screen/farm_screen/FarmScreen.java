@@ -534,7 +534,7 @@ public class FarmScreen extends AbstractScreen {
 	public void payWorker() {
 		int totalWorkerCost = 0;
 		ArrayList<AbstractItem> workers = farm.getInventory().getWorkers();
-		if (workers != null) {
+		if (workers != null && workers.size() > 1) {
 			int workersToFire = 0;
 			for (AbstractItem w : workers) {
 				totalWorkerCost += w.getCost();
@@ -547,7 +547,7 @@ public class FarmScreen extends AbstractScreen {
 				}
 			}
 			for (int i = 0; i < workersToFire; i++) {
-				farm.getInventory().removeItem((DefaultWorker) workers.get(0));
+				farm.getInventory().removeItem(workers.get(0));
 			}
 		}
 
