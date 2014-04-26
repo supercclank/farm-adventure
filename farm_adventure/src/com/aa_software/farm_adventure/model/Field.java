@@ -328,20 +328,6 @@ public class Field {
 			return Irrigation.LEFT;
 	}
 
-	public void createSnowField() {
-		for (int i = 0; i < plots2D.length; i++) {
-			for (int j = 0; j < plots2D[i].length; j++) {
-				if (j == 2 && (i == 1 || i == 2 || i == 3)) {
-					plots2D[i][j] = new Plot(Plot.Type.WATER);
-					plots2D[i][j].setUsable(false);
-				} else {
-					plots2D[i][j] = new Plot(Plot.Type.GRASS);
-				}
-			}
-		}
-		syncAllIrrigation();
-	}
-
 	/**
 	 * Checks the neighboring plots to see the reason why the current irrigation
 	 * is a valid irrigation for the plot and returns the irrigation side that
