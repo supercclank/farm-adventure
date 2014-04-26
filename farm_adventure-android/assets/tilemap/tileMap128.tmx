@@ -54,7 +54,7 @@
   </tile>
   <tile id="14">
    <properties>
-    <property name="tool" value="trowelTool"/>
+    <property name="tool" value="seedPackTool"/>
    </properties>
   </tile>
   <tile id="15">
@@ -154,12 +154,12 @@
   </tile>
   <tile id="36">
    <properties>
-    <property name="seed" value="riceSeed"/>
+    <property name="seed" value="cabbageSeed"/>
    </properties>
   </tile>
   <tile id="37">
    <properties>
-    <property name="seed" value="bananaSeed"/>
+    <property name="seed" value="potatoSeed"/>
    </properties>
   </tile>
   <tile id="38">
@@ -209,7 +209,7 @@
   </tile>
   <tile id="48">
    <properties>
-    <property name="plant" value="bananaCrop"/>
+    <property name="plant" value="potatoCrop"/>
    </properties>
   </tile>
   <tile id="49">
@@ -224,7 +224,7 @@
   </tile>
   <tile id="51">
    <properties>
-    <property name="plant" value="riceCrop"/>
+    <property name="plant" value="cabbageCrop"/>
    </properties>
   </tile>
   <tile id="52">
@@ -449,17 +449,12 @@
   </tile>
   <tile id="113">
    <properties>
-    <property name="task" value="task1"/>
+    <property name="tool" value="tractorPlowTool"/>
    </properties>
   </tile>
   <tile id="114">
    <properties>
     <property name="task" value="task4"/>
-   </properties>
-  </tile>
-  <tile id="115">
-   <properties>
-    <property name="tool" value="combineTool"/>
    </properties>
   </tile>
   <tile id="120">
@@ -488,11 +483,6 @@
    </properties>
   </tile>
   <tile id="125">
-   <properties>
-    <property name="task" value="task2"/>
-   </properties>
-  </tile>
-  <tile id="127">
    <properties>
     <property name="tool" value="backhoeTool"/>
    </properties>
@@ -524,17 +514,12 @@
   </tile>
   <tile id="137">
    <properties>
-    <property name="task" value="task3"/>
-   </properties>
-  </tile>
-  <tile id="139">
-   <properties>
-    <property name="tool" value="seederTool"/>
+    <property name="tool" value="seedSackTool"/>
    </properties>
   </tile>
   <tile id="144">
    <properties>
-    <property name="task" value="ban1"/>
+    <property name="task" value="pot1"/>
    </properties>
   </tile>
   <tile id="145">
@@ -549,7 +534,7 @@
   </tile>
   <tile id="147">
    <properties>
-    <property name="task" value="ric1"/>
+    <property name="task" value="cab1"/>
    </properties>
   </tile>
   <tile id="148">
@@ -557,19 +542,14 @@
     <property name="task" value="bud1"/>
    </properties>
   </tile>
-  <tile id="151">
+  <tile id="149">
    <properties>
-    <property name="tool" value="tractorPlowTool"/>
-   </properties>
-  </tile>
-  <tile id="152">
-   <properties>
-    <property name="seed" value="transparent"/>
+    <property name="tool" value="combineTool"/>
    </properties>
   </tile>
   <tile id="156">
    <properties>
-    <property name="task" value="ban2"/>
+    <property name="task" value="pot2"/>
    </properties>
   </tile>
   <tile id="157">
@@ -584,7 +564,7 @@
   </tile>
   <tile id="159">
    <properties>
-    <property name="task" value="ric2"/>
+    <property name="task" value="cab2"/>
    </properties>
   </tile>
   <tile id="160">
@@ -592,14 +572,9 @@
     <property name="task" value="bud2"/>
    </properties>
   </tile>
-  <tile id="163">
-   <properties>
-    <property name="worker" value="worker"/>
-   </properties>
-  </tile>
   <tile id="168">
    <properties>
-    <property name="task" value="ban3"/>
+    <property name="task" value="pot3"/>
    </properties>
   </tile>
   <tile id="169">
@@ -614,7 +589,7 @@
   </tile>
   <tile id="171">
    <properties>
-    <property name="task" value="ric3"/>
+    <property name="task" value="cab3"/>
    </properties>
   </tile>
   <tile id="172">
@@ -624,7 +599,7 @@
   </tile>
   <tile id="180">
    <properties>
-    <property name="task" value="ban4"/>
+    <property name="task" value="pot4"/>
    </properties>
   </tile>
   <tile id="181">
@@ -639,7 +614,7 @@
   </tile>
   <tile id="183">
    <properties>
-    <property name="task" value="ric4"/>
+    <property name="task" value="cab4"/>
    </properties>
   </tile>
   <tile id="184">
@@ -710,11 +685,6 @@
   </data>
  </layer>
  <layer name="task" width="5" height="8">
-  <data encoding="base64">
-   CAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAA==
-  </data>
- </layer>
- <layer name="worker" width="5" height="8">
   <data encoding="base64">
    CAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAA==
   </data>
