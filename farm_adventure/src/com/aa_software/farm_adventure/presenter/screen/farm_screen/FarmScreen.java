@@ -318,7 +318,7 @@ public class FarmScreen extends AbstractScreen {
 			WORKER_LABEL_Y = (float) (SCREEN_HEIGHT * .22),
 			WINDOW_X = (float) (SCREEN_WIDTH * .25),
 			WINDOW_Y = (float) (SCREEN_HEIGHT * .13),
-			INVENTORY_HEIGHT = SCREEN_HEIGHT - 15 * (TILE_SIZE / 10),
+			INVENTORY_HEIGHT = SCREEN_HEIGHT - 14 * (TILE_SIZE / 10),
 			//WORKER_HEIGHT = 70,
 			INFO_X = (float) (SCREEN_WIDTH * .25),
 			INFO_Y = (float) (SCREEN_HEIGHT * .5),
