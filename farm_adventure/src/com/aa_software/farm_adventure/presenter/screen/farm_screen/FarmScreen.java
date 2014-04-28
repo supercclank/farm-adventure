@@ -318,7 +318,8 @@ public class FarmScreen extends AbstractScreen {
 			WORKER_LABEL_Y = (float) (SCREEN_HEIGHT * .22),
 			WINDOW_X = (float) (SCREEN_WIDTH * .25),
 			WINDOW_Y = (float) (SCREEN_HEIGHT * .13),
-			INVENTORY_HEIGHT = SCREEN_HEIGHT - 14 * (TILE_SIZE / 10),
+			//INVENTORY_HEIGHT = SCREEN_HEIGHT - 14 * (TILE_SIZE / 10),
+			INVENTORY_HEIGHT = (float)(SCREEN_HEIGHT *.63),
 			//WORKER_HEIGHT = 70,
 			INFO_X = (float) (SCREEN_WIDTH * .25),
 			INFO_Y = (float) (SCREEN_HEIGHT * .5),
@@ -374,7 +375,14 @@ public class FarmScreen extends AbstractScreen {
 	protected boolean gameOver;
 
 	protected Stats stats;
+	
+	Texture beetTexture = new Texture(Gdx.files.internal("textures/" + "beetSeed" + ".png"));
+	Texture cabbageTexture = new Texture(Gdx.files.internal("textures/" + "cabbageSeed" + ".png"));
+	Texture carrotTexture = new Texture(Gdx.files.internal("textures/" + "carrotSeed" + ".png"));
+	Texture potatoTexture = new Texture(Gdx.files.internal("textures/" + "potatoSeed" + ".png"));
 
+	TextureRegion seedImage;
+	
 	public FarmScreen(Biome.Type biome) {
 		farm = new Farm(biome);
 		float width = STAGE_WIDTH;
@@ -442,9 +450,21 @@ public class FarmScreen extends AbstractScreen {
 	 */
 	protected void addSeedButton(AbstractSeed seed) {
 		Table seedTable = new Table();
-		Texture seedTexture = new Texture(Gdx.files.internal("textures/"
-				+ seed.getTextureName() + ".png"));
-		TextureRegion seedImage = new TextureRegion(seedTexture);
+		if (seed.getTextureName() == "beetSeed") {
+			seedImage = new TextureRegion(beetTexture);
+		}
+		else if (seed.getTextureName() == "cabbageSeed") {
+			seedImage = new TextureRegion(cabbageTexture);
+		}
+		else if (seed.getTextureName() == "carrotSeed") {
+			seedImage = new TextureRegion(carrotTexture);
+		}
+		else if (seed.getTextureName() == "potatoSeed") {
+			seedImage = new TextureRegion(potatoTexture);
+		}
+		//Texture seedTexture = new Texture(Gdx.files.internal("textures/"
+				//+ seed.getTextureName() + ".png"));
+		//TextureRegion seedImage = new TextureRegion(seedTexture);
 		seedTable.row();
 		seedTable.add(new Image(seedImage));
 		Label seedQuantity = new Label("" + farm.getInventory().getCount(seed),
@@ -609,7 +629,7 @@ public class FarmScreen extends AbstractScreen {
 
 			plantMenuStage.draw();
 
-			updateInventoryTable();
+			//updateInventoryTable();
 			inventoryStage.draw();
 			inventoryStage.act();
 
@@ -1224,7 +1244,7 @@ public class FarmScreen extends AbstractScreen {
 					selection.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
 					unselect();
-					updateInventoryTable();
+					//updateInventoryTable();
 				}
 			} else if (y == 0 && !toolBarClicksDisabled) {
 				/*
@@ -1263,6 +1283,7 @@ public class FarmScreen extends AbstractScreen {
 					/*
 					 * Player clicked the market/inventory.
 					 */
+					updateInventoryTable();
 					if (!inventoryClicksDisabled) {
 						unselect();
 						syncSelectTiles(x);
