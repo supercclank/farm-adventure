@@ -50,7 +50,6 @@ public class FarmAdventure extends Game {
 	public void create() {
 		GLTexture.setEnforcePotImages(false);
 
-		log("Creating game");
 		FpsLogger = new FPSLogger();
 
 		Sounds.getInstance();
@@ -65,14 +64,11 @@ public class FarmAdventure extends Game {
 		super.dispose();
 		Player player = Player.getInstance();
 		player.saveData();
-		log("Disposing Game");
 	}
 
 	@Override
 	public void pause() {
 		super.pause();
-
-		log("Pausing Game");
 	}
 
 	@Override
@@ -85,21 +81,15 @@ public class FarmAdventure extends Game {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-
-		log("Resizing game to: " + width + " x " + height);
 	}
 
 	@Override
 	public void resume() {
 		super.resume();
-
-		log("Resuming Game");
 	}
 
 	@Override
 	public void setScreen(Screen screen) {
 		super.setScreen(screen);
-
-		log("Setting screen: " + screen.getClass().getSimpleName());
 	}
 }
