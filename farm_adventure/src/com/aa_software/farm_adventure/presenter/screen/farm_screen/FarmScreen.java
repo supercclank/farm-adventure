@@ -441,6 +441,65 @@ public class FarmScreen extends AbstractScreen {
 		inventoryScrollTable = new Table();
 		setupInventoryWindow();
 	}
+	
+	public FarmScreen() {
+		farm = new Farm();
+		float width = STAGE_WIDTH;
+		float height = STAGE_HEIGHT;
+
+		gameOver = false;
+		disableGameTime = false;
+		setAllGameClicksDisabled(false);
+
+		selection = null;
+
+		map = new TmxMapLoader().load(TILE_MAP_NAME);
+		tileSet = map.getTileSets().getTileSet(TILE_SET_NAME);
+		/* Push all of the tiles for each layer into the tile map */
+		Iterator<TiledMapTile> tileIterator;
+		tileMap = new HashMap<String, Integer>();
+		for (int i = 0; i < allLayers.length; i++) {
+			for (tileIterator = tileSet.iterator(); tileIterator.hasNext();) {
+				TiledMapTile tile = tileIterator.next();
+				tileMap.put(tile.getProperties()
+						.get(allLayers[i], String.class), tile.getId());
+			}
+		}
+
+		skin = new Skin(Gdx.files.internal(SKIN_JSON_UI));
+
+		plantMenuStage = new Stage(width,
+				height, true);
+		irrigationMenuStage = new Stage(width,
+				height, true);
+		statusBarStage = new Stage(SCREEN_WIDTH,
+				SCREEN_HEIGHT, true);
+		inventoryStage = new Stage(width,
+				height, true);
+		workerStage = new Stage();
+		infoStage = new Stage(width,height,true);
+
+		marketMultiplexer = new InputMultiplexer();
+		marketMultiplexer.addProcessor(inventoryStage);
+		marketMultiplexer.addProcessor(workerStage);
+
+		stats = new Stats();
+
+		irrigationWindow = setupWindow(" Pick a side to irrigate: ", WINDOW_X,
+				WINDOW_Y);
+		irrigationMenuStage.addActor(irrigationWindow);
+
+		plantWindow = setupWindow(" Pick a type of seed: ", WINDOW_X, WINDOW_Y);
+		plantMenuStage.addActor(plantWindow);
+
+		infoWindow = setupWindow(" Information ", INFO_X, INFO_Y);
+		infoStage.addActor(infoWindow);
+
+		workerQueue = new Table();
+		setupWorkerTable();
+		inventoryScrollTable = new Table();
+		setupInventoryWindow();
+	}
 
 	/**
 	 * Adds a button to the plantWindow which matches the given seed.
