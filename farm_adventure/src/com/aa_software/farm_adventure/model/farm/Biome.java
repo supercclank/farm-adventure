@@ -64,7 +64,7 @@ public class Biome {
 		case TEMPERATE:
 			return TEMPERATE_WATER_MOD;
 		default:
-			return 0;
+			return .1f;
 		}
 	}
 
