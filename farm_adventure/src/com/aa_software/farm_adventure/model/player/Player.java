@@ -61,6 +61,9 @@ public class Player {
 
 		if (prefs.contains("BANKROLL")) {
 			stats.setScore(prefs.getInteger("BANKROLL"));
+			if (stats.getScore() <= 0) {
+				stats.setScore(STARTING_BANKROLL);
+			}
 			s.setMasterVolume(prefs.getFloat("MASTERVOLUME"));
 			s.setMusicVolume(prefs.getFloat("GAMEVOLUME"));
 			s.setSoundVolume(prefs.getFloat("SOUNDVOLUME"));
