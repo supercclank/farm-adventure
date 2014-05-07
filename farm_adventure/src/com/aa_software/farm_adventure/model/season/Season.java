@@ -40,7 +40,12 @@ public class Season {
 		this.type = type;
 		this.growthRateMod = 1;
 	}
-
+	public Season() {
+		this.cycleTime = CYCLE_TIME_MILLIS;
+		this.type = type.SPRING;
+		this.growthRateMod = 1;
+	}
+	
 	public Season(Type type, float cycleTime) {
 		this.cycleTime = cycleTime;
 		this.type = type;
