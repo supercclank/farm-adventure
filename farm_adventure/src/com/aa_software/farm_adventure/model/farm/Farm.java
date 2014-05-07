@@ -87,15 +87,16 @@ public class Farm {
 	 * incremented.
 	 */
 	public boolean checkSeasonTimer() {
-		if (seasons.size() == 1) {
-			return false;
-		}
 		if (seasonStartTime == 0) {
 			startSeason();
 		}
 		long timeLeft = seasonStartTime + Season.CYCLE_TIME_MILLIS
 				- System.currentTimeMillis();
 		if (timeLeft < 0) {
+			if (seasons.size() == 1) {
+				seasonStartTime = 0;
+				return true;
+			}
 			currentSeason++;
 			currentSeason %= seasons.size();
 			seasonStartTime = 0;
