@@ -620,26 +620,41 @@ public class FarmScreen extends AbstractScreen {
 	 * worker is fired.
 	 */
 	public void payWorker() {
+		int totalWorkerCost = getWorkerCost();
+		if (totalWorkerCost > PLAYER.getBankroll()) {
+			fireWorkers(totalWorkerCost);
+		}
+		PLAYER.setBankroll(PLAYER.getBankroll() - totalWorkerCost);
+		if (PLAYER.getBankroll() < 0) {
+			PLAYER.setBankroll(0);
+		}
+	}
+	
+	/**
+	 * Method that calculates the total cost of all the workers
+	 * @return the total cost of all the workers
+	 */
+	public int getWorkerCost() {
 		int totalWorkerCost = 0;
 		ArrayList<AbstractItem> workers = farm.getInventory().getWorkers();
-		if (workers != null && workers.size() > 1) {
-			int workersToFire = 0;
-			for (AbstractItem w : workers) {
-				totalWorkerCost += w.getCost();
-				if (PLAYER.getBankroll() - totalWorkerCost < 0) {
-					// TODO: Create a methond to remove a specific worker,
-					// instead of a random one, when workers can have different
-					// stats. Also, add a notification when workers are fired.
-					workersToFire++;
-
-				}
-			}
-			for (int i = 0; i < workersToFire; i++) {
+		for (AbstractItem w : workers) {
+			totalWorkerCost += w.getCost();
+		}
+		return totalWorkerCost - 20;
+	}
+	
+	/**
+	 * Method that fires the required number of workers
+	 * @param int - the cost of all of the workers used in figuring out who to fire
+	 */
+	public void fireWorkers(int cost) {
+		ArrayList<AbstractItem> workers = farm.getInventory().getWorkers();
+		while(cost > PLAYER.getBankroll()) {
+			if (workers != null && workers.size() > 1) {
+				cost -= workers.get(0).getCost();
 				farm.getInventory().removeItem(workers.get(0));
 			}
 		}
-
-		PLAYER.setBankroll(PLAYER.getBankroll() - totalWorkerCost);
 	}
 
 	/**
