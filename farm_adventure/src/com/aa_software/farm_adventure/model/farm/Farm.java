@@ -10,6 +10,7 @@ import com.aa_software.farm_adventure.model.Field;
 import com.aa_software.farm_adventure.model.Inventory;
 import com.aa_software.farm_adventure.model.Market;
 import com.aa_software.farm_adventure.model.ToolBar;
+import com.aa_software.farm_adventure.model.farm.Biome.Type;
 import com.aa_software.farm_adventure.model.item.AbstractItem;
 import com.aa_software.farm_adventure.model.item.seed.AbstractSeed;
 import com.aa_software.farm_adventure.model.item.tool.AbstractTool;
@@ -58,6 +59,17 @@ public class Farm {
 		}
 	}
 
+	public Farm() {
+		this.biome = null;
+		this.field = new Field(Biome.getWaterMod(Type.BOREAL));
+		this.timer = new Timer();
+		this.market = new Market();
+		this.inventory = new Inventory();
+		this.toolBar = new ToolBar(this.inventory);
+		this.seasons = new ArrayList<Season>();
+		seasons.add(new Season());
+	}
+	
 	/**
 	 * Applies seasonal effects which constantly need to be updated.
 	 */
@@ -75,6 +87,9 @@ public class Farm {
 	 * incremented.
 	 */
 	public boolean checkSeasonTimer() {
+		if (seasons.size() == 1) {
+			return false;
+		}
 		if (seasonStartTime == 0) {
 			startSeason();
 		}
