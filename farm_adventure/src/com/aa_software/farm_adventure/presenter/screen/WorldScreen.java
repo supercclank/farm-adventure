@@ -44,7 +44,7 @@ public class WorldScreen extends AbstractScreen {
 	private Skin skin;
 	protected Stage farmMenuStage;
 	protected Window seasonWindow;
-
+	protected Window confirmFarmSelectionWindow;
 	protected static final Biome.Type[] BIOMES = { Biome.Type.GRASSLAND,
 			Biome.Type.TROPICAL, Biome.Type.TEMPERATE, Biome.Type.BOREAL };
 
@@ -114,7 +114,7 @@ public class WorldScreen extends AbstractScreen {
 		seasonWindow.setPosition(WINDOW_X, WINDOW_Y);
 		seasonWindow.defaults().spaceBottom(10);
 		seasonWindow.row().fill().expandX();
-
+		
 		/* Decide the season order */
 		Button seasonButton;
 		for (Season.Type s : Biome.getSeasons(biome)) {
@@ -162,6 +162,37 @@ public class WorldScreen extends AbstractScreen {
 	}
 
 	/**
+	 * Sets up the window to display the confirmation screen for the currently selected farm
+	 * and a button to start the selected farm.
+	 */
+	public void setupConfirmFarmSelectionWindow() {
+		TextButton playFarmButton = new TextButton("Play Farm", skin);
+
+		confirmFarmSelectionWindow = new Window("Continue to this farm?", skin);
+		confirmFarmSelectionWindow.setModal(false);
+		confirmFarmSelectionWindow.setMovable(false);
+		confirmFarmSelectionWindow.setVisible(false);
+		confirmFarmSelectionWindow.setPosition(WINDOW_X, WINDOW_Y);
+		confirmFarmSelectionWindow.defaults().spaceBottom(10);
+		confirmFarmSelectionWindow.row().fill().expandX();
+		
+		confirmFarmSelectionWindow.row();
+		confirmFarmSelectionWindow.add(playFarmButton).colspan(4).width(200);
+		confirmFarmSelectionWindow.pack();
+		super.addActor(confirmFarmSelectionWindow);
+
+		playFarmButton.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				FarmAdventure.getInstance().setScreen(new FarmScreen());
+				SOUNDS.playClick();
+				return true;
+			}
+		});
+	}
+	
+	/**
 	 * Sets up the world map screen with a background map and farm buttons. When
 	 * a farm button is selected, the type of farm selected is saved, and
 	 * setupSeasonMenu is called.
@@ -205,8 +236,10 @@ public class WorldScreen extends AbstractScreen {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
-					setupSeasonMenu(biome);
-					seasonWindow.setVisible(true);
+					//setupSeasonMenu(biome);
+					//seasonWindow.setVisible(true);
+					setupConfirmFarmSelectionWindow();
+					confirmFarmSelectionWindow.setVisible(true);
 					SOUNDS.playClick();
 					return true;
 				}
