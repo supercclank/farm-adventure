@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class AbstractScreen implements Screen {
 
-	public static final int STAGE_WIDTH =480;
+	public static final int STAGE_WIDTH = 480;
 	public static final int STAGE_HEIGHT = 800;
 	public static final int SCREEN_WIDTH = 640;
 	public static final int SCREEN_HEIGHT = 1024;
