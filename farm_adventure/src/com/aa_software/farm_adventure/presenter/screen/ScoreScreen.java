@@ -34,7 +34,7 @@ public class ScoreScreen extends AbstractScreen {
 	private void checkBackButton(){
 		if(Gdx.input.isKeyPressed(Keys.BACK)){
 			Gdx.input.setCatchBackKey(true);
-			FarmAdventure.getInstance().setScreen(new WorldScreen());
+			FarmAdventure.getInstance().setScreen(new MainMenuScreen());
 			dispose();
 		}
 	}
@@ -52,7 +52,7 @@ public class ScoreScreen extends AbstractScreen {
 		table.row();
 		table.add(Integer.toString(stats.getScore())).spaceBottom(50);
 		table.row();
-		TextButton startGameButton = new TextButton("Continue to the Map",
+		TextButton startGameButton = new TextButton("Return to Main Menu",
 				super.getSkin());
 
 		// This line of code will take the user to the world screen on click or
@@ -61,7 +61,7 @@ public class ScoreScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				FarmAdventure.getInstance().setScreen(new WorldScreen());
+				FarmAdventure.getInstance().setScreen(new MainMenuScreen());
 				SOUNDS.playClick();
 				return true;
 			}
