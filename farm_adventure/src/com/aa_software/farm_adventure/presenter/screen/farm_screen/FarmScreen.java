@@ -187,6 +187,37 @@ public class FarmScreen extends AbstractScreen {
 			return y;
 		}
 	}
+	
+	protected class SeedListener extends InputListener {
+		private final int x;
+		private final int y;
+		private final Irrigation irrigation;
+		private final TaskType task;
+
+		public SeedListener(int x, int y, Irrigation irrigation,
+				TaskType task) {
+			this.x = x;
+			this.y = y;
+			this.irrigation = irrigation;
+			this.task = task;
+		}
+
+		public Irrigation getIrrigation() {
+			return irrigation;
+		}
+
+		public TaskType getTaskType() {
+			return task;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+	}
 
 	/**
 	 * 
@@ -532,6 +563,7 @@ public class FarmScreen extends AbstractScreen {
 		seedTable.add(seedQuantity);
 		Button seedButton = new Button(seedTable, skin);
 		plantWindow.add(seedButton);
+		seedButton.addListener(new SeedClickListener(seed));
 		seedButton.addListener(new SeedClickListener(seed));
 	}
 
@@ -1242,7 +1274,38 @@ public class FarmScreen extends AbstractScreen {
 
 		irrigationWindow.pack();
 	}
-
+//FixThis
+	public void updateSeedWindow(final int x, final int y) {
+		plantWindow.clear();
+		if (farm.getInventory().getItems().get("SEEDS") != null) {
+			ArrayList<AbstractSeed> seedKey = new ArrayList<AbstractSeed>();
+			AbstractSeed tempSeed;
+			int seedNum = farm.getInventory().getItems().get("SEEDS").size();
+			for (int i = 0; i < seedNum; i++) {
+				tempSeed = (AbstractSeed) farm.getInventory().getItems()
+						.get("SEEDS").get(i);
+				if (seedKey.size() == 0) {
+					seedKey.add(tempSeed);
+					addSeedButton(tempSeed);
+				} else {
+					Boolean inSeedKey = false;
+					for (int j = 0; j < seedKey.size(); j++) {
+						if (seedKey.get(j).compareTo(tempSeed) == 0) {
+							inSeedKey = true;
+							j = seedKey.size();
+						}
+					}
+					if (!inSeedKey) {
+						seedKey.add(tempSeed);
+						addSeedButton(tempSeed);
+					}
+				}
+			}
+		}
+		
+		plantWindow.pack();
+	}
+	
 	/**
 	 * Sets up the window to choose a seed to plant
 	 */
@@ -1314,7 +1377,18 @@ public class FarmScreen extends AbstractScreen {
 							unselect();
 						}
 					}
-				} else {
+				} 
+//				else if (selection instanceof AbstractPlantTool) {
+//					if (!plantMenuClicksDisabled) {
+//						updatePlantWindow();
+//						if (plantWindow.getChildren().size > 0) {
+//							plantWindow.setVisible(true);
+//							Gdx.input.setInputProcessor(plantMenuStage);
+//						}
+//					}
+//					SOUNDS.playClick();
+//				}
+				else {
 					selection.update(farm.getPlot(x, y - FIELD_STARTING_Y),
 							farm.getInventory());
 					unselect();
@@ -1342,7 +1416,8 @@ public class FarmScreen extends AbstractScreen {
 						}
 						SOUNDS.playClick();
 					}
-				} else if (x != MARKET_X) {
+				} else
+					if (x != MARKET_X) {
 					/*
 					 * Player clicked a tool other than the market/inventory.
 					 */
