@@ -2,6 +2,7 @@ package com.aa_software.farm_adventure.presenter.screen;
 
 import com.aa_software.farm_adventure.model.audio.Sounds;
 import com.aa_software.farm_adventure.presenter.FarmAdventure;
+import com.aa_software.farm_adventure.presenter.screen.farm_screen.FarmScreen;
 import com.aa_software.farm_adventure.presenter.screen.farm_screen.TutorialFarmScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -20,7 +21,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private static final int TITLE_SPACE = 50;
 	private static final int BUTTON_SPACE = 10;
 	private Table table;
-	
+	private static String charityOfChoice = "SEMA Development";
 	public MainMenuScreen() {
 		super();
 	}
@@ -69,7 +70,10 @@ public class MainMenuScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				SOUNDS.playClick();
-				FarmAdventure.getInstance().setScreen(new WorldScreen());
+				//Cory - skipping over WorldScrene for Beta
+				//FarmAdventure.getInstance().setScreen(new WorldScreen());
+				//setting default next screen to a farm of temperate
+				FarmAdventure.getInstance().setScreen(new SplashScreen());
 				return true;
 			}
 		});
@@ -94,20 +98,35 @@ public class MainMenuScreen extends AbstractScreen {
 		.spaceBottom(BUTTON_SPACE);
 		table.row();
 
-		// register tutorial button
-		TextButton optionsButton = new TextButton("Settings", skin);
+//		TextButton optionsButton = new TextButton("Settings", skin);
+//
+//		optionsButton.addListener(new InputListener() {
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y,
+//					int pointer, int button) {
+//				SOUNDS.playClick();
+//				//FarmAdventure.getInstance().setScreen(new OptionsScreen());
+//				
+//				return true;
+//			}
+//		});
+//		table.add(optionsButton).size(BUTTON_WIDTH, BUTTON_HEIGHT).uniform()
+//		.spaceBottom(BUTTON_SPACE);
+//		table.row();
+		
+		TextButton aboutButton = new TextButton("Learn more about " + charityOfChoice, skin);
 
-		// Listener to send to tutorial game
-		optionsButton.addListener(new InputListener() {
+		aboutButton.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				SOUNDS.playClick();
-				FarmAdventure.getInstance().setScreen(new OptionsScreen());
+				//FarmAdventure.getInstance().setScreen(new OptionsScreen());
+				FarmAdventure.getInstance().setScreen(new AboutScreen());
 				return true;
 			}
 		});
-		table.add(optionsButton).size(BUTTON_WIDTH, BUTTON_HEIGHT).uniform()
+		table.add(aboutButton).size(BUTTON_WIDTH, BUTTON_HEIGHT).uniform()
 		.spaceBottom(BUTTON_SPACE);
 		table.row();
 	}
